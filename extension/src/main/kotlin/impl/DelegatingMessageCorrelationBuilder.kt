@@ -1,12 +1,16 @@
 package org.camunda.bpm.extension.restclient.impl
 
+import mu.KLogging
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.camunda.bpm.extension.restclient.client.RuntimeServiceClient
 import org.camunda.bpm.extension.restclient.variables.fromUntypedValue
+import org.camunda.bpm.extension.restclient.variables.messageCorrelationResultFromDto
+import org.camunda.bpm.extension.restclient.variables.messageCorrelationResultWithVariablesFromDto
 
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
@@ -15,6 +19,8 @@ class DelegatingMessageCorrelationBuilder(
   messageName: String,
   private val runtimeServiceClient: RuntimeServiceClient
 ) : MessageCorrelationBuilder {
+
+  companion object : KLogging()
 
   private val correlationMessageDto: CorrelationMessageDto = CorrelationMessageDto().apply {
     this.messageName = messageName
@@ -35,7 +41,8 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun processDefinitionId(processDefinitionId: String): MessageCorrelationBuilder {
-    throw UnsupportedOperationException("Unsupported remote correlation method.")
+    logger.error { "Process definition constraint is not supported by remote message correlation" }
+    return this
   }
 
   override fun setVariable(variableName: String, variableValue: Any): MessageCorrelationBuilder {
@@ -71,36 +78,73 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun processInstanceVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Process instance variable query is not supported by remote message correlation" }
+    return this
   }
 
   override fun processInstanceVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Process instance variable query is not supported by remote message correlation" }
+    return this
   }
 
   override fun localVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Process instance local variable query is not supported by remote message correlation" }
+    return this
   }
 
   override fun localVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Process instance local variable query is not supported by remote message correlation" }
+    return this
   }
 
   override fun startMessageOnly(): MessageCorrelationBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-
-  override fun correlateAllWithResult(): MutableList<MessageCorrelationResult> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun correlateWithResultAndVariables(deserializeValues: Boolean): MessageCorrelationResultWithVariables {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Restriction to start messages only is not supported by remote message correlation" }
+    return this
   }
 
   override fun correlateExclusively() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    logger.error { "Exclusive correlation is not supported by remote message correlation. Correlating anyway." }
+    correlate()
+  }
+
+  override fun correlateStartMessage(): ProcessInstance {
+    logger.error { "Restriction to start messages only is not supported by remote message correlation" }
+    correlationMessageDto.isResultEnabled = true
+    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    return when (result.size) {
+      0 -> throw IllegalStateException("No result received")
+      1 -> messageCorrelationResultWithVariablesFromDto(result[0], createVariables()).processInstance
+      else -> {
+        logger.warn { "Multiple results received, returning the first one." }
+        messageCorrelationResultWithVariablesFromDto(result[0], createVariables()).processInstance
+      }
+    }
+  }
+
+  override fun correlateWithResultAndVariables(deserializeValues: Boolean): MessageCorrelationResultWithVariables {
+    correlationMessageDto.isResultEnabled = true
+    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    return when (result.size) {
+      0 -> throw IllegalStateException("No result received")
+      1 -> messageCorrelationResultWithVariablesFromDto(result[0], createVariables())
+      else -> {
+        logger.warn { "Multiple results received, returning the first one." }
+        messageCorrelationResultWithVariablesFromDto(result[0], createVariables())
+      }
+    }
+  }
+
+  override fun correlateAllWithResultAndVariables(deserializeValues: Boolean): MutableList<MessageCorrelationResultWithVariables> {
+    correlationMessageDto.isResultEnabled = true
+    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    return result.map { messageCorrelationResultWithVariablesFromDto(it, createVariables()) }.toMutableList()
+  }
+
+  override fun correlateAllWithResult(): MutableList<MessageCorrelationResult> {
+    correlationMessageDto.isAll = true
+    correlationMessageDto.isResultEnabled = true
+    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    return result.map { messageCorrelationResultFromDto(it) }.toMutableList()
   }
 
   override fun correlateAll() {
@@ -109,18 +153,19 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun correlateWithResult(): MessageCorrelationResult {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    correlationMessageDto.isResultEnabled = true
+    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    return when (result.size) {
+      0 -> throw IllegalStateException("No result received")
+      1 -> messageCorrelationResultFromDto(result[0])
+      else -> {
+        logger.warn { "Multiple results received, returning the first one." }
+        messageCorrelationResultFromDto(result[0])
+      }
+    }
   }
 
   override fun correlate() {
     runtimeServiceClient.correlateMessage(correlationMessageDto)
-  }
-
-  override fun correlateStartMessage(): ProcessInstance {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
-
-  override fun correlateAllWithResultAndVariables(deserializeValues: Boolean): MutableList<MessageCorrelationResultWithVariables> {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 }
