@@ -4,12 +4,12 @@ import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import java.util.*
 
 /**
- * Maps key/value entry from map with variables to a variable value dto.
+ * Maps value to DTO.
  */
-fun fromUntypedValueEntry(entry: Map.Entry<String, Any>): VariableValueDto =
+fun fromUntypedValue(value: Any): VariableValueDto =
   VariableValueDto().apply {
     @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-    type = when (entry.value) {
+    this.type = when (value) {
       is Boolean -> "Boolean"
       is ByteArray -> "Bytes"
       is Short -> "Short"
@@ -20,5 +20,7 @@ fun fromUntypedValueEntry(entry: Map.Entry<String, Any>): VariableValueDto =
       is String -> "String"
       else -> "Object"
     }
-    value = entry.value
+    this.value = value
   }
+
+

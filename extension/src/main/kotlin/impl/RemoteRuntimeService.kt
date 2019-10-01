@@ -3,7 +3,7 @@ package org.camunda.bpm.extension.restclient.impl
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.extension.restclient.adapter.AbstractRuntimeServiceAdapter
 import org.camunda.bpm.extension.restclient.client.RuntimeServiceClient
-import org.camunda.bpm.extension.restclient.variables.fromUntypedValueEntry
+import org.camunda.bpm.extension.restclient.variables.fromUntypedValue
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
@@ -33,7 +33,7 @@ class RemoteRuntimeService(
     runtimeServiceClient.correlateMessage(
       CorrelationMessageDto().apply {
         this.messageName = messageName
-        this.correlationKeys = correlationKeys.mapValues { fromUntypedValueEntry(it) }
+        this.correlationKeys = correlationKeys.mapValues { fromUntypedValue(it) }
       }
     )
 
@@ -41,8 +41,8 @@ class RemoteRuntimeService(
     runtimeServiceClient.correlateMessage(
       CorrelationMessageDto().apply {
         this.messageName = messageName
-        this.correlationKeys = correlationKeys.mapValues { fromUntypedValueEntry(it) }
-        this.processVariables = processVariables.mapValues { fromUntypedValueEntry(it) }
+        this.correlationKeys = correlationKeys.mapValues { fromUntypedValue(it) }
+        this.processVariables = processVariables.mapValues { fromUntypedValue(it) }
       }
     )
 
@@ -52,8 +52,8 @@ class RemoteRuntimeService(
       CorrelationMessageDto().apply {
         this.messageName = messageName
         this.businessKey = businessKey
-        this.correlationKeys = correlationKeys.mapValues { fromUntypedValueEntry(it) }
-        this.processVariables = processVariables.mapValues { fromUntypedValueEntry(it) }
+        this.correlationKeys = correlationKeys.mapValues { fromUntypedValue(it) }
+        this.processVariables = processVariables.mapValues { fromUntypedValue(it) }
       }
     )
 
@@ -62,7 +62,10 @@ class RemoteRuntimeService(
       CorrelationMessageDto().apply {
         this.messageName = messageName
         this.businessKey = businessKey
-        this.processVariables = processVariables.mapValues { fromUntypedValueEntry(it) }
+        this.processVariables = processVariables.mapValues { fromUntypedValue(it.value) }
       }
     )
+
+  override fun createMessageCorrelation(messageName: String) =
+    DelegatingMessageCorrelationBuilder(messageName, runtimeServiceClient)
 }

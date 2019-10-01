@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.restclient.example
 
 import feign.Logger
+import org.camunda.bpm.extension.restclient.EnableCamundaRestClient
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.cloud.openfeign.EnableFeignClients
@@ -14,6 +15,7 @@ fun main() {
 @SpringBootApplication
 @EnableFeignClients
 @EnableScheduling
+@EnableCamundaRestClient
 class CamundaRestClientExampleApplication {
 
   // full debug of feign client

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: RestClientExample
   jpa:
     open-in-view: true
 camunda:

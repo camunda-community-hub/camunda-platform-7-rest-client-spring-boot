@@ -54,27 +54,27 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun correlateMessage(messageName: String) {
-    TODO("not implemented")
+
   }
 
   override fun correlateMessage(messageName: String, businessKey: String) {
-    TODO("not implemented")
+
   }
 
   override fun correlateMessage(messageName: String, correlationKeys: MutableMap<String, Any>) {
-    TODO("not implemented")
+
   }
 
   override fun correlateMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>) {
-    TODO("not implemented")
+
   }
 
   override fun correlateMessage(messageName: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) {
-    TODO("not implemented")
+
   }
 
   override fun correlateMessage(messageName: String, businessKey: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) {
-    TODO("not implemented")
+
   }
 
   override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
@@ -165,7 +165,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createMessageCorrelation(messageName: String?): MessageCorrelationBuilder {
+  override fun createMessageCorrelation(messageName: String): MessageCorrelationBuilder {
     TODO("not implemented")
   }
 
