@@ -1,7 +1,7 @@
 # Camunda BPM REST client
 
-This library implements Camunda BPM REST client based on SpringCloud Feign, implemented
-as a set of implementations of Camunda API invoking remote process engine.  
+This library provides a Camunda BPM REST client based on SpringCloud Feign, by implementing 
+a set of Camunda Engine API interfaces, invoking remote process engine.   
 
 ## Quick start
 
