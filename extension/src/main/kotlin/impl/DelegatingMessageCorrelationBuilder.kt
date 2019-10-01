@@ -52,7 +52,7 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun setVariables(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.processVariables = variables.mapValues { fromUntypedValue(it) }
+    correlationMessageDto.processVariables = variables.mapValues { fromUntypedValue(it.value) }
     return this
   }
 

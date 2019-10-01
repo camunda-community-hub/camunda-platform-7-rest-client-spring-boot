@@ -20,6 +20,11 @@ class ProcessDelegates {
   fun loggingDelegate() = JavaDelegate {
     logger.info { "LOGGER-001: ${it.eventName.toGerund()} '${it.currentActivityName.toSinglePrettyString()}, payload: ${it.variables}" }
   }
+
+  @Bean
+  fun variableSetter() = JavaDelegate {
+    // it.setVariableLocal("MY-VAR", stringValue("Example Value"))
+  }
 }
 
 @Component
