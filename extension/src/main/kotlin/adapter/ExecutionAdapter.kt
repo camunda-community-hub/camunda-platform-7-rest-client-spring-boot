@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.restclient.adapter
+package org.camunda.bpm.extension.feign.adapter
 
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
 import org.camunda.bpm.engine.runtime.Execution

@@ -1,8 +1,9 @@
-package org.camunda.bpm.extension.restclient.example.client
+package org.camunda.bpm.extension.feign.example.client
 
 import mu.KLogging
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
+import org.camunda.bpm.extension.feign.variables.toPrettyString
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -14,10 +15,26 @@ class ProcessClient(
   @Qualifier("remote") private val runtimeService: RuntimeService
 ) {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
-  @Scheduled(initialDelay = 12_000, fixedDelay = 5_000)
+  @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
+  fun startProcess() {
+
+    logger.trace { "CLIENT-100: Starting a process instance remote" }
+
+    val variables = createVariables()
+      .putValueTyped("ID", stringValue("MESSAGING-${UUID.randomUUID()}"))
+    val instance = runtimeService.startProcessInstanceByKey("process_messaging", "WAIT_FOR_MESSAGE", variables)
+
+    logger.trace { "CLIENT-101: Started instance ${instance.id} - ${instance.businessKey}" }
+  }
+
+
+  @Scheduled(initialDelay = 12_500, fixedDelay = 5_000)
   fun correlateMessage() {
+
+    logger.info { "CLIENT-200: Correlating message" }
+
     val variables = createVariables()
     variables.putValueTyped("STRING", stringValue("my string"))
     variables.putValueTyped("CORRELATION_DATE", dateValue(Date.from(Instant.now())))
@@ -28,12 +45,13 @@ class ProcessClient(
 
     val result = runtimeService
       .createMessageCorrelation("message_received")
-      .processInstanceBusinessKey( "WAIT_FOR_MESSAGE")
+      .processInstanceBusinessKey("WAIT_FOR_MESSAGE")
       .setVariables(variables)
-      .correlateAllWithResult()
+      .correlateAllWithResultAndVariables(true)
 
     result.forEach {
-      logger.info { "CLIENT-001: ${it.resultType}, ${it.execution}, ${it.processInstance}" }
+      logger.info { "CLIENT-201: ${it.toPrettyString()}" }
     }
   }
+
 }

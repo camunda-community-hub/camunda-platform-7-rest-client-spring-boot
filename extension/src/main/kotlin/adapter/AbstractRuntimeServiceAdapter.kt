@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.restclient.adapter
+package org.camunda.bpm.extension.feign.adapter
 
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.batch.Batch
@@ -8,6 +8,8 @@ import org.camunda.bpm.engine.migration.MigrationPlanExecutionBuilder
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
+import org.camunda.bpm.extension.feign.impl.RemoteRuntimeService
+import org.camunda.bpm.extension.feign.impl.implementedBy
 
 /**
  * Adapter for implementing runtime service.
@@ -54,27 +56,27 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun correlateMessage(messageName: String) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String, businessKey: String) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String, correlationKeys: MutableMap<String, Any>) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String, businessKey: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) {
-
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
@@ -166,7 +168,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun createMessageCorrelation(messageName: String): MessageCorrelationBuilder {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
@@ -178,22 +180,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
     TODO("not implemented")
   }
 
@@ -269,22 +255,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceByMessage(messageName: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessage(messageName: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
-
   override fun createEventSubscriptionQuery(): EventSubscriptionQuery {
     TODO("not implemented")
   }
@@ -297,29 +267,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceByKey(processDefinitionKey: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByKey(processDefinitionKey: String?, businessKey: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByKey(processDefinitionKey: String?, businessKey: String?, caseInstanceId: String?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByKey(processDefinitionKey: String?, variables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByKey(processDefinitionKey: String?, businessKey: String?, variables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
-
-  override fun startProcessInstanceByKey(processDefinitionKey: String?, businessKey: String?, caseInstanceId: String?, variables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
-  }
 
   override fun getVariablesLocalTyped(executionId: String?): VariableMap {
     TODO("not implemented")
@@ -337,10 +284,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createProcessInstanceById(processDefinitionId: String?): ProcessInstantiationBuilder {
-    TODO("not implemented")
-  }
-
   override fun deleteProcessInstancesIfExists(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
     TODO("not implemented")
   }
@@ -349,7 +292,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createProcessInstanceByKey(processDefinitionKey: String?): ProcessInstantiationBuilder {
+  override fun createProcessInstanceById(processDefinitionId: String?): ProcessInstantiationBuilder {
+    TODO("not implemented")
+  }
+
+  override fun createProcessInstanceByKey(processDefinitionKey: String): ProcessInstantiationBuilder {
     TODO("not implemented")
   }
 
@@ -397,27 +344,83 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?): ProcessInstance {
+  override fun startProcessInstanceById(processDefinitionId: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceById(processDefinitionId: String, businessKey: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceById(processDefinitionId: String, businessKey: String, caseInstanceId: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceById(processDefinitionId: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceById(processDefinitionId: String, businessKey: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceById(processDefinitionId: String, businessKey: String, caseInstanceId: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String, caseInstanceId: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String, caseInstanceId: String, variables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun startProcessInstanceByMessage(messageName: String?): ProcessInstance {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?, businessKey: String?): ProcessInstance {
+  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?): ProcessInstance {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?, businessKey: String?, caseInstanceId: String?): ProcessInstance {
+  override fun startProcessInstanceByMessage(messageName: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?, variables: MutableMap<String, Any>?): ProcessInstance {
+  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?, businessKey: String?, variables: MutableMap<String, Any>?): ProcessInstance {
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?): ProcessInstance {
     TODO("not implemented")
   }
 
-  override fun startProcessInstanceById(processDefinitionId: String?, businessKey: String?, caseInstanceId: String?, variables: MutableMap<String, Any>?): ProcessInstance {
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?): ProcessInstance {
+    TODO("not implemented")
+  }
+
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
+    TODO("not implemented")
+  }
+
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
     TODO("not implemented")
   }
 

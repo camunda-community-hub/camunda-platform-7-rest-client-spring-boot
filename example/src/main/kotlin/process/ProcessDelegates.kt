@@ -1,15 +1,9 @@
-package org.camunda.bpm.extension.restclient.example.process
+package org.camunda.bpm.extension.feign.example.process
 
 import mu.KLogging
-import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.delegate.JavaDelegate
-import org.camunda.bpm.engine.variable.Variables.createVariables
-import org.camunda.bpm.engine.variable.Variables.stringValue
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
-import java.util.*
 
 @Configuration
 class ProcessDelegates {
@@ -25,21 +19,6 @@ class ProcessDelegates {
   fun variableSetter() = JavaDelegate {
     // it.setVariableLocal("MY-VAR", stringValue("Example Value"))
   }
-}
-
-@Component
-class ProcessStarter(private val runtimeService: RuntimeService) {
-
-  companion object : KLogging()
-
-  @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
-  fun startProcess() {
-    val instance = runtimeService.startProcessInstanceByKey("process_messaging",
-      "WAIT_FOR_MESSAGE", createVariables().putValueTyped("ID", stringValue("MESSAGING-${UUID.randomUUID()}"))
-    )
-    logger.trace { "SCHEDULER-001: Started instance ${instance.id}" }
-  }
-
 }
 
 fun String.toSinglePrettyString() = this

@@ -1,4 +1,4 @@
-package org.camunda.bpm.extension.restclient
+package org.camunda.bpm.extension.feign
 
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.ComponentScan
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Import
 @Configuration
 @ComponentScan
 @EnableFeignClients
-class CamundaBpmRestClientExtension
+class CamundaBpmFeignExtension
 
 
 /**
  * Enables the registration of REST client beans.
  */
-@Import(CamundaBpmRestClientExtension::class)
-annotation class EnableCamundaRestClient
+@Import(CamundaBpmFeignExtension::class)
+annotation class EnableCamundaFeign

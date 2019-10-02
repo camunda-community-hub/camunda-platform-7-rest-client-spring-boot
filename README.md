@@ -10,9 +10,9 @@ Add the following Maven dependency to your project:
 ### Dependency
 ``` 
 <dependency>
-  <groupId>org.camunda.bpm.extension.restclient</groupId>
-  <artifactId>camunda-bpm-rest-client</artifactId>
-  <version>${camunda-bpm-rest-client.version}</version>
+  <groupId>org.camunda.bpm.extension.feign</groupId>
+  <artifactId>camunda-bpm-feign</artifactId>
+  <version>${camunda-bpm-feign.version}</version>
 </dependency>
 ```
 
@@ -22,7 +22,7 @@ to your configuration:
 
 ``` 
 @Configuration
-@EnableCamundaRestClient
+@EnableCamundaFeign
 public class MyClientConfiguration {
 
 }
@@ -53,6 +53,11 @@ public class MyClient {
         this.runtimeService = runtimeService;
     }
 
+    public void start() {
+        this.runtimeService
+            .startProcessInstanceByKey("my_process_key");
+    }
+
     public void correlate() {
         this.runtimeService
             .createMessageCorrelation("message_received")
@@ -64,7 +69,9 @@ public class MyClient {
 
 ### Implemented API
 * `RuntimeService`
-  * Message correlation: `#correlateMessage`, `#createMessageCorrelation()` 
+  * Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
+  * Process start by key: `#startProcessInstanceByKey()`
+  * Process start by id: `#startProcessInstanceById()`
 
 ## Example
 

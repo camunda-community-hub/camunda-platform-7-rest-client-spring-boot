@@ -9,8 +9,8 @@
     <relativePath/>
   </parent>
 
-  <groupId>org.camunda.bpm.extension.restclient</groupId>
-  <artifactId>camunda-bpm-rest-client-parent</artifactId>
+  <groupId>org.camunda.bpm.extension.feign</groupId>
+  <artifactId>camunda-bpm-feign-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -24,7 +24,7 @@
 
     <camunda.version>7.11.0</camunda.version>
 
-    <springboot.version>2.1.5.RELEASE</springboot.version>
+    <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
     <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
     <camunda.version>7.11.0</camunda.version>
     <camunda-external-client.version>1.2.2</camunda-external-client.version>
@@ -58,7 +58,7 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>${springboot.version}</version>
+        <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -103,14 +103,28 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.kotlin</groupId>
+          <artifactId>kotlin-stdlib-jdk7</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk7</artifactId>
+      <version>${kotlin.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
+      <version>${kotlin.version}</version>
     </dependency>
 
     <!-- Testing -->

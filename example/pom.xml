@@ -4,19 +4,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.restclient</groupId>
-    <artifactId>camunda-bpm-rest-client-parent</artifactId>
+    <groupId>org.camunda.bpm.extension.feign</groupId>
+    <artifactId>camunda-bpm-feign-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-bpm-rest-client-example</artifactId>
+  <artifactId>camunda-bpm-feign-example</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
 
     <dependency>
-      <groupId>org.camunda.bpm.extension.restclient</groupId>
-      <artifactId>camunda-bpm-rest-client</artifactId>
+      <groupId>org.camunda.bpm.extension.feign</groupId>
+      <artifactId>camunda-bpm-feign</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -49,6 +49,7 @@
       <groupId>org.camunda.spin</groupId>
       <artifactId>camunda-spin-dataformat-json-jackson</artifactId>
     </dependency>
+
     <!-- Jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -62,6 +63,8 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
+
+
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
@@ -78,6 +81,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
       </plugin>
     </plugins>
   </build>
