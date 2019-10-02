@@ -1,8 +1,9 @@
 package org.camunda.bpm.extension.feign.client
 
+import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
-import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultWithVariableDto
+import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceWithVariablesDto
 import org.camunda.bpm.engine.rest.dto.runtime.StartProcessInstanceDto
 import org.springframework.cloud.openfeign.FeignClient
@@ -25,4 +26,9 @@ interface RuntimeServiceClient {
   @RequestMapping(method = [RequestMethod.POST], value = ["/process-definition/key/{key}/tenant-id/{tenant-id}/start"], consumes = ["application/json"])
   fun startProcessByKeyForTenant(@PathVariable("key") processDefinitionKey: String, @PathVariable("tenant-id") tenantId: String, startProcessInstance: StartProcessInstanceDto): ProcessInstanceWithVariablesDto
 
+  @RequestMapping(method = [RequestMethod.POST], value = ["/signal"], consumes = ["application/json"])
+  fun signalEventReceived(signal: SignalDto)
+
+  @RequestMapping(method = [RequestMethod.POST], value = ["/execution/{id}/signal"], consumes = ["application/json"])
+  fun triggerExecutionById(@PathVariable("id") executionId: String, trigger: ExecutionTriggerDto)
 }

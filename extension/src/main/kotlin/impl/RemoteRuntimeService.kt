@@ -2,17 +2,16 @@ package org.camunda.bpm.extension.feign.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.rest.dto.VariableValueDto
-import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
+import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
 import org.camunda.bpm.engine.rest.dto.runtime.StartProcessInstanceDto
 import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.engine.variable.VariableMap
-import org.camunda.bpm.engine.variable.value.TypedValue
+import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
 import org.camunda.bpm.extension.feign.adapter.AbstractRuntimeServiceAdapter
 import org.camunda.bpm.extension.feign.adapter.InstanceBean
 import org.camunda.bpm.extension.feign.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
-import org.camunda.bpm.extension.feign.variables.fromUntypedValue
+import org.camunda.bpm.extension.feign.impl.builder.DelegatingMessageCorrelationBuilder
+import org.camunda.bpm.extension.feign.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -44,6 +43,13 @@ class RemoteRuntimeService(
   override fun correlateMessage(messageName: String, businessKey: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) =
     doCorrelateMessage(messageName, businessKey, correlationKeys, processVariables)
 
+  override fun createMessageCorrelation(messageName: String) =
+    DelegatingMessageCorrelationBuilder(
+      messageName = messageName,
+      runtimeServiceClient = runtimeServiceClient,
+      processEngine = processEngine,
+      objectMapper = objectMapper)
+
   /**
    * Null-safe version of message correlate.
    */
@@ -52,29 +58,25 @@ class RemoteRuntimeService(
     businessKey: String? = null,
     correlationKeys: MutableMap<String, Any>? = null,
     processVariables: MutableMap<String, Any>? = null) {
-    runtimeServiceClient.correlateMessage(
-      CorrelationMessageDto().apply {
-        this.messageName = messageName
-        if (businessKey != null) {
-          this.businessKey = businessKey
-        }
-        if (processVariables != null) {
-          this.processVariables = processVariables.toVariableValueDtoMap()
-        }
-        if (correlationKeys != null) {
-          this.correlationKeys = correlationKeys.toVariableValueDtoMap()
-        }
-      }
-    )
 
-  }
-
-  override fun createMessageCorrelation(messageName: String) =
-    DelegatingMessageCorrelationBuilder(
+    val builder = DelegatingMessageCorrelationBuilder(
       messageName = messageName,
       runtimeServiceClient = runtimeServiceClient,
       processEngine = processEngine,
       objectMapper = objectMapper)
+
+    if (businessKey != null) {
+      builder.processInstanceBusinessKey(businessKey)
+    }
+    if (processVariables != null) {
+      builder.setVariables(processVariables)
+    }
+    if (correlationKeys != null) {
+      builder.setCorrelationKeys(correlationKeys)
+    }
+
+    builder.correlate()
+  }
 
   override fun startProcessInstanceByKey(processDefinitionKey: String) =
     doStartProcessInstanceByKey(processDefinitionKey)
@@ -159,6 +161,51 @@ class RemoteRuntimeService(
     val instance = this.runtimeServiceClient.startProcessById(processDefinitionId, startProcessInstance)
     return ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(instance))
   }
+
+  override fun signal(executionId: String) =
+    doSignal(executionId)
+
+  override fun signal(executionId: String, processVariables: MutableMap<String, Any>) =
+    doSignal(executionId, processVariables = processVariables)
+
+  override fun signal(executionId: String, signalName: String, signalData: Any, processVariables: MutableMap<String, Any>) =
+    doSignal(executionId, signalName, signalData, processVariables)
+
+  private fun doSignal(executionId: String, signalName: String? = null, signalData: Any? = null, processVariables: MutableMap<String, Any>? = null) {
+    val trigger = ExecutionTriggerDto().apply {
+      if (processVariables != null) {
+        this.variables = processVariables.toVariableValueDtoMap()
+      }
+    }
+    runtimeServiceClient.triggerExecutionById(executionId, trigger)
+  }
+
+  override fun signalEventReceived(signalName: String) =
+    doSignalEventReceived(signalName)
+
+  override fun signalEventReceived(signalName: String, processVariables: MutableMap<String, Any>) =
+    doSignalEventReceived(signalName, variables = processVariables)
+
+  override fun signalEventReceived(signalName: String, executionId: String) =
+    doSignalEventReceived(signalName, executionId)
+
+  override fun signalEventReceived(signalName: String, executionId: String, processVariables: MutableMap<String, Any>) =
+    doSignalEventReceived(signalName, executionId, processVariables)
+
+  override fun createSignalEvent(signalName: String): SignalEventReceivedBuilder =
+    DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, processEngine, objectMapper)
+
+  private fun doSignalEventReceived(signalName: String, executionId: String? = null, variables: MutableMap<String, Any>? = null) {
+    val builder = DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, processEngine, objectMapper)
+    if (executionId != null) {
+      builder.executionId(executionId)
+    }
+    if (variables != null) {
+      builder.setVariables(variables)
+    }
+    builder.send()
+  }
+
 }
 
 

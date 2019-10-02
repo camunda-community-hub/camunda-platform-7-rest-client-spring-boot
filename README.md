@@ -68,10 +68,12 @@ public class MyClient {
 ```
 
 ### Implemented API
-* `RuntimeService`
-  * Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
+* `RuntimeService`  
   * Process start by key: `#startProcessInstanceByKey()`
   * Process start by id: `#startProcessInstanceById()`
+  * Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
+  * Signal event: `signalEventReceived()`, `createSignalEvent()`
+  * Execution trigger: `signal()`
 
 ## Example
 

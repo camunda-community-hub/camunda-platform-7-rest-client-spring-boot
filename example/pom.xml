@@ -10,7 +10,12 @@
   </parent>
 
   <artifactId>camunda-bpm-feign-example</artifactId>
+  <name>${artifactId}</name>
   <packaging>jar</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
 
   <dependencies>
 
@@ -18,6 +23,14 @@
       <groupId>org.camunda.bpm.extension.feign</groupId>
       <artifactId>camunda-bpm-feign</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-httpclient</artifactId>
     </dependency>
 
     <dependency>
@@ -85,4 +98,36 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>camunda-ce</id>
+      <activation>
+        <property>
+          <name>!camunda-ee</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.camunda.bpm.springboot</groupId>
+          <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>camunda-ee</id>
+      <activation>
+        <property>
+          <name>camunda-ee</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.camunda.bpm.springboot</groupId>
+          <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
 </project>

@@ -1,17 +1,20 @@
-package org.camunda.bpm.extension.feign.impl
+package org.camunda.bpm.extension.feign.impl.builder
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngine
+import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
 import org.camunda.bpm.extension.feign.variables.fromDto
 import org.camunda.bpm.extension.feign.variables.fromUntypedValue
+import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
@@ -33,6 +36,7 @@ class DelegatingMessageCorrelationBuilder(
     this.processVariablesLocal = mutableMapOf()
   }
 
+
   override fun withoutTenantId(): MessageCorrelationBuilder {
     correlationMessageDto.isWithoutTenantId = true
     return this
@@ -43,25 +47,38 @@ class DelegatingMessageCorrelationBuilder(
     return this
   }
 
+  fun setCorrelationKeys(correlationKeys: MutableMap<String, Any>): MessageCorrelationBuilder {
+    correlationMessageDto.correlationKeys = correlationKeys.toVariableValueDtoMap()
+    return this
+  }
+
   override fun setVariable(variableName: String, variableValue: Any): MessageCorrelationBuilder {
     val variables = correlationMessageDto.processVariables
-    variables[variableName] = fromUntypedValue(variableValue)
+    variables[variableName] = if (variableValue is TypedValue) {
+      VariableValueDto.fromTypedValue(variableValue)
+    } else {
+      fromUntypedValue(variableValue)
+    }
     return this
   }
 
   override fun setVariables(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.processVariables = variables.mapValues { fromUntypedValue(it.value) }
+    correlationMessageDto.processVariables = variables.toVariableValueDtoMap()
     return this
   }
 
   override fun setVariableLocal(variableName: String, variableValue: Any): MessageCorrelationBuilder {
     val variables = correlationMessageDto.processVariablesLocal
-    variables[variableName] = fromUntypedValue(variableValue)
+    variables[variableName] = if (variableValue is TypedValue) {
+      VariableValueDto.fromTypedValue(variableValue)
+    } else {
+      fromUntypedValue(variableValue)
+    }
     return this
   }
 
   override fun setVariablesLocal(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.processVariablesLocal = variables.mapValues { fromUntypedValue(it) }
+    correlationMessageDto.processVariablesLocal = variables.toVariableValueDtoMap()
     return this
   }
 

@@ -15,21 +15,6 @@ import org.camunda.bpm.extension.feign.impl.implementedBy
  * Adapter for implementing runtime service.
  */
 abstract class AbstractRuntimeServiceAdapter : RuntimeService {
-  override fun signalEventReceived(signalName: String?) {
-    TODO("not implemented")
-  }
-
-  override fun signalEventReceived(signalName: String?, processVariables: MutableMap<String, Any>?) {
-    TODO("not implemented")
-  }
-
-  override fun signalEventReceived(signalName: String?, executionId: String?) {
-    TODO("not implemented")
-  }
-
-  override fun signalEventReceived(signalName: String?, executionId: String?, processVariables: MutableMap<String, Any>?) {
-    TODO("not implemented")
-  }
 
   override fun createConditionEvaluation(): ConditionEvaluationBuilder {
     TODO("not implemented")
@@ -122,17 +107,36 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun getActiveActivityIds(executionId: String?): MutableList<String> {
     TODO("not implemented")
   }
-
-  override fun signal(executionId: String?) {
-    TODO("not implemented")
+  override fun signal(executionId: String) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun signal(executionId: String?, signalName: String?, signalData: Any?, processVariables: MutableMap<String, Any>?) {
-    TODO("not implemented")
+  override fun signal(executionId: String, signalName: String, signalData: Any, processVariables: MutableMap<String, Any>) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun signal(executionId: String?, processVariables: MutableMap<String, Any>?) {
-    TODO("not implemented")
+  override fun signal(executionId: String, processVariables: MutableMap<String, Any>) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun signalEventReceived(signalName: String) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun signalEventReceived(signalName: String, processVariables: MutableMap<String, Any>) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun signalEventReceived(signalName: String, executionId: String) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun signalEventReceived(signalName: String, executionId: String, processVariables: MutableMap<String, Any>) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun createSignalEvent(signalName: String): SignalEventReceivedBuilder {
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
@@ -140,10 +144,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun getActivityInstance(processInstanceId: String?): ActivityInstance {
-    TODO("not implemented")
-  }
-
-  override fun createSignalEvent(signalName: String?): SignalEventReceivedBuilder {
     TODO("not implemented")
   }
 

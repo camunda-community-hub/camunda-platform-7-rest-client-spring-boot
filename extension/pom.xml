@@ -10,9 +10,19 @@
   </parent>
 
   <artifactId>camunda-bpm-feign</artifactId>
+  <name>${artifactId}</name>
   <packaging>jar</packaging>
 
   <dependencies>
+
+    <!-- Feign -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Camunda -->
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
@@ -53,15 +63,6 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-openfeign</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.github.openfeign</groupId>
-      <artifactId>feign-httpclient</artifactId>
     </dependency>
 
   </dependencies>

@@ -13,16 +13,23 @@
   <artifactId>camunda-bpm-feign-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <name>${artifactId}</name>
+  <description>Camunda BPM Feign</description>
+  <url>https://github.com/holunda-io/camunda-bpm-feign/</url>
+
 
   <properties>
 
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <version.java>${java.version}</version.java>
 
+    <camunda-ee>false</camunda-ee>
     <camunda.version>7.11.0</camunda.version>
+    <camunda.version.ee>7.11.1-ee</camunda.version.ee>
 
     <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
     <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
@@ -49,6 +56,7 @@
 
   <modules>
     <module>extension</module>
+    <module>starter</module>
     <module>example</module>
   </modules>
 
@@ -318,6 +326,58 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!--
+  Profile for selecting the Camunda BPM Engine version.
+  CE stands for Community Edition
+  EE stands for Enterprise Edition
+  -->
+    <profile>
+      <id>camunda-ce</id>
+      <activation>
+        <property>
+          <name>!camunda-ee</name>
+        </property>
+      </activation>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.camunda.bpm.springboot</groupId>
+            <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+            <version>${camunda-spring-boot.version}</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+    <profile>
+      <id>camunda-ee</id>
+      <activation>
+        <property>
+          <name>camunda-ee</name>
+        </property>
+      </activation>
+      <properties>
+        <camunda.version>${camunda.version.ee}</camunda.version>
+      </properties>
+      <repositories>
+        <repository>
+          <id>camunda-bpm-ee</id>
+          <name>camunda-bpm-ee</name>
+          <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
+        </repository>
+      </repositories>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.camunda.bpm.springboot</groupId>
+            <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
+            <version>${camunda-spring-boot.version}</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+  </profiles>
 
   <licenses>
     <license>

@@ -31,9 +31,23 @@ class ProcessClient(
 
 
   @Scheduled(initialDelay = 12_500, fixedDelay = 5_000)
+  fun fireSignal() {
+
+    logger.info { "CLIENT-200: Sending signal" }
+
+    val variables = createVariables()
+    variables.putValueTyped("BYTES", byteArrayValue("World".toByteArray()))
+
+    val result = runtimeService
+      .createSignalEvent("signal_received")
+      .setVariables(variables)
+      .send()
+  }
+
+  @Scheduled(initialDelay = 13_500, fixedDelay = 5_000)
   fun correlateMessage() {
 
-    logger.info { "CLIENT-200: Correlating message" }
+    logger.info { "CLIENT-300: Correlating message" }
 
     val variables = createVariables()
     variables.putValueTyped("STRING", stringValue("my string"))
@@ -50,7 +64,7 @@ class ProcessClient(
       .correlateAllWithResultAndVariables(true)
 
     result.forEach {
-      logger.info { "CLIENT-201: ${it.toPrettyString()}" }
+      logger.info { "CLIENT-301: ${it.toPrettyString()}" }
     }
   }
 
