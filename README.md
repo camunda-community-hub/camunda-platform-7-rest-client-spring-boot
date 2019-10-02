@@ -1,7 +1,7 @@
 # Camunda BPM Feign
 
 This library provides a Camunda BPM REST client based on SpringCloud Feign, by implementing 
-a set of Camunda Engine API interfaces, invoking remote process engine.   
+a set of Camunda Engine API interfaces, invoking a process engine deployed remote.   
 
 ## Quick start
 
@@ -36,7 +36,7 @@ feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://your-process-enginehost/rest/engine/default/"
+        url: "http://your-process-engine-host/rest/engine/default/"
 
 ```
 
@@ -49,7 +49,7 @@ public class MyClient {
     
     private RuntimeService runtimeService;
 
-    public MyClient(@Qulifier("remote") RuntimeService runtimeService) {
+    public MyClient(@Qualifier("remote") RuntimeService runtimeService) {
         this.runtimeService = runtimeService;
     }
 
