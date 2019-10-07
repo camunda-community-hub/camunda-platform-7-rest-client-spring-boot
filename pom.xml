@@ -58,6 +58,7 @@
     <module>extension</module>
     <module>starter</module>
     <module>example</module>
+    <module>docs</module>
   </modules>
 
   <dependencyManagement>
