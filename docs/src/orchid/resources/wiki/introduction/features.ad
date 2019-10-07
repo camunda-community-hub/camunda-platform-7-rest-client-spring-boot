@@ -10,5 +10,5 @@ title: Features
 **  Process start by key: `#startProcessInstanceByKey()`
 **  Process start by id: `#startProcessInstanceById()`
 **  Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
-**  Signal event: `signalEventReceived()`, `createSignalEvent()`
-**  Execution trigger: `signal()`
+**  Signal event: `#signalEventReceived()`, `#createSignalEvent()`
+**  Execution trigger: `#signal()`
