@@ -1,52 +1,70 @@
-# Camunda BPM Feign
+---
 
-This library provides a Camunda BPM REST client based on SpringCloud Feign, by implementing 
-a set of Camunda Engine API interfaces, invoking a process engine deployed remote.   
+title: Quick Start
+pageId: 'quick-start'
 
-## Quick start
+---
 
-Add the following Maven dependency to your project:
+== {{ page.title }}
 
-### Dependency
-``` 
+== Install Dependency
+
+First install the extension dependency:
+[source, xml]
+----
 <dependency>
   <groupId>org.camunda.bpm.extension.feign</groupId>
   <artifactId>camunda-bpm-feign</artifactId>
   <version>${camunda-bpm-feign.version}</version>
 </dependency>
-```
+----
+and configure Feign and Feign client:
 
-### Configuration
+[source, xml]
+----
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
+<dependency>
+  <groupId>io.github.openfeign</groupId>
+  <artifactId>feign-httpclient</artifactId>
+</dependency>
+----
+
+== Configuration
 In your client code, activate the usage of REST client by adding the following annotation
 to your configuration:
 
-``` 
+[source, java]
+----
 @Configuration
 @EnableCamundaFeign
 public class MyClientConfiguration {
 
 }
-```
+----
 
-In order to configure the feign client, make sure to provide usual feign client configuration 
+In order to configure the feign client, make sure to provide usual feign client configuration
 (e.g. using `application.yml`). To set-up the engine base URL, please set-up the property:
 
-```
+[source, yml]
+----
 feign:
   client:
     config:
       remoteRuntimeService:
         url: "http://your-process-engine-host/rest/engine/default/"
+----
 
-```
-
-### Usage
+== Usage
 To access the remote API, inject the remote API implementation:
 
-``` 
+[source,java]
+----
 @Component
 public class MyClient {
-    
+
     private RuntimeService runtimeService;
 
     public MyClient(@Qualifier("remote") RuntimeService runtimeService) {
@@ -65,29 +83,4 @@ public class MyClient {
             .correlateAllWithResult();
     }
 }
-```
-
-### Implemented API
-* `RuntimeService`  
-  * Process start by key: `#startProcessInstanceByKey()`
-  * Process start by id: `#startProcessInstanceById()`
-  * Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
-  * Signal event: `signalEventReceived()`, `createSignalEvent()`
-  * Execution trigger: `signal()`
-
-## Example
-
-Please check [example](./example) project for demonstration and use cases.
-
-## Contributing
-
-Please check the [Contribution Guide](CONTRIBUTING.md) if you want to support the project, file a new issue or
-submit a pull request.
-
-## Maintainer
-
-* [Simon Zambrovski](https://gihub.com/zambrovski)
-
-## License
-
-* [Apache License 2.0](LICENSE)
+----

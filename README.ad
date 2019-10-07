@@ -1,0 +1,43 @@
+[cols="a,a,a,a,a,a"]
+|===
+| // travis
+image::https://travis-ci.org/holunda-io/camunda-bpm-feign.svg?branch=master[caption="Build Status", link=https://travis-ci.org/holunda-io/camunda-bpm-feign]
+| // maven central
+image::https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign]
+| // codecov
+image::https://codecov.io/gh/holunda-io/camunda-bpm-feign/branch/master/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/holunda-io/camunda-bpm-feign]
+| // codacy
+image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-bpm-feign?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-bpm-feign&utm_campaign=Badge_Grade_Dashboard]
+| // license
+image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[link="https://www.holunda.io/camunda-bpm-feign/license"]
+| // changelog
+image::https://img.shields.io/badge/CHANGES----blue.svg[link="https://www.holunda.io/camunda-bpm-feign/changelog"]
+|===
+
+
+== Quick Start
+
+If you just want to start using the library, please consult our link:https://www.holunda.io/camunda-bpm-feign/quick-start[Quick Start]
+guide.
+
+== User Guide
+
+If you have any questions regarding configuration of Camunda BPM Feign please
+have a look to our primary documentation - the link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide[User Guide].
+
+== Working Example
+
+See our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide/examples[Examples] for usage and configuration.
+
+== License
+
+This library is developed under link:https://www.holunda.io/camunda-bpm-feign/license[Apache License 2].
+
+== Contribution
+
+If you want to contribute to this project, feel free to do so. Start with link:http://holunda.io/camunda-bpm-feign/wiki/developer-guide/contribution[Contributing guide].
+
+== Maintainer
+
+* link:https://gihub.com/zambrovski[Simon Zambrovski]
+

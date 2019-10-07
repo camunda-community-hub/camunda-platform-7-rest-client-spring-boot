@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.camunda.bpm.extension.feign</groupId>
+    <artifactId>camunda-bpm-feign-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camunda-bpm-feign-docs</artifactId>
+  <name>${project.artifactId}</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+    <orchid.version>0.17.2</orchid.version>
+    <baseUrl>http://localhost:8080/</baseUrl>
+  </properties>
+
+  <build>
+    <defaultGoal>orchid:build</defaultGoal>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>io.github.javaeden.orchid</groupId>
+          <artifactId>orchid-maven-plugin</artifactId>
+          <version>${orchid.version}</version>
+
+          <dependencies>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidCore</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidBsDoc</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidGithub</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidEditorial</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidPages</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidWiki</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidAsciidoc</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidPluginDocs</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidSearch</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidChangelog</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>io.github.javaeden.orchid</groupId>
+              <artifactId>OrchidSyntaxHighlighter</artifactId>
+              <version>${orchid.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>io.github.javaeden.orchid</groupId>
+        <artifactId>orchid-maven-plugin</artifactId>
+        <configuration>
+          <theme>BsDoc</theme>
+          <githubToken>${githubToken}</githubToken>
+          <baseUrl>${baseUrl}</baseUrl>
+          <version>${project.version}</version>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jcenter</id>
+      <name>bintray-plugins</name>
+      <url>http://jcenter.bintray.com</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <profiles>
+    <profile>
+      <id>deploy-docs</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <baseUrl>https://www.holunda.io/camunda-bpm-feign/</baseUrl>
+      </properties>
+      <build>
+        <defaultGoal>orchid:deploy</defaultGoal>
+      </build>
+    </profile>
+    <profile>
+      <id>serve-docs</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <defaultGoal>orchid:serve</defaultGoal>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

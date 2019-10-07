@@ -99,14 +99,25 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun processInstanceVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    // FIXME: check if this can be solved
-    logger.error { "Process instance variable query is not supported by remote message correlation" }
+    val correlationKeys = correlationMessageDto.correlationKeys
+    correlationKeys[variableName] = if (variableValue is TypedValue) {
+      VariableValueDto.fromTypedValue(variableValue)
+    } else {
+      fromUntypedValue(variableValue)
+    }
     return this
   }
 
   override fun processInstanceVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    // FIXME: check if this can be solved
-    logger.error { "Process instance variable query is not supported by remote message correlation" }
+    val correlationKeys = correlationMessageDto.correlationKeys
+    variables.forEach {
+      correlationKeys[it.key] = if (it.value is TypedValue) {
+        VariableValueDto.fromTypedValue(it.value as TypedValue)
+      } else {
+        fromUntypedValue(it.value)
+      }
+    }
+
     return this
   }
 

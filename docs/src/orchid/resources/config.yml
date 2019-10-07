@@ -1,0 +1,32 @@
+site:
+  about:
+    siteName: Camunda BPM Feign
+    siteDescription: A Java client for accessing Camunda BPM engine via REST.
+    avatar: 'assets/media/favicon.png'
+
+allPages:
+  components:
+    - type: 'pageContent'
+      order: 10
+    - type: 'prism'
+      githubTheme: 'darcula'
+      languages:
+        - 'yaml'
+        - 'java'
+        - 'json'
+        - 'kotlin'
+        - 'markdown'
+      plugins:
+        - 'line-numbers'
+        - 'line-highlight'
+        - 'toolbar'
+        - 'show-language'
+        - 'copy-to-clipboard'
+
+
+services:
+  publications:
+    stages:
+      - type: 'githubPages'
+        username: 'zambrovski'
+        repo: 'holunda-io/camunda-bpm-feign'

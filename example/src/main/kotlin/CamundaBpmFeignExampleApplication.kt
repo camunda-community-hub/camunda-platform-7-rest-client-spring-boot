@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.scheduling.annotation.EnableScheduling
 
 fun main() {
-  SpringApplication.run(CamundaBPMFeignExampleApplication::class.java)
+  SpringApplication.run(CamundaBpmFeignExampleApplication::class.java)
 }
 
 @SpringBootApplication
 @EnableFeignClients
 @EnableScheduling
 @EnableCamundaFeign
-class CamundaBPMFeignExampleApplication {
+class CamundaBpmFeignExampleApplication {
 
   // full debug of feign client
   @Bean

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ITest
+  jpa:
+    open-in-view: true
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      email: adminus@adminius.io
+      first-name: Adminus
+      last-name: Administratius
+    filter:
+      create: true
+server:
+  port: 8083
+feign:
+  client:
+    config:
+      remoteRuntimeService:
+        url: "http://localhost:8083/rest/engine/default/"
+
+logging:
+  level:
+    org.camunda.bpm.extension.feign.client.RuntimeServiceClient: DEBUG

@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>camunda-bpm-feign</artifactId>
-  <name>${artifactId}</name>
+  <name>${project.artifactId}</name>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -64,7 +64,6 @@
       <artifactId>jackson-module-kotlin</artifactId>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
 
 </project>

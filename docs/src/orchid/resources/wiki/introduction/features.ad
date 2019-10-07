@@ -1,0 +1,14 @@
+---
+title: Features
+---
+
+== {{ page.title }}
+
+- Usage of Feign library to allow for high-customizable REST client
+- Implemented Services:
+* `RuntimeService`
+**  Process start by key: `#startProcessInstanceByKey()`
+**  Process start by id: `#startProcessInstanceById()`
+**  Message correlation: `#correlateMessage()`, `#createMessageCorrelation()`
+**  Signal event: `signalEventReceived()`, `createSignalEvent()`
+**  Execution trigger: `signal()`
