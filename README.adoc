@@ -1,7 +1,7 @@
 [cols="a,a,a,a,a,a"]
 |===
 | // travis
-image::https://travis-ci.org/holunda-io/camunda-bpm-feign.svg?branch=master[caption="Build Status", link=https://travis-ci.org/holunda-io/camunda-bpm-feign]
+image::https://github.com/holunda-io/camunda-bpm-feign/workflows/default/badge.svg[caption="Build Status", link=https://github.com/holunda-io/camunda-bpm-feign/actions]
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign]
 | // codecov
@@ -9,9 +9,9 @@ image::https://codecov.io/gh/holunda-io/camunda-bpm-feign/branch/master/graph/ba
 | // codacy
 image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-bpm-feign?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-bpm-feign&utm_campaign=Badge_Grade_Dashboard]
 | // license
-image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[link="https://www.holunda.io/camunda-bpm-feign/license"]
+image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://www.holunda.io/camunda-bpm-feign/license"]
 | // changelog
-image::https://img.shields.io/badge/CHANGES----blue.svg[link="https://www.holunda.io/camunda-bpm-feign/changelog"]
+image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log" link="https://www.holunda.io/camunda-bpm-feign/changelog"]
 |===
 
 

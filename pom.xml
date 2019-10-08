@@ -13,7 +13,7 @@
   <artifactId>camunda-bpm-feign-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>${artifactId}</name>
+  <name>${project.artifactId}</name>
   <description>Camunda BPM Feign</description>
   <url>https://github.com/holunda-io/camunda-bpm-feign/</url>
 
