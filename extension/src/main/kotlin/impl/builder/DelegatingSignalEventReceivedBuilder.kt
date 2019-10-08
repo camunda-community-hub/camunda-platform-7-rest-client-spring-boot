@@ -7,12 +7,15 @@ import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
 import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 
+/**
+ * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
+ */
 class DelegatingSignalEventReceivedBuilder(
   signalName: String,
   private val runtimeServiceClient: RuntimeServiceClient,
   private val processEngine: ProcessEngine,
   private val objectMapper: ObjectMapper
-): SignalEventReceivedBuilder {
+) : SignalEventReceivedBuilder {
 
   private val signalDto = SignalDto().apply {
     this.name = signalName

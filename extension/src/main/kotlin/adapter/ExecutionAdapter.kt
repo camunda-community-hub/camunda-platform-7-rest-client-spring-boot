@@ -3,9 +3,10 @@ package org.camunda.bpm.extension.feign.adapter
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
 import org.camunda.bpm.engine.runtime.Execution
 
-class ExecutionAdapter(
-  val executionBean: ExecutionBean
-) : Execution {
+/**
+ * Implementation of Camunda API Execution backed by a bean.
+ */
+class ExecutionAdapter(private val executionBean: ExecutionBean) : Execution {
   override fun getProcessInstanceId(): String = executionBean.processInstanceId
   override fun isEnded(): Boolean = executionBean.ended
   override fun getId(): String = executionBean.id
@@ -13,6 +14,9 @@ class ExecutionAdapter(
   override fun getTenantId(): String? = executionBean.tenantId
 }
 
+/**
+ * Backing bean for the execution.
+ */
 data class ExecutionBean(
   val id: String,
   val processInstanceId: String,
@@ -21,6 +25,10 @@ data class ExecutionBean(
   val tenantId: String? = null
 ) {
   companion object {
+    /**
+     * Constructs the bean from Execution DTO.
+     * @param dto: REST representation of the execution.
+     */
     @JvmStatic
     fun fromExecutionDto(dto: ExecutionDto) =
       ExecutionBean(

@@ -16,10 +16,6 @@ import org.camunda.bpm.extension.feign.impl.implementedBy
  */
 abstract class AbstractRuntimeServiceAdapter : RuntimeService {
 
-  override fun createConditionEvaluation(): ConditionEvaluationBuilder {
-    TODO("not implemented")
-  }
-
   override fun getVariables(executionId: String?): MutableMap<String, Any> {
     TODO("not implemented")
   }
@@ -36,7 +32,86 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder {
+  override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
+    TODO("not implemented")
+  }
+
+  override fun setVariables(executionId: String?, variables: MutableMap<String, out Any>?) {
+    TODO("not implemented")
+  }
+
+  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?): T {
+    TODO("not implemented")
+  }
+
+  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesTyped(executionId: String?): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesLocal(executionId: String?): MutableMap<String, Any> {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
+    TODO("not implemented")
+  }
+
+  override fun getVariableLocal(executionId: String?, variableName: String?): Any {
+    TODO("not implemented")
+  }
+
+  override fun setVariableLocal(executionId: String?, variableName: String?, value: Any?) {
+    TODO("not implemented")
+  }
+
+  override fun removeVariables(executionId: String?, variableNames: MutableCollection<String>?) {
+    TODO("not implemented")
+  }
+  override fun getVariable(executionId: String?, variableName: String?): Any {
+    TODO("not implemented")
+  }
+
+  override fun removeVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?) {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesLocalTyped(executionId: String?): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesLocalTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun getVariablesLocalTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
+    TODO("not implemented")
+  }
+
+  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?): T {
+    TODO("not implemented")
+  }
+
+  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
+    TODO("not implemented")
+  }
+
+  override fun removeVariableLocal(executionId: String?, variableName: String?) {
+    TODO("not implemented")
+  }
+
+  override fun setVariablesLocal(executionId: String?, variables: MutableMap<String, out Any>?) {
     TODO("not implemented")
   }
 
@@ -64,43 +139,19 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
+  override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder {
+    TODO("not implemented")
+  }
+  override fun getActivityInstance(processInstanceId: String?): ActivityInstance {
     TODO("not implemented")
   }
 
-  override fun setVariables(executionId: String?, variables: MutableMap<String, out Any>?) {
-    TODO("not implemented")
-  }
 
-  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?): T {
-    TODO("not implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
+  override fun createConditionEvaluation(): ConditionEvaluationBuilder {
     TODO("not implemented")
   }
 
   override fun resolveIncident(incidentId: String?) {
-    TODO("not implemented")
-  }
-
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
-    TODO("not implemented")
-  }
-
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean): Batch {
-    TODO("not implemented")
-  }
-
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch {
-    TODO("not implemented")
-  }
-
-  override fun deleteProcessInstancesAsync(processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
-    TODO("not implemented")
-  }
-
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, deleteReason: String?): Batch {
     TODO("not implemented")
   }
 
@@ -139,14 +190,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
-  }
-
-  override fun getActivityInstance(processInstanceId: String?): ActivityInstance {
-    TODO("not implemented")
-  }
-
   override fun createNativeExecutionQuery(): NativeExecutionQuery {
     TODO("not implemented")
   }
@@ -155,20 +198,53 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun getVariablesTyped(executionId: String?): VariableMap {
-    TODO("not implemented")
-  }
-
-  override fun getVariablesTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
-  }
-
-  override fun getVariablesTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
-  }
-
   override fun createMessageCorrelation(messageName: String): MessageCorrelationBuilder {
     implementedBy(RemoteRuntimeService::class)
+  }
+
+
+  override fun messageEventReceived(messageName: String?, executionId: String?) {
+    TODO("not implemented")
+  }
+
+  override fun messageEventReceived(messageName: String?, executionId: String?, processVariables: MutableMap<String, Any>?) {
+    TODO("not implemented")
+  }
+
+  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?): Incident {
+    TODO("not implemented")
+  }
+
+  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?, message: String?): Incident {
+    TODO("not implemented")
+  }
+
+  override fun createMigrationPlan(sourceProcessDefinitionId: String?, targetProcessDefinitionId: String?): MigrationPlanBuilder {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean): Batch {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, deleteReason: String?): Batch {
+    TODO("not implemented")
+  }
+
+  override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
+    TODO("not implemented")
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
@@ -183,35 +259,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun getVariablesLocal(executionId: String?): MutableMap<String, Any> {
-    TODO("not implemented")
-  }
-
-  override fun getVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
-    TODO("not implemented")
-  }
-
-  override fun getVariableLocal(executionId: String?, variableName: String?): Any {
-    TODO("not implemented")
-  }
-
-  override fun messageEventReceived(messageName: String?, executionId: String?) {
-    TODO("not implemented")
-  }
-
-  override fun messageEventReceived(messageName: String?, executionId: String?, processVariables: MutableMap<String, Any>?) {
-    TODO("not implemented")
-  }
-
   override fun activateProcessInstanceById(processInstanceId: String?) {
-    TODO("not implemented")
-  }
-
-  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?): Incident {
-    TODO("not implemented")
-  }
-
-  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?, message: String?): Incident {
     TODO("not implemented")
   }
 
@@ -223,23 +271,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun setVariableLocal(executionId: String?, variableName: String?, value: Any?) {
-    TODO("not implemented")
-  }
-
-  override fun removeVariables(executionId: String?, variableNames: MutableCollection<String>?) {
-    TODO("not implemented")
-  }
-
-  override fun createMigrationPlan(sourceProcessDefinitionId: String?, targetProcessDefinitionId: String?): MigrationPlanBuilder {
-    TODO("not implemented")
-  }
-
   override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    TODO("not implemented")
-  }
-
-  override fun getVariable(executionId: String?, variableName: String?): Any {
     TODO("not implemented")
   }
 
@@ -251,32 +283,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createExecutionQuery(): ExecutionQuery {
-    TODO("not implemented")
-  }
-
-  override fun createEventSubscriptionQuery(): EventSubscriptionQuery {
-    TODO("not implemented")
-  }
-
-  override fun removeVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?) {
-    TODO("not implemented")
-  }
-
   override fun createProcessInstanceQuery(): ProcessInstanceQuery {
-    TODO("not implemented")
-  }
-
-
-  override fun getVariablesLocalTyped(executionId: String?): VariableMap {
-    TODO("not implemented")
-  }
-
-  override fun getVariablesLocalTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
-  }
-
-  override fun getVariablesLocalTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
     TODO("not implemented")
   }
 
@@ -288,31 +295,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createModification(processDefinitionId: String?): ModificationBuilder {
-    TODO("not implemented")
-  }
-
   override fun createProcessInstanceById(processDefinitionId: String?): ProcessInstantiationBuilder {
     TODO("not implemented")
   }
 
   override fun createProcessInstanceByKey(processDefinitionKey: String): ProcessInstantiationBuilder {
-    TODO("not implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?): T {
-    TODO("not implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
-    TODO("not implemented")
-  }
-
-  override fun removeVariableLocal(executionId: String?, variableName: String?) {
-    TODO("not implemented")
-  }
-
-  override fun createIncidentQuery(): IncidentQuery {
     TODO("not implemented")
   }
 
@@ -336,11 +323,23 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun setVariablesLocal(executionId: String?, variables: MutableMap<String, out Any>?) {
+  override fun restartProcessInstances(processDefinitionId: String?): RestartProcessInstanceBuilder {
     TODO("not implemented")
   }
 
-  override fun restartProcessInstances(processDefinitionId: String?): RestartProcessInstanceBuilder {
+  override fun createModification(processDefinitionId: String?): ModificationBuilder {
+    TODO("not implemented")
+  }
+
+  override fun createExecutionQuery(): ExecutionQuery {
+    TODO("not implemented")
+  }
+
+  override fun createEventSubscriptionQuery(): EventSubscriptionQuery {
+    TODO("not implemented")
+  }
+
+  override fun createIncidentQuery(): IncidentQuery {
     TODO("not implemented")
   }
 

@@ -3,6 +3,9 @@ package org.camunda.bpm.extension.feign.adapter
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto
 import org.camunda.bpm.engine.runtime.ProcessInstance
 
+/**
+ * Implementation of Camunda API Process Instance backed by a bean.
+ */
 class ProcessInstanceAdapter(private val instanceBean: InstanceBean) : ProcessInstance {
 
   override fun getProcessInstanceId(): String? = when (instanceBean.type) {
@@ -38,6 +41,9 @@ class ProcessInstanceAdapter(private val instanceBean: InstanceBean) : ProcessIn
   override fun getTenantId(): String? = instanceBean.tenantId
 }
 
+/**
+ * Backing bean for process instance.
+ */
 data class InstanceBean(
   val id: String,
   val ended: Boolean,
@@ -50,6 +56,10 @@ data class InstanceBean(
   val rootProcessInstanceId: String? = null
 ) {
   companion object {
+    /**
+     * Factory method to construct the bean from DTO.
+     * @param dto: REST representation of process instance.
+     */
     @JvmStatic
     fun fromProcessInstanceDto(processInstance: ProcessInstanceDto) =
       InstanceBean(
@@ -73,7 +83,16 @@ data class InstanceBean(
   }
 }
 
+/**
+ * Instance type to cope with different ids.
+ */
 enum class InstanceType {
+  /**
+   * Process instance.
+   */
   PROCESS,
+  /**
+   * Case instance.
+   */
   CASE
 }

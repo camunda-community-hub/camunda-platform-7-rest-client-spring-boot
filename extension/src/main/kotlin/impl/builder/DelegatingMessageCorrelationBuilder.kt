@@ -47,6 +47,11 @@ class DelegatingMessageCorrelationBuilder(
     return this
   }
 
+  /**
+   * Sets correlation keys for message correlation.
+   * @param correlationKeys keys to set.
+   * @return modified fluent builder.
+   */
   fun setCorrelationKeys(correlationKeys: MutableMap<String, Any>): MessageCorrelationBuilder {
     correlationMessageDto.correlationKeys = correlationKeys.toVariableValueDtoMap()
     return this
