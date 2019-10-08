@@ -94,7 +94,7 @@ class RuntimeServiceCorrelateMessageITest : CamundaBpmFeignITestBase<RuntimeServ
   }
 
   @Test
-  fun `should correlate message, business and case instance id key with waiting instance`() {
+  fun `should correlate message, business key and with waiting instance and set variables`() {
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage2"
     val userTaskId = "user-task"
@@ -125,7 +125,73 @@ class RuntimeServiceCorrelateMessageITest : CamundaBpmFeignITestBase<RuntimeServ
   }
 
   @Test
-  fun `should correlate message, business and case instance id key and variables with waiting instance`() {
+  fun `should correlate message and correlation keys with waiting instance`() {
+    val processDefinitionKey = processDefinitionKey()
+    val messageName = "myEventMessage8"
+    val userTaskId = "user-task"
+    given()
+      .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
+      .and()
+      .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR9", "VAL9"))
+
+    whenever()
+      .remoteService
+      .correlateMessage(messageName, createVariables().putValue("VAR9", "VAL9"))
+
+    then()
+      .process_instance_exists(processDefinitionKey) { instance, stage ->
+        assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
+        assertThat(
+          stage.localService.createProcessInstanceQuery()
+            .processInstanceId(instance.id)
+            .activityIdIn(userTaskId)
+            .singleResult()
+        ).isNotNull
+        assertThat(
+          stage.localService.getVariables(instance.id, listOf("VAR9"))
+        ).containsValues("VAL9")
+
+      }
+  }
+
+  @Test
+  fun `should correlate message, and correlation keys with waiting instance and set variables`() {
+    val processDefinitionKey = processDefinitionKey()
+    val messageName = "myEventMessage6"
+    val userTaskId = "user-task"
+    val businessKey = "my-business-key6"
+    val caseInstanceId = "caseInstanceId6"
+    given()
+      .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
+      .and()
+      .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR1", "VAL1"))
+      .and()
+      .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR2", "VAL2"))
+
+    whenever()
+      .remoteService
+      .correlateMessage(messageName, createVariables().putValue("VAR2", "VAL2"), createVariables().putValue("VAR-NEW", "VAL-NEW"))
+
+    then()
+      .process_instance_exists(processDefinitionKey, containingSimpleProcessVariables = createVariables().putValue("VAR-NEW", "VAL-NEW")) { instance, stage ->
+        assertThat(instance.businessKey).isEqualTo(businessKey)
+        assertThat(instance.caseInstanceId).isEqualTo(caseInstanceId)
+        assertThat(
+          stage.localService.createProcessInstanceQuery()
+            .processInstanceId(instance.id)
+            .activityIdIn(userTaskId)
+            .singleResult()
+        ).isNotNull
+        assertThat(
+          stage.localService.getVariables(instance.id, listOf("VAR2", "VAR-NEW"))
+        ).containsValues("VAL2", "VAL-NEW")
+
+      }
+  }
+
+
+  @Test
+  fun `should correlate message, business key and correlation keys with waiting instance and set variables`() {
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage3"
     val userTaskId = "user-task"
@@ -158,6 +224,7 @@ class RuntimeServiceCorrelateMessageITest : CamundaBpmFeignITestBase<RuntimeServ
 
       }
   }
+
 
   private fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
 

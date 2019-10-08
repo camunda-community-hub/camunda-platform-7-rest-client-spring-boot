@@ -1,0 +1,669 @@
+{
+  "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+  "name": "Start Process By Key",
+  "scenarios": [
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key with business key and variables",
+      "description": "should start process by key with business key and variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEY53a7273183c841a596b16c4b56be2d4d",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY53a7273183c841a596b16c4b56be2d4d"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 35135537
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 137623
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY53a7273183c841a596b16c4b56be2d4d",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY53a7273183c841a596b16c4b56be2d4d"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 21287428
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 94326799
+        }
+      ],
+      "durationInNanos": 94326799,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key with business key and case instance id",
+      "description": "should start process by key with business key and case instance id",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEY73101a45ed3b4b69a4ce6a5eb6860d15",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY73101a45ed3b4b69a4ce6a5eb6860d15"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 43025663
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 143677
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY73101a45ed3b4b69a4ce6a5eb6860d15",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY73101a45ed3b4b69a4ce6a5eb6860d15"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 10981395
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 82879217
+        }
+      ],
+      "durationInNanos": 82879217,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key with variables",
+      "description": "should start process by key with variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEY44a671fcaeab44368addd04bfe29865a",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY44a671fcaeab44368addd04bfe29865a"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 35093191
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 140071
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY44a671fcaeab44368addd04bfe29865a",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY44a671fcaeab44368addd04bfe29865a"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16867265
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 89835023
+        }
+      ],
+      "durationInNanos": 89835023,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key with business key, case instance id and variables",
+      "description": "should start process by key with business key, case instance id and variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEYb81688b52b7f4ed58451800e59bb7dd0",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb81688b52b7f4ed58451800e59bb7dd0"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 39287032
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 155776
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEYb81688b52b7f4ed58451800e59bb7dd0",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb81688b52b7f4ed58451800e59bb7dd0"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 20174837
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 91963030
+        }
+      ],
+      "durationInNanos": 91963030,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key with business key",
+      "description": "should start process by key with business key",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEY30c531f165ef40d982c2dd7b6010e5a7",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY30c531f165ef40d982c2dd7b6010e5a7"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 34413820
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 137252
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY30c531f165ef40d982c2dd7b6010e5a7",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY30c531f165ef40d982c2dd7b6010e5a7"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 9373157
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 75795728
+        }
+      ],
+      "durationInNanos": 75795728,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceStartProcessByKeyITest",
+      "testMethodName": "should start process by key",
+      "description": "should start process by key",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with user task is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with user task is deployed"
+                },
+                {
+                  "value": "KEYb6bd50df17a944b7a32cbf63c3f68d26",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb6bd50df17a944b7a32cbf63c3f68d26"
+                  }
+                },
+                {
+                  "value": "user_task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user_task"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 32910991
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 116468
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEYb6bd50df17a944b7a32cbf63c3f68d26",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb6bd50df17a944b7a32cbf63c3f68d26"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11107874
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 73132232
+        }
+      ],
+      "durationInNanos": 73132232,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {
+    "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory": {
+      "fullType": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory",
+      "type": "RuntimeServiceCategory",
+      "name": "RuntimeService",
+      "description": "",
+      "href": ""
+    }
+  }
+}

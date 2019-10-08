@@ -88,6 +88,35 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     return self()
   }
 
+  fun process_with_intermediate_signal_catch_event_is_deployed(
+    processDefinitionKey: String = "process_with_signal_catch_event",
+    userTaskId: String = "user-task",
+    signalName: String = "my-signal"
+  ): RuntimeServiceActionStage {
+
+    val instance = Bpmn
+      .createExecutableProcess(processDefinitionKey)
+      .startEvent("start")
+      .intermediateCatchEvent().signal(signalName)
+      .userTask(userTaskId)
+      .endEvent("end")
+      .done()
+
+    val deployment = repositoryService
+      .createDeployment()
+      .addModelInstance("$processDefinitionKey.bpmn", instance)
+      .name("process_with_signal_catch_event")
+      .deploy()
+
+    processDefinition = repositoryService
+      .createProcessDefinitionQuery()
+      .deploymentId(deployment.id)
+      .singleResult()
+
+    return self()
+  }
+
+
   fun process_with_start_by_message_event_is_deployed(
     processDefinitionKey: String = "process_start_message",
     userTaskId: String = "user-task",

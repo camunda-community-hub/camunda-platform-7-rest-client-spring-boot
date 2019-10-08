@@ -1,0 +1,1163 @@
+{
+  "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+  "name": "Correlate Message",
+  "scenarios": [
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message with definition",
+      "description": "should correlate message with definition",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with start by message event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with start by message event is deployed"
+                },
+                {
+                  "value": "KEYd747f9d257be40deaca907eccaac67e1",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYd747f9d257be40deaca907eccaac67e1"
+                  }
+                },
+                {
+                  "value": "user-task-in-process-started-by-message",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task-in-process-started-by-message"
+                  }
+                },
+                {
+                  "value": "myStartMessage",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myStartMessage"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 21678819
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 292670
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEYd747f9d257be40deaca907eccaac67e1",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYd747f9d257be40deaca907eccaac67e1"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 145392296
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 1724131700
+        }
+      ],
+      "durationInNanos": 1724131700,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message, business key and with waiting instance and set variables",
+      "description": "should correlate message, business key and with waiting instance and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEY99bc88e80b1a468b8ce4da56a3f921dd",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY99bc88e80b1a468b8ce4da56a3f921dd"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage2",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage2"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 38009
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY99bc88e80b1a468b8ce4da56a3f921dd",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY99bc88e80b1a468b8ce4da56a3f921dd"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "caseInstanceId1",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId1"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 37333636
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 124606
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY99bc88e80b1a468b8ce4da56a3f921dd",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY99bc88e80b1a468b8ce4da56a3f921dd"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 26658029
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 172987909
+        }
+      ],
+      "durationInNanos": 172987909,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message and business key with waiting instance",
+      "description": "should correlate message and business key with waiting instance",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEY9226a56734934c17b64bbea2be6287f5",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY9226a56734934c17b64bbea2be6287f5"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 49022
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY9226a56734934c17b64bbea2be6287f5",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY9226a56734934c17b64bbea2be6287f5"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "null"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 22910883
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 204792
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY9226a56734934c17b64bbea2be6287f5",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY9226a56734934c17b64bbea2be6287f5"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 16955410
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 144575057
+        }
+      ],
+      "durationInNanos": 144575057,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message, business key and correlation keys with waiting instance and set variables",
+      "description": "should correlate message, business key and correlation keys with waiting instance and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEY482d4e0940904f6abfb6dc621f6f0235",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY482d4e0940904f6abfb6dc621f6f0235"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage3",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage3"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 60282
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY482d4e0940904f6abfb6dc621f6f0235",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY482d4e0940904f6abfb6dc621f6f0235"
+                  }
+                },
+                {
+                  "value": "my-business-key3",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key3"
+                  }
+                },
+                {
+                  "value": "caseInstanceId3",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId3"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 60044
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY482d4e0940904f6abfb6dc621f6f0235",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY482d4e0940904f6abfb6dc621f6f0235"
+                  }
+                },
+                {
+                  "value": "my-business-key3",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key3"
+                  }
+                },
+                {
+                  "value": "caseInstanceId3",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId3"
+                  }
+                },
+                {
+                  "value": "{\n  VAR2 \u003d\u003e Untyped value \u0027VAL2\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR2 \u003d\u003e Untyped value \u0027VAL2\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 24115237
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 142537
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY482d4e0940904f6abfb6dc621f6f0235",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY482d4e0940904f6abfb6dc621f6f0235"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "{\n  VAR-NEW \u003d\u003e Untyped value \u0027VAL-NEW\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "{\n  VAR-NEW \u003d\u003e Untyped value \u0027VAL-NEW\u0027, isTransient \u003d false\n}"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 29099922
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 219109048
+        }
+      ],
+      "durationInNanos": 219109048,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message, and correlation keys with waiting instance and set variables",
+      "description": "should correlate message, and correlation keys with waiting instance and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEY0759329b97a04553ab2b51b5a371e104",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY0759329b97a04553ab2b51b5a371e104"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage6",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage6"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 56530
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY0759329b97a04553ab2b51b5a371e104",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY0759329b97a04553ab2b51b5a371e104"
+                  }
+                },
+                {
+                  "value": "my-business-key6",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key6"
+                  }
+                },
+                {
+                  "value": "caseInstanceId6",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId6"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 55867
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY0759329b97a04553ab2b51b5a371e104",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY0759329b97a04553ab2b51b5a371e104"
+                  }
+                },
+                {
+                  "value": "my-business-key6",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key6"
+                  }
+                },
+                {
+                  "value": "caseInstanceId6",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId6"
+                  }
+                },
+                {
+                  "value": "{\n  VAR2 \u003d\u003e Untyped value \u0027VAL2\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR2 \u003d\u003e Untyped value \u0027VAL2\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 34157924
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 199283
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY0759329b97a04553ab2b51b5a371e104",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY0759329b97a04553ab2b51b5a371e104"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "{\n  VAR-NEW \u003d\u003e Untyped value \u0027VAL-NEW\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "{\n  VAR-NEW \u003d\u003e Untyped value \u0027VAL-NEW\u0027, isTransient \u003d false\n}"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 33682573
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 225858483
+        }
+      ],
+      "durationInNanos": 225858483,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message and correlation keys with waiting instance",
+      "description": "should correlate message and correlation keys with waiting instance",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEY96aa05a6bdc04e329b00c3fb447a2904",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY96aa05a6bdc04e329b00c3fb447a2904"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage8",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage8"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 55043
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY96aa05a6bdc04e329b00c3fb447a2904",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY96aa05a6bdc04e329b00c3fb447a2904"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "caseInstanceId1",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId1"
+                  }
+                },
+                {
+                  "value": "{\n  VAR9 \u003d\u003e Untyped value \u0027VAL9\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR9 \u003d\u003e Untyped value \u0027VAL9\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 26309901
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 202285
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY96aa05a6bdc04e329b00c3fb447a2904",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY96aa05a6bdc04e329b00c3fb447a2904"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 18297039
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 146233696
+        }
+      ],
+      "durationInNanos": 146233696,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCorrelateMessageITest",
+      "testMethodName": "should correlate message with waiting instance",
+      "description": "should correlate message with waiting instance",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate message catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate message catch event is deployed"
+                },
+                {
+                  "value": "KEYce2f49d0b1e549bfb911af9649d1cefb",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYce2f49d0b1e549bfb911af9649d1cefb"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "myEventMessage",
+                  "argumentInfo": {
+                    "argumentName": "messageName",
+                    "formattedValue": "myEventMessage"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 44004
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEYce2f49d0b1e549bfb911af9649d1cefb",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYce2f49d0b1e549bfb911af9649d1cefb"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "null"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 47313
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 138680
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEYce2f49d0b1e549bfb911af9649d1cefb",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYce2f49d0b1e549bfb911af9649d1cefb"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11092758
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 111290803
+        }
+      ],
+      "durationInNanos": 111290803,
+      "executionStatus": "SUCCESS"
+    }
+  ],
+  "tagMap": {
+    "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory": {
+      "fullType": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory",
+      "type": "RuntimeServiceCategory",
+      "name": "RuntimeService",
+      "description": "",
+      "href": ""
+    }
+  }
+}
