@@ -162,7 +162,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun signal(executionId: String, signalName: String, signalData: Any, processVariables: MutableMap<String, Any>) {
+  override fun signal(executionId: String, signalName: String, signalData: Any?, processVariables: MutableMap<String, Any>) {
     implementedBy(RemoteRuntimeService::class)
   }
 

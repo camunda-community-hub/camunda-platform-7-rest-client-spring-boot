@@ -27,10 +27,10 @@
                   "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
+                  "value": "KEYa5fde61f5ff5474bb94fa19739df6a6b",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
+                    "formattedValue": "KEYa5fde61f5ff5474bb94fa19739df6a6b"
                   }
                 },
                 {
@@ -49,7 +49,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 36713022
+              "durationInNanos": 18490654
             },
             {
               "name": "process is started by key",
@@ -62,10 +62,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
+                  "value": "KEYa5fde61f5ff5474bb94fa19739df6a6b",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
+                    "formattedValue": "KEYa5fde61f5ff5474bb94fa19739df6a6b"
                   }
                 },
                 {
@@ -91,7 +91,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 76543
+              "durationInNanos": 32359
             },
             {
               "name": "execution is waiting for signal",
@@ -105,7 +105,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 18507331
+              "durationInNanos": 7778476
             },
             {
               "name": "get remote service",
@@ -119,7 +119,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 408077
+              "durationInNanos": 253738
             },
             {
               "name": "get execution",
@@ -133,7 +133,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 215369
+              "durationInNanos": 85604
             },
             {
               "name": "process instance exists",
@@ -146,10 +146,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
+                  "value": "KEYa5fde61f5ff5474bb94fa19739df6a6b",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
+                    "formattedValue": "KEYa5fde61f5ff5474bb94fa19739df6a6b"
                   }
                 },
                 {
@@ -175,17 +175,17 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 284723250
+              "durationInNanos": 120326936
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 4416912545
+          "durationInNanos": 1850307797
         }
       ],
-      "durationInNanos": 4416912545,
+      "durationInNanos": 1850307797,
       "executionStatus": "SUCCESS"
     },
     {
@@ -213,10 +213,10 @@
                   "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "value": "KEYb77d99a4121a48439735a4d8c4290626",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                    "formattedValue": "KEYb77d99a4121a48439735a4d8c4290626"
                   }
                 },
                 {
@@ -235,7 +235,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 69465
+              "durationInNanos": 52783
             },
             {
               "name": "process is started by key",
@@ -248,10 +248,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "value": "KEYb77d99a4121a48439735a4d8c4290626",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                    "formattedValue": "KEYb77d99a4121a48439735a4d8c4290626"
                   }
                 },
                 {
@@ -277,7 +277,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 70149
+              "durationInNanos": 57205
             },
             {
               "name": "execution is waiting for signal",
@@ -291,7 +291,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 11229335
+              "durationInNanos": 9775699
             },
             {
               "name": "get remote service",
@@ -305,7 +305,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 244597
+              "durationInNanos": 215782
             },
             {
               "name": "get execution",
@@ -319,7 +319,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 153913
+              "durationInNanos": 119693
             },
             {
               "name": "process instance exists",
@@ -332,10 +332,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "value": "KEYb77d99a4121a48439735a4d8c4290626",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                    "formattedValue": "KEYb77d99a4121a48439735a4d8c4290626"
                   }
                 },
                 {
@@ -361,17 +361,203 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 34700872
+              "durationInNanos": 31031425
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 291175254
+          "durationInNanos": 220038321
         }
       ],
-      "durationInNanos": 291175254,
+      "durationInNanos": 220038321,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
+      "testMethodName": "should signal waiting instance created by signal builder and set variables",
+      "description": "should signal waiting instance created by signal builder and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate signal catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate signal catch event is deployed"
+                },
+                {
+                  "value": "KEY2093c7542ae2455f991ee401a60dc908",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY2093c7542ae2455f991ee401a60dc908"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "mySignal7",
+                  "argumentInfo": {
+                    "argumentName": "signalName",
+                    "formattedValue": "mySignal7"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 50729
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY2093c7542ae2455f991ee401a60dc908",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY2093c7542ae2455f991ee401a60dc908"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "caseInstanceId1",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId1"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 55685
+            },
+            {
+              "name": "execution is waiting for signal",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "execution is waiting for signal"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 8417666
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 170039
+            },
+            {
+              "name": "get execution",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get execution"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 95113
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY2093c7542ae2455f991ee401a60dc908",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY2093c7542ae2455f991ee401a60dc908"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 21878208
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 194531809
+        }
+      ],
+      "durationInNanos": 194531809,
       "executionStatus": "SUCCESS"
     },
     {
@@ -399,10 +585,10 @@
                   "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "value": "KEYf2b4f4002a5b4c138fbf8582273c90da",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                    "formattedValue": "KEYf2b4f4002a5b4c138fbf8582273c90da"
                   }
                 },
                 {
@@ -421,7 +607,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 67840
+              "durationInNanos": 47090
             },
             {
               "name": "process is started by key",
@@ -434,10 +620,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "value": "KEYf2b4f4002a5b4c138fbf8582273c90da",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                    "formattedValue": "KEYf2b4f4002a5b4c138fbf8582273c90da"
                   }
                 },
                 {
@@ -463,7 +649,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 41743377
+              "durationInNanos": 24221051
             },
             {
               "name": "get remote service",
@@ -477,7 +663,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 240485
+              "durationInNanos": 157625
             },
             {
               "name": "process instance exists",
@@ -490,10 +676,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "value": "KEYf2b4f4002a5b4c138fbf8582273c90da",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                    "formattedValue": "KEYf2b4f4002a5b4c138fbf8582273c90da"
                   }
                 },
                 {
@@ -519,17 +705,17 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 38734952
+              "durationInNanos": 21253548
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 244615339
+          "durationInNanos": 143621029
         }
       ],
-      "durationInNanos": 244615339,
+      "durationInNanos": 143621029,
       "executionStatus": "SUCCESS"
     },
     {
@@ -557,10 +743,10 @@
                   "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEY80245919c3f9435eba186867289e2038",
+                  "value": "KEY8ef0ccfda13e42648dc79b1792785615",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
+                    "formattedValue": "KEY8ef0ccfda13e42648dc79b1792785615"
                   }
                 },
                 {
@@ -579,7 +765,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 68169
+              "durationInNanos": 77713
             },
             {
               "name": "process is started by key",
@@ -592,10 +778,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEY80245919c3f9435eba186867289e2038",
+                  "value": "KEY8ef0ccfda13e42648dc79b1792785615",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
+                    "formattedValue": "KEY8ef0ccfda13e42648dc79b1792785615"
                   }
                 },
                 {
@@ -621,7 +807,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 69030
+              "durationInNanos": 58582
             },
             {
               "name": "get remote service",
@@ -635,7 +821,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 270411
+              "durationInNanos": 174281
             },
             {
               "name": "process instance exists",
@@ -648,10 +834,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEY80245919c3f9435eba186867289e2038",
+                  "value": "KEY8ef0ccfda13e42648dc79b1792785615",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
+                    "formattedValue": "KEY8ef0ccfda13e42648dc79b1792785615"
                   }
                 },
                 {
@@ -677,17 +863,17 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 19739862
+              "durationInNanos": 13127860
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 213763110
+          "durationInNanos": 136682201
         }
       ],
-      "durationInNanos": 213763110,
+      "durationInNanos": 136682201,
       "executionStatus": "SUCCESS"
     }
   ],

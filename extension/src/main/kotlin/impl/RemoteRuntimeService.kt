@@ -172,7 +172,7 @@ class RemoteRuntimeService(
   override fun signal(executionId: String, processVariables: MutableMap<String, Any>) =
     doSignal(executionId, processVariables = processVariables)
 
-  override fun signal(executionId: String, signalName: String, signalData: Any, processVariables: MutableMap<String, Any>) =
+  override fun signal(executionId: String, signalName: String, signalData: Any?, processVariables: MutableMap<String, Any>) =
     doSignal(executionId, signalName, signalData, processVariables)
 
   private fun doSignal(executionId: String, signalName: String? = null, signalData: Any? = null, processVariables: MutableMap<String, Any>? = null) {

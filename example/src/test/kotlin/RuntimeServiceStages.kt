@@ -182,7 +182,15 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
   }
 
   fun execution_is_waiting_for_signal(): RuntimeServiceActionStage  {
-    execution = localService.createExecutionQuery().executionId(localService.createEventSubscriptionQuery().singleResult().executionId).singleResult()
+    execution = localService
+      .createExecutionQuery()
+      .processDefinitionKey(processDefinition.key)
+      .executionId(localService
+        .createEventSubscriptionQuery()
+        .processInstanceId(processInstance.id)
+        .singleResult()
+        .executionId
+      ).singleResult()
     return self()
   }
 
