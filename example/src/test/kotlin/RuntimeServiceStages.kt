@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
+import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +33,12 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var processDefinition: ProcessDefinition
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  lateinit var processInstance: ProcessInstance
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  lateinit var execution: Execution
 
   fun process_with_user_task_is_deployed(
     processDefinitionKey: String = "process_with_user_task",
@@ -153,7 +160,7 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     variables: Map<String, Any>? = null
   ): RuntimeServiceActionStage {
 
-    val processInstance = if (variables != null && businessKey != null && caseInstanceId != null) {
+    processInstance = if (variables != null && businessKey != null && caseInstanceId != null) {
       localService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId, variables)
     } else if (businessKey != null && caseInstanceId != null) {
       localService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId)
@@ -171,6 +178,11 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
       .processInstanceId(processInstance.id)
       .singleResult()).isNotNull
 
+    return self()
+  }
+
+  fun execution_is_waiting_for_signal(): RuntimeServiceActionStage  {
+    execution = localService.createExecutionQuery().executionId(localService.createEventSubscriptionQuery().singleResult().executionId).singleResult()
     return self()
   }
 

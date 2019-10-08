@@ -15,70 +15,22 @@
       "scenarioCases": [
         {
           "caseNr": 1,
-          "steps": [],
-          "explicitArguments": [],
-          "derivedArguments": [],
-          "status": "SUCCESS",
-          "success": true,
-          "durationInNanos": 57162255
-        }
-      ],
-      "durationInNanos": 57162255,
-      "executionStatus": "SUCCESS"
-    },
-    {
-      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
-      "testMethodName": "should signal waiting instance by execution id and signal name and set variables",
-      "description": "should signal waiting instance by execution id and signal name and set variables",
-      "tagIds": [
-        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
-      ],
-      "explicitParameters": [],
-      "derivedParameters": [],
-      "casesAsTable": false,
-      "scenarioCases": [
-        {
-          "caseNr": 1,
-          "steps": [],
-          "explicitArguments": [],
-          "derivedArguments": [],
-          "status": "SUCCESS",
-          "success": true,
-          "durationInNanos": 2832791
-        }
-      ],
-      "durationInNanos": 2832791,
-      "executionStatus": "SUCCESS"
-    },
-    {
-      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
-      "testMethodName": "should signal waiting instance and set variables",
-      "description": "should signal waiting instance and set variables",
-      "tagIds": [
-        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
-      ],
-      "explicitParameters": [],
-      "derivedParameters": [],
-      "casesAsTable": false,
-      "scenarioCases": [
-        {
-          "caseNr": 1,
           "steps": [
             {
-              "name": "process with intermediate message catch event is deployed",
+              "name": "process with intermediate signal catch event is deployed",
               "words": [
                 {
                   "value": "Given",
                   "isIntroWord": true
                 },
                 {
-                  "value": "process with intermediate message catch event is deployed"
+                  "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEYd82f3924df814ad98812c2d9f712d117",
+                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYd82f3924df814ad98812c2d9f712d117"
+                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
                   }
                 },
                 {
@@ -89,15 +41,15 @@
                   }
                 },
                 {
-                  "value": "myEventMessage2",
+                  "value": "mySignal3",
                   "argumentInfo": {
-                    "argumentName": "messageName",
-                    "formattedValue": "myEventMessage2"
+                    "argumentName": "signalName",
+                    "formattedValue": "mySignal3"
                   }
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 11221404
+              "durationInNanos": 36713022
             },
             {
               "name": "process is started by key",
@@ -110,10 +62,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEYd82f3924df814ad98812c2d9f712d117",
+                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYd82f3924df814ad98812c2d9f712d117"
+                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
                   }
                 },
                 {
@@ -139,7 +91,21 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 88203025
+              "durationInNanos": 76543
+            },
+            {
+              "name": "execution is waiting for signal",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "execution is waiting for signal"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 18507331
             },
             {
               "name": "get remote service",
@@ -153,7 +119,21 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 185362
+              "durationInNanos": 408077
+            },
+            {
+              "name": "get execution",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get execution"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 215369
             },
             {
               "name": "process instance exists",
@@ -166,10 +146,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEYd82f3924df814ad98812c2d9f712d117",
+                  "value": "KEYe369acda486d4b69bd9de963bac4ee18",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYd82f3924df814ad98812c2d9f712d117"
+                    "formattedValue": "KEYe369acda486d4b69bd9de963bac4ee18"
                   }
                 },
                 {
@@ -194,58 +174,363 @@
                   }
                 }
               ],
-              "status": "FAILED",
-              "durationInNanos": 74632950
+              "status": "PASSED",
+              "durationInNanos": 284723250
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
-          "status": "FAILED",
-          "success": false,
-          "errorMessage": "java.lang.AssertionError: \nExpecting actual not to be null",
-          "stackTrace": [
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest$should signal waiting instance and set variables$1.invoke(RuntimeServiceCatchSignalITest.kt:59)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest$should signal waiting instance and set variables$1.invoke(RuntimeServiceCatchSignalITest.kt:12)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceAssertStage.process_instance_exists(RuntimeServiceStages.kt:214)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceAssertStage$ByteBuddy$KqBewgCl.process_instance_exists$accessor$VgNpmZUX(Unknown Source)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceAssertStage$ByteBuddy$KqBewgCl$auxiliary$lNcN4xNz.call(Unknown Source)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceAssertStage$ByteBuddy$KqBewgCl.process_instance_exists(Unknown Source)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceAssertStage.process_instance_exists$default(RuntimeServiceStages.kt:194)",
-            "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest.should signal waiting instance and set variables(RuntimeServiceCatchSignalITest.kt:56)",
-            "org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)",
-            "org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)",
-            "org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)",
-            "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
-            "org.springframework.test.context.junit4.statements.RunBeforeTestExecutionCallbacks.evaluate(RunBeforeTestExecutionCallbacks.java:74)",
-            "org.springframework.test.context.junit4.statements.RunAfterTestExecutionCallbacks.evaluate(RunAfterTestExecutionCallbacks.java:84)",
-            "org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)",
-            "org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)",
-            "com.tngtech.jgiven.junit.JGivenMethodRule$1.evaluate(JGivenMethodRule.java:73)",
-            "org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)",
-            "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)",
-            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:251)",
-            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)",
-            "org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)",
-            "org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)",
-            "org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)",
-            "org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)",
-            "org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)",
-            "org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)",
-            "org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)",
-            "org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:55)",
-            "org.junit.rules.RunRules.evaluate(RunRules.java:20)",
-            "org.junit.runners.ParentRunner.run(ParentRunner.java:363)",
-            "org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)",
-            "org.junit.runner.JUnitCore.run(JUnitCore.java:137)",
-            "com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)",
-            "com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)",
-            "com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)",
-            "com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)"
-          ],
-          "durationInNanos": 1578894130
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 4416912545
         }
       ],
-      "durationInNanos": 1578894130
+      "durationInNanos": 4416912545,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
+      "testMethodName": "should signal waiting instance by execution id and signal name and set variables",
+      "description": "should signal waiting instance by execution id and signal name and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate signal catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate signal catch event is deployed"
+                },
+                {
+                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "mySignal4",
+                  "argumentInfo": {
+                    "argumentName": "signalName",
+                    "formattedValue": "mySignal4"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 69465
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "caseInstanceId1",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId1"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 70149
+            },
+            {
+              "name": "execution is waiting for signal",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "execution is waiting for signal"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 11229335
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 244597
+            },
+            {
+              "name": "get execution",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get execution"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 153913
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEYb2b5c18e4c55409c82e1cebef8a224a3",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEYb2b5c18e4c55409c82e1cebef8a224a3"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 34700872
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 291175254
+        }
+      ],
+      "durationInNanos": 291175254,
+      "executionStatus": "SUCCESS"
+    },
+    {
+      "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
+      "testMethodName": "should signal waiting instance and set variables",
+      "description": "should signal waiting instance and set variables",
+      "tagIds": [
+        "org.camunda.bpm.extension.feign.itest.RuntimeServiceCategory"
+      ],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "casesAsTable": false,
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [
+            {
+              "name": "process with intermediate signal catch event is deployed",
+              "words": [
+                {
+                  "value": "Given",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process with intermediate signal catch event is deployed"
+                },
+                {
+                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                  }
+                },
+                {
+                  "value": "user-task",
+                  "argumentInfo": {
+                    "argumentName": "userTaskId",
+                    "formattedValue": "user-task"
+                  }
+                },
+                {
+                  "value": "mySignal2",
+                  "argumentInfo": {
+                    "argumentName": "signalName",
+                    "formattedValue": "mySignal2"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 67840
+            },
+            {
+              "name": "process is started by key",
+              "words": [
+                {
+                  "value": "and",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process is started by key"
+                },
+                {
+                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                  }
+                },
+                {
+                  "value": "my-business-key1",
+                  "argumentInfo": {
+                    "argumentName": "businessKey",
+                    "formattedValue": "my-business-key1"
+                  }
+                },
+                {
+                  "value": "caseInstanceId1",
+                  "argumentInfo": {
+                    "argumentName": "caseInstanceId",
+                    "formattedValue": "caseInstanceId1"
+                  }
+                },
+                {
+                  "value": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}",
+                  "argumentInfo": {
+                    "argumentName": "variables",
+                    "formattedValue": "{\n  VAR1 \u003d\u003e Untyped value \u0027VAL1\u0027, isTransient \u003d false\n}"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 41743377
+            },
+            {
+              "name": "get remote service",
+              "words": [
+                {
+                  "value": "When",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "get remote service"
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 240485
+            },
+            {
+              "name": "process instance exists",
+              "words": [
+                {
+                  "value": "Then",
+                  "isIntroWord": true
+                },
+                {
+                  "value": "process instance exists"
+                },
+                {
+                  "value": "KEY6ae82fb1038c4ae8a932d5615bb17d65",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionKey",
+                    "formattedValue": "KEY6ae82fb1038c4ae8a932d5615bb17d65"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "processDefinitionId",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "null",
+                  "argumentInfo": {
+                    "argumentName": "containingSimpleProcessVariables",
+                    "formattedValue": "null"
+                  }
+                },
+                {
+                  "value": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit",
+                  "argumentInfo": {
+                    "argumentName": "processInstanceAssertions",
+                    "formattedValue": "(org.camunda.bpm.engine.runtime.ProcessInstance, org.camunda.bpm.extension.feign.itest.AssertStage\u003c*, org.camunda.bpm.engine.RuntimeService\u003e) -\u003e kotlin.Unit"
+                  }
+                }
+              ],
+              "status": "PASSED",
+              "durationInNanos": 38734952
+            }
+          ],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "success": true,
+          "durationInNanos": 244615339
+        }
+      ],
+      "durationInNanos": 244615339,
+      "executionStatus": "SUCCESS"
     },
     {
       "className": "org.camunda.bpm.extension.feign.itest.RuntimeServiceCatchSignalITest",
@@ -272,10 +557,10 @@
                   "value": "process with intermediate signal catch event is deployed"
                 },
                 {
-                  "value": "KEYa63ce0a7b1fa4f2880f1d5f91068175c",
+                  "value": "KEY80245919c3f9435eba186867289e2038",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYa63ce0a7b1fa4f2880f1d5f91068175c"
+                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
                   }
                 },
                 {
@@ -294,7 +579,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 32773
+              "durationInNanos": 68169
             },
             {
               "name": "process is started by key",
@@ -307,10 +592,10 @@
                   "value": "process is started by key"
                 },
                 {
-                  "value": "KEYa63ce0a7b1fa4f2880f1d5f91068175c",
+                  "value": "KEY80245919c3f9435eba186867289e2038",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYa63ce0a7b1fa4f2880f1d5f91068175c"
+                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
                   }
                 },
                 {
@@ -336,7 +621,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 29801
+              "durationInNanos": 69030
             },
             {
               "name": "get remote service",
@@ -350,7 +635,7 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 122096
+              "durationInNanos": 270411
             },
             {
               "name": "process instance exists",
@@ -363,10 +648,10 @@
                   "value": "process instance exists"
                 },
                 {
-                  "value": "KEYa63ce0a7b1fa4f2880f1d5f91068175c",
+                  "value": "KEY80245919c3f9435eba186867289e2038",
                   "argumentInfo": {
                     "argumentName": "processDefinitionKey",
-                    "formattedValue": "KEYa63ce0a7b1fa4f2880f1d5f91068175c"
+                    "formattedValue": "KEY80245919c3f9435eba186867289e2038"
                   }
                 },
                 {
@@ -392,17 +677,17 @@
                 }
               ],
               "status": "PASSED",
-              "durationInNanos": 7334352
+              "durationInNanos": 19739862
             }
           ],
           "explicitArguments": [],
           "derivedArguments": [],
           "status": "SUCCESS",
           "success": true,
-          "durationInNanos": 110938863
+          "durationInNanos": 213763110
         }
       ],
-      "durationInNanos": 110938863,
+      "durationInNanos": 213763110,
       "executionStatus": "SUCCESS"
     }
   ],
