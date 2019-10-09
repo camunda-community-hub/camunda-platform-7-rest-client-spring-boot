@@ -7,5 +7,6 @@
 .java-version
 .DS_Store
 target/
+jgiven-reports/
 pom.xml.versionsBackup
 
