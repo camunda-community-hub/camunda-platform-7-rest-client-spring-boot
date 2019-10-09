@@ -7,7 +7,7 @@ import java.util.*
 /**
  * Converts variable map to its REST representation.
  */
-fun MutableMap<String, Any>.toVariableValueDtoMap(): Map<String, VariableValueDto> {
+fun MutableMap<String, out Any>.toVariableValueDtoMap(): Map<String, VariableValueDto> {
   return this.mapValues {
     if (it.value is TypedValue) {
       VariableValueDto.fromTypedValue(it.value as TypedValue)

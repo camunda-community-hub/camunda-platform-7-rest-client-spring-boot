@@ -121,7 +121,4 @@ class RuntimeServiceStartProcessByKeyITest : CamundaBpmFeignITestBase<RuntimeSer
         assertThat(stage.localService.getVariable(instance.id, "VAR_NAME")).isEqualTo("var value")
       }
   }
-
-  private fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
-
 }

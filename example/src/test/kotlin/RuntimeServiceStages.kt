@@ -123,7 +123,6 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     return self()
   }
 
-
   fun process_with_start_by_message_event_is_deployed(
     processDefinitionKey: String = "process_start_message",
     userTaskId: String = "user-task",
@@ -193,7 +192,6 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
       ).singleResult()
     return self()
   }
-
 }
 
 @JGivenStage

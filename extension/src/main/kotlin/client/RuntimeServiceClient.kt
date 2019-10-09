@@ -1,6 +1,8 @@
 package org.camunda.bpm.extension.feign.client
 
+import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.SignalDto
+import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultWithVariableDto
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
@@ -10,6 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Feign client accessing the methods of runtime service.
@@ -58,4 +61,77 @@ interface RuntimeServiceClient {
    */
   @RequestMapping(method = [RequestMethod.POST], value = ["/execution/{id}/signal"], consumes = ["application/json"])
   fun triggerExecutionById(@PathVariable("id") executionId: String, trigger: ExecutionTriggerDto)
+
+  /**
+   * Retrieves all local variables of a given execution by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/execution/local-variables/get-local-variables/
+   */
+  @RequestMapping(method = [RequestMethod.GET], value = ["/execution/{id}/localVariables"], consumes = ["application/json"])
+  fun getVariablesLocal(@PathVariable("id") executionId: String, @RequestParam("deserializeValues") deserializeValues: Boolean): Map<String, VariableValueDto>
+
+  /**
+   * Updates or deletes the variables in the context of an execution by id. The updates do not propagate upwards in the execution hierarchy.
+   * Updates precede deletions. So, if a variable is updated AND deleted, the deletion overrides the update.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/execution/local-variables/post-local-variables/
+   */
+  @RequestMapping(method = [RequestMethod.POST], value = ["/execution/{id}/localVariables"], consumes = ["application/json"])
+  fun changeVariablesLocal(@PathVariable("id") executionId: String, patch: PatchVariablesDto)
+
+  /**
+   * Retrieves local variable by id of a given execution by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/execution/local-variables/get-local-variable/
+   */
+  @RequestMapping(method = [RequestMethod.GET], value = ["/execution/{id}/localVariables/{varName}"], consumes = ["application/json"])
+  fun getVariableLocal(@PathVariable("id") executionId: String, @PathVariable("varName") varName: String, @RequestParam("deserializeValue") deserializeValue: Boolean): VariableValueDto
+
+  /**
+   * Sets a variable in the context of a given execution by id. Update does not propagate upwards in the execution hierarchy.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/execution/local-variables/put-local-variable/
+   */
+  @RequestMapping(method = [RequestMethod.PUT], value = ["/execution/{id}/localVariables/{varName}"], consumes = ["application/json"])
+  fun setVariableLocal(@PathVariable("id") executionId: String, @PathVariable("varName") varName: String, value: VariableValueDto)
+
+  /**
+   * Deletes a variable in the context of a given execution by id. Deletion does not propagate upwards in the execution hierarchy.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/execution/local-variables/delete-local-variable/
+   */
+  @RequestMapping(method = [RequestMethod.DELETE], value = ["/execution/{id}/localVariables/{varName}"], consumes = ["application/json"])
+  fun deleteVariableLocal(@PathVariable("id") executionId: String, @PathVariable("varName") varName: String)
+
+  /**
+   * Retrieves all variables of a given process instance by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/variables/get-variables/
+   */
+  @RequestMapping(method = [RequestMethod.GET], value = ["/process-instance/{id}/variables"], consumes = ["application/json"])
+  fun getVariables(@PathVariable("id") processInstanceId: String, @RequestParam("deserializeValues") deserializeValues: Boolean): Map<String, VariableValueDto>
+
+  /**
+   * Updates or deletes the variables of a process instance by id. Updates precede deletions. So, if a variable is updated AND deleted,
+   * the deletion overrides the update.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/variables/post-variables/
+   */
+  @RequestMapping(method = [RequestMethod.POST], value = ["/process-instance/{id}/variables"], consumes = ["application/json"])
+  fun changeVariables(@PathVariable("id") processInstanceId: String, patch: PatchVariablesDto)
+
+  /**
+   * Retrieves a variable of a given process instance by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/variables/get-variable/
+   */
+  @RequestMapping(method = [RequestMethod.GET], value = ["/process-instance/{id}/variables/{varName}"], consumes = ["application/json"])
+  fun getVariable(@PathVariable("id") processInstanceId: String, @PathVariable("varName") varName: String, @RequestParam("deserializeValue") deserializeValue: Boolean): VariableValueDto
+
+  /**
+   * Sets a variable of a given process instance by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/variables/put-variable/
+   */
+  @RequestMapping(method = [RequestMethod.PUT], value = ["/process-instance/{id}/variables/{varName}"], consumes = ["application/json"])
+  fun setVariable(@PathVariable("id") processInstanceId: String, @PathVariable("varName") varName: String, value: VariableValueDto)
+
+  /**
+   * Deletes a variable of a process instance by id.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/variables/delete-variable/
+   */
+  @RequestMapping(method = [RequestMethod.DELETE], value = ["/process-instance/{id}/variables/{varName}"], consumes = ["application/json"])
+  fun deleteVariable(@PathVariable("id") processInstanceId: String, @PathVariable("varName") varName: String)
+
 }

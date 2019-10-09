@@ -263,8 +263,4 @@ class RuntimeServiceCorrelateMessageITest : CamundaBpmFeignITestBase<RuntimeServ
         ).containsValues("VAL9", "NEW-VAL", "NEW-VAL2") // no locals
       }
   }
-
-
-  private fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
-
 }

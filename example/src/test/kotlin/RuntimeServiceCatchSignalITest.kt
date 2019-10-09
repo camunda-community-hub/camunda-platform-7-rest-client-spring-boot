@@ -167,9 +167,4 @@ class RuntimeServiceCatchSignalITest : CamundaBpmFeignITestBase<RuntimeService, 
         ).containsValues("VAL1", "VAL2")
       }
   }
-
-
-
-  private fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
-
 }

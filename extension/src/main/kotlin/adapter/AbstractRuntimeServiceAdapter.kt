@@ -16,103 +16,103 @@ import org.camunda.bpm.extension.feign.impl.implementedBy
  */
 abstract class AbstractRuntimeServiceAdapter : RuntimeService {
 
-  override fun getVariables(executionId: String?): MutableMap<String, Any> {
-    TODO("not implemented")
-  }
-
-  override fun getVariables(executionId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
-    TODO("not implemented")
-  }
-
   override fun createVariableInstanceQuery(): VariableInstanceQuery {
     TODO("not implemented")
   }
 
-  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?): T {
-    TODO("not implemented")
+  override fun getVariables(executionId: String): MutableMap<String, Any> {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
-    TODO("not implemented")
+  override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesTyped(executionId: String?): VariableMap {
-    TODO("not implemented")
+  override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String): T? {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
+  override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
+  override fun getVariablesTyped(executionId: String): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocal(executionId: String?): MutableMap<String, Any> {
-    TODO("not implemented")
+  override fun getVariablesTyped(executionId: String, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
-    TODO("not implemented")
+  override fun getVariablesTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariableLocal(executionId: String?, variableName: String?): Any {
-    TODO("not implemented")
-  }
-  override fun getVariable(executionId: String?, variableName: String?): Any {
-    TODO("not implemented")
+  override fun getVariablesLocal(executionId: String): MutableMap<String, Any> {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocalTyped(executionId: String?): VariableMap {
-    TODO("not implemented")
+  override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocalTyped(executionId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
+  override fun getVariableLocal(executionId: String, variableName: String): Any {
+    implementedBy(RemoteRuntimeService::class)
+  }
+  override fun getVariable(executionId: String, variableName: String): Any {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocalTyped(executionId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
-    TODO("not implemented")
+  override fun getVariablesLocalTyped(executionId: String): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?): T {
-    TODO("not implemented")
+  override fun getVariablesLocalTyped(executionId: String, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun <T : TypedValue?> getVariableLocalTyped(executionId: String?, variableName: String?, deserializeValue: Boolean): T {
-    TODO("not implemented")
+  override fun getVariablesLocalTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun removeVariables(executionId: String?, variableNames: MutableCollection<String>?) {
-    TODO("not implemented")
+  override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String): T? {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun removeVariable(executionId: String?, variableName: String?) {
-    TODO("not implemented")
+  override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun removeVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?) {
-    TODO("not implemented")
+  override fun removeVariables(executionId: String, variableNames: MutableCollection<String>) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun removeVariableLocal(executionId: String?, variableName: String?) {
-    TODO("not implemented")
+  override fun removeVariable(executionId: String, variableName: String) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariableLocal(executionId: String?, variableName: String?, value: Any?) {
-    TODO("not implemented")
+  override fun removeVariablesLocal(executionId: String, variableNames: MutableCollection<String>) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariablesLocal(executionId: String?, variables: MutableMap<String, out Any>?) {
-    TODO("not implemented")
+  override fun removeVariableLocal(executionId: String, variableName: String) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
-    TODO("not implemented")
+  override fun setVariableLocal(executionId: String, variableName: String, value: Any) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariables(executionId: String?, variables: MutableMap<String, out Any>?) {
-    TODO("not implemented")
+  override fun setVariablesLocal(executionId: String, variables: MutableMap<String, out Any>) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun setVariable(executionId: String, variableName: String, value: Any) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun setVariables(executionId: String, variables: MutableMap<String, out Any>) {
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun correlateMessage(messageName: String) {
