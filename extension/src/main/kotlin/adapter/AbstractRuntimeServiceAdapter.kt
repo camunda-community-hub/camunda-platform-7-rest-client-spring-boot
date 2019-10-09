@@ -28,18 +28,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun removeVariable(executionId: String?, variableName: String?) {
-    TODO("not implemented")
-  }
-
-  override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
-    TODO("not implemented")
-  }
-
-  override fun setVariables(executionId: String?, variables: MutableMap<String, out Any>?) {
-    TODO("not implemented")
-  }
-
   override fun <T : TypedValue?> getVariableTyped(executionId: String?, variableName: String?): T {
     TODO("not implemented")
   }
@@ -71,19 +59,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun getVariableLocal(executionId: String?, variableName: String?): Any {
     TODO("not implemented")
   }
-
-  override fun setVariableLocal(executionId: String?, variableName: String?, value: Any?) {
-    TODO("not implemented")
-  }
-
-  override fun removeVariables(executionId: String?, variableNames: MutableCollection<String>?) {
-    TODO("not implemented")
-  }
   override fun getVariable(executionId: String?, variableName: String?): Any {
-    TODO("not implemented")
-  }
-
-  override fun removeVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?) {
     TODO("not implemented")
   }
 
@@ -107,11 +83,35 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
+  override fun removeVariables(executionId: String?, variableNames: MutableCollection<String>?) {
+    TODO("not implemented")
+  }
+
+  override fun removeVariable(executionId: String?, variableName: String?) {
+    TODO("not implemented")
+  }
+
+  override fun removeVariablesLocal(executionId: String?, variableNames: MutableCollection<String>?) {
+    TODO("not implemented")
+  }
+
   override fun removeVariableLocal(executionId: String?, variableName: String?) {
     TODO("not implemented")
   }
 
+  override fun setVariableLocal(executionId: String?, variableName: String?, value: Any?) {
+    TODO("not implemented")
+  }
+
   override fun setVariablesLocal(executionId: String?, variables: MutableMap<String, out Any>?) {
+    TODO("not implemented")
+  }
+
+  override fun setVariable(executionId: String?, variableName: String?, value: Any?) {
+    TODO("not implemented")
+  }
+
+  override fun setVariables(executionId: String?, variables: MutableMap<String, out Any>?) {
     TODO("not implemented")
   }
 
