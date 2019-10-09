@@ -127,14 +127,24 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun localVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    // FIXME: check if this can be solved
-    logger.error { "Process instance local variable query is not supported by remote message correlation" }
+    val correlationKeys = correlationMessageDto.localCorrelationKeys
+    variables.forEach {
+      correlationKeys[it.key] = if (it.value is TypedValue) {
+        VariableValueDto.fromTypedValue(it.value as TypedValue)
+      } else {
+        fromUntypedValue(it.value)
+      }
+    }
     return this
   }
 
   override fun localVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    // FIXME: check if this can be solved
-    logger.error { "Process instance local variable query is not supported by remote message correlation" }
+    val correlationKeys = correlationMessageDto.localCorrelationKeys
+    correlationKeys[variableName] = if (variableValue is TypedValue) {
+      VariableValueDto.fromTypedValue(variableValue)
+    } else {
+      fromUntypedValue(variableValue)
+    }
     return this
   }
 
