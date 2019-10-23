@@ -44,6 +44,6 @@ fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper): M
     override fun getExecution(): Execution? = if (execution != null) ExecutionAdapter(ExecutionBean.fromExecutionDto(execution!!)) else null
     override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
     override fun getResultType(): MessageCorrelationResultType = resultType
-    override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!) else createVariables()
+    override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!.toMap()) else createVariables()
   }
 }

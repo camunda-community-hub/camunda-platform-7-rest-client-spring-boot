@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.feign.variables
 
+import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.runtime.*
 
 /**
@@ -42,3 +43,10 @@ fun Execution.toPrettyString(): String =
     ended: ${this.isEnded},
     suspended: ${this.isSuspended}
 }"""
+
+fun ProcessDefinition.toPrettyString(): String =
+  """
+    id: ${this.id},
+    key: ${this.key},
+    name: ${this.name}
+  """.trimIndent()

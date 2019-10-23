@@ -2,7 +2,10 @@ package org.camunda.bpm.extension.feign.example
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import feign.Logger
+import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto
 import org.camunda.bpm.extension.feign.EnableCamundaFeign
+import org.camunda.bpm.extension.feign.mixin.CamundaMixinModule
+import org.camunda.bpm.extension.feign.mixin.ProcessDefinitionDtoMixin
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.cloud.openfeign.EnableFeignClients
@@ -27,6 +30,7 @@ class CamundaBpmFeignExampleApplication {
   @Bean
   fun objectMapper(): ObjectMapper {
     val objectMapper = ObjectMapper()
-    return JacksonDataFormatConfigurator.configureObjectMapper(objectMapper)
+    return JacksonDataFormatConfigurator
+      .configureObjectMapper(objectMapper)
   }
 }

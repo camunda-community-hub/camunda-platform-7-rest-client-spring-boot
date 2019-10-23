@@ -1,6 +1,7 @@
 package org.camunda.bpm.extension.feign.example.client
 
 import mu.KLogging
+import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.bpm.extension.feign.variables.toPrettyString
@@ -12,10 +13,22 @@ import java.util.*
 
 @Component
 class ProcessClient(
-  @Qualifier("remote") private val runtimeService: RuntimeService
+  @Qualifier("remote") private val runtimeService: RuntimeService,
+  @Qualifier("remote") private val repositoryService: RepositoryService
 ) {
 
   companion object : KLogging()
+
+  @Scheduled(initialDelay = 8_000, fixedDelay = Long.MAX_VALUE)
+  fun retriveProcessDefinition() {
+
+    logger.info { "CLIENT-90: Retrieving process definition" }
+    val count = repositoryService.createProcessDefinitionQuery().count()
+    logger.info { "CLIENT-91: Found $count deployed processes" }
+    val processDefinition = repositoryService.createProcessDefinitionQuery().singleResult()
+    logger.info { "CLIENT-92: Deployed process definition is ${processDefinition.toPrettyString()}" }
+  }
+
 
   @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
   fun startProcess() {

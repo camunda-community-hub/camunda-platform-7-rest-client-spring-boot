@@ -20,7 +20,10 @@ feign:
     config:
       remoteRuntimeService:
         url: "http://localhost:8083/rest/engine/default/"
+      remoteRepositoryService:
+        url: "http://localhost:8083/rest/engine/default/"
 
 logging:
   level:
     org.camunda.bpm.extension.feign.client.RuntimeServiceClient: DEBUG
+    org.camunda.bpm.extension.feign.client.RepositoryServiceClient: DEBUG
