@@ -1,20 +1,15 @@
 package org.camunda.bpm.extension.feign.impl.builder
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
 import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
+import org.camunda.bpm.extension.feign.variables.ValueMapper
 import org.camunda.bpm.extension.feign.variables.fromDto
-import org.camunda.bpm.extension.feign.variables.fromUntypedValue
-import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
@@ -22,8 +17,7 @@ import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 class DelegatingMessageCorrelationBuilder(
   messageName: String,
   private val runtimeServiceClient: RuntimeServiceClient,
-  private val processEngine: ProcessEngine,
-  private val objectMapper: ObjectMapper
+  private val valueMapper: ValueMapper
 ) : MessageCorrelationBuilder {
 
   companion object : KLogging()
@@ -53,37 +47,27 @@ class DelegatingMessageCorrelationBuilder(
    * @return modified fluent builder.
    */
   fun setCorrelationKeys(correlationKeys: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.correlationKeys = correlationKeys.toVariableValueDtoMap()
+    correlationMessageDto.correlationKeys.putAll(valueMapper.mapValues(correlationKeys))
     return this
   }
 
-  override fun setVariable(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    val variables = correlationMessageDto.processVariables
-    variables[variableName] = if (variableValue is TypedValue) {
-      VariableValueDto.fromTypedValue(variableValue)
-    } else {
-      fromUntypedValue(variableValue)
-    }
+  override fun setVariable(variableName: String, variableValue: Any?): MessageCorrelationBuilder {
+    correlationMessageDto.processVariables[variableName] = valueMapper.mapValue(variableValue)
     return this
   }
 
   override fun setVariables(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.processVariables = variables.toVariableValueDtoMap()
+    correlationMessageDto.processVariables.putAll(valueMapper.mapValues(variables))
     return this
   }
 
-  override fun setVariableLocal(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    val variables = correlationMessageDto.processVariablesLocal
-    variables[variableName] = if (variableValue is TypedValue) {
-      VariableValueDto.fromTypedValue(variableValue)
-    } else {
-      fromUntypedValue(variableValue)
-    }
+  override fun setVariableLocal(variableName: String, variableValue: Any?): MessageCorrelationBuilder {
+    correlationMessageDto.processVariablesLocal[variableName] = valueMapper.mapValue(variableValue)
     return this
   }
 
   override fun setVariablesLocal(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    correlationMessageDto.processVariablesLocal = variables.toVariableValueDtoMap()
+    correlationMessageDto.processVariablesLocal.putAll(valueMapper.mapValues(variables))
     return this
   }
 
@@ -104,47 +88,26 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun processInstanceVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    val correlationKeys = correlationMessageDto.correlationKeys
-    correlationKeys[variableName] = if (variableValue is TypedValue) {
-      VariableValueDto.fromTypedValue(variableValue)
-    } else {
-      fromUntypedValue(variableValue)
-    }
+    correlationMessageDto.correlationKeys[variableName] = valueMapper.mapValue(variableValue)
     return this
   }
 
   override fun processInstanceVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    val correlationKeys = correlationMessageDto.correlationKeys
     variables.forEach {
-      correlationKeys[it.key] = if (it.value is TypedValue) {
-        VariableValueDto.fromTypedValue(it.value as TypedValue)
-      } else {
-        fromUntypedValue(it.value)
-      }
+      correlationMessageDto.correlationKeys[it.key] = valueMapper.mapValue(it.value)
     }
-
     return this
   }
 
   override fun localVariablesEqual(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
-    val correlationKeys = correlationMessageDto.localCorrelationKeys
     variables.forEach {
-      correlationKeys[it.key] = if (it.value is TypedValue) {
-        VariableValueDto.fromTypedValue(it.value as TypedValue)
-      } else {
-        fromUntypedValue(it.value)
-      }
+      correlationMessageDto.localCorrelationKeys[it.key] = valueMapper.mapValue(it.value)
     }
     return this
   }
 
   override fun localVariableEquals(variableName: String, variableValue: Any): MessageCorrelationBuilder {
-    val correlationKeys = correlationMessageDto.localCorrelationKeys
-    correlationKeys[variableName] = if (variableValue is TypedValue) {
-      VariableValueDto.fromTypedValue(variableValue)
-    } else {
-      fromUntypedValue(variableValue)
-    }
+    correlationMessageDto.localCorrelationKeys[variableName] = valueMapper.mapValue(variableValue)
     return this
   }
 
@@ -171,16 +134,16 @@ class DelegatingMessageCorrelationBuilder(
 
   override fun correlateWithResultAndVariables(deserializeValues: Boolean): MessageCorrelationResultWithVariables {
     // FIXME: check if this flag can be used during de-serialization
-    logger.debug { "Ignoring 'deserializeValues' flag."}
+    logger.debug { "Ignoring 'deserializeValues' flag." }
     correlationMessageDto.isResultEnabled = true
     correlationMessageDto.isVariablesInResultEnabled = true
     val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
     return when (result.size) {
       0 -> throw IllegalStateException("No result received")
-      1 -> result[0].fromDto(processEngine = processEngine, objectMapper = objectMapper)
+      1 -> result[0].fromDto(valueMapper)
       else -> {
         logger.warn { "Multiple results received, returning the first one." }
-        result[0].fromDto(processEngine = processEngine, objectMapper = objectMapper)
+        result[0].fromDto(valueMapper)
       }
     }
   }
@@ -189,9 +152,9 @@ class DelegatingMessageCorrelationBuilder(
     correlationMessageDto.isResultEnabled = true
     correlationMessageDto.isVariablesInResultEnabled = true
     // FIXME: check if this flag can be used during de-serialization
-    logger.debug { "Ignoring 'deserializeValues' flag."}
+    logger.debug { "Ignoring 'deserializeValues' flag." }
     val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
-    return result.map { result[0].fromDto(processEngine = processEngine, objectMapper = objectMapper) }.toMutableList()
+    return result.map { result[0].fromDto(valueMapper) }.toMutableList()
   }
 
   override fun correlateAllWithResult(): MutableList<MessageCorrelationResult> {

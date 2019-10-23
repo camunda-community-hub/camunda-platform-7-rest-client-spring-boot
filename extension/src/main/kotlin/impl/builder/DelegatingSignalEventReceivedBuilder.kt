@@ -1,11 +1,9 @@
 package org.camunda.bpm.extension.feign.impl.builder
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
-import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
+import org.camunda.bpm.extension.feign.variables.ValueMapper
 
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
@@ -13,8 +11,7 @@ import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
 class DelegatingSignalEventReceivedBuilder(
   signalName: String,
   private val runtimeServiceClient: RuntimeServiceClient,
-  private val processEngine: ProcessEngine,
-  private val objectMapper: ObjectMapper
+  private val valueMapper: ValueMapper
 ) : SignalEventReceivedBuilder {
 
   private val signalDto = SignalDto().apply {
@@ -23,7 +20,7 @@ class DelegatingSignalEventReceivedBuilder(
   }
 
   override fun setVariables(variables: MutableMap<String, Any>): SignalEventReceivedBuilder {
-    signalDto.variables = variables.toVariableValueDtoMap()
+    signalDto.variables = valueMapper.mapValues(variables)
     return this
   }
 

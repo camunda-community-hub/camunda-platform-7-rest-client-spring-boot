@@ -1,9 +1,5 @@
 package org.camunda.bpm.extension.feign.variables
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.ProcessEngines
 import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultWithVariableDto
@@ -22,36 +18,32 @@ import org.camunda.bpm.extension.feign.adapter.ProcessInstanceAdapter
  */
 fun MessageCorrelationResultDto.fromDto(): MessageCorrelationResult {
 
+  val execution: ExecutionDto? by lazy { this.execution }
   val processInstance: ProcessInstanceDto? by lazy { this.processInstance }
   val resultType by lazy { this.resultType }
-  val execution: ExecutionDto? by lazy { this.execution }
 
   return object : MessageCorrelationResult {
-    override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
     override fun getExecution(): Execution? = if (execution != null) ExecutionAdapter(ExecutionBean.fromExecutionDto(execution!!)) else null
+    override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
     override fun getResultType(): MessageCorrelationResultType = resultType
   }
 }
 
 /**
  * Create result from DTO.
- * @param processEngine to retrieve the getValueTypeResolver
- * @param objectMapper for deserialization of complex structures.
+ * @param valueMapper to to map variable values.
  */
-fun MessageCorrelationResultWithVariableDto.fromDto(
-  processEngine: ProcessEngine = ProcessEngines.getDefaultProcessEngine(),
-  objectMapper: ObjectMapper = jacksonObjectMapper()
-): MessageCorrelationResultWithVariables {
+fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper): MessageCorrelationResultWithVariables {
 
-  val processInstance: ProcessInstanceDto? by lazy { this.processInstance }
-  val variables: MutableMap<String, VariableValueDto>? by lazy { this.variables }
   val execution: ExecutionDto? by lazy { this.execution }
+  val processInstance: ProcessInstanceDto? by lazy { this.processInstance }
   val resultType by lazy { this.resultType }
+  val variables: MutableMap<String, VariableValueDto>? by lazy { this.variables }
 
   return object : MessageCorrelationResultWithVariables {
-    override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
-    override fun getVariables(): VariableMap? = if (variables != null) VariableValueDto.toMap(variables, processEngine, objectMapper) else createVariables()
     override fun getExecution(): Execution? = if (execution != null) ExecutionAdapter(ExecutionBean.fromExecutionDto(execution!!)) else null
+    override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
     override fun getResultType(): MessageCorrelationResultType = resultType
+    override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!) else createVariables()
   }
 }

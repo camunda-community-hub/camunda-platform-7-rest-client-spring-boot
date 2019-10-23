@@ -53,9 +53,11 @@ class ProcessClient(
     variables.putValueTyped("STRING", stringValue("my string"))
     variables.putValueTyped("CORRELATION_DATE", dateValue(Date.from(Instant.now())))
     variables.putValueTyped("SHORT", shortValue(1))
+    variables.putValueTyped("DOUBLE", doubleValue(1.0))
     variables.putValueTyped("INTEGER", integerValue(65800))
     variables.putValueTyped("LONG", longValue(1L + Integer.MAX_VALUE))
     variables.putValueTyped("BYTES", byteArrayValue("Hello!".toByteArray()))
+    variables.putValueTyped("OBJECT", objectValue(MyDataStructure("string", 100)).create())
 
     val result = runtimeService
       .createMessageCorrelation("message_received")
@@ -69,3 +71,8 @@ class ProcessClient(
   }
 
 }
+
+/**
+ * Random structure.
+ */
+data class MyDataStructure(val string: String, val integer: Int)

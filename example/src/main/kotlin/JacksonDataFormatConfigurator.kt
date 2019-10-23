@@ -20,7 +20,6 @@ class JacksonDataFormatConfigurator : DataFormatConfigurator<JacksonJsonDataForm
       registerModule(KotlinModule())
       registerModule(Jdk8Module())
       registerModule(JavaTimeModule())
-      dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
       disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
     }
   }

@@ -3,7 +3,6 @@ package org.camunda.bpm.extension.feign.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
-import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
 import org.camunda.bpm.engine.rest.dto.runtime.StartProcessInstanceDto
 import org.camunda.bpm.engine.runtime.ProcessInstance
@@ -16,8 +15,7 @@ import org.camunda.bpm.extension.feign.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
 import org.camunda.bpm.extension.feign.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.feign.impl.builder.DelegatingSignalEventReceivedBuilder
-import org.camunda.bpm.extension.feign.variables.fromUntypedValue
-import org.camunda.bpm.extension.feign.variables.toVariableValueDtoMap
+import org.camunda.bpm.extension.feign.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
@@ -29,9 +27,11 @@ import org.springframework.stereotype.Component
 @Qualifier("remote")
 class RemoteRuntimeService(
   private val runtimeServiceClient: RuntimeServiceClient,
-  private val processEngine: ProcessEngine,
-  private val objectMapper: ObjectMapper
+  processEngine: ProcessEngine,
+  objectMapper: ObjectMapper
 ) : AbstractRuntimeServiceAdapter() {
+
+  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
 
   override fun correlateMessage(messageName: String) =
     doCorrelateMessage(messageName)
@@ -55,8 +55,7 @@ class RemoteRuntimeService(
     DelegatingMessageCorrelationBuilder(
       messageName = messageName,
       runtimeServiceClient = runtimeServiceClient,
-      processEngine = processEngine,
-      objectMapper = objectMapper)
+      valueMapper = valueMapper)
 
   /**
    * Null-safe version of message correlate.
@@ -70,8 +69,7 @@ class RemoteRuntimeService(
     val builder = DelegatingMessageCorrelationBuilder(
       messageName = messageName,
       runtimeServiceClient = runtimeServiceClient,
-      processEngine = processEngine,
-      objectMapper = objectMapper)
+      valueMapper = valueMapper)
 
     if (businessKey != null) {
       builder.processInstanceBusinessKey(businessKey)
@@ -121,7 +119,7 @@ class RemoteRuntimeService(
         this.caseInstanceId = caseInstanceId
       }
       if (variables != null) {
-        this.variables = variables.toVariableValueDtoMap()
+        this.variables = valueMapper.mapValues(variables)
       }
     }
     val instance = this.runtimeServiceClient.startProcessByKey(processDefinitionKey, startProcessInstance)
@@ -163,7 +161,7 @@ class RemoteRuntimeService(
         this.caseInstanceId = caseInstanceId
       }
       if (variables != null) {
-        this.variables = variables.toVariableValueDtoMap()
+        this.variables = valueMapper.mapValues(variables)
       }
     }
     val instance = this.runtimeServiceClient.startProcessById(processDefinitionId, startProcessInstance)
@@ -182,7 +180,7 @@ class RemoteRuntimeService(
   private fun doSignal(executionId: String, signalName: String? = null, signalData: Any? = null, processVariables: MutableMap<String, Any>? = null) {
     val trigger = ExecutionTriggerDto().apply {
       if (processVariables != null) {
-        this.variables = processVariables.toVariableValueDtoMap()
+        this.variables = valueMapper.mapValues(processVariables)
       }
     }
     runtimeServiceClient.triggerExecutionById(executionId, trigger)
@@ -201,10 +199,10 @@ class RemoteRuntimeService(
     doSignalEventReceived(signalName, executionId, processVariables)
 
   override fun createSignalEvent(signalName: String): SignalEventReceivedBuilder =
-    DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, processEngine, objectMapper)
+    DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, valueMapper)
 
   private fun doSignalEventReceived(signalName: String, executionId: String? = null, variables: MutableMap<String, Any>? = null) {
-    val builder = DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, processEngine, objectMapper)
+    val builder = DelegatingSignalEventReceivedBuilder(signalName, runtimeServiceClient, valueMapper)
     if (executionId != null) {
       builder.executionId(executionId)
     }
@@ -214,22 +212,22 @@ class RemoteRuntimeService(
     builder.send()
   }
 
-  override fun getVariablesLocal(executionId: String): MutableMap<String, Any> {
-    return runtimeServiceClient.getVariablesLocal(executionId, true).map {
-      it.key to it.value.value
-    }.toMap().toMutableMap()
+  override fun getVariablesLocal(executionId: String): MutableMap<String, Any?> {
+    return runtimeServiceClient.getVariablesLocal(executionId, true)
+      .mapValues { it.value.value }
+      .toMutableMap()
   }
 
-  override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+  override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
     return runtimeServiceClient.getVariablesLocal(executionId, true)
       .filter { variableNames.contains(it.key) }
-      .map {
-        it.key to it.value.value
-      }.toMap().toMutableMap()
+      .mapValues { it.value.value }
+      .toMutableMap()
   }
 
-  override fun getVariableLocal(executionId: String, variableName: String): Any {
-    return runtimeServiceClient.getVariableLocal(executionId, variableName, true).value
+  override fun getVariableLocal(executionId: String, variableName: String): Any? {
+    val dto = runtimeServiceClient.getVariableLocal(executionId, variableName, true)
+    return dto.value
   }
 
   override fun getVariablesLocalTyped(executionId: String): VariableMap =
@@ -237,59 +235,60 @@ class RemoteRuntimeService(
 
   override fun getVariablesLocalTyped(executionId: String, deserializeValues: Boolean): VariableMap {
     val variables = runtimeServiceClient.getVariablesLocal(executionId, deserializeValues)
-    return VariableValueDto.toMap(variables, processEngine, objectMapper)
+    return valueMapper.mapDtos(variables, deserializeValues)
   }
 
   override fun getVariablesLocalTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = runtimeServiceClient.getVariablesLocal(executionId, deserializeValues).filter { variableNames.contains(it.key) }
-    return VariableValueDto.toMap(variables, processEngine, objectMapper)
+    val variables = runtimeServiceClient
+      .getVariablesLocal(executionId, deserializeValues)
+      .filter { variableNames.contains(it.key) }
+    return valueMapper.mapDtos(variables, deserializeValues)
   }
 
   override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String): T? =
     getVariableLocalTyped(executionId, variableName, true)
 
   override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = runtimeServiceClient.getVariableLocal(executionId, variableName, deserializeValue)
-    return dto.toTypedValue(processEngine, objectMapper) as T
+    val dto = runtimeServiceClient
+      .getVariableLocal(executionId, variableName, deserializeValue)
+    return valueMapper.mapDto(dto, deserializeValue)
   }
 
   override fun removeVariablesLocal(executionId: String, variableNames: MutableCollection<String>) {
-    return runtimeServiceClient.changeVariablesLocal(executionId, PatchVariablesDto().apply {
-      deletions = variableNames.toList()
-    })
+    return runtimeServiceClient
+      .changeVariablesLocal(executionId, PatchVariablesDto()
+        .apply {
+          deletions = variableNames.toList()
+        })
   }
 
   override fun removeVariableLocal(executionId: String, variableName: String) {
     return runtimeServiceClient.deleteVariableLocal(executionId, variableName)
   }
 
-  override fun setVariableLocal(executionId: String, variableName: String, value: Any) {
-    val dto = if (value is TypedValue) {
-      VariableValueDto.fromTypedValue(value)
-    } else {
-      fromUntypedValue(value)
-    }
-    return runtimeServiceClient.setVariableLocal(executionId, variableName, dto)
+  override fun setVariableLocal(executionId: String, variableName: String, value: Any?) {
+    return runtimeServiceClient.setVariableLocal(executionId, variableName, valueMapper.mapValue(value))
   }
 
   override fun setVariablesLocal(executionId: String, variables: MutableMap<String, out Any>) {
     return runtimeServiceClient.changeVariablesLocal(executionId, PatchVariablesDto().apply {
-      modifications = variables.toVariableValueDtoMap()
+      modifications = valueMapper.mapValues(variables)
     })
   }
 
-  override fun getVariables(executionId: String): MutableMap<String, Any> {
-    return runtimeServiceClient.getVariables(executionId, true).map {
-      it.key to it.value.value
-    }.toMap().toMutableMap()
+  override fun getVariables(executionId: String): MutableMap<String, Any?> {
+    return runtimeServiceClient
+      .getVariables(executionId, true)
+      .mapValues { it.value.value }
+      .toMutableMap()
   }
 
-  override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
-    return runtimeServiceClient.getVariables(executionId, true)
+  override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
+    return runtimeServiceClient
+      .getVariables(executionId, true)
       .filter { variableNames.contains(it.key) }
-      .map {
-        it.key to it.value.value
-      }.toMap().toMutableMap()
+      .mapValues { it.value.value }
+      .toMutableMap()
   }
 
   override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String): T? {
@@ -298,22 +297,22 @@ class RemoteRuntimeService(
 
   override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
     val dto = runtimeServiceClient.getVariable(executionId, variableName, deserializeValue)
-    return dto.toTypedValue(processEngine, objectMapper) as T
+    return valueMapper.mapDto(dto, deserializeValue)
   }
 
   override fun getVariablesTyped(executionId: String): VariableMap {
     val variables = runtimeServiceClient.getVariables(executionId, true)
-    return VariableValueDto.toMap(variables, processEngine, objectMapper)
+    return valueMapper.mapDtos(variables)
   }
 
   override fun getVariablesTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = runtimeServiceClient.getVariables(executionId, true)
-    return VariableValueDto.toMap(variables, processEngine, objectMapper)
+    val variables = runtimeServiceClient.getVariables(executionId, deserializeValues)
+    return valueMapper.mapDtos(variables, deserializeValues)
   }
 
   override fun getVariablesTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
     val variables = runtimeServiceClient.getVariables(executionId, deserializeValues).filter { variableNames.contains(it.key) }
-    return VariableValueDto.toMap(variables, processEngine, objectMapper)
+    return valueMapper.mapDtos(variables)
   }
 
   override fun getVariable(executionId: String, variableName: String): Any {
@@ -330,18 +329,13 @@ class RemoteRuntimeService(
     return runtimeServiceClient.deleteVariable(executionId, variableName)
   }
 
-  override fun setVariable(executionId: String, variableName: String, value: Any) {
-    val dto = if (value is TypedValue) {
-      VariableValueDto.fromTypedValue(value)
-    } else {
-      fromUntypedValue(value)
-    }
-    return runtimeServiceClient.setVariable(executionId, variableName, dto)
+  override fun setVariable(executionId: String, variableName: String, value: Any?) {
+    return runtimeServiceClient.setVariable(executionId, variableName, valueMapper.mapValue(value))
   }
 
   override fun setVariables(executionId: String, variables: MutableMap<String, out Any>) {
     return runtimeServiceClient.changeVariables(executionId, PatchVariablesDto().apply {
-      modifications = variables.toVariableValueDtoMap()
+      modifications = valueMapper.mapValues(variables)
     })
   }
 }

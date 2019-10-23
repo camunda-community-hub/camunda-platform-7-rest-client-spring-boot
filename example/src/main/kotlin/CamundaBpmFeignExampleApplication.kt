@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.feign.example
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import feign.Logger
 import org.camunda.bpm.extension.feign.EnableCamundaFeign
 import org.springframework.boot.SpringApplication
@@ -22,4 +23,10 @@ class CamundaBpmFeignExampleApplication {
   @Bean
   fun feignLoggerLevel(): Logger.Level = Logger.Level.FULL
 
+
+  @Bean
+  fun objectMapper(): ObjectMapper {
+    val objectMapper = ObjectMapper()
+    return JacksonDataFormatConfigurator.configureObjectMapper(objectMapper)
+  }
 }

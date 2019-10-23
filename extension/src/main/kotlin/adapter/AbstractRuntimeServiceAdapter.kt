@@ -20,11 +20,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun getVariables(executionId: String): MutableMap<String, Any> {
+  override fun getVariables(executionId: String): MutableMap<String, Any?> {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+  override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
     implementedBy(RemoteRuntimeService::class)
   }
 
@@ -48,18 +48,18 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocal(executionId: String): MutableMap<String, Any> {
+  override fun getVariablesLocal(executionId: String): MutableMap<String, Any?> {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+  override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun getVariableLocal(executionId: String, variableName: String): Any {
+  override fun getVariableLocal(executionId: String, variableName: String): Any? {
     implementedBy(RemoteRuntimeService::class)
   }
-  override fun getVariable(executionId: String, variableName: String): Any {
+  override fun getVariable(executionId: String, variableName: String): Any? {
     implementedBy(RemoteRuntimeService::class)
   }
 
@@ -99,7 +99,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariableLocal(executionId: String, variableName: String, value: Any) {
+  override fun setVariableLocal(executionId: String, variableName: String, value: Any?) {
     implementedBy(RemoteRuntimeService::class)
   }
 
@@ -107,7 +107,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun setVariable(executionId: String, variableName: String, value: Any) {
+  override fun setVariable(executionId: String, variableName: String, value: Any?) {
     implementedBy(RemoteRuntimeService::class)
   }
 
