@@ -10,6 +10,9 @@ import org.camunda.bpm.model.dmn.DmnModelInstance
 import java.io.InputStream
 import java.util.*
 
+/**
+ * Adapter for implementing repository service.
+ */
 abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   override fun updateDecisionDefinitionHistoryTimeToLive(decisionDefinitionId: String?, historyTimeToLive: Int?) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
