@@ -9,6 +9,9 @@ import org.camunda.bpm.extension.feign.adapter.ProcessDefinitionAdapter
 import org.camunda.bpm.extension.feign.adapter.ProcessDefinitionBean
 import org.camunda.bpm.extension.feign.client.RepositoryServiceClient
 
+/**
+ * Implementation of the process definition query.
+ */
 class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositoryServiceClient) : ProcessDefinitionQueryImpl() {
 
   override fun list(): List<ProcessDefinition> {
@@ -39,6 +42,9 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
     }
   }
 
+  /**
+   * Fill the DTO from the builder.
+   */
   fun fillQueryDto(): ProcessDefinitionQueryDto {
     val query = ProcessDefinitionQueryDto()
     query.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)

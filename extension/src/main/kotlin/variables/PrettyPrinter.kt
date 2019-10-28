@@ -44,6 +44,9 @@ fun Execution.toPrettyString(): String =
     suspended: ${this.isSuspended}
 }"""
 
+/**
+ * Pretty print the process definition.
+ */
 fun ProcessDefinition.toPrettyString(): String =
   """
     id: ${this.id},
