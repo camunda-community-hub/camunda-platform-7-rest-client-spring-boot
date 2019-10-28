@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
+/**
+ * Feign client accessing the methods of repository service.
+ */
 @FeignClient(name = "remoteRepositoryService", url = "\${feign.client.config.remoteRepositoryService.url}")
 interface RepositoryServiceClient {
 

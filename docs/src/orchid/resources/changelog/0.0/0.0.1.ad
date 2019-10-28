@@ -4,14 +4,42 @@ version: 0.0.1
 
 == Features
 
-* Runtime Service # startProcessInstanceByKey
-* Runtime Service # startProcessInstanceById
-* Runtime Service # correlate
-* Runtime Service # createMessageCorrelation
-* Runtime Service # signal
-* Runtime Service # signalEventReceived
-* Runtime Service # createSignalEvent
+* Runtime Service
+  **  `# startProcessInstanceByKey`
+  **  `# startProcessInstanceById`
+  **  `# correlateMessage`
+  **  `# createMessageCorrelation`
+  **  `# signal`
+  **  `# signalEventReceived`
+  **  `# createSignalEvent`
+  **  `# getVariable`
+  **  `# getVariables`
+  **  `# setVariable`
+  **  `# setVariables`
+  **  `# removeVariable`
+  **  `# removeVariables`
+  **  `# getVariableTyped`
+  **  `# getVariablesTyped`
+  **  `# setVariableTyped`
+  **  `# setVariablesTyped`
+  **  `# getVariableLocal`
+  **  `# getVariablesLocal`
+  **  `# setVariableLocal`
+  **  `# setVariablesLocal`
+  **  `# removeVariableLocal`
+  **  `# removeVariablesLocal`
+  **  `# getVariableTypedLocal`
+  **  `# getVariablesTypedLocal`
+  **  `# setVariableTypedLocal`
+  **  `# setVariablesTypedLocal`
+* Repository Service
+  **  `# createProcessDefinitionQuery`
+
 * Example Application
 
 == Chore
+
 * Orchid Docs for GitHubPages
+* CI with Github Acions
+* Codecov for coverage
+* Codacy for general static anaysis

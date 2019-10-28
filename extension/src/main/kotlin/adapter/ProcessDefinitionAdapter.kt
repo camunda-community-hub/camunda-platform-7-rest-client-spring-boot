@@ -3,6 +3,9 @@ package org.camunda.bpm.extension.feign.adapter
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto
 
+/**
+ * Implementation of process definition delegating to a simple bean.
+ */
 class ProcessDefinitionAdapter(private val processDefinitionBean: ProcessDefinitionBean) : ProcessDefinition {
   override fun getVersionTag() = processDefinitionBean.versionTag
   override fun getName() = processDefinitionBean.name
@@ -21,6 +24,9 @@ class ProcessDefinitionAdapter(private val processDefinitionBean: ProcessDefinit
   override fun getHistoryTimeToLive() = processDefinitionBean.historyTimeToLive
 }
 
+/**
+ * POJO to hold the values of process definition.
+ */
 data class ProcessDefinitionBean(
   val versionTag: String?,
   val id: String?,
@@ -39,6 +45,10 @@ data class ProcessDefinitionBean(
   val version: Int
 ) {
   companion object {
+    /**
+     * Factory method to create bean from REST represenation.
+     */
+    @JvmStatic
     fun fromDto(dto: ProcessDefinitionDto) = ProcessDefinitionBean(
       versionTag = dto.versionTag,
       id = dto.id,

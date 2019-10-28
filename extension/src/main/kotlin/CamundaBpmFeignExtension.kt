@@ -9,13 +9,16 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 /**
- * Basi configuration of the extension.
+ * Basic configuration of the extension.
  */
 @Configuration
 @ComponentScan
 @EnableFeignClients
 class CamundaBpmFeignExtension {
 
+  /**
+   * Configures Jackson to use Camunda Mixins for JSON - DTO mapping.
+   */
   @Autowired(required = false)
   fun configureJackson(objectMapper: ObjectMapper) {
     objectMapper.registerModule(CamundaMixinModule())
