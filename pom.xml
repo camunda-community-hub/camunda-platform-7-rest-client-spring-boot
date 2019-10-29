@@ -16,7 +16,11 @@
   <name>${project.artifactId}</name>
   <description>Camunda BPM Feign</description>
   <url>https://github.com/holunda-io/camunda-bpm-feign/</url>
-
+  <!-- License Stuff -->
+  <inceptionYear>2019</inceptionYear>
+  <organization>
+    <name>Camunda Services GmbH</name>
+  </organization>
 
   <properties>
 
@@ -421,6 +425,30 @@
           <version>2.8.2</version>
         </plugin>
 
+        <!-- License -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <version>2.0.0</version>
+          <configuration>
+            <licenseName>camunda_apache_v2</licenseName>
+            <licenseResolver>${project.baseUri}src/license</licenseResolver>
+            <inceptionYear>2019</inceptionYear>
+            <roots>
+              <root>src/main/kotlin</root>
+              <root>src/test/kotlin</root>
+            </roots>
+          </configuration>
+          <executions>
+            <execution>
+              <id>update-file-header</id>
+              <goals>
+                <goal>update-file-header</goal>
+              </goals>
+              <phase>process-sources</phase>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
 
