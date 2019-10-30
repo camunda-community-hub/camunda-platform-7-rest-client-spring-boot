@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.adapter
+package org.camunda.bpm.extension.rest.adapter
 
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.batch.Batch
@@ -30,8 +30,8 @@ import org.camunda.bpm.engine.migration.MigrationPlanExecutionBuilder
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
-import org.camunda.bpm.extension.feign.impl.RemoteRuntimeService
-import org.camunda.bpm.extension.feign.impl.implementedBy
+import org.camunda.bpm.extension.rest.impl.RemoteRuntimeService
+import org.camunda.bpm.extension.rest.impl.implementedBy
 
 /**
  * Adapter for implementing runtime service.

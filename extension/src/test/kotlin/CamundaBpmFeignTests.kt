@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,5 +20,5 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign
+package org.camunda.bpm.extension.rest
 

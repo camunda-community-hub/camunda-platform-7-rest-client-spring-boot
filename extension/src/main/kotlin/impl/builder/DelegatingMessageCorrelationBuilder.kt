@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,8 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.impl.builder
+
+package org.camunda.bpm.extension.rest.impl.builder
 
 import mu.KLogging
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
@@ -29,9 +30,9 @@ import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
 import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
-import org.camunda.bpm.extension.feign.variables.ValueMapper
-import org.camunda.bpm.extension.feign.variables.fromDto
+import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
+import org.camunda.bpm.extension.rest.variables.ValueMapper
+import org.camunda.bpm.extension.rest.variables.fromDto
 
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.

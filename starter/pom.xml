@@ -4,19 +4,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.feign</groupId>
-    <artifactId>camunda-bpm-feign-parent</artifactId>
+    <groupId>org.camunda.bpm.extension.rest</groupId>
+    <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-bpm-feign-starter</artifactId>
+  <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
-      <groupId>org.camunda.bpm.extension.feign</groupId>
-      <artifactId>camunda-bpm-feign</artifactId>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-bpm-rest-client</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Feign -->

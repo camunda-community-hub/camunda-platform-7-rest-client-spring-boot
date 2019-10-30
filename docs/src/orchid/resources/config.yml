@@ -1,7 +1,7 @@
 site:
   about:
-    siteName: Camunda BPM Feign
-    siteDescription: A Java client for accessing Camunda BPM engine via REST.
+    siteName: Camunda REST client Spring-Boot
+    siteDescription: A Spring-Boot client for accessing Camunda BPM engine via REST.
     avatar: 'assets/media/favicon.ico'
 
 allPages:

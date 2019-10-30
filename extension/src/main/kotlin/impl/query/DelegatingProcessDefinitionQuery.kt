@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,16 +20,16 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.impl.query
+package org.camunda.bpm.extension.rest.impl.query
 
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionQueryDto
-import org.camunda.bpm.extension.feign.adapter.ProcessDefinitionAdapter
-import org.camunda.bpm.extension.feign.adapter.ProcessDefinitionBean
-import org.camunda.bpm.extension.feign.client.RepositoryServiceClient
+import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
+import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionBean
+import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
 
 /**
  * Implementation of the process definition query.

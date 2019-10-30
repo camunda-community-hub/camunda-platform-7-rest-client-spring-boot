@@ -38,7 +38,7 @@ call from your command line:
 
 [source,bash]
 ----
-./mvnw integration-test failsafe:verify
+./mvnw -Pitest
 ----
 
 === Project build modes and profiles
@@ -79,7 +79,7 @@ In order to publish documentation to github pages, please run from command line
 To start applications, either use your IDE and create
 run configuration for the class:
 
-* `org.camunda.bpm.extension.feign.example.CamundaBpmFeignExampleApplication`
+* `org.camunda.bpm.extension.rest.example.CamundaBpmFeignExampleApplication`
 
 Alternatively, you can run them from the command line:
 

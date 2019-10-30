@@ -4,16 +4,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.feign</groupId>
-    <artifactId>camunda-bpm-feign-parent</artifactId>
+    <groupId>org.camunda.bpm.extension.rest</groupId>
+    <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-bpm-feign</artifactId>
+  <artifactId>camunda-rest-client-spring-boot</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
 
   <properties>
+    <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
   </properties>
 

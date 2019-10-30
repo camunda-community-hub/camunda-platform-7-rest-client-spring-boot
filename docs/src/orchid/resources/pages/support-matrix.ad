@@ -1,0 +1,41 @@
+---
+
+title: Support Matrix
+pageId: 'support-matrix'
+
+---
+
+== {{ page.title }}
+
+== Runtime Service @ 0.0.1
+*  `# startProcessInstanceByKey`
+*  `# startProcessInstanceById`
+*  `# correlateMessage`
+*  `# createMessageCorrelation`
+*  `# signal`
+*  `# signalEventReceived`
+*  `# createSignalEvent`
+*  `# getVariable`
+*  `# getVariables`
+*  `# setVariable`
+*  `# setVariables`
+*  `# removeVariable`
+*  `# removeVariables`
+*  `# getVariableTyped`
+*  `# getVariablesTyped`
+*  `# setVariableTyped`
+*  `# setVariablesTyped`
+*  `# getVariableLocal`
+*  `# getVariablesLocal`
+*  `# setVariableLocal`
+*  `# setVariablesLocal`
+*  `# removeVariableLocal`
+*  `# removeVariablesLocal`
+*  `# getVariableTypedLocal`
+*  `# getVariablesTypedLocal`
+*  `# setVariableTypedLocal`
+*  `# setVariablesTypedLocal`
+
+== RepositoryService @ 0.0.1
+
+* `# createProcessDefinitionQuery`

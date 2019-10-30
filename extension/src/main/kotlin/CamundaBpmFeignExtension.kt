@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,10 +20,10 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign
+package org.camunda.bpm.extension.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.extension.feign.mixin.CamundaMixinModule
+import org.camunda.bpm.extension.rest.mixin.CamundaMixinModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.ComponentScan

@@ -1,6 +1,6 @@
 ---
 layout: frontPage
 components:
-  - type: pageContent
+  - type: pageContent 
   - type: readme
 ---

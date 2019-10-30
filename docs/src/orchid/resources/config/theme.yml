@@ -1,15 +1,15 @@
 useSidebarSearch: true
-showVersion: true
+showVersion: false
 primaryColor: '#B10000'
 trianglifyOptions:
   x_colors: ['#000', '#B10000', '#000']
 extraCss:
   - 'assets/css/asciidoc-admonitionblock.scss'
 social:
-  twitter: 'holisticon'
-  github: 'holunda-io/camunda-bpm-feign'
+  twitter: 'CamundaBPM'
+  github: 'camunda/camunda-rest-client-spring-boot'
   other:
-    - link: 'https://www.holunda.io/camunda-bpm-feign/'
+    - link: 'https://camunda.github.io/camunda-rest-client-spring-boot/'
       label: 'Home'
       icon: 'fas fa-home'
 menu:

@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,12 +20,13 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.impl
+
+package org.camunda.bpm.extension.rest.impl
 
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
-import org.camunda.bpm.extension.feign.adapter.AbstractRepositoryServiceAdapter
-import org.camunda.bpm.extension.feign.client.RepositoryServiceClient
-import org.camunda.bpm.extension.feign.impl.query.DelegatingProcessDefinitionQuery
+import org.camunda.bpm.extension.rest.adapter.AbstractRepositoryServiceAdapter
+import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
+import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 

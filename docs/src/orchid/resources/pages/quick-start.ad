@@ -13,9 +13,9 @@ First install the extension dependency:
 [source, xml]
 ----
 <dependency>
-  <groupId>org.camunda.bpm.extension.feign</groupId>
-  <artifactId>camunda-bpm-feign</artifactId>
-  <version>${camunda-bpm-feign.version}</version>
+  <groupId>org.camunda.bpm.extension.rest</groupId>
+  <artifactId>camunda-rest-client-spring-boot</artifactId>
+  <version>${camunda-rest-client-spring-boot.version}</version>
 </dependency>
 ----
 and configure Feign and Feign client:

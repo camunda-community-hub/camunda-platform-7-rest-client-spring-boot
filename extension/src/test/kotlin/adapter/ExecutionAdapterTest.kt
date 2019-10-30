@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.adapter
+package org.camunda.bpm.extension.rest.adapter
 
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
@@ -28,7 +28,7 @@ import org.junit.Test
 
 class ExecutionAdapterTest {
 
-  val executionBean = ExecutionBean(id = "id",
+  private val executionBean = ExecutionBean(id = "id",
     processInstanceId = "processInstanceId",
     ended = true,
     suspended = true,

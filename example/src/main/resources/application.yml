@@ -25,5 +25,5 @@ feign:
 
 logging:
   level:
-    org.camunda.bpm.extension.feign.client.RuntimeServiceClient: DEBUG
-    org.camunda.bpm.extension.feign.client.RepositoryServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG

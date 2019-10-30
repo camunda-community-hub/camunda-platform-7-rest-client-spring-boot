@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.impl
+package org.camunda.bpm.extension.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
@@ -31,13 +31,13 @@ import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
-import org.camunda.bpm.extension.feign.adapter.AbstractRuntimeServiceAdapter
-import org.camunda.bpm.extension.feign.adapter.InstanceBean
-import org.camunda.bpm.extension.feign.adapter.ProcessInstanceAdapter
-import org.camunda.bpm.extension.feign.client.RuntimeServiceClient
-import org.camunda.bpm.extension.feign.impl.builder.DelegatingMessageCorrelationBuilder
-import org.camunda.bpm.extension.feign.impl.builder.DelegatingSignalEventReceivedBuilder
-import org.camunda.bpm.extension.feign.variables.ValueMapper
+import org.camunda.bpm.extension.rest.adapter.AbstractRuntimeServiceAdapter
+import org.camunda.bpm.extension.rest.adapter.InstanceBean
+import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
+import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
+import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
+import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
+import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 

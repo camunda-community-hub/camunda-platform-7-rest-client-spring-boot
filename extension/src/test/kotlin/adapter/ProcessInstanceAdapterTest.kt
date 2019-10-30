@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.adapter
+package org.camunda.bpm.extension.rest.adapter
 
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto
@@ -28,7 +28,7 @@ import org.junit.Test
 
 class ProcessInstanceAdapterTest {
 
-  val processBean = InstanceBean(
+  private val processBean = InstanceBean(
     id = "id",
     ended = false,
     suspended = false,
@@ -39,7 +39,7 @@ class ProcessInstanceAdapterTest {
     processDefinitionId = "processDefId",
     rootProcessInstanceId = "root"
   )
-  val caseBean = InstanceBean(
+  private val caseBean = InstanceBean(
     id = "id",
     ended = false,
     suspended = false,

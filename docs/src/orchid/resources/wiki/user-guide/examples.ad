@@ -10,9 +10,7 @@ The example demonstrates the usage of the library for accessing a remote process
 
 image::{{baseUrl('assets/media/process_messaging.png')}}["Example messaging process" 60% 60%]
 
-
 The remote client (running technically in the same JVM, but accessing the engine via REST) executes the following steps:
-
 
 .Timing overview of the example
 [cols="20%,20%,60%", width="100%"]
@@ -32,9 +30,10 @@ The remote client (running technically in the same JVM, but accessing the engine
 
 The application uses the library by adding it to the classpath via Apache Maven dependency. Thast is:
 
-```xml
+[source,xml]
+----
     <dependency>
-      <groupId>org.camunda.bpm.extension.feign</groupId>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
       <artifactId>camunda-bpm-feign</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -46,7 +45,7 @@ The application uses the library by adding it to the classpath via Apache Maven 
       <groupId>io.github.openfeign</groupId>
       <artifactId>feign-httpclient</artifactId>
     </dependency>
-```
+----
 
 In order to activate the library, the `@EnableFeignClients` and `@EnableCamundaFeign` has been put
 on the configuration class of the application. The interesting part is now the `ProcessClient` component.
@@ -56,7 +55,8 @@ annotation. This annotation indicates that the remote version of the Camunda API
 
 In order to configure the library, a block of properties e.g. in `application.yml` is required:
 
-```yml
+[source,yml]
+----
 feign:
   client:
     config:
@@ -64,6 +64,5 @@ feign:
         url: "http://localhost:8083/rest/engine/default/"
       remoteRepositoryService:
         url: "http://localhost:8083/rest/engine/default/"
+----
 
-```
---

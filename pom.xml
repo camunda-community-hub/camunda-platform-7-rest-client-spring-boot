@@ -9,13 +9,14 @@
     <relativePath/>
   </parent>
 
-  <groupId>org.camunda.bpm.extension.feign</groupId>
-  <artifactId>camunda-bpm-feign-parent</artifactId>
+  <groupId>org.camunda.bpm.extension.rest</groupId>
+  <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>Camunda BPM Feign</description>
-  <url>https://github.com/holunda-io/camunda-bpm-feign/</url>
+  <description>Camunda REST Client Spring-Boot</description>
+  <url>https://github.com/camunda/camunda-rest-client-spring-boot/</url>
+
   <!-- License Stuff -->
   <inceptionYear>2019</inceptionYear>
   <organization>
@@ -69,7 +70,6 @@
 
   <dependencyManagement>
     <dependencies>
-
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -102,7 +102,6 @@
   </dependencyManagement>
 
   <dependencies>
-
     <!-- Kotlin -->
     <dependency>
       <groupId>io.github.microutils</groupId>
@@ -341,7 +340,7 @@
           </executions>
         </plugin>
 
-        <!-- source from kotlin -->
+        <!-- sources from kotlin -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
@@ -524,9 +523,6 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
-      <properties>
-        <skipFrontend>true</skipFrontend>
-      </properties>
       <build>
         <defaultGoal>integration-test failsafe:verify</defaultGoal>
         <plugins>
@@ -573,9 +569,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:holunda-io/camunda-bpm-feign.git</connection>
-    <url>scm:git:git@github.com:holunda-io/camunda-bpm-feign.git</url>
-    <developerConnection>scm:git:git@github.com:holunda-io/camunda-bpm-feign.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</connection>
+    <url>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</url>
+    <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -583,12 +579,12 @@
   <distributionManagement>
     <repository>
       <id>camunda-nexus</id>
-      <name>camunda bpm community extensions</name>
+      <name>Camunda BPM Community extensions</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
     </repository>
     <snapshotRepository>
       <id>camunda-nexus</id>
-      <name>camunda bpm community extensions snapshots</name>
+      <name>Camunda BPM Community extensions snapshots</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
       <!-- for maven 2 compatibility -->
       <uniqueVersion>true</uniqueVersion>
@@ -599,11 +595,9 @@
     <developer>
       <name>Simon Zambrovski</name>
       <organization>Holisticon AG</organization>
-      <organizationUrl>https://holisticon.de</organizationUrl>
-    </developer>
-    <developer>
-      <name>Jan Galinski</name>
-      <organization>Holisticon AG</organization>
+      <roles>
+        <role>Maintainer</role>
+      </roles>
       <organizationUrl>https://holisticon.de</organizationUrl>
     </developer>
   </developers>

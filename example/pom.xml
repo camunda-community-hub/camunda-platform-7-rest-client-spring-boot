@@ -4,26 +4,28 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.feign</groupId>
-    <artifactId>camunda-bpm-feign-parent</artifactId>
+    <groupId>org.camunda.bpm.extension.rest</groupId>
+    <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-bpm-feign-example</artifactId>
+  <artifactId>camunda-rest-client-spring-boot-example</artifactId>
   <name>${project.artifactId}</name>
   <packaging>jar</packaging>
 
   <properties>
+    <!-- Skip publication of the example to Maven Central -->
     <maven.deploy.skip>true</maven.deploy.skip>
-    <jgiven.version>0.18.2</jgiven.version>
+    <!-- Do meter coverage (I-Tests are part of the example project, because of complex dependency tree otherwise) -->
     <jacoco.skip>false</jacoco.skip>
+    <jgiven.version>0.18.2</jgiven.version>
   </properties>
 
   <dependencies>
 
     <dependency>
-      <groupId>org.camunda.bpm.extension.feign</groupId>
-      <artifactId>camunda-bpm-feign</artifactId>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -92,24 +94,6 @@
 
     <!-- Testing -->
     <dependency>
-      <groupId>com.tngtech.jgiven</groupId>
-      <artifactId>jgiven-junit</artifactId>
-      <version>${jgiven.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.tngtech.jgiven</groupId>
-      <artifactId>jgiven-spring</artifactId>
-      <version>${jgiven.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.tngtech.jgiven</groupId>
-      <artifactId>jgiven-html5-report</artifactId>
-      <version>${jgiven.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
@@ -117,7 +101,7 @@
     <dependency>
       <groupId>io.holunda.testing</groupId>
       <artifactId>camunda-bpm-jgiven</artifactId>
-      <version>0.0.2</version>
+      <version>0.0.5</version>
       <scope>test</scope>
     </dependency>
 
@@ -163,6 +147,7 @@
   </build>
 
   <profiles>
+    <!-- Duplicating profiles to make them work -->
     <profile>
       <id>camunda-ce</id>
       <activation>

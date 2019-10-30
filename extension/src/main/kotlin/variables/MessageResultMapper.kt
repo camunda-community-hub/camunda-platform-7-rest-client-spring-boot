@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,8 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.variables
+
+package org.camunda.bpm.extension.rest.variables
 
 import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
@@ -30,10 +31,10 @@ import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables.createVariables
-import org.camunda.bpm.extension.feign.adapter.ExecutionAdapter
-import org.camunda.bpm.extension.feign.adapter.ExecutionBean
-import org.camunda.bpm.extension.feign.adapter.InstanceBean
-import org.camunda.bpm.extension.feign.adapter.ProcessInstanceAdapter
+import org.camunda.bpm.extension.rest.adapter.ExecutionAdapter
+import org.camunda.bpm.extension.rest.adapter.ExecutionBean
+import org.camunda.bpm.extension.rest.adapter.InstanceBean
+import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
 
 /**
  * Create result from DTO.

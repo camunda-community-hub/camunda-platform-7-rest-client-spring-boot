@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-bpm-feign
+ * camunda-rest-client-spring-boot
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.feign.adapter
+package org.camunda.bpm.extension.rest.adapter
 
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
 import org.camunda.bpm.engine.runtime.Execution
