@@ -10,5 +10,4 @@ or Java API.
 
 While Camunda Engine Core API provides well-designed and easy-accessible programming interface for Java, the
 usage of REST interface requires additional development. In order to enable the usage of REST API from Java
-and allow for easy integration into Spring Boot applications, the Camunda BPM Feign library has been developed.
-
+and allow for easy integration into Spring Boot applications, the Camunda BPM openfeign library has been developed.

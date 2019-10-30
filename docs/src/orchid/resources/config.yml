@@ -2,7 +2,7 @@ site:
   about:
     siteName: Camunda BPM Feign
     siteDescription: A Java client for accessing Camunda BPM engine via REST.
-    avatar: 'assets/media/favicon.png'
+    avatar: 'assets/media/favicon.ico'
 
 allPages:
   components:

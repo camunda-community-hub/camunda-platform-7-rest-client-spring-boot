@@ -20,14 +20,16 @@ image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log" lin
 If you just want to start using the library, please consult our link:https://www.holunda.io/camunda-bpm-feign/quick-start[Quick Start]
 guide.
 
+== Working Example
+
+We provides a working example demonstating some of the features of the library. See our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide/examples[Examples] section for usage and configuration.
+
+
 == User Guide
 
 If you have any questions regarding configuration of Camunda BPM Feign please
-have a look to our primary documentation - the link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide[User Guide].
+have a look at our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide[User Guide].
 
-== Working Example
-
-See our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide/examples[Examples] for usage and configuration.
 
 == License
 

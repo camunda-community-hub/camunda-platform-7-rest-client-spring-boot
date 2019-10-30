@@ -54,7 +54,7 @@ automatically.
 
 We are using Orchid for generation of a static site documentation and rely on AsciiDoc as much as possible.
 
-TIP: If you want to develop your docs in 'live' mode, run `./mvnw -f docs -Pdocs-serve` and access
+TIP: If you want to develop your docs in 'live' mode, run `./mvnw -f docs -Pserve-docs` and access
 the http://localhost:8080/ from your browser.
 
 For creation of documentation, please run:
