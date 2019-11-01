@@ -569,9 +569,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</connection>
-    <url>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</url>
-    <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-rest-client.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</connection>
+    <url>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</url>
+    <developerConnection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

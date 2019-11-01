@@ -13,8 +13,8 @@ To get sources of the project, please execute:
 
 [source,bash]
 ----
-git clone https://github.com/holunda-io/camunda-bpm-feign.git
-cd camunda-bpm-feign
+git clone https://github.com/camunda/camunda-rest-client-spring-boot.git
+cd camunda-rest-client-spring-boot
 ----
 
 We are using gitflow in our git SCM. That means that you should start from `develop` branch,
