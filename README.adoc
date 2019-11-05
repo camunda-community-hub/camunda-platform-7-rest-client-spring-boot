@@ -1,6 +1,6 @@
-[cols="a,a,a,a,a,a"]
+[cols="a,a,a,a,a,a,a"]
 |===
-| // travis
+| // gitaction
 image::https://github.com/camunda/camunda-rest-client-spring-boot/workflows/default/badge.svg[caption="Build Status", link=https://github.com/camunda/camunda-rest-client-spring-boot/actions]
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot]
@@ -12,6 +12,8 @@ image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff
 image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-rest-client-spring-boot/license"]
 | // changelog
 image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log", link="https://camunda.github.io/camunda-rest-client-spring-boot/changelog"]
+| // openhub
+<script type='text/javascript' src='https://www.openhub.net/p/camunda-rest-client-spring-boot/widgets/project_thin_badge?format=js'></script>
 
 |===
 
