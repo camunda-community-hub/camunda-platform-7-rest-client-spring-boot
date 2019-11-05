@@ -13,7 +13,7 @@ image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="Licen
 | // changelog
 image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log", link="https://camunda.github.io/camunda-rest-client-spring-boot/changelog"]
 | // openhub
-image::https://www.openhub.net/p/camunda-rest-client-spring-boot/widgets/project_thin_badge?format=js[caption="OpenHub"]
+image::https://www.openhub.net/p/camunda-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-rest-client-spring-boot"]
 
 |===
 
