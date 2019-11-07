@@ -39,7 +39,7 @@ to your configuration:
 [source, java]
 ----
 @Configuration
-@EnableCamundaFeign
+@EnableCamundaRestClient
 public class MyClientConfiguration {
 
 }

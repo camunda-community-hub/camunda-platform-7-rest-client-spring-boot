@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,12 +26,10 @@ import com.tngtech.jgiven.Stage
 import com.tngtech.jgiven.base.ScenarioTestBase
 import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
-import feign.Logger
-import org.camunda.bpm.extension.rest.EnableCamundaFeign
+import org.camunda.bpm.extension.rest.EnableCamundaRestClient
 import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -71,6 +69,6 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
 
 
 @EnableJGiven
-@EnableCamundaFeign
+@EnableCamundaRestClient
 @SpringBootApplication
 class TestApplication

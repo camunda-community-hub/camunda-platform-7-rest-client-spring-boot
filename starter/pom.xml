@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>org.camunda.bpm.extension.rest</groupId>
-      <artifactId>camunda-bpm-rest-client</artifactId>
+      <artifactId>camunda-rest-client-spring-boot</artifactId>
       <version>${project.version}</version>
     </dependency>
     <!-- Feign -->
