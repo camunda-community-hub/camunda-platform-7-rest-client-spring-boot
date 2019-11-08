@@ -2,7 +2,7 @@ site:
   about:
     siteName: Camunda REST client Spring-Boot
     siteDescription: A Spring-Boot client for accessing Camunda BPM engine via REST.
-    avatar: 'assets/media/favicon.ico'
+    avatar: 'assets/media/favicon.png'
 
 allPages:
   components:
@@ -29,4 +29,4 @@ services:
     stages:
       - type: 'githubPages'
         username: 'zambrovski'
-        repo: 'holunda-io/camunda-bpm-feign'
+        repo: 'camunda/camunda-rest-client-spring-boot'

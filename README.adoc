@@ -1,17 +1,19 @@
-[cols="a,a,a,a,a,a"]
+[cols="a,a,a,a,a,a,a"]
 |===
 | // travis
-image::https://github.com/holunda-io/camunda-bpm-feign/workflows/default/badge.svg[caption="Build Status", link=https://github.com/holunda-io/camunda-bpm-feign/actions]
+image::https://travis-ci.org/camunda/camunda-rest-client-spring-boot.svg=branch=develop[caption="Build Status", link=https://travis-ci.org/camunda/camunda-rest-client-spring-boot]
 | // maven central
-image::https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/io.holunda.taskpool/camunda-bpm-feign]
+image::https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot]
 | // codecov
-image::https://codecov.io/gh/holunda-io/camunda-bpm-feign/branch/master/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/holunda-io/camunda-bpm-feign]
+image::https://codecov.io/gh/camunda/camunda-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda/camunda-rest-client-spring-boot]
 | // codacy
-image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-bpm-feign?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-bpm-feign&utm_campaign=Badge_Grade_Dashboard]
+image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-rest-client-spring-boot?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-rest-client-spring-boot&utm_campaign=Badge_Grade_Dashboard]
 | // license
-image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://www.holunda.io/camunda-bpm-feign/license"]
+image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-rest-client-spring-boot/license"]
 | // changelog
-image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log", link="https://www.holunda.io/camunda-bpm-feign/changelog"]
+image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log", link="https://camunda.github.io/camunda-rest-client-spring-boot/changelog"]
+| // openhub
+image::https://www.openhub.net/p/camunda-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-rest-client-spring-boot"]
 
 |===
 
@@ -19,34 +21,34 @@ image::https://img.shields.io/badge/CHANGES----blue.svg[caption="Change log", li
 
 This library aims to provide a REST client for Camunda REST API for SpringBoot. In doing so it offers "remote" implementations of Camunda
 Engine Java API, excluding the link:https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client]. This project is
-highly iterative and releases the functionality in small increments. Please check the link:https://www.holunda.io/camunda-bpm-feign/supported-matrix[supported matrix]
+highly iterative and releases the functionality in small increments. Please check the link:https://camunda.github.io/camunda-rest-client-spring-boot/supported-matrix[supported matrix]
 to find out if the functionality you require is already supported by the library.
 
 
 
 == Quick Start
 
-If you just want to start using the library, please consult our link:https://www.holunda.io/camunda-bpm-feign/quick-start[Quick Start]
+If you just want to start using the library, please consult our link:https://camunda.github.io/camunda-rest-client-spring-boot/quick-start[Quick Start]
 guide.
 
 == Working Example
 
-We provides a working example demonstrating some of the features of the library. See our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide/examples[Examples] section for usage and configuration.
+We provides a working example demonstrating some of the features of the library. See our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples[Examples] section for usage and configuration.
 
 
 == User Guide
 
 If you have any questions regarding configuration of Camunda BPM Feign please
-have a look at our link:https://www.holunda.io/camunda-bpm-feign/wiki/user-guide[User Guide].
+have a look at our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide[User Guide].
 
 
 == License
 
-This library is developed under link:https://www.holunda.io/camunda-bpm-feign/license[Apache License 2].
+This library is developed under link:https://camunda.github.io/camunda-rest-client-spring-boot/license[Apache License 2].
 
 == Contribution
 
-If you want to contribute to this project, feel free to do so. Start with link:http://www.holunda.io/camunda-bpm-feign/wiki/developer-guide/contribution[Contributing guide].
+If you want to contribute to this project, feel free to do so. Start with link:http://camunda.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution[Contributing guide].
 
 == Maintainer
 

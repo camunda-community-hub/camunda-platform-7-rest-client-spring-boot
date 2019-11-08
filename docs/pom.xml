@@ -117,10 +117,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <!--
         <baseUrl>https://camunda.github.io/camunda-rest-client-spring-boot/</baseUrl>
-        -->
-        <baseUrl>https://www.holunda.io/camunda-bpm-feign/</baseUrl>
       </properties>
       <build>
         <defaultGoal>orchid:deploy</defaultGoal>
