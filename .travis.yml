@@ -6,8 +6,6 @@ cache:
   directories:
   - $HOME/.m2
 #
-# Load GPG secrets and make mvnw executable
-#
 before_install:
   - chmod +x mvnw
 #  - sudo apt-get install jq
@@ -20,12 +18,12 @@ install: true
 # Verify
 #
 script:
-  - ./mvnw --settings .travis/settings.xml clean verify -T4 -U -B
+  - ./mvnw clean verify -T4 -U -B
 #
 # Coveralls
 #
 after_success:
-#- bash <(curl -s https://codecov.io/bash)
-#- java -jar ./codacy-coverage-reporter-assembly.jar report -l Kotlin -r view/view-api/target/site/jacoco-ut/jacoco.xml --partial
-#- java -jar ./codacy-coverage-reporter-assembly.jar final
+  - bash <(curl -s https://codecov.io/bash)
+  - java -jar ./codacy-coverage-reporter-assembly.jar report -l Kotlin -r example/target/site/jacoco-ut/jacoco.xml --partial
+  - java -jar ./codacy-coverage-reporter-assembly.jar final
 
