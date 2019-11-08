@@ -8,8 +8,6 @@ cache:
 #
 before_install:
   - chmod +x mvnw
-#  - sudo apt-get install jq
-  - curl https://github.com/codacy/codacy-coverage-reporter/releases/download/6.0.2/codacy-coverage-reporter-6.0.2-assembly.jar -o ./codacy-coverage-reporter-assembly.jar
 #
 # Skip installation
 #
@@ -24,6 +22,4 @@ script:
 #
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - java -jar ./codacy-coverage-reporter-assembly.jar report -l Kotlin -r example/target/site/jacoco-ut/jacoco.xml --partial
-  - java -jar ./codacy-coverage-reporter-assembly.jar final
 
