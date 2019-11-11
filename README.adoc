@@ -1,7 +1,7 @@
 [cols="a,a,a,a,a,a,a"]
 |===
 | // travis
-image::https://travis-ci.org/camunda/camunda-rest-client-spring-boot.svg=branch=develop[caption="Build Status", link=https://travis-ci.org/camunda/camunda-rest-client-spring-boot]
+image::https://travis-ci.org/camunda/camunda-rest-client-spring-boot.svg?branch=develop[caption="Build Status", link=https://travis-ci.org/camunda/camunda-rest-client-spring-boot]
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot]
 | // codecov

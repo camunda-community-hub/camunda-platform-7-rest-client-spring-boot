@@ -74,6 +74,15 @@ In order to publish documentation to github pages, please run from command line
 ./mvnw -f docs -Pdeploy-docs -DgithubToken=GITHUB_TOKEN
 ----
 
+==== Generation of JavaDoc and Sources
+
+By default, the sources and javadoc API documentation are not generated from the source code. To enable this:
+
+[source,bash]
+----
+./mvnw clean install -Prelease
+----
+
 ==== Starting example application
 
 To start applications, either use your IDE and create
@@ -90,12 +99,12 @@ Alternatively, you can run them from the command line:
 
 === Continuous Integration
 
-Travis CI is building all branches on commit hook. In addition, a private-hosted Jenkins CI
-is used to build the releases.
+Travis CI is building all branches on commit hook.
+In addition, a private-hosted Jenkins CI by Camunda is used to build the releases.
 
 === Release Management
 
-Release management has been set-up for use of Sonatype Nexus (= Maven Central)
+Release management has been set-up for use of Sonatype Nexus (= Maven Central) and are produced by Camunda Jenkins.
 
 ==== What modules get deployed to repository
 
@@ -107,54 +116,3 @@ Every module is enabled by default. If you want to change this, please provide t
 ----
 
 inside the corresponding `pom.xml`. Currently, all examples are _EXCLUDED_ from publication into Maven Central.
-
-==== Trigger new release
-
-WARNING: This operation requires special permissions.
-
-We use gitflow for development (see http://nvie.com/posts/a-successful-git-branching-model/[A successful git branching model]
-for more details). You could use gitflow with native git commands, but then you would have
-to change the versions in the poms manually. Therefore we use the
-https://github.com/aleksandr-m/gitflow-maven-plugin/[mvn gitflow plugin], which handles this and other
-things nicely.
-
-You can build a release with:
-
-[source,sh]
-----
-./mvnw gitflow:release-start
-./mvnw gitflow:release-finish
-----
-
-This will update the versions in the `pom.xml` s accordingly and push the release tag to the `master` branch
-and update the `develop` branch for the new development version.
-
-==== Trigger a deploy
-
-WARNING: This operation requires special permissions.
-
-Currently, CI allows for deployment of artifacts to Maven Central and is executed on Holisticon Jenkins.
-This means, that a push to `master` branch will start the corresponding build job, and if successful the
-artifacts will get into `Staging Repositories` of OSS Sonatype without manual intervention.
-
-If you still want to execute the the deployment from your local machine, you need to execute the
-following command on the `master` branch:
-
-[source,sh]
-----
-./mvnw clean deploy -B -DskipTests -Prelease
-----
-
-==== Release to public repositories
-
-WARNING: This operation requires special permissions.
-
-The deploy job will publish the artifacts to Nexus OSS staging repositories. Don't forget to close and release the
-repository to enable it's sync with Maven Central.
-
-
-==== References
-
-* https://www.phillip-kruger.com/post/continuous_integration_to_maven_central/ (primary)
-* https://docs.travis-ci.com/user/deployment
-* https://blog.travis-ci.com/2017-03-30-deploy-maven-travis-ci-packagecloud/

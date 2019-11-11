@@ -548,9 +548,7 @@
     <profile>
       <id>release</id>
       <activation>
-        <property>
-          <name>release</name>
-        </property>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
         <gpg.executable>gpg</gpg.executable>
