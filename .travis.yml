@@ -16,7 +16,7 @@ install: true
 # Verify
 #
 script:
-  - ./mvnw clean verify -T4 -U -B
+  - ./mvnw clean verify -Pitest -T4 -U -B
 #
 # Coveralls
 #
