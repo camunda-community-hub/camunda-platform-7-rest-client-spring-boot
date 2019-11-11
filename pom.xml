@@ -549,10 +549,7 @@
     <profile>
       <id>release</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
-        <property>
-          <name>!skipRelease</name>
-        </property>
+        <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
         <gpg.executable>gpg</gpg.executable>

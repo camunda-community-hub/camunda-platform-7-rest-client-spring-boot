@@ -74,13 +74,13 @@ In order to publish documentation to github pages, please run from command line
 ./mvnw -f docs -Pdeploy-docs -DgithubToken=GITHUB_TOKEN
 ----
 
-==== Skipping JavaDoc and Sources generation
+==== Generation of JavaDoc and Sources
 
-By default, the sources and javadoc API documentation is generated from the source code. To skip this step, run:
+By default, the sources and javadoc API documentation are not generated from the source code. To enable this:
 
 [source,bash]
 ----
-./mvnw clean install -DskipRelease
+./mvnw clean install -Prelease
 ----
 
 ==== Starting example application
