@@ -549,8 +549,9 @@
     <profile>
       <id>release</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
-          <name>release</name>
+          <name>!skipRelease</name>
         </property>
       </activation>
       <properties>
