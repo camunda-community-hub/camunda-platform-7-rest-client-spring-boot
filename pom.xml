@@ -65,7 +65,6 @@
     <module>extension</module>
     <module>starter</module>
     <module>example</module>
-    <module>docs</module>
   </modules>
 
   <dependencyManagement>
@@ -380,28 +379,6 @@
           </executions>
         </plugin>
 
-        <!-- gitflow -->
-        <plugin>
-          <groupId>com.amashchenko.maven.plugin</groupId>
-          <artifactId>gitflow-maven-plugin</artifactId>
-          <version>1.11.0</version>
-          <configuration>
-            <gitFlowConfig>
-              <productionBranch>master</productionBranch>
-              <developmentBranch>develop</developmentBranch>
-              <featureBranchPrefix>feature/</featureBranchPrefix>
-              <releaseBranchPrefix>release/</releaseBranchPrefix>
-              <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-              <supportBranchPrefix>support/</supportBranchPrefix>
-              <origin>origin</origin>
-            </gitFlowConfig>
-            <useSnapshotInHotfix>true</useSnapshotInHotfix>
-            <useSnapshotInRelease>true</useSnapshotInRelease>
-            <keepBranch>false</keepBranch>
-            <pushRemote>true</pushRemote>
-          </configuration>
-        </plugin>
-
         <!-- To sign the artifacts -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -559,6 +536,58 @@
       </build>
     </profile>
 
+    <profile>
+      <id>docs</id>
+      <modules>
+        <module>docs</module>
+      </modules>
+    </profile>
+
+    <!--
+      Profile creating all artifacts: JARs, POMs, Sources, JavaDoc and all signatures.
+    -->
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <properties>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+        <gpg.keyname>${env.GPG_KEYNAME}</gpg.keyname>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jetbrains.dokka</groupId>
+            <artifactId>dokka-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <gpgArguments>
+                <arg>--batch</arg>
+                <arg>--yes</arg>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 
   <licenses>
@@ -590,6 +619,19 @@
       <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
+
+
+  <pluginRepositories>
+    <!-- required for Dokka (Kotlin javadoc) -->
+    <pluginRepository>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>https://jcenter.bintray.com/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 
   <developers>
     <developer>
