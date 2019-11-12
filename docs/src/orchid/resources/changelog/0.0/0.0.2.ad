@@ -40,6 +40,5 @@ version: 0.0.1
 == Chore
 
 * Orchid Docs for GitHubPages
-* CI with Github Acions
+* CI with Travis
 * Codecov for coverage
-* Codacy for general static anaysis

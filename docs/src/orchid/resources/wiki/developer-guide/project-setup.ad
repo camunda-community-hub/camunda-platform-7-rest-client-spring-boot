@@ -5,7 +5,7 @@ pageId: 'project-setup'
 
 == {{ page.title }}
 
-If you are interested in developing and building the project please follow the following instruction.
+If you are interested in developing and building the project please read the following the instructions carefully.
 
 === Version control
 
@@ -17,7 +17,7 @@ git clone https://github.com/camunda/camunda-rest-client-spring-boot.git
 cd camunda-rest-client-spring-boot
 ----
 
-We are using gitflow in our git SCM. That means that you should start from `develop` branch,
+We are using gitflow in our git SCM for naming brnaches. That means that you should start from `develop` branch,
 create a `feature/<name>` out of it and once it is completed create a pull request containing
 it. Please squash your commits before submitting and use semantic commit messages, if possible.
 
@@ -52,7 +52,8 @@ automatically.
 
 ==== Documentation
 
-We are using Orchid for generation of a static site documentation and rely on AsciiDoc as much as possible.
+We are using https://github.com/JavaEden/Orchid[JavaEden Orchid] for generation of a static site documentation and
+rely on AsciiDoc as much as possible.
 
 TIP: If you want to develop your docs in 'live' mode, run `./mvnw -f docs -Pserve-docs` and access
 the http://localhost:8080/ from your browser.
@@ -100,7 +101,7 @@ Alternatively, you can run them from the command line:
 === Continuous Integration
 
 Travis CI is building all branches on commit hook.
-In addition, a private-hosted Jenkins CI by Camunda is used to build the releases.
+In addition, a private-hosted Jenkins CI by Camunda is used to build the releases from `master` branch.
 
 === Release Management
 
@@ -108,7 +109,7 @@ Release management has been set-up for use of Sonatype Nexus (= Maven Central) a
 
 ==== What modules get deployed to repository
 
-Every module is enabled by default. If you want to change this, please provide the property
+Every Maven module is enabled by default. If you want to change this, please provide the property
 
 [source,xml]
 ----
