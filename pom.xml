@@ -63,7 +63,8 @@
   <modules>
     <module>extension</module>
     <module>starter</module>
-    <module>example</module>
+    <module>starter-provided</module>
+    <module>examples</module>
   </modules>
 
   <dependencyManagement>
@@ -159,7 +160,6 @@
       <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
 

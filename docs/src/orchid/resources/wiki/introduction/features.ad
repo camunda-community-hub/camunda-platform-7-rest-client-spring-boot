@@ -22,7 +22,7 @@ The library supports the following features:
 **  Delete local variables: `#removeVariableLocal()`,`#removeVariablesLocal()`
 
 * `RepositoryService`
-**  Process start by key: `#createProcessDefinitionQuery()`
+**  Query for process definitions: `#createProcessDefinitionQuery()`
 
 
 === Disclaimer ===
