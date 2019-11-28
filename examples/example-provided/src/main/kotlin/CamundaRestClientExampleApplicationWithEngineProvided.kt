@@ -21,35 +21,25 @@
  * #L%
  */
 
-package org.camunda.bpm.extension.rest.example.engine.app
+package org.camunda.bpm.extension.rest.example.processapplication
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
-import org.camunda.bpm.extension.rest.example.engine.client.ProcessClientConfiguration
-import org.camunda.bpm.extension.rest.example.engine.process.JacksonDataFormatConfigurator
-import org.camunda.bpm.extension.rest.example.engine.process.ProcessDelegatesConfiguration
+import org.camunda.bpm.extension.rest.example.processapplication.process.JacksonDataFormatConfigurator
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Import
 import org.springframework.scheduling.annotation.EnableScheduling
 
 /**
  * Starts example application.
- * Profile "disableClient" disables the scheduled rest client.
+ * Property "client.enabled" controls the scheduled rest client.
  */
 fun main(args: Array<String>) {
   runApplication<CamundaRestClientExampleApplicationWithEngineProvided>(*args)
 }
 
 @SpringBootApplication
-@Import(
-  ProcessDelegatesConfiguration::class,
-  /**
-   * Specify the Spring Profile "disableClient" to disable the scheduled client.
-   */
-  ProcessClientConfiguration::class
-)
 @EnableScheduling
 @EnableCamundaRestClient
 class CamundaRestClientExampleApplicationWithEngineProvided {

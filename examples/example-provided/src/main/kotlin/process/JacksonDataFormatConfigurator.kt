@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.example.engine.process
+package org.camunda.bpm.extension.rest.example.processapplication.process
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature

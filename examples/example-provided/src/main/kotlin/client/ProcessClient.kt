@@ -21,7 +21,7 @@
  * #L%
  */
 
-package org.camunda.bpm.extension.rest.example.engine.client
+package org.camunda.bpm.extension.rest.example.processapplication.client
 
 import mu.KLogging
 import org.camunda.bpm.engine.RepositoryService
@@ -30,11 +30,13 @@ import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.bpm.extension.rest.variables.toPrettyString
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.*
 
-@Component
+/**
+ * This client could be a spring component, but is built using configuration
+ * class [ProcessClientConfiguration] in order to control its activation via property.
+ */
 class ProcessClient(
   @Qualifier("remote") private val runtimeService: RuntimeService,
   @Qualifier("remote") private val repositoryService: RepositoryService

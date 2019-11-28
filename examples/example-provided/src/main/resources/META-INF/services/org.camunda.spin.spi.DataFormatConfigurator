@@ -1,1 +1,1 @@
-org.camunda.bpm.extension.rest.example.engine.process.JacksonDataFormatConfigurator
+org.camunda.bpm.extension.rest.example.processapplication.process.JacksonDataFormatConfigurator

@@ -20,23 +20,27 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.example.client
+package org.camunda.bpm.extension.rest.example.standalone
 
 import feign.Logger
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.scheduling.annotation.EnableScheduling
 
+fun main(args: Array<String>) {
+  runApplication<CamundaRestClientExampleApplication>(*args)
+}
+
 @SpringBootApplication
-@EnableScheduling
 @EnableCamundaRestClient
-class CamundaRestClientOnlyExampleApplication {
+@EnableScheduling
+class CamundaRestClientExampleApplication {
 
   // full debug of feign client
   @Bean
   fun feignLoggerLevel(): Logger.Level = Logger.Level.FULL
-
 }
+
 

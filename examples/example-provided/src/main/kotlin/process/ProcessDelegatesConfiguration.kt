@@ -21,7 +21,7 @@
  * #L%
  */
 
-package org.camunda.bpm.extension.rest.example.engine.process
+package org.camunda.bpm.extension.rest.example.processapplication.process
 
 import mu.KLogging
 import org.camunda.bpm.engine.delegate.JavaDelegate

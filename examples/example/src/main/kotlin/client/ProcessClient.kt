@@ -21,7 +21,7 @@
  * #L%
  */
 
-package org.camunda.bpm.extension.rest.example.client.client
+package org.camunda.bpm.extension.rest.example.standalone.client
 
 import mu.KLogging
 import org.camunda.bpm.engine.RepositoryService
@@ -43,7 +43,7 @@ class ProcessClient(
   companion object : KLogging()
 
   @Scheduled(initialDelay = 8_000, fixedRate = Integer.MAX_VALUE.toLong())
-  fun retriveProcessDefinition() {
+  fun retrieveProcessDefinition() {
 
     logger.info { "CLIENT-90: Retrieving process definition" }
     val count = repositoryService.createProcessDefinitionQuery().count()
