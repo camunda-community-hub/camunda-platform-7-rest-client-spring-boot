@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: RestClientExample
+server:
+  port: 8082
+feign:
+  client:
+    config:
+      remoteRuntimeService:
+        url: "http://localhost:8083/rest/engine/default/"
+      remoteRepositoryService:
+        url: "http://localhost:8083/rest/engine/default/"
+
+logging:
+  level:
+    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG

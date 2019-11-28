@@ -4,8 +4,8 @@ title: Solution Idea
 
 == {{ page.title }}
 
-The library uses Feign embedded into Spring-Cloud-Feign-Starter and provides
-implementations of Java Camunda Engine Core API, accessing the remote engine via REST API.
+The library uses the popular Java REST client OpenFeign embedded into Spring-Cloud-Feign-Starter
+and provides implementations of Java Camunda Engine Core API, accessing the remote engine via REST API.
 
 In doing so, the remote version of the Camunda Engine API can be easily integrated in
-existing application.
+existing application using provided SpringBoot Starter.

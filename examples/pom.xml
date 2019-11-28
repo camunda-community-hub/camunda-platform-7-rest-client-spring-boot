@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.camunda.bpm.extension.rest</groupId>
+    <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
+    <version>0.0.3-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camunda-rest-client-spring-boot-examples-root</artifactId>
+  <name>${project.artifactId}</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- Skip publication of the example to Maven Central -->
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <modules>
+    <module>example</module>
+    <module>example-provided</module>
+  </modules>
+
+
+</project>
