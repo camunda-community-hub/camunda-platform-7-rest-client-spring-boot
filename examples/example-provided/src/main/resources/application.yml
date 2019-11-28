@@ -1,7 +1,7 @@
 #
 # Controls a client running in the same process.
 #
-client.enabled: true
+client.enabled: false
 
 spring:
   application:
