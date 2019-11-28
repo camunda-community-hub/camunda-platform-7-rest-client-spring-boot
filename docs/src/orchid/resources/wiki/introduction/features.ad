@@ -7,6 +7,8 @@ title: Features
 The library supports the following features:
 
 - Usage of openfeign library to allow for high-customizable REST client
+- Provides a SpringBoot starter for usage in standalone client mode
+- Provides a SpringBoot starter for usage inside a process application
 - Implemented Services:
 * `RuntimeService`
 **  Process start by key: `#startProcessInstanceByKey()`
