@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@
 
 package org.camunda.bpm.extension.rest.client
 
+import impl.CompleteTaskDto
 import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.rest.dto.VariableValueDto
@@ -42,6 +43,13 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @FeignClient(name = "remoteRuntimeService", url = "\${feign.client.config.remoteRuntimeService.url}")
 interface RuntimeServiceClient {
+
+  /**
+   * Completes external task
+   * @see https://docs.camunda.org/manual/latest/reference/rest/external-task/post-complete
+   */
+  @RequestMapping(method = [RequestMethod.POST], value = ["/external-task/{id}/complete"], consumes = ["application/json"])
+  fun completeTask(@PathVariable("id") id: String, completeTask: CompleteTaskDto)
 
   /**
    * Correlates message.
