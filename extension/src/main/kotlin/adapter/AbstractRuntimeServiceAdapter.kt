@@ -137,18 +137,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  open fun completeTask(externalTaskId: String, taskWorkerId: String) {
-    implementedBy(RemoteRuntimeService::class)
-  }
-
-  open fun completeTask(externalTaskId: String, taskWorkerId: String, updateVariables: MutableMap<String, out Any>) {
-    implementedBy(RemoteRuntimeService::class)
-  }
-
-  open fun completeTask(externalTaskId: String, taskWorkerId: String, updateVariables: MutableMap<String, out Any>, updateLocalVariables: MutableMap<String, out Any>) {
-    implementedBy(RemoteRuntimeService::class)
-  }
-
   override fun correlateMessage(messageName: String) {
     implementedBy(RemoteRuntimeService::class)
   }

@@ -20,6 +20,10 @@ feign:
     config:
       remoteRuntimeService:
         url: "http://localhost:8083/rest/engine/default/"
+      remoteExternalTaskService:
+        url: "http://localhost:8083/rest/engine/default/"
+      remoteRepositoryService:
+        url: "http://localhost:8083/rest/engine/default/"
 
 logging:
   level:

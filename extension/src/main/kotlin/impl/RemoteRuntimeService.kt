@@ -23,7 +23,6 @@
 package org.camunda.bpm.extension.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import impl.CompleteTaskDto
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
@@ -360,22 +359,6 @@ class RemoteRuntimeService(
   override fun setVariables(executionId: String, variables: MutableMap<String, out Any>) {
     return runtimeServiceClient.changeVariables(executionId, PatchVariablesDto().apply {
       modifications = valueMapper.mapValues(variables)
-    })
-  }
-
-  override fun completeTask(externalTaskId: String, taskWorkerId: String ) {
-    this.completeTask(externalTaskId, taskWorkerId, mutableMapOf())
-  }
-
-  override fun completeTask(externalTaskId: String, taskWorkerId: String, updateVariables: MutableMap<String, out Any> ) {
-    this.completeTask(externalTaskId, taskWorkerId, updateVariables, mutableMapOf())
-  }
-
-  override fun completeTask(externalTaskId: String, taskWorkerId: String, updateVariables: MutableMap<String, out Any>, updateLocalVariables: MutableMap<String, out Any> ) {
-    return runtimeServiceClient.completeTask(externalTaskId, CompleteTaskDto().apply {
-      variables = valueMapper.mapValues(updateVariables)
-      localVariables = valueMapper.mapValues(updateLocalVariables)
-      workerId = taskWorkerId
     })
   }
 }

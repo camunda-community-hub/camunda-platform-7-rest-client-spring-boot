@@ -23,7 +23,6 @@
 
 package org.camunda.bpm.extension.rest.client
 
-import impl.CompleteTaskDto
 import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.rest.dto.VariableValueDto
@@ -43,13 +42,6 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @FeignClient(name = "remoteRuntimeService", url = "\${feign.client.config.remoteRuntimeService.url}")
 interface RuntimeServiceClient {
-
-  /**
-   * Completes external task
-   * @see https://docs.camunda.org/manual/latest/reference/rest/external-task/post-complete
-   */
-  @RequestMapping(method = [RequestMethod.POST], value = ["/external-task/{id}/complete"], consumes = ["application/json"])
-  fun completeTask(@PathVariable("id") id: String, completeTask: CompleteTaskDto)
 
   /**
    * Correlates message.

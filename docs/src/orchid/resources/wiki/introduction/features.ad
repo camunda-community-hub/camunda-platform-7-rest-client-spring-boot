@@ -27,7 +27,3 @@ The library supports the following features:
 **  Query for process definitions: `#createProcessDefinitionQuery()`
 
 
-=== Disclaimer ===
-
-Please note that this library aims to support the entire REST library of Camunda, excluding External Task Endpoint.
-If you need the external task client, please use: https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client]
