@@ -7,7 +7,7 @@
 name: Deploy artifacts with Maven
 on:
   push:
-    branches: [master]
+    branches: [master,develop]
   release:
     types: [published]
 jobs:
@@ -18,6 +18,8 @@ jobs:
     - name: Detect release type
       run: |-
         if [[ "${{github.event.ref}}" == "refs/heads/master" ]]; then
+          echo "::set-output name=type::SNAPSHOT"
+        elif [[ "${{github.event.ref}}" == "refs/heads/develop" ]]; then
           echo "::set-output name=type::SNAPSHOT"
         else
           echo "::set-output name=type::RELEASE"
