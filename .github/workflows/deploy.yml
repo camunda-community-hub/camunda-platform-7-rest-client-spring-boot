@@ -72,8 +72,8 @@ jobs:
       run: mvn -B clean install
     - name: Publish package (${{ steps.release-detection.outputs.type }})
       run: |-
-        echo -e "${MVN_CENTRAL_GPG_KEY_SEC}" gpg -q --allow-secret-key-import --import
-        echo -e "${MVN_CENTRAL_GPG_KEY_PUB}" gpg -q --allow-secret-key-import --import
+        echo -e "${MVN_CENTRAL_GPG_KEY_SEC}" | gpg -q --allow-secret-key-import --import
+        echo -e "${MVN_CENTRAL_GPG_KEY_PUB}" | gpg -q --allow-secret-key-import --import
         mvn -B deploy -DskiptTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
 
         sed -i 's@:camunda-nexus:.*$@:central:https://oss.sonatype.org/content/repositories/snapshots/@g' target/nexus-staging/deferred/.index
@@ -103,5 +103,5 @@ jobs:
         git fetch
         git checkout -b ${{ github.event.repository.default_branch }} --track origin/${{ github.event.repository.default_branch }}
         mvn -B org.apache.maven.plugins:maven-release-plugin:update-versions -DgenerateBackupPoms=false
-        git add **pom.xml
+        git add "**pom.xml"
         mvn -B scm:checkin -Dbasedir=. -Dmessage="release(v${{ github.event.release.tag_name }}): bump version" -DdeveloperConnectionUrl="scm:git:https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${{ github.event.repository.full_name }}.git"
