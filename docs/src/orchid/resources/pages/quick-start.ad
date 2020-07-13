@@ -7,6 +7,9 @@ pageId: 'quick-start'
 
 == {{ page.title }}
 
+TIP: If you are using the extension from an application containing Camunda BPM Engine classes on the classpath, please check the
+link:../user-guide/examples#_usage_inside_a_process_application[Working Example] section of our user guide.
+
 == Install Dependency
 
 First install the extension dependency:
@@ -14,7 +17,7 @@ First install the extension dependency:
 ----
 <dependency>
   <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot</artifactId>
+  <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
   <version>${camunda-rest-client-spring-boot.version}</version>
 </dependency>
 ----
@@ -84,3 +87,4 @@ public class MyClient {
     }
 }
 ----
+

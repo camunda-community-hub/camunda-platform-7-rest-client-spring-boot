@@ -26,4 +26,8 @@ The library supports the following features:
 * `RepositoryService`
 **  Query for process definitions: `#createProcessDefinitionQuery()`
 
+* `ExternalTaskService`
+We are not aiming to replace the existing link:https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client],
+but still provide an implementation.
+** Complete a task by id: `#complete()`
 

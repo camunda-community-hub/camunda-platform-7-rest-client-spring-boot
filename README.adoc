@@ -21,8 +21,7 @@ image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="spon
 == Introduction
 
 This library aims to provide a REST client for Camunda REST API for SpringBoot. In doing so it offers "remote" implementations of Camunda
-Engine Java API, excluding the link:https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client]. This project is
-highly iterative and releases the functionality in small increments. Please check the link:https://camunda.github.io/camunda-rest-client-spring-boot/supported-matrix[supported matrix]
+Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda.github.io/camunda-rest-client-spring-boot/supported-matrix[supported matrix]
 to find out if the functionality you require is already supported by the library.
 
 
