@@ -15,6 +15,10 @@ link:../user-guide/examples#_usage_inside_a_process_application[Working Example]
 First install the extension dependency:
 [source, xml]
 ----
+<properties>
+  <camunda-rest-client-spring-boot.version>0.0.3</camunda-rest-client-spring-boot.version>
+</properties>
+
 <dependency>
   <groupId>org.camunda.bpm.extension.rest</groupId>
   <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
@@ -25,6 +29,22 @@ and configure Feign and Feign client:
 
 [source, xml]
 ----
+<properties>
+  <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+</properties>
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-dependencies</artifactId>
+      <version>${spring-cloud.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
 <dependency>
   <groupId>org.springframework.cloud</groupId>
   <artifactId>spring-cloud-starter-openfeign</artifactId>
