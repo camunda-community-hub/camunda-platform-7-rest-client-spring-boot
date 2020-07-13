@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-rest-client-spring-boot-example
+ * camunda-rest-client-spring-boot-itest
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%

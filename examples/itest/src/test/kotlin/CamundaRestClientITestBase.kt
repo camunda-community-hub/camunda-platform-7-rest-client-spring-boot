@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-rest-client-spring-boot-example
+ * camunda-rest-client-spring-boot-itest
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -22,6 +22,7 @@
  */
 package org.camunda.bpm.extension.rest.itest
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.tngtech.jgiven.Stage
 import com.tngtech.jgiven.base.ScenarioTestBase
 import com.tngtech.jgiven.integration.spring.EnableJGiven
@@ -30,6 +31,7 @@ import org.camunda.bpm.extension.rest.EnableCamundaRestClient
 import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -71,4 +73,11 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
 @EnableJGiven
 @EnableCamundaRestClient
 @SpringBootApplication
-class TestApplication
+class TestApplication {
+
+  @Bean
+  fun objectMapper(): ObjectMapper {
+    return JacksonDataFormatConfigurator.configureObjectMapper(ObjectMapper())
+  }
+
+}

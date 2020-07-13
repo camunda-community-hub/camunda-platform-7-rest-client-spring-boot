@@ -85,4 +85,12 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
   override fun setPriority(externalTaskId: String?, priority: Long) {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
+
+  override fun getTopicNames(): MutableList<String> {
+    TODO("Not yet implemented")
+  }
+
+  override fun getTopicNames(withLockedTasks: Boolean, withUnlockedTasks: Boolean, withRetriesLeft: Boolean): MutableList<String> {
+    TODO("Not yet implemented")
+  }
 }

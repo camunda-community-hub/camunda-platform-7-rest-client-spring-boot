@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_079e7zg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.3.4">
-  <bpmn:process id="Process_0biwiwv" name="Wait state" isExecutable="true">
+  <bpmn:process id="test_external_task" name="Test External Task" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_06np618</bpmn:outgoing>
     </bpmn:startEvent>
@@ -14,7 +14,7 @@
       <bpmn:outgoing>SequenceFlow_1fe8jql</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0a69pwc" sourceRef="IntermediateThrowEvent_0tqszx5" targetRef="EndEvent_12fzlxj" />
-    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_0tqszx5">
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_0tqszx5" name="Signal arrived">
       <bpmn:incoming>SequenceFlow_1fe8jql</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0a69pwc</bpmn:outgoing>
       <bpmn:signalEventDefinition signalRef="Signal_0issd3t" />
@@ -22,7 +22,7 @@
   </bpmn:process>
   <bpmn:signal id="Signal_0issd3t" name="never_happens" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0biwiwv">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test_external_task">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -46,6 +46,9 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="IntermediateCatchEvent_06ur7on_di" bpmnElement="IntermediateThrowEvent_0tqszx5">
         <dc:Bounds x="432" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="417" y="142" width="68" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

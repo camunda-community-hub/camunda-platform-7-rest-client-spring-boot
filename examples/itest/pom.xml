@@ -9,16 +9,17 @@
     <version>0.0.3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-rest-client-spring-boot-example-provided</artifactId>
+  <artifactId>camunda-rest-client-spring-boot-itest</artifactId>
   <name>${project.artifactId}</name>
-  <description>This example demonstrates how communication with local and remote engine in the
-    same application may look like.
-  </description>
+  <description>Integration tests of the client.</description>
   <packaging>jar</packaging>
 
   <properties>
     <!-- Skip publication of the example to Maven Central -->
     <maven.deploy.skip>true</maven.deploy.skip>
+    <jgiven.version>0.18.2</jgiven.version>
+    <!-- Do meter coverage -->
+    <jacoco.skip>false</jacoco.skip>
   </properties>
 
   <dependencies>
@@ -29,7 +30,6 @@
       <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
@@ -41,6 +41,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
     </dependency>
     <dependency>
       <groupId>org.camunda.bpm</groupId>
@@ -69,7 +73,6 @@
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
 
-
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
@@ -79,49 +82,46 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.holunda.testing</groupId>
+      <artifactId>camunda-bpm-jgiven</artifactId>
+      <version>0.0.6</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
     <plugins>
+
+      <!-- JGiven Reports -->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot.version}</version>
+        <groupId>com.tngtech.jgiven</groupId>
+        <artifactId>jgiven-maven-plugin</artifactId>
+        <version>${jgiven.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <format>html</format>
+        </configuration>
       </plugin>
     </plugins>
   </build>
 
-  <profiles>
-    <!-- Duplicating profiles to make them work -->
-    <profile>
-      <id>camunda-ce</id>
-      <activation>
-        <property>
-          <name>!camunda-ee</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.camunda.bpm.springboot</groupId>
-          <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>camunda-ee</id>
-      <activation>
-        <property>
-          <name>camunda-ee</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.camunda.bpm.springboot</groupId>
-          <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
 
+  <profiles>
     <profile>
       <id>license</id>
       <build>
@@ -133,7 +133,6 @@
         </plugins>
       </build>
     </profile>
-
   </profiles>
 
 </project>

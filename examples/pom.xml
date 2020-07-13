@@ -20,6 +20,8 @@
   <modules>
     <module>example</module>
     <module>example-provided</module>
+    <module>itest</module>
+    <module>coverage-report</module>
   </modules>
 
 

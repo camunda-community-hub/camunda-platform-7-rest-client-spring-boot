@@ -14,16 +14,16 @@ camunda:
     filter:
       create: true
 server:
-  port: 8083
+  port: 8085
 feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8085/engine-rest/"
       remoteExternalTaskService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8085/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8085/engine-rest/"
 
 logging:
   level:

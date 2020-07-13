@@ -1,7 +1,7 @@
 #
 # Controls a client running in the same process.
 #
-client.enabled: false
+client.enabled: true
 
 spring:
   application:
@@ -24,9 +24,11 @@ feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
+      remoteExternalTaskService:
+        url: "http://localhost:8083/engine-rest/"
 
 logging:
   level:

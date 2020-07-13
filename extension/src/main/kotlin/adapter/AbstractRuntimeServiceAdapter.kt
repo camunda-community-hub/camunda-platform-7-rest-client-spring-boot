@@ -24,6 +24,7 @@ package org.camunda.bpm.extension.rest.adapter
 
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.batch.Batch
+import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.migration.MigrationPlan
 import org.camunda.bpm.engine.migration.MigrationPlanBuilder
 import org.camunda.bpm.engine.migration.MigrationPlanExecutionBuilder
@@ -224,7 +225,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-
   override fun messageEventReceived(messageName: String?, executionId: String?) {
     TODO("not implemented")
   }
@@ -244,6 +244,16 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun createMigrationPlan(sourceProcessDefinitionId: String?, targetProcessDefinitionId: String?): MigrationPlanBuilder {
     TODO("not implemented")
   }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>,
+                                           processInstanceQuery: ProcessInstanceQuery?,
+                                           historicProcessInstanceQuery: HistoricProcessInstanceQuery?,
+                                           deleteReason: String?,
+                                           skipCustomListeners: Boolean,
+                                           skipSubprocesses: Boolean): Batch {
+    TODO("Not yet implemented")
+  }
+
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
     TODO("not implemented")

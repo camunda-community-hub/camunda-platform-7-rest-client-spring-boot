@@ -1,0 +1,5 @@
+----------------------------------------
+Camunda REST Client SpringBoot I-TEST
+----------------------------------------
+SpringBoot: ${spring-boot.version}
+
