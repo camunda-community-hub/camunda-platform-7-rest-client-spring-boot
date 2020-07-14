@@ -7,7 +7,7 @@ pageId: 'support-matrix'
 
 == {{ page.title }}
 
-== Runtime Service @ 0.0.1
+== Runtime Service @ 0.0.4
 *  `# startProcessInstanceByKey`
 *  `# startProcessInstanceById`
 *  `# correlateMessage`
@@ -36,6 +36,10 @@ pageId: 'support-matrix'
 *  `# setVariableTypedLocal`
 *  `# setVariablesTypedLocal`
 
-== RepositoryService @ 0.0.1
+== RepositoryService @ 0.0.4
 
 * `# createProcessDefinitionQuery`
+
+== ExternalTaskService @ 0.0.4
+
+* `# complete`

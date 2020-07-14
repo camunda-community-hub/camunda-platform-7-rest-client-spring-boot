@@ -27,7 +27,10 @@ import com.tngtech.jgiven.Stage
 import com.tngtech.jgiven.base.ScenarioTestBase
 import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
+import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
+import org.camunda.bpm.extension.rest.exception.RemoteProcessEngineException
+import org.junit.jupiter.api.fail
 import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
@@ -67,6 +70,18 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
   open lateinit var remoteService: SERVICE
 
   open lateinit var localService: SERVICE
+
+  fun exception_is_thrown_caused_by(clazz: Class<out Throwable>?, callable: () -> Unit) {
+    try {
+      callable.invoke()
+      fail { "Expecting exception caused by $clazz" }
+    } catch (e: Exception) {
+      assertThat(e).isInstanceOf(RemoteProcessEngineException::class.java)
+      if (clazz != null) {
+        assertThat((e as RemoteProcessEngineException).cause).isInstanceOf(clazz)
+      }
+    }
+  }
 }
 
 

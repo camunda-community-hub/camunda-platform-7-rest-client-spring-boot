@@ -41,7 +41,6 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
       .and()
       .process_is_started_by_key(processDefinitionKey)
-      .and()
 
     whenever()
       .remoteService

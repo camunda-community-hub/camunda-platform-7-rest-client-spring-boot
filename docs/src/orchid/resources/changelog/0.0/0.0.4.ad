@@ -1,0 +1,11 @@
+---
+version: 0.0.4
+---
+
+== Features
+
+* Implement `ExternalTaskService#complete` see #34
+* Extract I-Tests to separate module
+* Bump versions to SpringBoot 2.2.8 and Camunda BPM 7.13
+
+

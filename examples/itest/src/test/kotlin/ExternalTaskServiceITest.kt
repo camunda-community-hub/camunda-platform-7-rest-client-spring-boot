@@ -24,6 +24,7 @@ package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
 import org.camunda.bpm.engine.ExternalTaskService
+import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.variable.Variables.*
 import org.junit.Test
 
@@ -48,16 +49,26 @@ class ExternalTaskServiceITest : CamundaRestClientITestBase<ExternalTaskService,
 
     whenever()
       .remoteService.complete(given().externalTaskId, "worker-id",
-      createVariables()
-        .putValue("VAR1", "NEW-VAL1")
-        .putValue("VAR2", "VAL2")
-        .putValueTyped("VAR3", stringValue("VAL3")),
-      createVariables()
-        .putValue("LOCAL", "LOCAL-VAL")
-    )
+        createVariables()
+          .putValue("VAR1", "NEW-VAL1")
+          .putValue("VAR2", "VAL2")
+          .putValueTyped("VAR3", stringValue("VAL3")),
+        createVariables()
+          .putValue("LOCAL", "LOCAL-VAL")
+      )
 
     then()
       .execution_is_waiting_for_signal()
 
   }
+
+  @Test
+  fun `should fail completing non-existing external task`() {
+    then()
+      .exception_is_thrown_caused_by(null) {
+        whenever()
+          .remoteService.complete("not-existing", "worker-id")
+      }
+  }
+
 }

@@ -24,6 +24,7 @@ package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.MismatchingMessageCorrelationException
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.junit.Test
@@ -81,6 +82,25 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
             .activityIdIn(userTaskId)
             .singleResult()
         ).isNotNull
+      }
+  }
+
+  @Test
+  fun `should fail to correlate message with waiting instance`() {
+    val processDefinitionKey = processDefinitionKey()
+    val messageName = "myEventMessage"
+    val userTaskId = "user-task"
+    given()
+      .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
+      .and()
+      .process_is_started_by_key(processDefinitionKey)
+      .and()
+
+    then()
+      .exception_is_thrown_caused_by(clazz = MismatchingMessageCorrelationException::class.java) {
+        whenever()
+          .remoteService
+          .correlateMessage("wrong-message")
       }
   }
 

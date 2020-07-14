@@ -202,7 +202,7 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     return self()
   }
 
-  fun execution_is_waiting_for_signal(): RuntimeServiceActionStage  {
+  fun execution_is_waiting_for_signal(): RuntimeServiceActionStage {
     execution = localService
       .createExecutionQuery()
       .processDefinitionKey(processDefinition.key)
