@@ -41,7 +41,7 @@ class FeignErrorDecoderConfiguration {
   companion object : KLogging()
 
   // FIXME: move to configuration properties
-  val wrapHttpCodes = listOf(400, 404, 500)
+  val wrapHttpCodes = listOf(400, 500)
 
   @Bean
   fun errorDecoder(): ErrorDecoder {
