@@ -6,7 +6,7 @@ on:
   push:
     branches-ignore: [master,develop]
   schedule:
-  - cron: '2 2 * * 1-5' # run nightly develop builds on weekdays
+  - cron: '2 2 * * 1-7' # run nightly develop builds everyday
 
 jobs:
   build:
