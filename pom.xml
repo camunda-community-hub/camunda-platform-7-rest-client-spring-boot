@@ -1,11 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.camunda</groupId>
     <artifactId>camunda-release-parent</artifactId>
     <version>3.7</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>org.camunda.bpm.extension.rest</groupId>
@@ -63,7 +64,6 @@
     <module>extension</module>
     <module>starter</module>
     <module>starter-provided</module>
-    <module>examples</module>
   </modules>
 
   <dependencyManagement>
@@ -445,10 +445,22 @@
 
   <profiles>
     <!--
-  Profile for selecting the Camunda BPM Engine version.
-  CE stands for Community Edition
-  EE stands for Enterprise Edition
-  -->
+    Profile to skip example publish
+    -->
+    <profile>
+      <id>examples</id>
+      <activation>
+        <property>!skipExamples</property>
+      </activation>
+      <modules>
+        <module>examples</module>
+      </modules>
+    </profile>
+    <!--
+    Profile for selecting the Camunda BPM Engine version.
+    CE stands for Community Edition
+    EE stands for Enterprise Edition
+    -->
     <profile>
       <id>camunda-ce</id>
       <activation>
