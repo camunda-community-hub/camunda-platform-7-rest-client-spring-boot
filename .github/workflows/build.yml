@@ -27,3 +27,5 @@ jobs:
           ${{ runner.os }}-maven-
     - name: Run Maven
       run: mvn -B clean install com.mycila:license-maven-plugin:check
+    - name: Run I-Tests
+      run: mvn -B -Pitest
