@@ -17,7 +17,7 @@ git clone https://github.com/camunda/camunda-rest-client-spring-boot.git
 cd camunda-rest-client-spring-boot
 ----
 
-We are using gitflow in our git SCM for naming brnaches. That means that you should start from `develop` branch,
+We are using gitflow in our git SCM for naming branches. That means that you should start from `develop` branch,
 create a `feature/<name>` out of it and once it is completed create a pull request containing
 it. Please squash your commits before submitting and use semantic commit messages, if possible.
 
@@ -84,28 +84,30 @@ By default, the sources and javadoc API documentation are not generated from the
 ./mvnw clean install -Prelease
 ----
 
-==== Starting example application
+==== Starting example applications
 
 To start applications, either use your IDE and create
 run configuration for the class:
 
-* `org.camunda.bpm.extension.rest.example.CamundaBpmFeignExampleApplication`
+* `org.camunda.bpm.extension.rest.example.standalone.CamundaRestClientExampleApplication`
+* `org.camunda.bpm.extension.rest.example.processapplication.CamundaRestClientExampleApplicationWithEngineProvided`
 
 Alternatively, you can run them from the command line:
 
 [source,bash]
 ----
-./mvn spring-boot:run -f example
+./mvn spring-boot:run -f examples/example
+./mvn spring-boot:run -f examples/example-provided
 ----
 
 === Continuous Integration
 
-Travis CI is building all branches on commit hook.
-In addition, a private-hosted Jenkins CI by Camunda is used to build the releases from `master` branch.
+Travis CI is building all branches on commit hook (for codecov).
+In addition, a Github Actions are used to build PRs and all branches.
 
 === Release Management
 
-Release management has been set-up for use of Sonatype Nexus (= Maven Central) and are produced by Camunda Jenkins.
+The release is produced by using the github feature to "Publish a Release".
 
 ==== What modules get deployed to repository
 
@@ -116,4 +118,5 @@ Every Maven module is enabled by default. If you want to change this, please pro
 <maven.deploy.skip>true</maven.deploy.skip>
 ----
 
-inside the corresponding `pom.xml`. Currently, all examples are _EXCLUDED_ from publication into Maven Central.
+inside the corresponding `pom.xml`. Currently, all `examples` and `docs`
+are _EXCLUDED_ from publication into Maven Central.
