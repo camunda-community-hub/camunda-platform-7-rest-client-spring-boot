@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-rest-client-spring-boot-example
+ * camunda-rest-client-spring-boot-itest
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -41,7 +41,6 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
       .and()
       .process_is_started_by_key(processDefinitionKey)
-      .and()
 
     whenever()
       .remoteService

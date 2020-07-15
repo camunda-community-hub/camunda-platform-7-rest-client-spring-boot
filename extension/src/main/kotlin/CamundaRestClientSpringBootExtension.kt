@@ -23,8 +23,10 @@
 package org.camunda.bpm.extension.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
 import org.camunda.bpm.extension.rest.mixin.CamundaMixinModule
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -36,6 +38,7 @@ import org.springframework.context.annotation.Import
 @Configuration
 @ComponentScan
 @EnableFeignClients
+@EnableConfigurationProperties(CamundaRestClientProperties::class)
 class CamundaRestClientSpringBootExtension {
 
   /**

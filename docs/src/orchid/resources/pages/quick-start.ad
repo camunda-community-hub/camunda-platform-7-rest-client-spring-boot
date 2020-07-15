@@ -7,30 +7,48 @@ pageId: 'quick-start'
 
 == {{ page.title }}
 
+TIP: If you are using the extension from an application containing Camunda BPM Engine classes on the classpath, please check the
+link:../user-guide/examples#_usage_inside_a_process_application[Working Example] section of our user guide.
+
 == Install Dependency
 
-First install the extension dependency:
+First install the extension dependency and configure Feign and Feign client:
 [source, xml]
 ----
-<dependency>
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot</artifactId>
-  <version>${camunda-rest-client-spring-boot.version}</version>
-</dependency>
-----
-and configure Feign and Feign client:
+<properties>
+  <camunda-rest-client-spring-boot.version>0.0.3</camunda-rest-client-spring-boot.version>
+  <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+</properties>
 
-[source, xml]
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-dependencies</artifactId>
+      <version>${spring-cloud.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+<dependencies>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
+      <version>${camunda-rest-client-spring-boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-httpclient</artifactId>
+    </dependency>
+</dependencies>
 ----
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-openfeign</artifactId>
-</dependency>
-<dependency>
-  <groupId>io.github.openfeign</groupId>
-  <artifactId>feign-httpclient</artifactId>
-</dependency>
-----
+
+TIP: Please make sure your Spring Cloud version matches your Spring Boot version as described in the link:https://spring.io/projects/spring-cloud#release-trains[Spring Cloud documentation]
 
 == Configuration
 In your client code, activate the usage of REST client by adding the following annotation
@@ -48,7 +66,7 @@ public class MyClientConfiguration {
 In order to configure the feign client, make sure to provide usual feign client configuration
 (e.g. using `application.yml`). To set-up the engine base URL, please set-up the property:
 
-[source, yml]
+[source, yaml]
 ----
 feign:
   client:
@@ -84,3 +102,4 @@ public class MyClient {
     }
 }
 ----
+

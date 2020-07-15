@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.camunda.bpm.extension.rest</groupId>
+    <artifactId>camunda-rest-client-spring-boot-examples-root</artifactId>
+    <version>0.0.3-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camunda-rest-client-spring-boot-coverage-report</artifactId>
+  <name>${project.artifactId}</name>
+  <description>Coverage report aggregate.</description>
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- Skip publication of the example to Maven Central -->
+    <maven.deploy.skip>true</maven.deploy.skip>
+    <jacoco.skip>false</jacoco.skip>
+  </properties>
+
+  <dependencies>
+    <!-- Include dependencies to aggregate reports from -->
+    <dependency>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm.extension.rest</groupId>
+      <artifactId>camunda-rest-client-spring-boot-itest</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <profiles>
+    <profile>
+      <id>license</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

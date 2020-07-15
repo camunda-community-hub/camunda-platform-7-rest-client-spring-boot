@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,7 @@ package org.camunda.bpm.extension.rest.adapter
 
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.batch.Batch
+import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.migration.MigrationPlan
 import org.camunda.bpm.engine.migration.MigrationPlanBuilder
 import org.camunda.bpm.engine.migration.MigrationPlanExecutionBuilder
@@ -224,7 +225,6 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-
   override fun messageEventReceived(messageName: String?, executionId: String?) {
     TODO("not implemented")
   }
@@ -244,6 +244,16 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun createMigrationPlan(sourceProcessDefinitionId: String?, targetProcessDefinitionId: String?): MigrationPlanBuilder {
     TODO("not implemented")
   }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>,
+                                           processInstanceQuery: ProcessInstanceQuery?,
+                                           historicProcessInstanceQuery: HistoricProcessInstanceQuery?,
+                                           deleteReason: String?,
+                                           skipCustomListeners: Boolean,
+                                           skipSubprocesses: Boolean): Batch {
+    TODO("Not yet implemented")
+  }
+
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
     TODO("not implemented")

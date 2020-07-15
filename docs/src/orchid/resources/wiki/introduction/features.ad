@@ -6,9 +6,10 @@ title: Features
 
 The library supports the following features:
 
-- Usage of openfeign library to allow for high-customizable REST client
+- Usage of Open Feign library to allow for high-customizable REST client
 - Provides a SpringBoot starter for usage in standalone client mode
 - Provides a SpringBoot starter for usage inside a process application
+- Decode HTTP error response and simulate exceptions, as if they are thrown locally by the service.
 - Implemented Services:
 * `RuntimeService`
 **  Process start by key: `#startProcessInstanceByKey()`
@@ -26,8 +27,8 @@ The library supports the following features:
 * `RepositoryService`
 **  Query for process definitions: `#createProcessDefinitionQuery()`
 
+* `ExternalTaskService`
+We are not aiming to replace the existing link:https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client],
+but still provide an implementation.
+** Complete a task by id: `#complete()`
 
-=== Disclaimer ===
-
-Please note that this library aims to support the entire REST library of Camunda, excluding External Task Endpoint.
-If you need the external task client, please use: https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client]

@@ -1,6 +1,6 @@
 /*-
  * #%L
- * camunda-rest-client-spring-boot-example
+ * camunda-rest-client-spring-boot-itest
  * %%
  * Copyright (C) 2019 Camunda Services GmbH
  * %%
@@ -22,14 +22,20 @@
  */
 package org.camunda.bpm.extension.rest.itest
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.tngtech.jgiven.Stage
 import com.tngtech.jgiven.base.ScenarioTestBase
 import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
+import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
+import org.camunda.bpm.extension.rest.exception.RemoteProcessEngineException
+import org.junit.jupiter.api.fail
 import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -42,6 +48,7 @@ fun <G, W, T> ScenarioTestBase<G, W, T>.whenever() = `when`()
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = [TestApplication::class])
 @ActiveProfiles("itest")
+@DirtiesContext
 abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<ACTION, SERVICE>, ASSERT : AssertStage<ASSERT, SERVICE>> : SpringScenarioTest<ACTION, ACTION, ASSERT>() {
   internal fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
 }
@@ -65,10 +72,36 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
   open lateinit var remoteService: SERVICE
 
   open lateinit var localService: SERVICE
+
+  fun process_engine_exception_is_thrown_caused_by(clazz: Class<out Throwable>? = null, reason: String? = null, callable: () -> Unit) {
+    try {
+      callable.invoke()
+      fail { "Expecting exception caused by $clazz" }
+    } catch (e: Exception) {
+      assertThat(e).isInstanceOf(RemoteProcessEngineException::class.java)
+      if (clazz != null) {
+        assertThat((e as RemoteProcessEngineException).cause).isInstanceOf(clazz)
+        if (reason != null) {
+          assertThat(e.cause?.message).isEqualTo(reason)
+        }
+      } else {
+        if (reason != null) {
+          assertThat((e as RemoteProcessEngineException).message).isEqualTo(reason)
+        }
+      }
+    }
+  }
 }
 
 
 @EnableJGiven
 @EnableCamundaRestClient
 @SpringBootApplication
-class TestApplication
+class TestApplication {
+
+  @Bean
+  fun objectMapper(): ObjectMapper {
+    return JacksonDataFormatConfigurator.configureObjectMapper(ObjectMapper())
+  }
+
+}

@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import org.camunda.bpm.application.ProcessApplicationReference
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.*
 import org.camunda.bpm.engine.task.IdentityLink
+import org.camunda.bpm.extension.rest.impl.implementedBy
 import org.camunda.bpm.model.bpmn.BpmnModelInstance
 import org.camunda.bpm.model.cmmn.CmmnModelInstance
 import org.camunda.bpm.model.dmn.DmnModelInstance
@@ -233,7 +234,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun createProcessDefinitionQuery(): ProcessDefinitionQuery {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RepositoryService::class)
   }
 
   override fun getDeploymentResourceNames(deploymentId: String?): MutableList<String> {
