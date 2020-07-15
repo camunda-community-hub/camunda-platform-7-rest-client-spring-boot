@@ -77,8 +77,10 @@ jobs:
           ${{ runner.os }}-maven-
 
     - if: github.event.release
-      name: Update version in pom.xml (Release only)
-      run: ./mvnw -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+      name: Pre-build and update version in pom.xml (Release only)
+      run: |-
+        ./mvnw -B clean install -DskipTests
+        ./mvnw -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
 
     - name: Run Maven (${{ steps.release-detection.outputs.type }})
       run: ./mvnw -B clean install

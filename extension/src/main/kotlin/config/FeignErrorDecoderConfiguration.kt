@@ -35,6 +35,11 @@ import org.springframework.context.annotation.Configuration
 import java.io.IOException
 
 
+/**
+ * Configures error decoding.
+ * @constructor creates the configuration.
+ * @param camundaRestClientProperties properties for configuration.
+ */
 @Configuration
 @ConditionalOnProperty("camunda.rest.client.error-encoding.enabled", matchIfMissing = true)
 class FeignErrorDecoderConfiguration(
@@ -43,6 +48,9 @@ class FeignErrorDecoderConfiguration(
 
   companion object : KLogging()
 
+  /**
+   * Provides an erro decoder bean for feign.
+   */
   @Bean
   fun errorDecoder(): ErrorDecoder {
 
@@ -60,8 +68,17 @@ class FeignErrorDecoderConfiguration(
   }
 }
 
-data class CamundaFeignExceptionDecoder(val response: Response) {
+/**
+ * Decoder responsible for reading the exception out of HTTP response.
+ * @constructor creates the decoder.
+ * @param response feign response.
+ */
+internal data class CamundaFeignExceptionDecoder(val response: Response) {
 
+  /**
+   * Tries to create an instance of exception deduced from status code.
+   * @return exception or <code>null</code> if decoding was not possible.
+   */
   fun decodeException(): Exception? {
     return try {
       val response = jacksonObjectMapper().readValue<CamundaHttpExceptionReason>(response.body().asInputStream(), CamundaHttpExceptionReason::class.java)
@@ -74,6 +91,11 @@ data class CamundaFeignExceptionDecoder(val response: Response) {
     }
   }
 
+  /**
+   * Constructs exception.
+   * @param exception reason wrapper.
+   * @return exception or <code>null</code>.
+   */
   private fun constructExceptionInstance(reason: CamundaHttpExceptionReason): Exception? {
     return try {
       val exceptionClass = Class.forName(reason.clazz)
@@ -89,6 +111,12 @@ data class CamundaFeignExceptionDecoder(val response: Response) {
   }
 }
 
+/**
+ * Exception reason.
+ * @constructor constructs the reason.
+ * @param class name for exception reason.
+ * @param message text.
+ */
 internal data class CamundaHttpExceptionReason(
   @JsonProperty("type")
   val clazz: String,
@@ -97,6 +125,12 @@ internal data class CamundaHttpExceptionReason(
 ) {
   companion object : KLogging() {
     private const val FQCN = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)"
+
+    /**
+     * Factory method to construct a reason from string response of the server.
+     * @param string response.
+     * @return instance or <code>null</code>.
+     */
     fun fromMessage(message: String): CamundaHttpExceptionReason? {
       val match = FQCN.toRegex().find(message)
 
