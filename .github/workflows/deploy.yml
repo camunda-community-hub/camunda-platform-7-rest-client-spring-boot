@@ -77,10 +77,8 @@ jobs:
           ${{ runner.os }}-maven-
 
     - if: github.event.release
-      name: Pre-build and update version in pom.xml (Release only)
-      run: |-
-        ./mvnw -B clean install -DskipTests
-        ./mvnw -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+      name: Update version in pom.xml (Release only)
+      run: ./mvnw -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
 
     - name: Run Maven (${{ steps.release-detection.outputs.type }})
       run: ./mvnw -B clean install
@@ -93,7 +91,7 @@ jobs:
         ./mvnw -s $GITHUB_WORKSPACE/settings.xml -B org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged -DskipTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
 
     - if: github.event.release
-      name: Publish docs (release only)
+      name: Publish docs (Release only)
       run: ./mvnw -f docs -Pdeploy-docs -DgithubToken=${{ secrets.GITHUB_TOKEN }}
 
     - name: Archive artifacts
