@@ -450,7 +450,9 @@
     <profile>
       <id>examples</id>
       <activation>
-        <property>!skipExamples</property>
+        <property>
+          <name>!skipExamples</name>
+        </property>
       </activation>
       <modules>
         <module>examples</module>
