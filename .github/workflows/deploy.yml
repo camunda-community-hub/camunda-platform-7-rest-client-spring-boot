@@ -83,7 +83,7 @@ jobs:
         ./mvnw -s $GITHUB_WORKSPACE/settings.xml -B org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged -DskipTests=true -Dgpg.passphrase="${GPG_PASSPHRASE}"
     - if: github.event.release
       name: Publish docs (release only)
-      run: ./mvnw -f docs -Pdeploy-docs -DgithubToken=${{GITHUB_TOKEN}}
+      run: ./mvnw -f docs -Pdeploy-docs -DgithubToken=${{ secrets.GITHUB_TOKEN }}
     - name: Archive artifacts
       run: |-
         ZIPFILE=${{github.event.repository.name}}-${{github.event.release.tag_name}}.zip
