@@ -27,21 +27,21 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import feign.Response
 import feign.codec.ErrorDecoder
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.extension.rest.config.CamundaHttpExceptionReason.Companion.fromMessage
 import org.camunda.bpm.extension.rest.exception.RemoteProcessEngineException
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.io.IOException
 
 
 @Configuration
-class FeignErrorDecoderConfiguration {
+@ConditionalOnProperty("camunda.rest.client.error-encoding.enabled", matchIfMissing = true)
+class FeignErrorDecoderConfiguration(
+  val camundaRestClientProperties: CamundaRestClientProperties
+) {
 
   companion object : KLogging()
-
-  // FIXME: move to configuration properties
-  val wrapHttpCodes = listOf(400, 500)
 
   @Bean
   fun errorDecoder(): ErrorDecoder {
@@ -50,7 +50,7 @@ class FeignErrorDecoderConfiguration {
 
     return ErrorDecoder { methodKey, response ->
       when {
-        wrapHttpCodes.contains(response.status()) -> CamundaFeignExceptionDecoder(response).decodeException()
+        camundaRestClientProperties.errorDecoding.httpCodes.contains(response.status()) -> CamundaFeignExceptionDecoder(response).decodeException()
           ?: RemoteProcessEngineException(
             message = "REST-CLIENT-001 Error during remote Camunda engine invocation of $methodKey: ${response.reason()}"
           )
@@ -96,14 +96,15 @@ internal data class CamundaHttpExceptionReason(
   val message: String
 ) {
   companion object : KLogging() {
+    private const val FQCN = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)"
     fun fromMessage(message: String): CamundaHttpExceptionReason? {
-      val match = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)".toRegex().find(message)
+      val match = FQCN.toRegex().find(message)
 
       return if (match != null) {
-        val (clazz, separator, remaining) = match.destructured
+        val (clazz, _, remaining) = match.destructured
         CamundaHttpExceptionReason(clazz = clazz, message = remaining)
       } else {
-        logger.error { "REST-CLIENT-003 Could not parse Camunda exception from server response: \n$message" }
+        logger.debug { "REST-CLIENT-003 Could not parse Camunda exception from server response: \n$message" }
         null
       }
     }

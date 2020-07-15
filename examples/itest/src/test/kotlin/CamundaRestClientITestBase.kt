@@ -35,6 +35,7 @@ import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
@@ -47,6 +48,7 @@ fun <G, W, T> ScenarioTestBase<G, W, T>.whenever() = `when`()
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = [TestApplication::class])
 @ActiveProfiles("itest")
+@DirtiesContext
 abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<ACTION, SERVICE>, ASSERT : AssertStage<ASSERT, SERVICE>> : SpringScenarioTest<ACTION, ACTION, ASSERT>() {
   internal fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
 }
@@ -71,7 +73,7 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
 
   open lateinit var localService: SERVICE
 
-  fun exception_is_thrown_caused_by(clazz: Class<out Throwable>?, callable: () -> Unit) {
+  fun process_engine_exception_is_thrown_caused_by(clazz: Class<out Throwable>? = null, reason: String? = null, callable: () -> Unit) {
     try {
       callable.invoke()
       fail { "Expecting exception caused by $clazz" }
@@ -79,6 +81,13 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
       assertThat(e).isInstanceOf(RemoteProcessEngineException::class.java)
       if (clazz != null) {
         assertThat((e as RemoteProcessEngineException).cause).isInstanceOf(clazz)
+        if (reason != null) {
+          assertThat(e.cause?.message).isEqualTo(reason)
+        }
+      } else {
+        if (reason != null) {
+          assertThat((e as RemoteProcessEngineException).message).isEqualTo(reason)
+        }
       }
     }
   }

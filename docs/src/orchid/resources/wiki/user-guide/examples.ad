@@ -32,11 +32,11 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 [source,xml]
 ----
-    <dependency>
-      <groupId>org.camunda.bpm.extension.rest</groupId>
-      <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+<dependency>
+  <groupId>org.camunda.bpm.extension.rest</groupId>
+  <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
+  <version>${project.version}</version>
+</dependency>
 ----
 
 In order to activate the library, the `@EnableCamundaRestClient` has been put
@@ -48,25 +48,29 @@ remote version of the Camunda API services are used.
 
 In order to configure the library, a block of properties e.g. in `application.yml` is required.
 The values specify the location of the remote process engine:
-[source,yml]
+[source,yaml]
 ----
 feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
+      remoteExternalTaskService:
+        url: "http://localhost:8083/engine-rest/"
+
 ----
 
 To run this example, you will need the server part from the next example. To activate the server part only, please
 run from command line:
 
-```
+[source, sh]
+----
 mvn clean install
 mvn -f examples/example -Prun
 mvn -f examples/example-provided -Prun-server-only
-```
+----
 
 === Usage inside a process application
 
@@ -100,11 +104,11 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 [source,xml]
 ----
-    <dependency>
-      <groupId>org.camunda.bpm.extension.rest</groupId>
-      <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+<dependency>
+  <groupId>org.camunda.bpm.extension.rest</groupId>
+  <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
+  <version>${project.version}</version>
+</dependency>
 ----
 
 NOTE: Please note that we use a different starter. The suffix `provided` in the artifact name indicates that the engine
@@ -118,14 +122,16 @@ annotation. This annotation indicates that the remote version of the Camunda API
 
 In order to configure the library, a block of properties e.g. in `application.yml` is required:
 
-[source,yml]
+[source,yaml]
 ----
 feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8083/rest/engine/default/"
+        url: "http://localhost:8083/engine-rest/"
+      remoteExternalTaskService:
+        url: "http://localhost:8083/engine-rest/"
 ----
 

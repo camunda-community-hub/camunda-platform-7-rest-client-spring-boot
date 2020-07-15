@@ -24,43 +24,23 @@ package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
 import org.camunda.bpm.engine.ExternalTaskService
-import org.camunda.bpm.engine.ProcessEngineException
-import org.camunda.bpm.engine.variable.Variables.*
-import org.junit.Ignore
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.TestPropertySource
 
 @RuntimeServiceCategory
 @As("External Task")
-class ExternalTaskServiceITest : CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
+@TestPropertySource(properties = [
+  "camunda.rest.client.error-decoding.http-codes=404"
+])
+class ExternalTaskServiceErrorITest : CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
 
   @Test
-  fun `should complete external task`() {
-
-    given()
-      .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .and()
-      .process_is_started_by_key("test_external_task", "my-business-key2", "caseInstanceId2",
-        createVariables()
-          .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
-      )
-      .and()
-      .process_waits_in_external_task("topic")
-
-
-    whenever()
-      .remoteService.complete(given().externalTaskId, "worker-id",
-        createVariables()
-          .putValue("VAR1", "NEW-VAL1")
-          .putValue("VAR2", "VAL2")
-          .putValueTyped("VAR3", stringValue("VAL3")),
-        createVariables()
-          .putValue("LOCAL", "LOCAL-VAL")
-      )
-
+  fun `should fail completing non-existing external task`() {
     then()
-      .execution_is_waiting_for_signal()
-
+      .process_engine_exception_is_thrown_caused_by(reason = "REST-CLIENT-001 Error during remote Camunda engine invocation of ExternalTaskServiceClient#completeTask(String,CompleteExternalTaskDto): ") {
+        whenever()
+          .remoteService.complete("not-existing", "worker-id")
+      }
   }
 }

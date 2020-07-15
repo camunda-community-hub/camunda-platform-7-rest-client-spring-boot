@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.MismatchingMessageCorrelationException
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.junit.Test
+import org.springframework.test.annotation.DirtiesContext
 
 @RuntimeServiceCategory
 @As("Correlate Message")
@@ -97,7 +98,10 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
       .and()
 
     then()
-      .exception_is_thrown_caused_by(clazz = MismatchingMessageCorrelationException::class.java) {
+      .process_engine_exception_is_thrown_caused_by(
+        clazz = MismatchingMessageCorrelationException::class.java,
+        reason = "Cannot correlate message 'wrong-message': No process definition or execution matches the parameters"
+      ) {
         whenever()
           .remoteService
           .correlateMessage("wrong-message")

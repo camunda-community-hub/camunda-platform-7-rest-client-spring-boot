@@ -7,6 +7,8 @@ pageId: 'support-matrix'
 
 == {{ page.title }}
 
+Here are currently implemented methods.
+
 == Runtime Service @ 0.0.4
 *  `# startProcessInstanceByKey`
 *  `# startProcessInstanceById`
