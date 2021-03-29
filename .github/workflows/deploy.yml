@@ -32,7 +32,7 @@ jobs:
       uses: camunda-community-hub/community-action-maven-release@v1
       with:
         release-version: ${{ github.event.release.tag_name }}
-        release-profile: community-action-maven-release
+        release-profile: release,community-action-maven-release
         nexus-usr: ${{ secrets.NEXUS_USR }}
         nexus-psw: ${{ secrets.NEXUS_PSW }}
         maven-usr: ${{ secrets.MAVEN_CENTRAL_DEPLOYMENT_USR }}
