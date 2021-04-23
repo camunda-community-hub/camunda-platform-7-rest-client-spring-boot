@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
 import org.camunda.bpm.engine.rest.dto.runtime.StartProcessInstanceDto
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
@@ -37,6 +38,8 @@ import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
+import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
+import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -360,6 +363,10 @@ class RemoteRuntimeService(
     return runtimeServiceClient.changeVariables(executionId, PatchVariablesDto().apply {
       modifications = valueMapper.mapValues(variables)
     })
+  }
+
+  override fun createProcessInstanceQuery(): ProcessInstanceQuery {
+    return DelegatingProcessInstanceQuery(runtimeServiceClient)
   }
 }
 

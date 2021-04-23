@@ -26,6 +26,7 @@ package org.camunda.bpm.extension.rest.example.processapplication
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
 import org.camunda.bpm.extension.rest.example.processapplication.process.JacksonDataFormatConfigurator
+import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
