@@ -1,3 +1,7 @@
+image::https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700[caption="Comuinity Extension", link=https://github.com/camunda-community-hub/community]
+image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable", link=https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-]
+
+
 [cols="a,a,a,a,a,a,a,a"]
 |===
 | // travis
