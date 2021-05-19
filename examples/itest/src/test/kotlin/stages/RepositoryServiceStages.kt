@@ -20,20 +20,20 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.itest
+package org.camunda.bpm.extension.rest.itest.stages
 
 import com.tngtech.jgiven.annotation.IsTag
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
+import io.toolisticon.testing.jgiven.step
 import org.camunda.bpm.engine.RepositoryService
-import org.camunda.bpm.engine.RuntimeService
-import org.camunda.bpm.engine.repository.ProcessDefinition
+import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
-import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import java.util.*
 
 @JGivenStage
 class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, RepositoryService>() {
@@ -49,11 +49,11 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   override lateinit var localService: RepositoryService
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
-  lateinit var processDefinition: ProcessDefinition
+  lateinit var deployment: Deployment
 
   fun process_is_deployed(
-    processDefinitionKey: String = "process_with_user_task"
-  ): RepositoryServiceActionStage {
+    processDefinitionKey: String
+  ): RepositoryServiceActionStage = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -61,39 +61,32 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
       .endEvent("end")
       .done()
 
-    val deployment = localService
+    deployment = localService
       .createDeployment()
       .addModelInstance("$processDefinitionKey.bpmn", instance)
-      .name("deployment_name")
+      .name("deployment" + UUID.randomUUID().toString().replace("-", ""))
       .deploy()
-
-    return self()
   }
-
 }
 
 @JGivenStage
 class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, RepositoryService>() {
 
   @Autowired
-  @Qualifier("repositoryService")
-  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
-  override lateinit var localService: RepositoryService
-
-  @Autowired
   @Qualifier("remote")
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var remoteService: RepositoryService
 
+  @Autowired
+  @Qualifier("repositoryService")
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
-  private lateinit var query: ProcessDefinitionQuery
+  override lateinit var localService: RepositoryService
 
-  fun process_query_succeds(
+  fun process_query_succeeds(
     processDefinitionQueryAssertions: (ProcessDefinitionQuery, AssertStage<*, RepositoryService>) -> Unit = { _, _ -> }
-  ): RepositoryServiceAssertStage {
-    query = remoteService.createProcessDefinitionQuery()
-    processDefinitionQueryAssertions(query!!, this)
-    return self()
+  ): RepositoryServiceAssertStage = step {
+    val query = remoteService.createProcessDefinitionQuery()
+    processDefinitionQueryAssertions(query, this)
   }
 }
 

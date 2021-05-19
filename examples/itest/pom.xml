@@ -16,9 +16,11 @@
   <properties>
     <!-- Skip publication of the example to Maven Central -->
     <maven.deploy.skip>true</maven.deploy.skip>
-    <jgiven.version>0.18.2</jgiven.version>
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
+    <!-- USe Camunda BPM JGiven -->
+    <camunda-jgiven.version>0.0.8</camunda-jgiven.version>
+    <jgiven.version>1.0.0</jgiven.version>
   </properties>
 
   <dependencies>
@@ -71,18 +73,23 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${groovy.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
 
     <!-- Testing -->
+    <!-- add junit 4 to enable its usage until Camunda switched to JUnit 5 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -91,10 +98,15 @@
     <dependency>
       <groupId>io.holunda.testing</groupId>
       <artifactId>camunda-bpm-jgiven</artifactId>
-      <version>0.0.6</version>
+      <version>${camunda-jgiven.version}</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-spring-junit4</artifactId>
+      <version>${jgiven.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -104,7 +116,7 @@
       <plugin>
         <groupId>com.tngtech.jgiven</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
-        <version>${jgiven.version}</version>
+        <version>1.0.0</version>
         <executions>
           <execution>
             <goals>

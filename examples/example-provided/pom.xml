@@ -30,6 +30,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+      <version>${camunda.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
@@ -67,13 +72,6 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
-
-
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${groovy.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -103,6 +101,7 @@
         <dependency>
           <groupId>org.camunda.bpm.springboot</groupId>
           <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+          <version>${camunda.version.ce}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -117,6 +116,7 @@
         <dependency>
           <groupId>org.camunda.bpm.springboot</groupId>
           <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
+          <version>${camunda.version.ee}</version>
         </dependency>
       </dependencies>
     </profile>

@@ -23,56 +23,58 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.AND
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RepositoryService
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceCategory
 import org.junit.Test
+import org.springframework.test.annotation.DirtiesContext
 
 @RepositoryServiceCategory
 @As("Creates process definition query")
-class RepositoryServiceProcessDefinitionQueryITest : CamundaRestClientITestBase<RepositoryService, RepositoryServiceActionStage, RepositoryServiceAssertStage>() {
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+class RepositoryServiceProcessDefinitionQueryITest :
+  CamundaRestClientITestBase<RepositoryService, RepositoryServiceActionStage, RepositoryServiceAssertStage>() {
+
+  companion object {
+    const val OFFSET_AUTO_DEPLOYED_DEFINITION = 2L
+  }
+
+  @Test
+  fun `should find no processes`() {
+    THEN
+      .process_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .count()
+        ).isEqualTo(OFFSET_AUTO_DEPLOYED_DEFINITION)
+      }
+  }
 
   @Test
   fun `should find deployed processes by process definition key`() {
     val processDefinitionKey = processDefinitionKey()
     val another = processDefinitionKey()
 
-    given()
+    GIVEN
       .process_is_deployed(processDefinitionKey)
-      .and()
+      .AND
       .process_is_deployed(processDefinitionKey)
-      .and()
+      .AND
       .process_is_deployed(another)
 
-    then()
-      .process_query_succeds { query, _ ->
+    THEN
+      .process_query_succeeds { query, _ ->
         assertThat(
           query
             .processDefinitionKey(processDefinitionKey)
             .count()
-        ).isEqualTo(2)
-      }
-  }
-
-  @Test
-  fun `should find latest deployed process by process definition key`() {
-    val processDefinitionKey = processDefinitionKey()
-    val another = processDefinitionKey()
-
-    given()
-      .process_is_deployed(processDefinitionKey)
-      .and()
-      .process_is_deployed(processDefinitionKey)
-      .and()
-      .process_is_deployed(another)
-
-    then()
-      .process_query_succeds { query, _ ->
-        assertThat(
-          query
-            .processDefinitionKey(processDefinitionKey)
-            .latestVersion()
-            .count()
-        ).isEqualTo(1)
+        ).isEqualTo(OFFSET_AUTO_DEPLOYED_DEFINITION + 3)
       }
   }
 }

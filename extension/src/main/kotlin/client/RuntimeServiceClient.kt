@@ -23,19 +23,15 @@
 
 package org.camunda.bpm.extension.rest.client
 
+import org.camunda.bpm.engine.rest.dto.CountResultDto
 import org.camunda.bpm.engine.rest.dto.PatchVariablesDto
 import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.rest.dto.VariableValueDto
 import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
 import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultWithVariableDto
-import org.camunda.bpm.engine.rest.dto.runtime.ExecutionTriggerDto
-import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceWithVariablesDto
-import org.camunda.bpm.engine.rest.dto.runtime.StartProcessInstanceDto
+import org.camunda.bpm.engine.rest.dto.runtime.*
 import org.springframework.cloud.openfeign.FeignClient
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 
 /**
  * Feign client accessing the methods of runtime service.
@@ -156,5 +152,19 @@ interface RuntimeServiceClient {
    */
   @RequestMapping(method = [RequestMethod.DELETE], value = ["/process-instance/{id}/variables/{varName}"], consumes = ["application/json"])
   fun deleteVariable(@PathVariable("id") processInstanceId: String, @PathVariable("varName") varName: String)
+
+  /**
+   * Retrieves process instances.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-query/
+   */
+  @RequestMapping(method = [RequestMethod.POST], value = ["/process-instance"], consumes = ["application/json"])
+  fun getProcessInstances(@RequestBody query: ProcessInstanceQueryDto, @RequestParam("firstResult") firstResult: Int, @RequestParam("maxResults") maxResults: Int): List<ProcessInstanceDto>
+
+  /**
+   * Counts process instances.
+   * @see https://docs.camunda.org/manual/latest/reference/rest/process-instance/post-query-count/
+   */
+  @RequestMapping(method = [RequestMethod.POST], value = ["/process-instance/count"], consumes = ["application/json"])
+  fun countProcessInstances(@RequestBody query: ProcessInstanceQueryDto, @RequestParam("firstResult") firstResult: Int, @RequestParam("maxResults") maxResults: Int): CountResultDto
 
 }

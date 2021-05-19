@@ -49,7 +49,7 @@ class FeignErrorDecoderConfiguration(
   companion object : KLogging()
 
   /**
-   * Provides an erro decoder bean for feign.
+   * Provides an error decoder bean for feign.
    */
   @Bean
   fun errorDecoder(): ErrorDecoder {

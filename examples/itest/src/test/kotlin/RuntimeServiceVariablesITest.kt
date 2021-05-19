@@ -24,11 +24,19 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.WHEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.AND
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.bpm.engine.variable.value.ObjectValue
 import org.camunda.bpm.engine.variable.value.StringValue
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
 @RuntimeServiceCategory
@@ -42,9 +50,9 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
     val userTaskId = "user-task"
     val structure = ComplexDataStructure("string", 17)
 
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1",
         createVariables()
           .putValue("VAR1", "VAL1")
@@ -60,28 +68,28 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
           )
       )
 
-    whenever()
+    WHEN
       .remoteService
-      .removeVariable(given().processInstance.id, "VAR2")
+      .removeVariable(GIVEN.processInstance.id, "VAR2")
 
-    whenever()
+    WHEN
       .remoteService
-      .removeVariables(given().processInstance.id, listOf("TO_REMOVE1", "TO_REMOVE2"))
+      .removeVariables(GIVEN.processInstance.id, listOf("TO_REMOVE1", "TO_REMOVE2"))
 
-    whenever()
+    WHEN
       .remoteService
-      .setVariable(given().processInstance.id, "VAR1", "NEW VALUE")
+      .setVariable(GIVEN.processInstance.id, "VAR1", "NEW VALUE")
 
-    whenever()
+    WHEN
       .remoteService
-      .setVariable(given().processInstance.id, "VAR5", "untyped")
+      .setVariable(GIVEN.processInstance.id, "VAR5", "untyped")
 
-    whenever()
+    WHEN
       .remoteService
-      .setVariables(given().processInstance.id, createVariables().putValueTyped("VAR6", stringValue("typed")))
+      .setVariables(GIVEN.processInstance.id, createVariables().putValueTyped("VAR6", stringValue("typed")))
 
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")

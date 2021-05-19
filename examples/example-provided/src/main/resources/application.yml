@@ -3,6 +3,8 @@
 #
 client.enabled: true
 
+server:
+  port: 8083
 spring:
   application:
     name: RestExampleEngineProvided
@@ -18,19 +20,21 @@ camunda:
       last-name: Administratius
     filter:
       create: true
-server:
-  port: 8083
 feign:
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8083/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8083/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
       remoteExternalTaskService:
-        url: "http://localhost:8083/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:
     org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
     org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
+    # To log REST controllers
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    # To log web access
+    org.springframework.web: TRACE

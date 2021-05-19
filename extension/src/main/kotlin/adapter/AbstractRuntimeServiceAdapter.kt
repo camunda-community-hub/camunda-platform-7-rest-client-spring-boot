@@ -316,7 +316,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun createProcessInstanceQuery(): ProcessInstanceQuery {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
@@ -454,5 +454,21 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
     TODO("not implemented")
   }
+
+  /**
+   * @since 7.14
+   */
+  override fun setVariablesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, historicProcessInstanceQuery: HistoricProcessInstanceQuery?, processVariables: MutableMap<String, *>?): Batch {
+    TODO("Not yet implemented")
+  }
+
+  override fun setVariablesAsync(processInstanceIds: MutableList<String>, processVariables: MutableMap<String, *>?): Batch =
+    setVariablesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = null, historicProcessInstanceQuery = null, processVariables = processVariables)
+
+  override fun setVariablesAsync(processInstanceQuery: ProcessInstanceQuery?, processVariables: MutableMap<String, *>?): Batch =
+    setVariablesAsync(processInstanceIds = null, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null, processVariables = processVariables)
+
+  override fun setVariablesAsync(historicProcessInstanceQuery: HistoricProcessInstanceQuery?, processVariables: MutableMap<String, *>?): Batch =
+    setVariablesAsync(processInstanceIds = null, processInstanceQuery = null, historicProcessInstanceQuery = historicProcessInstanceQuery, processVariables = processVariables)
 
 }

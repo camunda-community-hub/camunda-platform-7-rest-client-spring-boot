@@ -10,9 +10,6 @@ import org.camunda.bpm.extension.rest.impl.RemoteRuntimeService
 import org.camunda.bpm.extension.rest.impl.implementedBy
 
 abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
-  override fun updateRetries(): UpdateExternalTaskRetriesSelectBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
 
   override fun complete(externalTaskId: String, workerId: String) {
     implementedBy(RemoteExternalTaskService::class)
@@ -27,63 +24,67 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
   }
 
   override fun unlock(externalTaskId: String) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun getExternalTaskErrorDetails(externalTaskId: String?): String {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun createExternalTaskQuery(): ExternalTaskQuery {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun setRetries(externalTaskId: String?, retries: Int) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun setRetries(externalTaskIds: MutableList<String>?, retries: Int) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun extendLock(externalTaskId: String?, workerId: String?, newLockDuration: Long) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun setRetriesAsync(externalTaskIds: MutableList<String>?, externalTaskQuery: ExternalTaskQuery?, retries: Int): Batch {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
-  override fun handleFailure(externalTaskId: String?, workerId: String?, errorMessage: String?, retries: Int, retryTimeout: Long) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun updateRetries(): UpdateExternalTaskRetriesSelectBuilder {
+    TODO("not implemented")
   }
 
-  override fun handleFailure(externalTaskId: String?, workerId: String?, errorMessage: String?, errorDetails: String?, retries: Int, retryTimeout: Long) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun handleFailure(externalTaskId: String, workerId: String, errorMessage: String, retries: Int, retryTimeout: Long) {
+    implementedBy(RemoteExternalTaskService::class)
+  }
+
+  override fun handleFailure(externalTaskId: String, workerId: String, errorMessage: String?, errorDetails: String?, retries: Int, retryTimeout: Long) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun fetchAndLock(maxTasks: Int, workerId: String?): ExternalTaskQueryBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun fetchAndLock(maxTasks: Int, workerId: String?, usePriority: Boolean): ExternalTaskQueryBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
-  override fun handleBpmnError(externalTaskId: String?, workerId: String?, errorCode: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun handleBpmnError(externalTaskId: String, workerId: String, errorCode: String) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun handleBpmnError(externalTaskId: String?, workerId: String?, errorCode: String?, errorMessage: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun handleBpmnError(externalTaskId: String, workerId: String, errorCode: String, errorMessage: String) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun handleBpmnError(externalTaskId: String?, workerId: String?, errorCode: String?, errorMessage: String?, variables: MutableMap<String, Any>?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  override fun handleBpmnError(externalTaskId: String, workerId: String, errorCode: String?, errorMessage: String?, variables: MutableMap<String, Any>) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun setPriority(externalTaskId: String?, priority: Long) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    TODO("not implemented")
   }
 
   override fun getTopicNames(): MutableList<String> {
