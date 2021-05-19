@@ -23,34 +23,42 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.AND
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.WHEN
 import org.camunda.bpm.engine.ExternalTaskService
-import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.variable.Variables.*
-import org.junit.Ignore
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.ExternalTaskServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.ExternalTaskServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
-import org.springframework.test.annotation.DirtiesContext
 
 @RuntimeServiceCategory
 @As("External Task")
-class ExternalTaskServiceITest : CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
+class ExternalTaskServiceITest :
+  CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
 
   @Test
   fun `should complete external task`() {
 
-    given()
+    GIVEN
       .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .and()
-      .process_is_started_by_key("test_external_task", "my-business-key2", "caseInstanceId2",
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
         createVariables()
           .putValue("VAR1", "VAL1")
           .putValueTyped("VAR4", objectValue("My object value").create())
       )
-      .and()
+      .AND
       .process_waits_in_external_task("topic")
 
 
-    whenever()
-      .remoteService.complete(given().externalTaskId, "worker-id",
+    WHEN
+      .remoteService.complete(
+        GIVEN.externalTaskId, "worker-id",
         createVariables()
           .putValue("VAR1", "NEW-VAL1")
           .putValue("VAR2", "VAL2")
@@ -59,7 +67,7 @@ class ExternalTaskServiceITest : CamundaRestClientITestBase<ExternalTaskService,
           .putValue("LOCAL", "LOCAL-VAL")
       )
 
-    then()
+    THEN
       .execution_is_waiting_for_signal()
 
   }

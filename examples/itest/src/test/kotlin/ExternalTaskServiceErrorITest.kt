@@ -23,24 +23,29 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.WHEN
 import org.camunda.bpm.engine.ExternalTaskService
+import org.camunda.bpm.extension.rest.itest.stages.*
 import org.junit.Test
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.TestPropertySource
 
 @RuntimeServiceCategory
 @As("External Task")
-@TestPropertySource(properties = [
-  "camunda.rest.client.error-decoding.http-codes=404"
-])
-class ExternalTaskServiceErrorITest : CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
+@TestPropertySource(
+  properties = [
+    "camunda.rest.client.error-decoding.http-codes=404"
+  ]
+)
+class ExternalTaskServiceErrorITest :
+  CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
 
   @Test
   fun `should fail completing non-existing external task`() {
-    then()
-      .process_engine_exception_is_thrown_caused_by(reason = "REST-CLIENT-001 Error during remote Camunda engine invocation of ExternalTaskServiceClient#completeTask(String,CompleteExternalTaskDto): ") {
-        whenever()
-          .remoteService.complete("not-existing", "worker-id")
-      }
+    EXPECT.process_engine_exception_is_thrown_caused_by(
+      reason = "REST-CLIENT-001 Error during remote Camunda engine invocation of ExternalTaskServiceClient#completeTask(String,CompleteExternalTaskDto): "
+    ) {
+      WHEN
+        .remoteService.complete("not-existing", "worker-id")
+    }
   }
 }

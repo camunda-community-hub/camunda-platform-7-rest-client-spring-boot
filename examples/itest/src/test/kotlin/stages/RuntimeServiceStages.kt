@@ -20,12 +20,13 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.itest
+package org.camunda.bpm.extension.rest.itest.stages
 
 import com.tngtech.jgiven.annotation.IsTag
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
+import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
@@ -93,7 +94,7 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     processDefinitionKey: String = "process_with_message_catch_event",
     userTaskId: String = "user-task",
     messageName: String = "my-message"
-  ): RuntimeServiceActionStage {
+  ): RuntimeServiceActionStage = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -113,15 +114,13 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
       .createProcessDefinitionQuery()
       .deploymentId(deployment.id)
       .singleResult()
-
-    return self()
   }
 
   fun process_with_intermediate_signal_catch_event_is_deployed(
     processDefinitionKey: String = "process_with_signal_catch_event",
     userTaskId: String = "user-task",
     signalName: String = "my-signal"
-  ): RuntimeServiceActionStage {
+  ): RuntimeServiceActionStage = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -141,15 +140,13 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
       .createProcessDefinitionQuery()
       .deploymentId(deployment.id)
       .singleResult()
-
-    return self()
   }
 
   fun process_with_start_by_message_event_is_deployed(
     processDefinitionKey: String = "process_start_message",
     userTaskId: String = "user-task",
     messageName: String = "my-message"
-  ): RuntimeServiceActionStage {
+  ): RuntimeServiceActionStage = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -169,8 +166,6 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
       .createProcessDefinitionQuery()
       .deploymentId(deployment.id)
       .singleResult()
-
-    return self()
   }
 
 
@@ -179,7 +174,7 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     businessKey: String? = null,
     caseInstanceId: String? = null,
     variables: Map<String, Any>? = null
-  ): RuntimeServiceActionStage {
+  ): RuntimeServiceActionStage = step {
 
     processInstance = if (variables != null && businessKey != null && caseInstanceId != null) {
       localService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId, variables)
@@ -194,25 +189,26 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     // started instance
     assertThat(processInstance).isNotNull
     // waits in message event
-    assertThat(localService
-      .createProcessInstanceQuery()
-      .processInstanceId(processInstance.id)
-      .singleResult()).isNotNull
+    assertThat(
+      localService
+        .createProcessInstanceQuery()
+        .processInstanceId(processInstance.id)
+        .singleResult()
+    ).isNotNull
 
-    return self()
   }
 
-  fun execution_is_waiting_for_signal(): RuntimeServiceActionStage {
+  fun execution_is_waiting_for_signal(): RuntimeServiceActionStage = step {
     execution = localService
       .createExecutionQuery()
       .processDefinitionKey(processDefinition.key)
-      .executionId(localService
-        .createEventSubscriptionQuery()
-        .processInstanceId(processInstance.id)
-        .singleResult()
-        .executionId
+      .executionId(
+        localService
+          .createEventSubscriptionQuery()
+          .processInstanceId(processInstance.id)
+          .singleResult()
+          .executionId
       ).singleResult()
-    return self()
   }
 }
 
@@ -237,7 +233,7 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     processDefinitionId: String? = null,
     containingSimpleProcessVariables: Map<String, Any>? = null,
     processInstanceAssertions: (ProcessInstance, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
-  ): RuntimeServiceAssertStage {
+  ): RuntimeServiceAssertStage = step {
 
     val query = localService.createProcessInstanceQuery().apply {
       if (processDefinitionId != null) {
@@ -246,10 +242,8 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
       if (processDefinitionKey != null) {
         this.processDefinitionKey(processDefinitionKey)
       }
-      if (containingSimpleProcessVariables != null) {
-        containingSimpleProcessVariables.entries.forEach {
-          this.variableValueEquals(it.key, it.value)
-        }
+      containingSimpleProcessVariables?.entries?.forEach {
+        this.variableValueEquals(it.key, it.value)
       }
     }
     val instances = query.list()
@@ -257,19 +251,17 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     processInstance = instances[0]
     assertThat(processInstance).isNotNull
     processInstanceAssertions(processInstance!!, this)
-    return self()
   }
 
-  fun subscription_exists(messageName: String): RuntimeServiceAssertStage {
+  fun subscription_exists(messageName: String): RuntimeServiceAssertStage = step {
 
-    assertThat(localService
-      .createEventSubscriptionQuery()
-      .eventType("message")
-      .eventName(messageName)
-      .singleResult()
+    assertThat(
+      localService
+        .createEventSubscriptionQuery()
+        .eventType("message")
+        .eventName(messageName)
+        .singleResult()
     ).isNotNull
-
-    return self()
   }
 }
 

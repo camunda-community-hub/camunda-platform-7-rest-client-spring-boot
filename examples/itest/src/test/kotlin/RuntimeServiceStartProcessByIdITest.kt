@@ -23,27 +23,35 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.createVariables
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
 @RuntimeServiceCategory
 @As("Start Process By Id")
-class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
+class RuntimeServiceStartProcessByIdITest :
+  CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
 
   @Test
   fun `should start process by id`() {
     val processDefinitionKey = processDefinitionKey()
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id)
+      .startProcessInstanceById(WHEN.processDefinition.id)
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isNull()
         assertThat(stage.localService.getVariables(instance.id)).isEmpty()
       }
@@ -52,15 +60,15 @@ class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeSe
   @Test
   fun `should start process by id with business key`() {
     val processDefinitionKey = processDefinitionKey()
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id, "businessKey")
+      .startProcessInstanceById(WHEN.processDefinition.id, "businessKey")
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("businessKey")
         assertThat(stage.localService.getVariables(instance.id)).isEmpty()
       }
@@ -69,15 +77,15 @@ class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeSe
   @Test
   fun `should start process by id with business id and variables`() {
     val processDefinitionKey = processDefinitionKey()
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id, "businessKey", createVariables().putValue("VAR_NAME", "var value"))
+      .startProcessInstanceById(WHEN.processDefinition.id, "businessKey", createVariables().putValue("VAR_NAME", "var value"))
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("businessKey")
         assertThat(stage.localService.getVariables(instance.id)).isNotEmpty
         assertThat(stage.localService.getVariable(instance.id, "VAR_NAME")).isEqualTo("var value")
@@ -87,15 +95,15 @@ class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeSe
   @Test
   fun `should start process by id with business id and case instance id`() {
     val processDefinitionKey = processDefinitionKey()
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id, "businessKey", "caseInstanceId")
+      .startProcessInstanceById(WHEN.processDefinition.id, "businessKey", "caseInstanceId")
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("businessKey")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId")
         assertThat(stage.localService.getVariables(instance.id)).isEmpty()
@@ -107,15 +115,20 @@ class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeSe
   fun `should start process by id with business key, case instance id and variables`() {
     val processDefinitionKey = processDefinitionKey()
 
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id, "businessKey", "caseInstanceId", createVariables().putValue("VAR_NAME", "var value"))
+      .startProcessInstanceById(
+        WHEN.processDefinition.id,
+        "businessKey",
+        "caseInstanceId",
+        createVariables().putValue("VAR_NAME", "var value")
+      )
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("businessKey")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId")
         assertThat(stage.localService.getVariables(instance.id)).isNotEmpty
@@ -127,15 +140,15 @@ class RuntimeServiceStartProcessByIdITest : CamundaRestClientITestBase<RuntimeSe
   fun `should start process by id with variables`() {
     val processDefinitionKey = processDefinitionKey()
 
-    given()
+    GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
-      .startProcessInstanceById(whenever().processDefinition.id, createVariables().putValue("VAR_NAME", "var value"))
+      .startProcessInstanceById(WHEN.processDefinition.id, createVariables().putValue("VAR_NAME", "var value"))
 
-    then()
-      .process_instance_exists(processDefinitionId = whenever().processDefinition.id) { instance, stage ->
+    THEN
+      .process_instance_exists(processDefinitionId = WHEN.processDefinition.id) { instance, stage ->
         assertThat(instance.businessKey).isNull()
         assertThat(stage.localService.getVariables(instance.id)).isNotEmpty
         assertThat(stage.localService.getVariable(instance.id, "VAR_NAME")).isEqualTo("var value")

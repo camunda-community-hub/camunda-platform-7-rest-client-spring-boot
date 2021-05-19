@@ -20,7 +20,7 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.itest
+package org.camunda.bpm.extension.rest.itest.stages
 
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState

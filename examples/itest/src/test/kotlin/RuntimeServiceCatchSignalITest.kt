@@ -23,9 +23,17 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.AND
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.createVariables
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
 @RuntimeServiceCategory
@@ -37,16 +45,16 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
     val processDefinitionKey = processDefinitionKey()
     val signalName = "mySignal1"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey)
 
-    whenever()
+    WHEN
       .remoteService
       .signalEventReceived(signalName)
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isNull()
         assertThat(
@@ -63,16 +71,16 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
     val processDefinitionKey = processDefinitionKey()
     val signalName = "mySignal2"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR1", "VAL1"))
 
-    whenever()
+    WHEN
       .remoteService
       .signalEventReceived(signalName, createVariables().putValue("VAR2", "VAL2"))
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
@@ -90,22 +98,22 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
   }
 
   @Test
-  fun  `should signal waiting instance by execution id and signal name`() {
+  fun `should signal waiting instance by execution id and signal name`() {
     val processDefinitionKey = processDefinitionKey()
     val signalName = "mySignal3"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR1", "VAL1"))
-      .and()
+      .AND
       .execution_is_waiting_for_signal()
 
-    whenever()
+    WHEN
       .remoteService
-      .signalEventReceived(signalName, given().execution.id)
+      .signalEventReceived(signalName, GIVEN.execution.id)
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
@@ -122,22 +130,22 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
   }
 
   @Test
-  fun  `should signal waiting instance by execution id and signal name and set variables`() {
+  fun `should signal waiting instance by execution id and signal name and set variables`() {
     val processDefinitionKey = processDefinitionKey()
     val signalName = "mySignal4"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR1", "VAL1"))
-      .and()
+      .AND
       .execution_is_waiting_for_signal()
 
-    whenever()
+    WHEN
       .remoteService
-      .signalEventReceived(signalName, given().execution.id, createVariables().putValue("VAR2", "VAL2"))
+      .signalEventReceived(signalName, GIVEN.execution.id, createVariables().putValue("VAR2", "VAL2"))
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
@@ -154,25 +162,25 @@ class RuntimeServiceCatchSignalITest : CamundaRestClientITestBase<RuntimeService
   }
 
   @Test
-  fun  `should signal waiting instance created by signal builder and set variables`() {
+  fun `should signal waiting instance created by signal builder and set variables`() {
     val processDefinitionKey = processDefinitionKey()
     val signalName = "mySignal7"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR1", "VAL1"))
-      .and()
+      .AND
       .execution_is_waiting_for_signal()
 
-    whenever()
+    WHEN
       .remoteService
       .createSignalEvent(signalName)
-      .executionId(given().execution.id)
+      .executionId(GIVEN.execution.id)
       .setVariables(createVariables().putValue("VAR2", "VAL2"))
       .send()
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")

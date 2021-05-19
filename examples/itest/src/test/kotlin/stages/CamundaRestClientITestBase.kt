@@ -20,13 +20,13 @@
  *  limitations under the License.
  * #L%
  */
-package org.camunda.bpm.extension.rest.itest
+package org.camunda.bpm.extension.rest.itest.stages
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tngtech.jgiven.Stage
-import com.tngtech.jgiven.base.ScenarioTestBase
 import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
+import io.toolisticon.testing.jgiven.THEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
 import org.camunda.bpm.extension.rest.exception.RemoteProcessEngineException
@@ -40,18 +40,22 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-/**
- * Alias for the when
- */
-fun <G, W, T> ScenarioTestBase<G, W, T>.whenever() = `when`()
-
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = [TestApplication::class])
 @ActiveProfiles("itest")
 @DirtiesContext
-abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<ACTION, SERVICE>, ASSERT : AssertStage<ASSERT, SERVICE>> : SpringScenarioTest<ACTION, ACTION, ASSERT>() {
+abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<ACTION, SERVICE>, ASSERT : AssertStage<ASSERT, SERVICE>> :
+  SpringScenarioTest<ACTION, ACTION, ASSERT>() {
+  /**
+   * Generates a new process definition key.
+   */
   internal fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
 }
+
+/**
+ * Another name for the assertion stage.
+ */
+val <G : Stage<G>, W : Stage<W>, T : Stage<T>> com.tngtech.jgiven.base.ScenarioTestBase<G, W, T>.EXPECT: T get() = THEN
 
 /**
  * Base action stage.

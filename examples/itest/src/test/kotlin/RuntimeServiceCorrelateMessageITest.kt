@@ -23,31 +23,39 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.AND
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.MismatchingMessageCorrelationException
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.createVariables
+import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
-import org.springframework.test.annotation.DirtiesContext
 
 @RuntimeServiceCategory
 @As("Correlate Message")
-class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
+class RuntimeServiceCorrelateMessageITest :
+  CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
 
   @Test
   fun `should correlate message with definition`() {
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myStartMessage"
     val userTaskId = "user-task-in-process-started-by-message"
-    given()
-      .process_with_start_by_message_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
 
-    whenever()
+    GIVEN
+      .process_with_start_by_message_event_is_deployed(processDefinitionKey, userTaskId, messageName)
+
+    WHEN
       .remoteService
       .correlateMessage(messageName)
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isNull()
         assertThat(
@@ -64,17 +72,17 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey)
-      .and()
+      .AND
 
-    whenever()
+    WHEN
       .remoteService
       .correlateMessage(messageName)
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isNull()
         assertThat(
@@ -91,18 +99,18 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey)
-      .and()
+      .AND
 
-    then()
+    THEN
       .process_engine_exception_is_thrown_caused_by(
         clazz = MismatchingMessageCorrelationException::class.java,
         reason = "Cannot correlate message 'wrong-message': No process definition or execution matches the parameters"
       ) {
-        whenever()
+        WHEN
           .remoteService
           .correlateMessage("wrong-message")
       }
@@ -113,16 +121,16 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1")
 
-    whenever()
+    WHEN
       .remoteService
       .correlateMessage(messageName, "my-business-key1")
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(
@@ -139,16 +147,16 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage2"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR1", "VAL1"))
 
-    whenever()
+    WHEN
       .remoteService
       .correlateMessage(messageName, "my-business-key1", createVariables().putValue("VAR2", "VAL2"))
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo("my-business-key1")
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
@@ -170,16 +178,16 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage8"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1", createVariables().putValue("VAR9", "VAL9"))
 
-    whenever()
+    WHEN
       .remoteService
       .correlateMessage(messageName, createVariables().putValue("VAR9", "VAL9"))
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
         assertThat(
@@ -202,19 +210,22 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val userTaskId = "user-task"
     val businessKey = "my-business-key6"
     val caseInstanceId = "caseInstanceId6"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR1", "VAL1"))
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR2", "VAL2"))
 
-    whenever()
+    WHEN
       .remoteService
       .correlateMessage(messageName, createVariables().putValue("VAR2", "VAL2"), createVariables().putValue("VAR-NEW", "VAL-NEW"))
 
-    then()
-      .process_instance_exists(processDefinitionKey, containingSimpleProcessVariables = createVariables().putValue("VAR-NEW", "VAL-NEW")) { instance, stage ->
+    THEN
+      .process_instance_exists(
+        processDefinitionKey,
+        containingSimpleProcessVariables = createVariables().putValue("VAR-NEW", "VAL-NEW")
+      ) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo(businessKey)
         assertThat(instance.caseInstanceId).isEqualTo(caseInstanceId)
         assertThat(
@@ -238,19 +249,27 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val userTaskId = "user-task"
     val businessKey = "my-business-key3"
     val caseInstanceId = "caseInstanceId3"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR1", "VAL1"))
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, businessKey, caseInstanceId, createVariables().putValue("VAR2", "VAL2"))
 
-    whenever()
+    WHEN
       .remoteService
-      .correlateMessage(messageName, businessKey, createVariables().putValue("VAR2", "VAL2"), createVariables().putValue("VAR-NEW", "VAL-NEW"))
+      .correlateMessage(
+        messageName,
+        businessKey,
+        createVariables().putValue("VAR2", "VAL2"),
+        createVariables().putValue("VAR-NEW", "VAL-NEW")
+      )
 
-    then()
-      .process_instance_exists(processDefinitionKey, containingSimpleProcessVariables = createVariables().putValue("VAR-NEW", "VAL-NEW")) { instance, stage ->
+    THEN
+      .process_instance_exists(
+        processDefinitionKey,
+        containingSimpleProcessVariables = createVariables().putValue("VAR-NEW", "VAL-NEW")
+      ) { instance, stage ->
         assertThat(instance.businessKey).isEqualTo(businessKey)
         assertThat(instance.caseInstanceId).isEqualTo(caseInstanceId)
         assertThat(
@@ -271,12 +290,12 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
     val processDefinitionKey = processDefinitionKey()
     val messageName = "myEventMessage9"
     val userTaskId = "user-task"
-    given()
+    GIVEN
       .process_with_intermediate_message_catch_event_is_deployed(processDefinitionKey, userTaskId, messageName)
-      .and()
+      .AND
       .process_is_started_by_key(processDefinitionKey, "my-business-key9", "caseInstanceId1", createVariables().putValue("VAR9", "VAL9"))
 
-    whenever()
+    WHEN
       .remoteService
       .createMessageCorrelation(messageName)
       .setVariables(createVariables().putValue("NEW-VAR", "NEW-VAL"))
@@ -284,12 +303,12 @@ class RuntimeServiceCorrelateMessageITest : CamundaRestClientITestBase<RuntimeSe
       .setVariablesLocal(createVariables().putValue("LOCAL-VAR", "LOCAL-VALUE"))
       .setVariableLocal("LOCAL-VAR2", "LOCAL-VALUE2")
       .processInstanceVariablesEqual(createVariables().putValue("VAR9", "VAL9"))
-      .processInstanceId(given().processInstance.id)
-      .processDefinitionId(given().processDefinition.id)
+      .processInstanceId(GIVEN.processInstance.id)
+      .processDefinitionId(GIVEN.processDefinition.id)
       .processInstanceBusinessKey("my-business-key9")
       .correlate()
 
-    then()
+    THEN
       .process_instance_exists(processDefinitionKey) { instance, stage ->
         assertThat(instance.caseInstanceId).isEqualTo("caseInstanceId1")
         assertThat(instance.businessKey).isEqualTo("my-business-key9")

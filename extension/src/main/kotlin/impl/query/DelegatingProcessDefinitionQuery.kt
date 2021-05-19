@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,7 +58,7 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
   override fun singleResult(): ProcessDefinition? {
     val results = list()
     return when {
-      results.size == 1 -> results.get(0)
+      results.size == 1 -> results[0]
       results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of max 1")
       else -> null
     }
@@ -70,7 +70,7 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
   fun fillQueryDto(): ProcessDefinitionQueryDto {
     val query = ProcessDefinitionQueryDto()
     query.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
-    query.setActive(this.suspensionState == SuspensionState.ACTIVE)
+    query.setActive(this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null)
     query.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
     query.setCategory(this.category)
     query.setCategoryLike(this.categoryLike)
