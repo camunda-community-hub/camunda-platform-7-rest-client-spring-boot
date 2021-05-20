@@ -9,6 +9,9 @@ import org.camunda.bpm.extension.rest.impl.RemoteExternalTaskService
 import org.camunda.bpm.extension.rest.impl.RemoteRuntimeService
 import org.camunda.bpm.extension.rest.impl.implementedBy
 
+/**
+ * Adapter for implementing external task service.
+ */
 abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
 
   override fun complete(externalTaskId: String, workerId: String) {

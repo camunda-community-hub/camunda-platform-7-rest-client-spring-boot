@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+/**
+ * Auto configuration providing client stub if no process engine is available.
+ */
 @Configuration
 @AutoConfigureAfter(name = ["org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration"])
 class ProcessEngineClientStubAutoConfiguration {

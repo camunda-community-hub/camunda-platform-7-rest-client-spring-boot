@@ -44,8 +44,11 @@ class ProcessClient(
 
   companion object : KLogging()
 
+  /**
+   * Periodically retrieve process definitions and log them.
+   */
   @Scheduled(initialDelay = 8_000, fixedRate = Integer.MAX_VALUE.toLong())
-  fun retriveProcessDefinition() {
+  fun retrieveProcessDefinition() {
 
     logger.info { "CLIENT-90: Retrieving process definition" }
     val count = repositoryService.createProcessDefinitionQuery().count()
@@ -55,6 +58,9 @@ class ProcessClient(
   }
 
 
+  /**
+   * Periodically start process.
+   */
   @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
   fun startProcess() {
 
@@ -68,6 +74,9 @@ class ProcessClient(
   }
 
 
+  /**
+   * Periodically fire signals.
+   */
   @Scheduled(initialDelay = 12_500, fixedDelay = 5_000)
   fun fireSignal() {
 
@@ -82,6 +91,9 @@ class ProcessClient(
       .send()
   }
 
+  /**
+   * Periodically correlate messages.
+   */
   @Scheduled(initialDelay = 13_500, fixedDelay = 5_000)
   fun correlateMessage() {
 

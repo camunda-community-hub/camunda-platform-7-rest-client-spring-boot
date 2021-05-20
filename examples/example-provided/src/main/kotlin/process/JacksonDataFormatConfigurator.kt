@@ -37,6 +37,9 @@ import org.camunda.spin.spi.DataFormatConfigurator
 class JacksonDataFormatConfigurator : DataFormatConfigurator<JacksonJsonDataFormat> {
 
   companion object {
+    /**
+     * Factory configuring object mapper.
+     */
     fun configureObjectMapper(objectMapper: ObjectMapper) = objectMapper.apply {
       registerModule(KotlinModule())
       registerModule(Jdk8Module())

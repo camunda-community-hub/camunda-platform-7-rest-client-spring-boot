@@ -20,6 +20,9 @@ import java.util.UUID;
 
 import static org.camunda.bpm.engine.variable.Variables.*;
 
+/**
+ * Client speaking with a remote process engine.
+ */
 @Component
 public class ProcessClient {
 
@@ -28,6 +31,11 @@ public class ProcessClient {
   private final RuntimeService runtimeService;
   private final RepositoryService repositoryService;
 
+  /**
+   * Constructs the client.
+   * @param runtimeService
+   * @param repositoryService
+   */
   public ProcessClient(
     @Qualifier("remote") RuntimeService runtimeService,
     @Qualifier("remote") RepositoryService repositoryService
@@ -36,6 +44,9 @@ public class ProcessClient {
     this.repositoryService = repositoryService;
   }
 
+  /**
+   * Retrieves process definitions periodically.
+   */
   @Scheduled(initialDelay = 8_000, fixedRate = Integer.MAX_VALUE)
   public void retrieveProcessDefinition() {
     LOGGER.info("CLIENT-90: Retrieving process definition");
@@ -45,7 +56,9 @@ public class ProcessClient {
     LOGGER.info("CLIENT-92: Deployed process definition is {}", PrettyPrinter.toPrettyString(processDefinition));
   }
 
-
+  /**
+   * Starts processes periodically.
+   */
   @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
   public void startProcess() {
     LOGGER.trace("CLIENT-100: Starting a process instance remote");
@@ -55,7 +68,9 @@ public class ProcessClient {
     LOGGER.trace("CLIENT-101: Started instance {} - {}", instance.getId(), instance.getBusinessKey());
   }
 
-
+  /**
+   * Fires signals periodically.
+   */
   @Scheduled(initialDelay = 12_500, fixedDelay = 5_000)
   public void fireSignal() {
 
@@ -68,6 +83,9 @@ public class ProcessClient {
       .send();
   }
 
+  /**
+   * Correlates messages periodically.
+   */
   @Scheduled(initialDelay = 13_500, fixedDelay = 5_000)
   public void correlateMessage() {
 
@@ -89,7 +107,7 @@ public class ProcessClient {
       .setVariables(variables)
       .correlateAllWithResultAndVariables(true);
 
-    result.stream().forEach(element -> LOGGER.info("CLIENT-301: {}", PrettyPrinter.toPrettyString(element)));
+    result.forEach(element -> LOGGER.info("CLIENT-301: {}", PrettyPrinter.toPrettyString(element)));
   }
 
 }

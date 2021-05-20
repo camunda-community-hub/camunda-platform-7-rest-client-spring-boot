@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 
+/**
+ * Feign client accessing the methods of external task service.
+ */
 @FeignClient(name = "remoteExternalTaskService", url = "\${feign.client.config.remoteExternalTaskService.url}")
 interface ExternalTaskServiceClient {
   /**

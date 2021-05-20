@@ -35,11 +35,17 @@ class ProcessDelegatesConfiguration {
 
   companion object : KLogging()
 
+  /**
+   * Logging delegate.
+   */
   @Bean
   fun loggingDelegate() = JavaDelegate {
     logger.info { "PROCESS-LOGGER-001: ${it.eventName.toGerund()} '${it.currentActivityName.toSinglePrettyString()}, payload: ${it.variables}" }
   }
 
+  /**
+   * Value setting delegate.
+   */
   @Bean
   fun variableSetter() = JavaDelegate {
     // setting untyped variable
@@ -66,7 +72,7 @@ private fun String.toSinglePrettyString() = this
  */
 private fun String.toGerund() = when (this.length) {
   0 -> ""
-  1 -> "${this.toUpperCase()}ing"
-  else -> "${this.substring(0, 1).toUpperCase()}${this.substring(1, this.length)}ing"
+  1 -> "${this.uppercase(Locale.getDefault())}ing"
+  else -> "${this.substring(0, 1).uppercase(Locale.getDefault())}${this.substring(1, this.length)}ing"
 }
 

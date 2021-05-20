@@ -33,8 +33,14 @@ import java.beans.Introspector
 import java.beans.PropertyDescriptor
 import java.lang.reflect.InvocationTargetException
 
+/**
+ * Configuration of query map encoder to be able to map QueryDTOs to a list of query params.
+ */
 @Configuration
 class CamundaQueryMapEncoderConfiguration {
+  /**
+   * Provide own encoder.
+   */
   @Bean
   fun camundaQueryMapEncoder(): QueryMapEncoder = CamundaQueryMapEncoder()
 }
@@ -45,7 +51,6 @@ class CamundaQueryMapEncoderConfiguration {
 class CamundaQueryMapEncoder : QueryMapEncoder {
 
   private val classToMetadata: MutableMap<Class<*>, ObjectParamMetadata> = HashMap()
-
 
   override fun encode(value: Any?): MutableMap<String, Any> {
     return try {
@@ -80,10 +85,15 @@ class CamundaQueryMapEncoder : QueryMapEncoder {
     return classToMetadata.getOrPut(objectType) { ObjectParamMetadata.parseObjectType(objectType) }
   }
 
+  /**
+   * Object metadata folding properties information.
+   */
   data class ObjectParamMetadata(val objectProperties: List<PropertyDescriptor>) {
 
     companion object {
-
+      /**
+       * Factory method.
+       */
       fun parseObjectType(type: Class<*>): ObjectParamMetadata {
         val properties: MutableList<PropertyDescriptor> = mutableListOf()
         for (pd in Introspector.getBeanInfo(type).propertyDescriptors) {

@@ -14,13 +14,16 @@ import java.io.OutputStream
 import java.util.*
 import java.util.zip.ZipInputStream
 
-class DelegatingDeploymentBuilder: DeploymentBuilder {
+/**
+ * Deployment builder, collecting all settings in the DTO sent to the REST endpoint later.
+ */
+class DelegatingDeploymentBuilder : DeploymentBuilder {
 
   val resources: MutableList<MultipartFile> = mutableListOf()
 
 
   override fun addInputStream(resourceName: String, inputStream: InputStream): DeploymentBuilder {
-    val file = object: MultipartFile {
+    val file = object : MultipartFile {
       override fun getInputStream(): InputStream = inputStream
       override fun getName(): String = resourceName
       override fun getOriginalFilename(): String = resourceName

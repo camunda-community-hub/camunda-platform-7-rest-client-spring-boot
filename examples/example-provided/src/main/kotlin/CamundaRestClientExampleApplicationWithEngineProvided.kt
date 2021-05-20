@@ -40,11 +40,17 @@ fun main(args: Array<String>) {
   runApplication<CamundaRestClientExampleApplicationWithEngineProvided>(*args)
 }
 
+/**
+ * Application having embedded engine.
+ */
 @SpringBootApplication
 @EnableScheduling
 @EnableCamundaRestClient
 class CamundaRestClientExampleApplicationWithEngineProvided {
 
+  /**
+   * Default kotlin-aware object mapper.
+   */
   @Bean
   fun objectMapper(): ObjectMapper {
     val objectMapper = ObjectMapper()
