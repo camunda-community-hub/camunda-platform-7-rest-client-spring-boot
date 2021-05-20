@@ -56,7 +56,7 @@ class DelegatingProcessInstanceQuery(private val runtimeServiceClient: RuntimeSe
     }
   }
 
-  fun fillQueryDto(): ProcessInstanceQueryDto {
+  private fun fillQueryDto(): ProcessInstanceQueryDto {
 
     val query = ProcessInstanceQueryDto()
 
@@ -106,6 +106,8 @@ class DelegatingProcessInstanceQuery(private val runtimeServiceClient: RuntimeSe
       query.setActivityIdIn(this.activityIds.toList())
     }
     query.variables = this.queryVariableValues.map { it.toDto() }
+    query.isVariableNamesIgnoreCase = this.isVariableNamesIgnoreCase
+    query.isVariableValuesIgnoreCase = this.isVariableValuesIgnoreCase
     return query
   }
 }
@@ -114,5 +116,9 @@ class DelegatingProcessInstanceQuery(private val runtimeServiceClient: RuntimeSe
  * Camunda constructor for the DTO is strange, but we use it here.
  */
 fun QueryVariableValue.toDto(): VariableQueryParameterDto {
-  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, this.isLocal, true))
+  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
+  // the query is saving the scoping information in the local flag actually always passing "true" to it.
+  // since we want to query for the process variables, we invert the isLocal flag
+  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
+  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, !this.isLocal, true))
 }

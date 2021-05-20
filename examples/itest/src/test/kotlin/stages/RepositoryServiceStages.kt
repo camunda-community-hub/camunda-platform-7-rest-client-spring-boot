@@ -57,10 +57,11 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
     }
   }
 
-  fun process_is_deployed(processDefinitionKey: String) = step {
+  fun process_is_deployed(processDefinitionKey: String, versionTag: String? = null) = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
+      .camundaVersionTag(versionTag)
       .startEvent("start")
       .endEvent("end")
       .done()

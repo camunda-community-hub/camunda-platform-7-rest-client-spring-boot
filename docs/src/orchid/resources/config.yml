@@ -29,4 +29,4 @@ services:
     stages:
       - type: 'githubPages'
         username: 'zambrovski'
-        repo: 'camunda/camunda-rest-client-spring-boot'
+        repo: 'camunda-community-hub/camunda-rest-client-spring-boot'

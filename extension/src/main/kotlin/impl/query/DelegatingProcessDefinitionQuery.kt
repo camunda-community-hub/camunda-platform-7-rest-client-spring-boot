@@ -34,7 +34,9 @@ import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
 /**
  * Implementation of the process definition query.
  */
-class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositoryServiceClient) : ProcessDefinitionQueryImpl() {
+class DelegatingProcessDefinitionQuery(
+  private val repositoryServiceClient: RepositoryServiceClient
+) : ProcessDefinitionQueryImpl() {
 
   override fun list(): List<ProcessDefinition> {
     val definitions = repositoryServiceClient.getProcessDefinitions(fillQueryDto(), this.firstResult, this.maxResults)
@@ -51,7 +53,7 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
   }
 
   override fun count(): Long {
-    val count = repositoryServiceClient.countProcessDefinitions(fillQueryDto(), firstResult, maxResults)
+    val count = repositoryServiceClient.countProcessDefinitions(fillQueryDto(), this.firstResult, this.maxResults)
     return count.count
   }
 
@@ -59,7 +61,7 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
     val results = list()
     return when {
       results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of max 1")
+      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of expected maximum 1")
       else -> null
     }
   }
@@ -67,43 +69,46 @@ class DelegatingProcessDefinitionQuery(val repositoryServiceClient: RepositorySe
   /**
    * Fill the DTO from the builder.
    */
-  fun fillQueryDto(): ProcessDefinitionQueryDto {
-    val query = ProcessDefinitionQueryDto()
-    query.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
-    query.setActive(this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null)
-    query.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
-    query.setCategory(this.category)
-    query.setCategoryLike(this.categoryLike)
-    query.setDeploymentId(this.deploymentId)
-    query.setIncidentId(this.incidentId)
-    query.setIncidentMessage(this.incidentMessage)
-    query.setIncidentMessageLike(this.incidentMessageLike)
-    query.setIncidentType(this.incidentType)
-    query.setKey(this.key)
-    query.setKeyLike(this.keyLike)
-    // FIXME: check
-    // query.setKeysIn()
-    query.setLatestVersion(this.latest)
-    query.setName(this.name)
-    query.setNameLike(this.nameLike)
-    query.setNotStartableInTasklist(this.isNotStartableInTasklist)
-    query.setProcessDefinitionId(this.id)
-    // FIXME: check
-    if (this.ids != null) {
-      query.setProcessDefinitionIdIn(this.ids.toList())
+  private fun fillQueryDto(): ProcessDefinitionQueryDto {
+    val queryDto = ProcessDefinitionQueryDto()
+    queryDto.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
+    queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null)
+    queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
+    queryDto.setCategory(this.category)
+    queryDto.setCategoryLike(this.categoryLike)
+    queryDto.setDeploymentId(this.deploymentId)
+    queryDto.setIncidentId(this.incidentId)
+    queryDto.setIncidentMessage(this.incidentMessage)
+    queryDto.setIncidentMessageLike(this.incidentMessageLike)
+    queryDto.setIncidentType(this.incidentType)
+    queryDto.setKey(this.key)
+    queryDto.setKeyLike(this.keyLike)
+    if (this.keys != null) { // TODO: check
+      queryDto.setKeysIn(this.keys.toList())
     }
-    query.setResourceName(this.resourceName)
-    query.setResourceNameLike(this.resourceNameLike)
-    query.setStartableBy(this.authorizationUserId)
-    query.setStartablePermissionCheck(this.startablePermissionCheck)
-    if (this.tenantIds != null) {
-      query.setTenantIdIn(this.tenantIds.toList())
+    queryDto.setLatestVersion(this.latest)
+    queryDto.setName(this.name)
+    queryDto.setNameLike(this.nameLike)
+    queryDto.setNotStartableInTasklist(this.isNotStartableInTasklist)
+    queryDto.setProcessDefinitionId(this.id)
+    if (this.ids != null) { // TODO: check
+      queryDto.setProcessDefinitionIdIn(this.ids.toList())
     }
-    query.setVersion(this.version)
-    query.setVersionTag(this.versionTag)
-    query.setVersionTagLike(this.versionTagLike)
-    // FIXME
-    // query.setWithoutTenantId()
-    return query
+    queryDto.setResourceName(this.resourceName)
+    queryDto.setResourceNameLike(this.resourceNameLike)
+    queryDto.setStartableBy(this.authorizationUserId)
+    queryDto.setStartablePermissionCheck(this.startablePermissionCheck)
+    if (this.isTenantIdSet) { // TODO: check
+      if (this.tenantIds != null) {
+        queryDto.setTenantIdIn(this.tenantIds.toList())
+      } else {
+        queryDto.setWithoutTenantId(true)
+      }
+    }
+    queryDto.setVersion(this.version)
+    queryDto.setVersionTag(this.versionTag)
+    queryDto.setVersionTagLike(this.versionTagLike)
+
+    return queryDto
   }
 }

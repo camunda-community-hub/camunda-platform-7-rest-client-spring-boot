@@ -12,12 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
     - name: Checkout
       uses: actions/checkout@f1d3225b5376a0791fdee5a0e8eac5289355e43a # pin@v2
+
     - name: Java setup
       uses: actions/setup-java@e54a62b3df9364d4b4c1c29c7225e57fe605d7dd # pin@v1
       with:
         java-version: 11
+
     - name: Cache
       uses: actions/cache@99d99cd262b87f5f8671407a1e5c1ddfa36ad5ba # pin@v1
       with:
@@ -25,7 +28,15 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+
     - name: Run Maven
       run: mvn -B clean install com.mycila:license-maven-plugin:check
-    - name: Run I-Tests
-      run: mvn -B -Pitest
+
+    - name: Run I-Tests and generate coverage reports
+      run: mvn -B -Pitest verify
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+

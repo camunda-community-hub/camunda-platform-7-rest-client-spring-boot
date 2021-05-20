@@ -108,7 +108,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <properties>
-        <baseUrl>https://camunda.github.io/camunda-rest-client-spring-boot/</baseUrl>
+        <baseUrl>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/</baseUrl>
       </properties>
       <build>
         <defaultGoal>orchid:deploy</defaultGoal>

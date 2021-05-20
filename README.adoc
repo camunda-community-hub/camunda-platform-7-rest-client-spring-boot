@@ -2,16 +2,14 @@ image::https://img.shields.io/badge/Community%20Extension-An%20open%20source%20c
 image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable", link=https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-]
 
 
-[cols="a,a,a,a,a,a,a,a"]
+[cols="a,a,a,a,a,a,a"]
 |===
-| // travis
-image::https://travis-ci.org/camunda/camunda-rest-client-spring-boot.svg?branch=develop[caption="Build Status", link=https://travis-ci.org/camunda/camunda-rest-client-spring-boot]
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot]
 | // codecov
-image::https://codecov.io/gh/camunda/camunda-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda/camunda-rest-client-spring-boot]
+image::https://codecov.io/gh/camunda-community-hub/camunda-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-rest-client-spring-boot]
 | // codacy
-image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-rest-client-spring-boot?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-rest-client-spring-boot&utm_campaign=Badge_Grade_Dashboard]
+image::https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy Badge", link=https://www.codacy.com/gh/camunda-community-hub/camunda-rest-client-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=camunda-community-hub/camunda-rest-client-spring-boot&amp;utm_campaign=Badge_Grade]
 | // license
 image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-rest-client-spring-boot/license"]
 | // changelog
@@ -37,7 +35,7 @@ guide.
 
 == Working Example
 
-We provides a working example demonstrating some of the features of the library. See our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples[Examples] section for usage and configuration.
+We provide a working example demonstrating some features of the library. See our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples[Examples] section for usage and configuration.
 
 
 == User Guide

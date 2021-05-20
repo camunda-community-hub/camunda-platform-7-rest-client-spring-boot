@@ -23,12 +23,12 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
-import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
@@ -45,11 +45,19 @@ class RuntimeServiceProcessInstanceQueryITest :
   @Test
   fun `find process started by id`() {
     val processDefinitionKey = processDefinitionKey()
+    val key1 = "businessKey1"
+    val vars1 = createVariables().putValue("VAR1", "value1")
+    val key2 = "businessKey2"
+    val vars2 = createVariables().putValue("VAR1", "value2")
+
     GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey)
-      .AND
-      .localService
-      .startProcessInstanceById(GIVEN.processDefinition.id)
+
+    WHEN
+      .apply {
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key1, vars1)
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key2, vars2)
+      }
 
     THEN
       .process_instance_query_succeeds { query, _ ->
@@ -57,7 +65,48 @@ class RuntimeServiceProcessInstanceQueryITest :
           query
             .processDefinitionKey(processDefinitionKey)
             .count()
+        ).isEqualTo(2)
+
+        assertThat(
+          query
+            .processInstanceBusinessKey(key1)
+            .count()
         ).isEqualTo(1)
+
+        assertThat(
+          query
+            .processInstanceBusinessKey(key1)
+            .singleResult()
+            .businessKey
+        ).isEqualTo(key1)
+
+        assertThat(
+          query
+            .variableValueEquals("VAR1", "value1")
+            .singleResult()
+            .businessKey
+        ).isEqualTo(key1)
+
+        assertThat(
+          query
+            .matchVariableNamesIgnoreCase()
+            .variableValueEquals("var1", "value1")
+            .singleResult()
+            .businessKey
+        ).isEqualTo(key1)
+
+        assertThat(
+          query
+            .matchVariableNamesIgnoreCase()
+            .variableValueEquals("var1", "value1")
+            .singleResult().id
+        ).isEqualTo(
+          query
+            .matchVariableNamesIgnoreCase()
+            .variableValueEquals("var1", "value1")
+            .list()[0].id
+        )
+
       }
 
   }

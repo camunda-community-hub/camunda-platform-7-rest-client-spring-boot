@@ -58,13 +58,14 @@ class RepositoryServiceProcessDefinitionQueryITest :
   @Test
   fun `should find deployed processes by process definition key`() {
     val processDefinitionKey = processDefinitionKey()
+    val tag = "1.0.0"
     val another = processDefinitionKey()
 
     GIVEN
       .no_deployment_exists()
 
     WHEN
-      .process_is_deployed(processDefinitionKey)
+      .process_is_deployed(processDefinitionKey, tag)
       .AND
       .process_is_deployed(processDefinitionKey)
       .AND
@@ -76,7 +77,44 @@ class RepositoryServiceProcessDefinitionQueryITest :
           query
             .processDefinitionKey(processDefinitionKey)
             .count()
-        ).isEqualTo(3) // FIXME -> this should be 2!
+        ).isEqualTo(2)
+
+        assertThat(
+          query
+            .processDefinitionKey(processDefinitionKey)
+            .latestVersion()
+            .count()
+        ).isEqualTo(1)
+      }
+  }
+
+  @Test
+  fun `should find deployed processes by process definition key and version`() {
+    val processDefinitionKey = processDefinitionKey()
+    val tag = "1.0.0"
+
+    GIVEN
+      .no_deployment_exists()
+
+    WHEN
+      .process_is_deployed(processDefinitionKey, tag)
+
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .processDefinitionKey(processDefinitionKey)
+            .versionTag(tag)
+            .list()
+            .size
+        ).isEqualTo(1)
+
+        assertThat(
+          query
+            .processDefinitionKey(processDefinitionKey)
+            .versionTag("non-existent")
+            .list()
+        ).isEmpty()
       }
   }
 

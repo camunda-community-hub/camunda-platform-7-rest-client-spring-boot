@@ -16,15 +16,18 @@ camunda:
 server:
   port: 8085
 feign:
+
   client:
     config:
       remoteRuntimeService:
-        url: "http://localhost:8085/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
       remoteExternalTaskService:
-        url: "http://localhost:8085/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
       remoteRepositoryService:
-        url: "http://localhost:8085/engine-rest/"
+        url: "http://localhost:${server.port}/engine-rest/"
+        loggerLevel: basic
 
 logging:
   level:
+    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
     org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG

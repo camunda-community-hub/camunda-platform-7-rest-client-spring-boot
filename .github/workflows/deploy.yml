@@ -35,8 +35,8 @@ jobs:
     - name: Run Maven
       run: mvn -B clean install com.mycila:license-maven-plugin:check
 
-    - name: Run I-Tests
-      run: mvn -B -Pitest
+    - name: Run I-Tests and generate coverage reports
+      run: mvn -B -Pitest verify
 
     - name: Deploy SNAPSHOT / Release
       uses: camunda-community-hub/community-action-maven-release@v1
@@ -61,3 +61,12 @@ jobs:
         asset_path: ${{ steps.release.outputs.artifacts_archive_path }}
         asset_name: ${{ steps.release.outputs.artifacts_archive_path }}
         asset_content_type: application/zip
+
+    - name: Publish docs (Release only)
+      if: github.event.release
+      run: mvn -f docs -Pdeploy-docs -DgithubToken="${{ secrets.GITHUB_TOKEN }}"
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
