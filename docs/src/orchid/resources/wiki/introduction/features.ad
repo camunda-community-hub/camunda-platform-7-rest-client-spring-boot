@@ -23,12 +23,15 @@ The library supports the following features:
 **  Delete variables: `#removeVariable()`,`#removeVariables()`
 **  Write local variables: `#setVariableLocal()`,`#setVariablesLocal()`, `#setVariableLocalTyped()`, `#setVariablesLocalTyped()`
 **  Delete local variables: `#removeVariableLocal()`,`#removeVariablesLocal()`
+**  Process instance query: `#createProcessInstanceQuery()`
 
 * `RepositoryService`
 **  Query for process definitions: `#createProcessDefinitionQuery()`
 
 * `ExternalTaskService`
 We are not aiming to replace the existing link:https://docs.camunda.org/manual/latest/user-guide/ext-client/[External Task Client],
-but still provide an implementation.
+but still provide an implementation for some methods.
 ** Complete a task by id: `#complete()`
+** Handle BPMN Errors: `#handleBpmnError()`
+** Handle failures: `#handleFailure()`
 
