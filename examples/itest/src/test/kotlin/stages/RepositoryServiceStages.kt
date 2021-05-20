@@ -51,9 +51,13 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var deployment: Deployment
 
-  fun process_is_deployed(
-    processDefinitionKey: String
-  ): RepositoryServiceActionStage = step {
+  fun no_deployment_exists() = step {
+    localService.createDeploymentQuery().list().map {
+      localService.deleteDeployment(it.id)
+    }
+  }
+
+  fun process_is_deployed(processDefinitionKey: String) = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -82,7 +86,7 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: RepositoryService
 
-  fun process_query_succeeds(
+  fun process_definition_query_succeeds(
     processDefinitionQueryAssertions: (ProcessDefinitionQuery, AssertStage<*, RepositoryService>) -> Unit = { _, _ -> }
   ): RepositoryServiceAssertStage = step {
     val query = remoteService.createProcessDefinitionQuery()

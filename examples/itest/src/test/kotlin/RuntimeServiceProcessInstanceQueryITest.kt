@@ -28,56 +28,38 @@ import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
-import org.camunda.bpm.engine.RepositoryService
+import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
-import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceActionStage
-import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceAssertStage
-import org.camunda.bpm.extension.rest.itest.stages.RepositoryServiceCategory
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceActionStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceAssertStage
+import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
-@RepositoryServiceCategory
-@As("Creates process definition query")
+@RuntimeServiceCategory
+@As("Creates process instance query")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-class RepositoryServiceProcessDefinitionQueryITest :
-  CamundaRestClientITestBase<RepositoryService, RepositoryServiceActionStage, RepositoryServiceAssertStage>() {
+class RuntimeServiceProcessInstanceQueryITest :
+  CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
 
   @Test
-  fun `should find auto deployed processes only`() {
-    GIVEN
-      .no_deployment_exists()
-    THEN
-      .process_definition_query_succeeds { query, _ ->
-        assertThat(
-          query
-            .count()
-        ).isEqualTo(0)
-      }
-  }
-
-  @Test
-  fun `should find deployed processes by process definition key`() {
+  fun `find process started by id`() {
     val processDefinitionKey = processDefinitionKey()
-    val another = processDefinitionKey()
-
     GIVEN
-      .no_deployment_exists()
-
-    WHEN
-      .process_is_deployed(processDefinitionKey)
+      .process_with_user_task_is_deployed(processDefinitionKey)
       .AND
-      .process_is_deployed(processDefinitionKey)
-      .AND
-      .process_is_deployed(another)
+      .localService
+      .startProcessInstanceById(GIVEN.processDefinition.id)
 
     THEN
-      .process_definition_query_succeeds { query, _ ->
+      .process_instance_query_succeeds { query, _ ->
         assertThat(
           query
             .processDefinitionKey(processDefinitionKey)
             .count()
-        ).isEqualTo(3) // FIXME -> this should be 2!
+        ).isEqualTo(1)
       }
+
   }
 
 }

@@ -24,8 +24,10 @@ package org.camunda.bpm.extension.rest.itest.stages
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tngtech.jgiven.Stage
+import com.tngtech.jgiven.annotation.AfterScenario
 import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
+import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
@@ -50,6 +52,7 @@ abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<AC
    * Generates a new process definition key.
    */
   internal fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
+
 }
 
 /**

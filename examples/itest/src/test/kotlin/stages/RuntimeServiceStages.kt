@@ -22,6 +22,7 @@
  */
 package org.camunda.bpm.extension.rest.itest.stages
 
+import com.tngtech.jgiven.annotation.Hidden
 import com.tngtech.jgiven.annotation.IsTag
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
@@ -31,8 +32,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
+import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -253,8 +256,7 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     processInstanceAssertions(processInstance!!, this)
   }
 
-  fun subscription_exists(messageName: String): RuntimeServiceAssertStage = step {
-
+  fun subscription_exists(messageName: String) = step {
     assertThat(
       localService
         .createEventSubscriptionQuery()
@@ -262,6 +264,13 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
         .eventName(messageName)
         .singleResult()
     ).isNotNull
+  }
+
+  fun process_instance_query_succeeds(
+    @Hidden processInstanceQueryAssertions: (ProcessInstanceQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
+  ) = step {
+    val query = remoteService.createProcessInstanceQuery()
+    processInstanceQueryAssertions(query, this)
   }
 }
 

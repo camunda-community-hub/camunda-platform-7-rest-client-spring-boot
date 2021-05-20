@@ -33,6 +33,7 @@ import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.bpm.extension.rest.itest.stages.ExternalTaskServiceActionStage
 import org.camunda.bpm.extension.rest.itest.stages.ExternalTaskServiceAssertStage
 import org.camunda.bpm.extension.rest.itest.stages.RuntimeServiceCategory
+import org.junit.After
 import org.junit.Test
 
 @RuntimeServiceCategory
@@ -68,7 +69,69 @@ class ExternalTaskServiceITest :
       )
 
     THEN
-      .execution_is_waiting_for_signal()
+      .execution_is_waiting_for_signal("never_happens")
+
+  }
+
+  @Test
+  fun `should fail external task`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .remoteService.handleBpmnError(
+        GIVEN.externalTaskId, "worker-id",
+        "error-code",
+        "ultimately failed",
+        createVariables()
+          .putValue("VAR1", "NEW-VAL1")
+          .putValue("VAR2", "VAL2")
+          .putValueTyped("VAR3", stringValue("VAL3")),
+      )
+
+    THEN
+      .execution_is_waiting_for_signal("never_happens_after_error")
+
+  }
+
+  @Test
+  fun `should report failure for external task`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .remoteService.handleFailure(
+        GIVEN.externalTaskId, "worker-id",
+        "failed",
+        "ultimately failed",
+        2,
+        10
+      )
+
+    THEN
+      .process_waits_in_external_task("topic")
 
   }
 }

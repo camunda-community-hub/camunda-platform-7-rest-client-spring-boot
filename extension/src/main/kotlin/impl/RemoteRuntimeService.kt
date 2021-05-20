@@ -38,7 +38,6 @@ import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
-import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -73,14 +72,20 @@ class RemoteRuntimeService(
   override fun correlateMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>) =
     doCorrelateMessage(messageName, businessKey, processVariables = processVariables)
 
-  override fun correlateMessage(messageName: String, businessKey: String, correlationKeys: MutableMap<String, Any>, processVariables: MutableMap<String, Any>) =
+  override fun correlateMessage(
+    messageName: String,
+    businessKey: String,
+    correlationKeys: MutableMap<String, Any>,
+    processVariables: MutableMap<String, Any>
+  ) =
     doCorrelateMessage(messageName, businessKey, correlationKeys, processVariables)
 
   override fun createMessageCorrelation(messageName: String) =
     DelegatingMessageCorrelationBuilder(
       messageName = messageName,
       runtimeServiceClient = runtimeServiceClient,
-      valueMapper = valueMapper)
+      valueMapper = valueMapper
+    )
 
   /**
    * Null-safe version of message correlate.
@@ -89,12 +94,14 @@ class RemoteRuntimeService(
     messageName: String,
     businessKey: String? = null,
     correlationKeys: MutableMap<String, Any>? = null,
-    processVariables: MutableMap<String, Any>? = null) {
+    processVariables: MutableMap<String, Any>? = null
+  ) {
 
     val builder = DelegatingMessageCorrelationBuilder(
       messageName = messageName,
       runtimeServiceClient = runtimeServiceClient,
-      valueMapper = valueMapper)
+      valueMapper = valueMapper
+    )
 
     if (businessKey != null) {
       builder.processInstanceBusinessKey(businessKey)
@@ -124,8 +131,32 @@ class RemoteRuntimeService(
   override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String, variables: MutableMap<String, Any>) =
     doStartProcessInstanceByKey(processDefinitionKey, businessKey, variables = variables)
 
-  override fun startProcessInstanceByKey(processDefinitionKey: String, businessKey: String, caseInstanceId: String, variables: MutableMap<String, Any>) =
+  override fun startProcessInstanceByKey(
+    processDefinitionKey: String,
+    businessKey: String,
+    caseInstanceId: String,
+    variables: MutableMap<String, Any>
+  ) =
     doStartProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId, variables)
+
+  /**
+   * Create process instance start DTO.
+   */
+  private fun createStartProcessInstanceDto(
+    businessKey: String? = null,
+    caseInstanceId: String? = null,
+    variables: MutableMap<String, Any>? = null
+  ) = StartProcessInstanceDto().apply {
+    if (businessKey != null) {
+      this.businessKey = businessKey
+    }
+    if (caseInstanceId != null) {
+      this.caseInstanceId = caseInstanceId
+    }
+    if (variables != null) {
+      this.variables = valueMapper.mapValues(variables)
+    }
+  }
 
   /**
    * Null-safe version of starter function.
@@ -136,18 +167,13 @@ class RemoteRuntimeService(
     caseInstanceId: String? = null,
     variables: MutableMap<String, Any>? = null
   ): ProcessInstance {
-    val startProcessInstance = StartProcessInstanceDto().apply {
-      if (businessKey != null) {
-        this.businessKey = businessKey
-      }
-      if (caseInstanceId != null) {
-        this.caseInstanceId = caseInstanceId
-      }
-      if (variables != null) {
-        this.variables = valueMapper.mapValues(variables)
-      }
-    }
-    val instance = this.runtimeServiceClient.startProcessByKey(processDefinitionKey, startProcessInstance)
+    val instance = this.runtimeServiceClient.startProcessByKey(
+      processDefinitionKey, createStartProcessInstanceDto(
+        businessKey = businessKey,
+        caseInstanceId = caseInstanceId,
+        variables = variables
+      )
+    )
     return ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(instance))
   }
 
@@ -166,7 +192,12 @@ class RemoteRuntimeService(
   override fun startProcessInstanceById(processDefinitionId: String, businessKey: String, variables: MutableMap<String, Any>) =
     doStartProcessInstanceById(processDefinitionId, businessKey, variables = variables)
 
-  override fun startProcessInstanceById(processDefinitionId: String, businessKey: String, caseInstanceId: String, variables: MutableMap<String, Any>) =
+  override fun startProcessInstanceById(
+    processDefinitionId: String,
+    businessKey: String,
+    caseInstanceId: String,
+    variables: MutableMap<String, Any>
+  ) =
     doStartProcessInstanceById(processDefinitionId, businessKey, caseInstanceId, variables)
 
   /**
@@ -178,18 +209,13 @@ class RemoteRuntimeService(
     caseInstanceId: String? = null,
     variables: MutableMap<String, Any>? = null
   ): ProcessInstance {
-    val startProcessInstance = StartProcessInstanceDto().apply {
-      if (businessKey != null) {
-        this.businessKey = businessKey
-      }
-      if (caseInstanceId != null) {
-        this.caseInstanceId = caseInstanceId
-      }
-      if (variables != null) {
-        this.variables = valueMapper.mapValues(variables)
-      }
-    }
-    val instance = this.runtimeServiceClient.startProcessById(processDefinitionId, startProcessInstance)
+    val instance = this.runtimeServiceClient.startProcessById(
+      processDefinitionId, createStartProcessInstanceDto(
+        businessKey = businessKey,
+        caseInstanceId = caseInstanceId,
+        variables = variables
+      )
+    )
     return ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(instance))
   }
 
@@ -203,7 +229,12 @@ class RemoteRuntimeService(
     doSignal(executionId, signalName, signalData, processVariables)
 
   @Suppress("UNUSED_PARAMETER")
-  private fun doSignal(executionId: String, signalName: String? = null, signalData: Any? = null, processVariables: MutableMap<String, Any>? = null) {
+  private fun doSignal(
+    executionId: String,
+    signalName: String? = null,
+    signalData: Any? = null,
+    processVariables: MutableMap<String, Any>? = null
+  ) {
     val trigger = ExecutionTriggerDto().apply {
       if (processVariables != null) {
         this.variables = valueMapper.mapValues(processVariables)
@@ -264,7 +295,11 @@ class RemoteRuntimeService(
     return valueMapper.mapDtos(variables, deserializeValues)
   }
 
-  override fun getVariablesLocalTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
+  override fun getVariablesLocalTyped(
+    executionId: String,
+    variableNames: MutableCollection<String>,
+    deserializeValues: Boolean
+  ): VariableMap {
     val variables = runtimeServiceClient
       .getVariablesLocal(executionId, deserializeValues)
       .filter { variableNames.contains(it.key) }

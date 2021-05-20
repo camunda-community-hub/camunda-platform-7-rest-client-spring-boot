@@ -22,9 +22,12 @@
  */
 package org.camunda.bpm.extension.rest.itest.stages
 
+import com.tngtech.jgiven.annotation.AfterStage
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.ExternalTaskService
 import org.camunda.bpm.engine.RepositoryService
@@ -32,6 +35,7 @@ import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.junit.After
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 
@@ -88,7 +92,7 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
     businessKey: String? = null,
     caseInstanceId: String? = null,
     variables: Map<String, Any>? = null
-  ): ExternalTaskServiceActionStage {
+  ) = step {
 
     processInstance = if (variables != null && businessKey != null && caseInstanceId != null) {
       runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId, variables)
@@ -103,24 +107,22 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
     // started instance
     assertThat(processInstance).isNotNull
     // waits in message event
-    assertThat(runtimeService
-      .createProcessInstanceQuery()
-      .processInstanceId(processInstance.id)
-      .singleResult()).isNotNull
-
-    return self()
+    assertThat(
+      runtimeService
+        .createProcessInstanceQuery()
+        .processInstanceId(processInstance.id)
+        .singleResult()
+    ).isNotNull
   }
 
-  fun process_waits_in_external_task(topic: String): ExternalTaskServiceActionStage {
+  fun process_waits_in_external_task(topic: String) = step {
     localService.fetchAndLock(1, "worker-id")
       .topic(topic, 10)
       .execute().map {
         this.externalTaskId = it.id
       }
 
-    assertThat(externalTaskId).isNotNull()
-
-    return self()
+    assertThat(externalTaskId).isNotNull
   }
 
 
@@ -133,23 +135,50 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var runtimeService: RuntimeService
 
+  @Autowired
+  @Qualifier("externalTaskService")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  override lateinit var localService: ExternalTaskService
+
+
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var processInstance: ProcessInstance
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var execution: Execution
 
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var externalTaskId: String
 
-  fun execution_is_waiting_for_signal(): ExternalTaskServiceAssertStage {
+  fun execution_is_waiting_for_signal(signalName: String) = step {
+
+    val subscription = runtimeService
+      .createEventSubscriptionQuery()
+      .processInstanceId(processInstance.id)
+      .eventName(signalName)
+      .singleResult()
+
+
     execution = runtimeService
       .createExecutionQuery()
-      .executionId(runtimeService
-        .createEventSubscriptionQuery()
-        .processInstanceId(processInstance.id)
-        .singleResult()
-        .executionId
-      ).singleResult()
-    return self()
+      .executionId(subscription.executionId)
+      .singleResult()
+  }
+
+  fun process_waits_in_external_task(topic: String) = step {
+    localService.fetchAndLock(1, "worker-id")
+      .topic(topic, 10)
+      .execute().map {
+        this.externalTaskId = it.id
+      }
+
+    assertThat(externalTaskId).isNotNull
+  }
+
+  @AfterStage
+  fun stop_process() {
+    val allInstances = runtimeService.createProcessInstanceQuery().list().map { it.id }
+    runtimeService.deleteProcessInstancesIfExists(allInstances, "end of test", true, true, true)
   }
 
 }
