@@ -2,7 +2,7 @@
 # It will not trigger for pushes to master or develop, but run on develop every night to provide a nightly build status.
 name: Build project with Maven
 on:
-  pull_request: 
+  pull_request:
   push:
     branches-ignore: [ master, develop ]
   schedule:
@@ -17,7 +17,7 @@ jobs:
     - name: Java setup
       uses: actions/setup-java@e54a62b3df9364d4b4c1c29c7225e57fe605d7dd # pin@v1
       with:
-        java-version: 1.8
+        java-version: 11
     - name: Cache
       uses: actions/cache@99d99cd262b87f5f8671407a1e5c1ddfa36ad5ba # pin@v1
       with:
