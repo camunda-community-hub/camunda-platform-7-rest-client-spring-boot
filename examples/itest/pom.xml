@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.camunda.bpm.extension.rest</groupId>
     <artifactId>camunda-rest-client-spring-boot-examples-root</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
   </parent>
 
   <artifactId>camunda-rest-client-spring-boot-itest</artifactId>
