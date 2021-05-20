@@ -9,11 +9,12 @@ pageId: 'support-matrix'
 
 Here are currently implemented methods.
 
-== Runtime Service @ 0.0.4
+== Runtime Service @ 0.0.5
 *  `# startProcessInstanceByKey`
 *  `# startProcessInstanceById`
 *  `# correlateMessage`
 *  `# createMessageCorrelation`
+*  `# createProcessInstanceQuery`
 *  `# signal`
 *  `# signalEventReceived`
 *  `# createSignalEvent`
@@ -42,6 +43,8 @@ Here are currently implemented methods.
 
 * `# createProcessDefinitionQuery`
 
-== ExternalTaskService @ 0.0.4
+== ExternalTaskService @ 0.0.5
 
 * `# complete`
+* `# handleBpmnError`
+* `# handleFailure`

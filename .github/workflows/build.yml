@@ -40,3 +40,8 @@ jobs:
       with:
         token: ${{secrets.CODECOV_TOKEN}}
 
+    - name: Upload coverage to codacy
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r examples/coverage-report/target/site/jacoco.xml
+      env:
+        CODACY_API_TOKEN: ${{secrets.CODACY_API_TOKEN}}
+

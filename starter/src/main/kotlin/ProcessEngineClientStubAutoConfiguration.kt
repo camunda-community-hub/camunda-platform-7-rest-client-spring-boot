@@ -16,6 +16,9 @@ class ProcessEngineClientStubAutoConfiguration {
 
   companion object: KLogging()
 
+  /**
+   * Sets up a fake engine if no engine is provided.
+   */
   @Bean
   @ConditionalOnMissingBean(ProcessEngine::class)
   fun processEngineClientStub(): ProcessEngine {

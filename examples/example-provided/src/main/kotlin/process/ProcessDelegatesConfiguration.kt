@@ -30,6 +30,9 @@ import org.springframework.context.annotation.Configuration
 import java.time.Instant
 import java.util.*
 
+/**
+ * Configure delegates for the process service tasks.
+ */
 @Configuration
 class ProcessDelegatesConfiguration {
 

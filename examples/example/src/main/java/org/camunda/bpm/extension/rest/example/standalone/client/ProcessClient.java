@@ -2,11 +2,11 @@ package org.camunda.bpm.extension.rest.example.standalone.client;
 
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
-import org.camunda.bpm.extension.rest.variables.PrettyPrinter;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.extension.rest.variables.PrettyPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +33,7 @@ public class ProcessClient {
 
   /**
    * Constructs the client.
+   *
    * @param runtimeService
    * @param repositoryService
    */
@@ -94,7 +95,7 @@ public class ProcessClient {
     VariableMap variables = createVariables();
     variables.putValueTyped("STRING", stringValue("my string"));
     variables.putValueTyped("CORRELATION_DATE", dateValue(Date.from(Instant.now())));
-    variables.putValueTyped("SHORT", shortValue((short)120));
+    variables.putValueTyped("SHORT", shortValue((short) 120));
     variables.putValueTyped("DOUBLE", doubleValue(1.0));
     variables.putValueTyped("INTEGER", integerValue(65800));
     variables.putValueTyped("LONG", longValue(1L + Integer.MAX_VALUE));
