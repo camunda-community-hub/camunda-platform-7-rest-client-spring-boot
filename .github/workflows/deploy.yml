@@ -14,7 +14,9 @@ jobs:
   publish:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - name: Checks out code
+      uses: actions/checkout@v2
+
     - name: Cache
       uses: actions/cache@v2
       with:
@@ -22,12 +24,20 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+
     - name: Set up Java environment
       uses: actions/setup-java@v1
       with:
         java-version: 11
         gpg-private-key: ${{ secrets.MAVEN_CENTRAL_GPG_SIGNING_KEY_SEC }}
         gpg-passphrase: MAVEN_CENTRAL_GPG_PASSPHRASE
+
+    - name: Run Maven
+      run: mvn -B clean install com.mycila:license-maven-plugin:check
+
+    - name: Run I-Tests
+      run: mvn -B -Pitest
+
     - name: Deploy SNAPSHOT / Release
       uses: camunda-community-hub/community-action-maven-release@v1
       with:
@@ -40,8 +50,9 @@ jobs:
         maven-gpg-passphrase: ${{ secrets.MAVEN_CENTRAL_GPG_SIGNING_KEY_PASSPHRASE }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
       id: release
-    - if: github.event.release
-      name: Attach artifacts to GitHub Release (Release only)
+
+    - name: Attach artifacts to GitHub Release (Release only)
+      if: github.event.release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
