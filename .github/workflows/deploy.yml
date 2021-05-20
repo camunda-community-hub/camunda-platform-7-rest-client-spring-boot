@@ -72,6 +72,7 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Upload coverage to Codacy
-      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r examples/coverage-report/target/site/jacoco-aggregate/jacoco.xml
-      env:
-        CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: examples/coverage-report/target/site/jacoco-aggregate/jacoco.xml
