@@ -27,7 +27,7 @@ import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionQueryDto
-import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
+import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionBean
 import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
 
@@ -41,14 +41,14 @@ class DelegatingProcessDefinitionQuery(
   override fun list(): List<ProcessDefinition> {
     val definitions = repositoryServiceClient.getProcessDefinitions(fillQueryDto(), this.firstResult, this.maxResults)
     return definitions.map {
-      ProcessDefinitionAdapter(ProcessDefinitionBean.fromDto(it))
+      TaskAdapter(ProcessDefinitionBean.fromDto(it))
     }
   }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<ProcessDefinition> {
     val definitions = repositoryServiceClient.getProcessDefinitions(fillQueryDto(), firstResult, maxResults)
     return definitions.map {
-      ProcessDefinitionAdapter(ProcessDefinitionBean.fromDto(it))
+      TaskAdapter(ProcessDefinitionBean.fromDto(it))
     }
   }
 
