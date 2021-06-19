@@ -9,6 +9,45 @@ pageId: 'support-matrix'
 
 Here are currently implemented methods.
 
+== Task Service @ 0.0.6
+*  `# createTaskQuery`
+*  `# claim`
+*  `# deleteTask`
+*  `# deleteTasks`
+*  `# resolveTask`
+*  `# complete`
+*  `# saveTask`
+*  `# setAssignee`
+*  `# setPriority`
+*  `# setVariable`
+*  `# setVariables`
+*  `# setVariableLocal`
+*  `# setVariablesLocal`
+*  `# getVariable`
+*  `# getVariableLocal`
+*  `# getVariableTyped`
+*  `# getVariableLocal`
+*  `# getVariableLocalTyped`
+*  `# getVariables`
+*  `# getVariablesLocal`
+*  `# getVariablesTyped`
+*  `# getVariablesLocalTyped`
+*  `# removeVariable`
+*  `# removeVariableLocal`
+*  `# removeVariables`
+*  `# removeVariablesLocal`
+*  `# getIdentityLinksForTask`
+*  `# addCandidateUser`
+*  `# addCandidateGroup`
+*  `# addUserIdentityLink`
+*  `# addGroupIdentityLink`
+*  `# deleteCandidateUser`
+*  `# deleteCandidateGroup`
+*  `# deleteUserIdentityLink`
+*  `# deleteGroupIdentityLink`
+*  `# handleBpmnError`
+*  `# handleEscalation`
+
 == Runtime Service @ 0.0.5
 *  `# startProcessInstanceByKey`
 *  `# startProcessInstanceById`

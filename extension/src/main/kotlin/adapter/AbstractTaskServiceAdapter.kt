@@ -26,249 +26,251 @@ import org.camunda.bpm.engine.TaskService
 import org.camunda.bpm.engine.task.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
+import org.camunda.bpm.extension.rest.impl.RemoteTaskService
+import org.camunda.bpm.extension.rest.impl.implementedBy
 import java.io.InputStream
 
 /**
  * Adapter for implementing task service.
  */
-abstract class AbstractTaskServiceAdapter: TaskService {
+abstract class AbstractTaskServiceAdapter : TaskService {
   override fun newTask(): Task {
     TODO("Not yet implemented")
   }
 
-  override fun newTask(taskId: String?): Task {
+  override fun newTask(taskId: String): Task {
     TODO("Not yet implemented")
   }
 
-  override fun saveTask(task: Task?) {
-    TODO("Not yet implemented")
+  override fun saveTask(task: Task) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTask(taskId: String?) {
-    TODO("Not yet implemented")
+  override fun deleteTask(taskId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTask(taskId: String?, cascade: Boolean) {
-    TODO("Not yet implemented")
+  override fun deleteTask(taskId: String, cascade: Boolean) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTask(taskId: String?, deleteReason: String?) {
-    TODO("Not yet implemented")
+  override fun deleteTask(taskId: String, deleteReason: String?) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTasks(taskIds: MutableCollection<String>?) {
-    TODO("Not yet implemented")
+  override fun deleteTasks(taskIds: MutableCollection<String>) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTasks(taskIds: MutableCollection<String>?, cascade: Boolean) {
-    TODO("Not yet implemented")
+  override fun deleteTasks(taskIds: MutableCollection<String>, cascade: Boolean) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteTasks(taskIds: MutableCollection<String>?, deleteReason: String?) {
-    TODO("Not yet implemented")
+  override fun deleteTasks(taskIds: MutableCollection<String>, deleteReason: String?) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun claim(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun claim(taskId: String, userId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun complete(taskId: String?) {
-    TODO("Not yet implemented")
+  override fun complete(taskId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun complete(taskId: String?, variables: MutableMap<String, Any>?) {
-    TODO("Not yet implemented")
+  override fun complete(taskId: String, variables: MutableMap<String, Any>) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun delegateTask(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun delegateTask(taskId: String, userId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun resolveTask(taskId: String?) {
-    TODO("Not yet implemented")
+  override fun resolveTask(taskId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun resolveTask(taskId: String?, variables: MutableMap<String, Any>?) {
-    TODO("Not yet implemented")
+  override fun resolveTask(taskId: String, variables: MutableMap<String, Any>) {
+    implementedBy(RemoteTaskService::class)
   }
 
   override fun completeWithVariablesInReturn(
-    taskId: String?,
+    taskId: String,
     variables: MutableMap<String, Any>?,
     deserializeValues: Boolean
   ): VariableMap {
     TODO("Not yet implemented")
   }
 
-  override fun setAssignee(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun setAssignee(taskId: String, userId: String?) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun setOwner(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun setOwner(taskId: String, userId: String?) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun getIdentityLinksForTask(taskId: String?): MutableList<IdentityLink> {
-    TODO("Not yet implemented")
+  override fun getIdentityLinksForTask(taskId: String): MutableList<IdentityLink> {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun addCandidateUser(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun addCandidateUser(taskId: String, userId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun addCandidateGroup(taskId: String?, groupId: String?) {
-    TODO("Not yet implemented")
+  override fun addCandidateGroup(taskId: String, groupId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun addUserIdentityLink(taskId: String?, userId: String?, identityLinkType: String?) {
-    TODO("Not yet implemented")
+  override fun addUserIdentityLink(taskId: String, userId: String, identityLinkType: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun addGroupIdentityLink(taskId: String?, groupId: String?, identityLinkType: String?) {
-    TODO("Not yet implemented")
+  override fun addGroupIdentityLink(taskId: String, groupId: String, identityLinkType: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteCandidateUser(taskId: String?, userId: String?) {
-    TODO("Not yet implemented")
+  override fun deleteCandidateUser(taskId: String, userId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteCandidateGroup(taskId: String?, groupId: String?) {
-    TODO("Not yet implemented")
+  override fun deleteCandidateGroup(taskId: String, groupId: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteUserIdentityLink(taskId: String?, userId: String?, identityLinkType: String?) {
-    TODO("Not yet implemented")
+  override fun deleteUserIdentityLink(taskId: String, userId: String, identityLinkType: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun deleteGroupIdentityLink(taskId: String?, groupId: String?, identityLinkType: String?) {
-    TODO("Not yet implemented")
+  override fun deleteGroupIdentityLink(taskId: String, groupId: String, identityLinkType: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun setPriority(taskId: String?, priority: Int) {
-    TODO("Not yet implemented")
+  override fun setPriority(taskId: String, priority: Int) {
+    implementedBy(RemoteTaskService::class)
   }
 
   override fun createTaskQuery(): TaskQuery {
-    TODO("Not yet implemented")
+    implementedBy(RemoteTaskService::class)
   }
 
   override fun createNativeTaskQuery(): NativeTaskQuery {
     TODO("Not yet implemented")
   }
 
-  override fun setVariable(taskId: String?, variableName: String?, value: Any?) {
+  override fun setVariable(taskId: String, variableName: String, value: Any?) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun setVariables(taskId: String, variables: MutableMap<String, out Any>) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun setVariableLocal(taskId: String, variableName: String, value: Any?) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun setVariablesLocal(taskId: String, variables: MutableMap<String, out Any>) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariable(taskId: String, variableName: String): Any? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun <T : TypedValue> getVariableTyped(taskId: String, variableName: String): T? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun <T : TypedValue> getVariableTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariableLocal(taskId: String, variableName: String): Any? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun <T : TypedValue> getVariableLocalTyped(taskId: String, variableName: String): T? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun <T : TypedValue> getVariableLocalTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariables(taskId: String): MutableMap<String, Any> {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariables(taskId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesTyped(taskId: String): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesTyped(taskId: String, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesLocal(taskId: String): MutableMap<String, Any> {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesLocal(taskId: String, variableNames: MutableCollection<String>): MutableMap<String, Any> {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesLocalTyped(taskId: String): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesLocalTyped(taskId: String, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun getVariablesLocalTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun removeVariable(taskId: String, variableName: String) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun removeVariableLocal(taskId: String, variableName: String) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun removeVariables(taskId: String, variableNames: MutableCollection<String>) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun removeVariablesLocal(taskId: String, variableNames: MutableCollection<String>) {
+    implementedBy(RemoteTaskService::class)
+  }
+
+  override fun addComment(taskId: String, processInstanceId: String?, message: String?) {
     TODO("Not yet implemented")
   }
 
-  override fun setVariables(taskId: String?, variables: MutableMap<String, out Any>?) {
+  override fun createComment(taskId: String, processInstanceId: String?, message: String?): Comment {
     TODO("Not yet implemented")
   }
 
-  override fun setVariableLocal(taskId: String?, variableName: String?, value: Any?) {
+  override fun getTaskComments(taskId: String): MutableList<Comment> {
     TODO("Not yet implemented")
   }
 
-  override fun setVariablesLocal(taskId: String?, variables: MutableMap<String, out Any>?) {
+  override fun getTaskComment(taskId: String, commentId: String?): Comment {
     TODO("Not yet implemented")
   }
 
-  override fun getVariable(taskId: String?, variableName: String?): Any {
-    TODO("Not yet implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableTyped(taskId: String?, variableName: String?): T {
-    TODO("Not yet implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableTyped(taskId: String?, variableName: String?, deserializeValue: Boolean): T {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariableLocal(taskId: String?, variableName: String?): Any {
-    TODO("Not yet implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableLocalTyped(taskId: String?, variableName: String?): T {
-    TODO("Not yet implemented")
-  }
-
-  override fun <T : TypedValue?> getVariableLocalTyped(taskId: String?, variableName: String?, deserializeValue: Boolean): T {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariables(taskId: String?): MutableMap<String, Any> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariables(taskId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesTyped(taskId: String?): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesTyped(taskId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesTyped(taskId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesLocal(taskId: String?): MutableMap<String, Any> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesLocal(taskId: String?, variableNames: MutableCollection<String>?): MutableMap<String, Any> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesLocalTyped(taskId: String?): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesLocalTyped(taskId: String?, deserializeValues: Boolean): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun getVariablesLocalTyped(taskId: String?, variableNames: MutableCollection<String>?, deserializeValues: Boolean): VariableMap {
-    TODO("Not yet implemented")
-  }
-
-  override fun removeVariable(taskId: String?, variableName: String?) {
-    TODO("Not yet implemented")
-  }
-
-  override fun removeVariableLocal(taskId: String?, variableName: String?) {
-    TODO("Not yet implemented")
-  }
-
-  override fun removeVariables(taskId: String?, variableNames: MutableCollection<String>?) {
-    TODO("Not yet implemented")
-  }
-
-  override fun removeVariablesLocal(taskId: String?, variableNames: MutableCollection<String>?) {
-    TODO("Not yet implemented")
-  }
-
-  override fun addComment(taskId: String?, processInstanceId: String?, message: String?) {
-    TODO("Not yet implemented")
-  }
-
-  override fun createComment(taskId: String?, processInstanceId: String?, message: String?): Comment {
-    TODO("Not yet implemented")
-  }
-
-  override fun getTaskComments(taskId: String?): MutableList<Comment> {
-    TODO("Not yet implemented")
-  }
-
-  override fun getTaskComment(taskId: String?, commentId: String?): Comment {
-    TODO("Not yet implemented")
-  }
-
-  override fun getTaskEvents(taskId: String?): MutableList<Event> {
+  override fun getTaskEvents(taskId: String): MutableList<Event> {
     TODO("Not yet implemented")
   }
 
@@ -278,7 +280,7 @@ abstract class AbstractTaskServiceAdapter: TaskService {
 
   override fun createAttachment(
     attachmentType: String?,
-    taskId: String?,
+    taskId: String,
     processInstanceId: String?,
     attachmentName: String?,
     attachmentDescription: String?,
@@ -289,7 +291,7 @@ abstract class AbstractTaskServiceAdapter: TaskService {
 
   override fun createAttachment(
     attachmentType: String?,
-    taskId: String?,
+    taskId: String,
     processInstanceId: String?,
     attachmentName: String?,
     attachmentDescription: String?,
@@ -306,7 +308,7 @@ abstract class AbstractTaskServiceAdapter: TaskService {
     TODO("Not yet implemented")
   }
 
-  override fun getTaskAttachment(taskId: String?, attachmentId: String?): Attachment {
+  override fun getTaskAttachment(taskId: String, attachmentId: String?): Attachment {
     TODO("Not yet implemented")
   }
 
@@ -314,11 +316,11 @@ abstract class AbstractTaskServiceAdapter: TaskService {
     TODO("Not yet implemented")
   }
 
-  override fun getTaskAttachmentContent(taskId: String?, attachmentId: String?): InputStream {
+  override fun getTaskAttachmentContent(taskId: String, attachmentId: String?): InputStream {
     TODO("Not yet implemented")
   }
 
-  override fun getTaskAttachments(taskId: String?): MutableList<Attachment> {
+  override fun getTaskAttachments(taskId: String): MutableList<Attachment> {
     TODO("Not yet implemented")
   }
 
@@ -330,11 +332,11 @@ abstract class AbstractTaskServiceAdapter: TaskService {
     TODO("Not yet implemented")
   }
 
-  override fun deleteTaskAttachment(taskId: String?, attachmentId: String?) {
+  override fun deleteTaskAttachment(taskId: String, attachmentId: String?) {
     TODO("Not yet implemented")
   }
 
-  override fun getSubTasks(parentTaskId: String?): MutableList<Task> {
+  override fun getSubTasks(parenttaskId: String): MutableList<Task> {
     TODO("Not yet implemented")
   }
 
@@ -342,23 +344,23 @@ abstract class AbstractTaskServiceAdapter: TaskService {
     TODO("Not yet implemented")
   }
 
-  override fun handleBpmnError(taskId: String?, errorCode: String?) {
-    TODO("Not yet implemented")
+  override fun handleBpmnError(taskId: String, errorCode: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun handleBpmnError(taskId: String?, errorCode: String?, errorMessage: String?) {
-    TODO("Not yet implemented")
+  override fun handleBpmnError(taskId: String, errorCode: String, errorMessage: String?) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun handleBpmnError(taskId: String?, errorCode: String?, errorMessage: String?, variables: MutableMap<String, Any>?) {
-    TODO("Not yet implemented")
+  override fun handleBpmnError(taskId: String, errorCode: String, errorMessage: String?, variables: MutableMap<String, Any>) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun handleEscalation(taskId: String?, escalationCode: String?) {
-    TODO("Not yet implemented")
+  override fun handleEscalation(taskId: String, escalationCode: String) {
+    implementedBy(RemoteTaskService::class)
   }
 
-  override fun handleEscalation(taskId: String?, escalationCode: String?, variables: MutableMap<String, Any>?) {
-    TODO("Not yet implemented")
+  override fun handleEscalation(taskId: String, escalationCode: String, variables: MutableMap<String, Any>) {
+    implementedBy(RemoteTaskService::class)
   }
 }

@@ -23,7 +23,9 @@
 package org.camunda.bpm.extension.rest.impl.query
 
 import org.camunda.bpm.engine.ProcessEngineException
+import org.camunda.bpm.engine.impl.QueryVariableValue
 import org.camunda.bpm.engine.impl.TaskQueryImpl
+import org.camunda.bpm.engine.impl.TaskQueryVariableValue
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.rest.dto.VariableQueryParameterDto
 import org.camunda.bpm.engine.rest.dto.task.TaskQueryDto
@@ -31,7 +33,6 @@ import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.TaskBean
 import org.camunda.bpm.extension.rest.client.TaskServiceClient
-import java.util.*
 
 /**
  * Implementation of the task query.
@@ -106,19 +107,25 @@ class DelegatingTaskQuery(
     queryDto.assigneeIn = this.assigneeIn?.toTypedArray()
     queryDto.assigneeNotIn = this.assigneeNotIn?.toTypedArray()
     queryDto.assigneeExpression = this.expressions["taskAssignee"]
-    queryDto.assigneeLikeExpression = this.expressions["taskAsigneeLike"]
+    queryDto.assigneeLikeExpression = this.expressions["taskAssigneeLike"]
 
-    queryDto.setWithCandidateGroups(this.isWithCandidateUsers)
-    queryDto.setWithoutCandidateGroups(this.isWithoutCandidateGroups)
-    queryDto.candidateGroup = this.candidateGroup
-    queryDto.candidateGroups = this.candidateGroups
-    queryDto.candidateGroupExpression = this.expressions["taskCandidateGroup"]
-    queryDto.candidateGroupsExpression = this.expressions["taskCandidateGroupIn"]
+    if (this.isWithCandidateGroups) {
+      queryDto.setWithCandidateGroups(this.isWithCandidateGroups)
+      queryDto.candidateGroup = this.candidateGroup
+      queryDto.candidateGroups = this.candidateGroups
+      queryDto.candidateGroupExpression = this.expressions["taskCandidateGroup"]
+      queryDto.candidateGroupsExpression = this.expressions["taskCandidateGroupIn"]
+    } else {
+      queryDto.setWithoutCandidateGroups(this.isWithoutCandidateGroups)
+    }
 
-    queryDto.candidateUser = this.candidateUser
-    queryDto.setWithCandidateUsers(this.isWithCandidateUsers)
-    queryDto.setWithoutCandidateUsers(this.isWithoutCandidateUsers)
-    queryDto.candidateUserExpression = this.expressions["taskCandidateUser"]
+    if (this.isWithCandidateUsers) {
+      queryDto.candidateUser = this.candidateUser
+      queryDto.setWithCandidateUsers(this.isWithCandidateUsers)
+      queryDto.candidateUserExpression = this.expressions["taskCandidateUser"]
+    } else {
+      queryDto.setWithoutCandidateUsers(this.isWithoutCandidateUsers)
+    }
 
     queryDto.caseDefinitionId = this.caseDefinitionId
     queryDto.caseDefinitionKey = this.caseDefinitionKey
@@ -129,10 +136,6 @@ class DelegatingTaskQuery(
 
     queryDto.caseInstanceBusinessKey = this.caseInstanceBusinessKey
     queryDto.caseInstanceBusinessKeyLike = this.caseInstanceBusinessKeyLike
-
-    queryDto.taskVariables = this.variables.map { it.toDto() }
-    queryDto.isVariableNamesIgnoreCase = this.isVariableNamesIgnoreCase
-    queryDto.isVariableValuesIgnoreCase = this.isVariableValuesIgnoreCase
 
     queryDto.name = this.name
     queryDto.nameLike = this.nameLike
@@ -160,45 +163,79 @@ class DelegatingTaskQuery(
 
     queryDto.delegationState = this.delegationStateString
 
-    // FIXME:
-    val dueAfter: Date? = null
-    val dueAfterExpression: String? = null
-    val dueBefore: Date? = null
-    val dueBeforeExpression: String? = null
-    val dueDate: Date? = null
-    val dueDateExpression: String? = null
+    queryDto.dueDate = this.dueDate
+    queryDto.dueAfter = this.dueAfter
+    queryDto.dueBefore = this.dueBefore
+    queryDto.dueDateExpression = this.expressions["dueDate"]
+    queryDto.dueAfterExpression = this.expressions["dueDateAfter"]
+    queryDto.dueBeforeExpression = this.expressions["dueDateBefore"]
 
-    val followUpAfter: Date? = null
-    val followUpAfterExpression: String? = null
-    val followUpBefore: Date? = null
-    val followUpBeforeExpression: String? = null
-    val followUpBeforeOrNotExistent: Date? = null
-    val followUpBeforeOrNotExistentExpression: String? = null
-    val followUpDate: Date? = null
-    val followUpDateExpression: String? = null
+    queryDto.followUpDate = this.followUpDate
+    queryDto.followUpAfter = this.followUpAfter
+    queryDto.followUpBefore = this.followUpBefore
+    queryDto.followUpBeforeOrNotExistent = this.followUpBefore
+    queryDto.followUpBeforeOrNotExistentExpression = this.expressions["followUpBeforeOrNotExistent"]
+    queryDto.followUpDateExpression = this.expressions["followUpDate"]
+    queryDto.followUpAfterExpression = this.expressions["followUpDateAfter"]
+    queryDto.followUpBeforeExpression = this.expressions["followUpDateBefore"]
 
-    val createdAfter: Date? = null
-    val createdAfterExpression: String? = null
-    val createdBefore: Date? = null
-    val createdBeforeExpression: String? = null
-    val createdOn: Date? = null
-    val createdOnExpression: String? = null
+    queryDto.createdOn = this.createTime
+    queryDto.createdAfter = this.createTimeAfter
+    queryDto.createdBefore = this.createTimeAfter
 
-    val processVariables: List<VariableQueryParameterDto>? = null
-    val caseInstanceVariables: List<VariableQueryParameterDto>? = null
-    val orQueries: List<TaskQueryDto>? = null
+    queryDto.createdAfterExpression = this.expressions["taskCreatedAfter"]
+    queryDto.createdBeforeExpression = this.expressions["taskCreatedBefore"]
+    queryDto.createdOnExpression = this.expressions["taskCreatedOn"]
 
-    this.variableNamesIgnoreCase = this.variableNamesIgnoreCase
-    this.variableValuesIgnoreCase = this.variableValuesIgnoreCase
 
-    if (this.isTenantIdSet) { // TODO: check
+    queryDto.taskVariables = this.variables.filter { !it.isProcessInstanceVariable && it.isLocal }.map { it.toTaskVariableDto() }
+    queryDto.processVariables =
+      this.variables.filter { it.isProcessInstanceVariable && !it.isLocal }.map { it.toProcessInstanceVariableDto() }
+    queryDto.caseInstanceVariables =
+      this.variables.filter { !it.isProcessInstanceVariable && !it.isLocal }.map { it.toCaseInstanceVariableDto() }
+
+    queryDto.isVariableNamesIgnoreCase = this.isVariableNamesIgnoreCase
+    queryDto.isVariableValuesIgnoreCase = this.isVariableValuesIgnoreCase
+
+    // bad method name, but still using it
+    if (this.isTenantIdSet) {
+      queryDto.withoutTenantId = true
+    } else {
       if (this.tenantIds != null) {
-        queryDto.setTenantIdIn(this.tenantIds)
-      } else {
-        queryDto.setWithoutTenantId(true)
+        queryDto.tenantIdIn = this.tenantIds
       }
     }
 
+    // FIXME: Or Queries not supported yet!
+    val orQueries: List<TaskQueryDto>? = null
+
     return queryDto
   }
+}
+
+/**
+ * Camunda constructor for the DTO is strange, but we use it here.
+ */
+fun QueryVariableValue.toTaskVariableDto(): VariableQueryParameterDto {
+  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
+  // since we want to query for the task variables, we pass true to the task flag and false to the process instance flag
+  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
+  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, true, false))
+}
+
+/**
+ * Camunda constructor for the DTO is strange, but we use it here.
+ */
+fun QueryVariableValue.toCaseInstanceVariableDto(): VariableQueryParameterDto {
+  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
+  // since we want to query for the case variables, we pass false twice
+  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
+  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, false, false))
+}
+
+fun QueryVariableValue.toProcessInstanceVariableDto(): VariableQueryParameterDto {
+  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
+  // since we want to query for the process instance variables, we pass pass false to the task flag and true to the process flag
+  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
+  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, false, true))
 }

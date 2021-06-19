@@ -26,6 +26,10 @@ feign:
       remoteRepositoryService:
         url: "http://localhost:${server.port}/engine-rest/"
         loggerLevel: basic
+      remoteTaskService:
+        url: "http://localhost:${server.port}/engine-rest/"
+        loggerLevel: basic
+
 
 logging:
   level:
