@@ -42,7 +42,7 @@
     <kotlin-logging.version>2.0.6</kotlin-logging.version>
 
     <!-- test tools -->
-    <assertj.version>3.11.1</assertj.version>
+    <assertj.version>3.20.2</assertj.version>
     <mockito.version>3.10.0</mockito.version>
 
     <pattern.class.itest>**/*ITest.*</pattern.class.itest>
