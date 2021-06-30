@@ -73,8 +73,10 @@ class DelegatingProcessDefinitionQuery(
   private fun fillQueryDto(): ProcessDefinitionQueryDto {
     val queryDto = ProcessDefinitionQueryDto()
     queryDto.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
-    queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null)
-    queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
+    if (this.suspensionState != null) {
+      queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE)
+      queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
+    }
     queryDto.setCategory(this.category)
     queryDto.setCategoryLike(this.categoryLike)
     queryDto.setDeploymentId(this.deploymentId)

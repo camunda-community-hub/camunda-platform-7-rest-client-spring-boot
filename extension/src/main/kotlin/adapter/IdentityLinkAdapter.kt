@@ -65,6 +65,9 @@ abstract class IdentityLinkBean(
   open val tenantId: String?
 ) {
   companion object {
+    /**
+     * Constructs identity link bean from DTO.
+     */
     fun fromDto(taskId: String, dto: IdentityLinkDto): IdentityLinkBean {
       return when (dto.type) {
         "candidate" -> {

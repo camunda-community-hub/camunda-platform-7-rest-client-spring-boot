@@ -22,10 +22,7 @@
  */
 package org.camunda.bpm.extension.rest.itest.stages
 
-import com.tngtech.jgiven.annotation.Hidden
-import com.tngtech.jgiven.annotation.IsTag
-import com.tngtech.jgiven.annotation.ProvidedScenarioState
-import com.tngtech.jgiven.annotation.ScenarioState
+import com.tngtech.jgiven.annotation.*
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
@@ -78,7 +75,6 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
     val modelInstance = Bpmn
       .createExecutableProcess(processDefinitionKey)
       .startEvent("start")
-      .camundaAsyncAfter(true)
       .userTask(userTaskId)
       .endEvent("end")
       .done()
@@ -98,16 +94,15 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
   fun process_is_started_by_key(
     processDefinitionKey: String,
     businessKey: String? = null,
-    caseInstanceId: String? = null,
     variables: Map<String, Any>? = null
   ) = step {
 
-    processInstance = if (variables != null && businessKey != null && caseInstanceId != null) {
-      runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId, variables)
-    } else if (businessKey != null && caseInstanceId != null) {
-      runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, caseInstanceId)
+    processInstance = if (variables != null && businessKey != null) {
+      runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables)
     } else if (businessKey != null) {
       runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey)
+    } else if (variables != null) {
+      runtimeService.startProcessInstanceByKey(processDefinitionKey, variables)
     } else {
       runtimeService.startProcessInstanceByKey(processDefinitionKey)
     }
@@ -123,10 +118,27 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
     ).isNotNull
   }
 
+  fun process_waits_in_task(
+    processDefinitionKey: String? = "process_with_user_task",
+    taskDefinitionKey: String? = "user_task"
+  ) = step {
+    val tasks = localService.createTaskQuery()
+      .processDefinitionKey(processDefinitionKey)
+      .taskDefinitionKey(taskDefinitionKey)
+      .list()
+    assertThat(tasks.size).`as`("expect to find exactly 1 task", taskDefinitionKey).isEqualTo(1)
+    task = tasks[0]
+    assertThat(task).isNotNull
+  }
+
 }
 
 @JGivenStage
 class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>() {
+
+  @Autowired
+  @ProvidedScenarioState
+  lateinit var repositoryService: RepositoryService
 
   @Autowired
   @Qualifier("remote")
@@ -146,7 +158,7 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
     taskId: String? = null,
     containingSimpleProcessVariables: Map<String, Any>? = null,
     taskAssertions: (Task, AssertStage<*, TaskService>) -> Unit = { _, _ -> }
-  ): TaskServiceAssertStage = step {
+  ) = step {
 
     val query = localService.createTaskQuery().apply {
       if (taskId != null) {
@@ -173,6 +185,7 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
     val query = remoteService.createTaskQuery()
     taskQueryAssertions(query, this)
   }
+
 }
 
 @IsTag(name = "TaskService")

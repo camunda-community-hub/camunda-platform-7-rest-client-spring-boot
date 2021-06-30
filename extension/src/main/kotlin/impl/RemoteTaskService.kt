@@ -18,6 +18,10 @@ import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
+/**
+ * Remote implementation of Camunda Core TaskService API, delegating
+ * all request over HTTP to a remote Camunda Engine.
+ */
 @Component
 @Qualifier("remote")
 class RemoteTaskService(

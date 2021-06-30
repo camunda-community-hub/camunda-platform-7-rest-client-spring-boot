@@ -28,10 +28,11 @@ feign:
         loggerLevel: basic
       remoteTaskService:
         url: "http://localhost:${server.port}/engine-rest/"
-        loggerLevel: basic
+        loggerLevel: full
 
 
 logging:
   level:
     org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
     org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.TaskServiceClient: DEBUG

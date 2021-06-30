@@ -97,8 +97,10 @@ class DelegatingTaskQuery(
 
     queryDto.executionId = this.executionId
 
-    queryDto.active = this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null
-    queryDto.suspended = this.suspensionState == SuspensionState.SUSPENDED
+    if (this.suspensionState != null) {
+      queryDto.active = this.suspensionState == SuspensionState.ACTIVE
+      queryDto.suspended = this.suspensionState == SuspensionState.SUSPENDED
+    }
 
     queryDto.activityInstanceIdIn = this.activityInstanceIdIn
 
@@ -111,19 +113,35 @@ class DelegatingTaskQuery(
 
     if (this.isWithCandidateGroups) {
       queryDto.setWithCandidateGroups(this.isWithCandidateGroups)
+    }
+    if (this.candidateGroup != null) {
       queryDto.candidateGroup = this.candidateGroup
+    }
+    if (this.candidateGroups != null && this.candidateGroups.isNotEmpty()) {
       queryDto.candidateGroups = this.candidateGroups
+    }
+    if (this.expressions["taskCandidateGroup"] != null) {
       queryDto.candidateGroupExpression = this.expressions["taskCandidateGroup"]
+    }
+    if (this.expressions["taskCandidateGroupIn"] != null) {
       queryDto.candidateGroupsExpression = this.expressions["taskCandidateGroupIn"]
-    } else {
+    }
+
+    if (this.isWithoutCandidateGroups) {
       queryDto.setWithoutCandidateGroups(this.isWithoutCandidateGroups)
     }
 
     if (this.isWithCandidateUsers) {
-      queryDto.candidateUser = this.candidateUser
       queryDto.setWithCandidateUsers(this.isWithCandidateUsers)
+    }
+    if (this.candidateUser != null) {
+      queryDto.candidateUser = this.candidateUser
+    }
+    if (this.expressions["taskCandidateUser"] != null) {
       queryDto.candidateUserExpression = this.expressions["taskCandidateUser"]
-    } else {
+    }
+
+    if (this.isWithoutCandidateUsers) {
       queryDto.setWithoutCandidateUsers(this.isWithoutCandidateUsers)
     }
 
@@ -187,12 +205,24 @@ class DelegatingTaskQuery(
     queryDto.createdBeforeExpression = this.expressions["taskCreatedBefore"]
     queryDto.createdOnExpression = this.expressions["taskCreatedOn"]
 
-
-    queryDto.taskVariables = this.variables.filter { !it.isProcessInstanceVariable && it.isLocal }.map { it.toTaskVariableDto() }
-    queryDto.processVariables =
-      this.variables.filter { it.isProcessInstanceVariable && !it.isLocal }.map { it.toProcessInstanceVariableDto() }
-    queryDto.caseInstanceVariables =
-      this.variables.filter { !it.isProcessInstanceVariable && !it.isLocal }.map { it.toCaseInstanceVariableDto() }
+    val taskVars = this.variables.filter { !it.isProcessInstanceVariable && it.isLocal }
+    val procVars = this.variables.filter { it.isProcessInstanceVariable && !it.isLocal }
+    val caseVars = this.variables.filter { !it.isProcessInstanceVariable && !it.isLocal }
+    queryDto.taskVariables = if (taskVars.isEmpty()) {
+      null
+    } else {
+      taskVars.map { it.toTaskVariableDto() }
+    }
+    queryDto.processVariables = if (procVars.isEmpty()) {
+      null
+    } else {
+      procVars.map { it.toProcessInstanceVariableDto() }
+    }
+    queryDto.caseInstanceVariables = if (caseVars.isEmpty()) {
+      null
+    } else {
+      caseVars.map { it.toCaseInstanceVariableDto() }
+    }
 
     queryDto.isVariableNamesIgnoreCase = this.isVariableNamesIgnoreCase
     queryDto.isVariableValuesIgnoreCase = this.isVariableValuesIgnoreCase
@@ -233,6 +263,9 @@ fun QueryVariableValue.toCaseInstanceVariableDto(): VariableQueryParameterDto {
   return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, false, false))
 }
 
+/**
+ * Camunda constructor for the DTO is strange, but we use it here.
+ */
 fun QueryVariableValue.toProcessInstanceVariableDto(): VariableQueryParameterDto {
   // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
   // since we want to query for the process instance variables, we pass pass false to the task flag and true to the process flag

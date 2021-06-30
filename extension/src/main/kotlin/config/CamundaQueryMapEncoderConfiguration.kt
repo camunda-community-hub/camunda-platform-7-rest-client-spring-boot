@@ -26,6 +26,7 @@ import feign.QueryMapEncoder
 import feign.codec.EncodeException
 import org.camunda.bpm.engine.impl.util.ReflectUtil
 import org.camunda.bpm.engine.rest.dto.CamundaQueryParam
+import org.camunda.bpm.engine.rest.dto.VariableQueryParameterDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.beans.IntrospectionException
@@ -67,7 +68,11 @@ class CamundaQueryMapEncoder : QueryMapEncoder {
           if (result != null && result !== value) { // avoid nulls and recursive return types
             val alias = pd.writeMethod.getAnnotation(CamundaQueryParam::class.java)
             val name = alias?.value ?: pd.name // get the name property from the property name or from camunda annotation
-            propertyNameToValue[name] = result
+            if (result is Collection<*>) {
+              propertyNameToValue[name] = result.map { encodeCollectionElement(it) }.joinToString(";")
+            } else {
+              propertyNameToValue[name] = result
+            }
           }
         }
       }
@@ -80,6 +85,13 @@ class CamundaQueryMapEncoder : QueryMapEncoder {
       throw EncodeException("Failure encoding object into query map", e)
     }
   }
+
+  private fun encodeCollectionElement(value: Any?): Any? =
+    when (value) {
+      is VariableQueryParameterDto -> "${value.name}_${value.operator}_${value.value}"
+      else -> value
+    }
+
 
   private fun getMetadata(objectType: Class<*>): ObjectParamMetadata {
     return classToMetadata.getOrPut(objectType) { ObjectParamMetadata.parseObjectType(objectType) }
