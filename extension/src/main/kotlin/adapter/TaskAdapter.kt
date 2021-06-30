@@ -170,7 +170,7 @@ data class TaskBean(
       processDefinitionId = dto.processDefinitionId,
       processInstanceId = dto.processInstanceId,
       processExecutionId = dto.executionId,
-      delegationState = DelegationState.valueOf(dto.delegationState),
+      delegationState = if (dto.delegationState != null) { DelegationState.valueOf(dto.delegationState) } else { null },
       tenantId = dto.tenantId,
       description = dto.description,
       priority = dto.priority,

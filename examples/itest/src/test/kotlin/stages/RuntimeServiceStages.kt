@@ -219,14 +219,14 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
 class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, RuntimeService>() {
 
   @Autowired
+  @Qualifier("remote")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  override lateinit var remoteService: RuntimeService
+
+  @Autowired
   @Qualifier("runtimeService")
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: RuntimeService
-
-  @Autowired
-  @Qualifier("remoteRuntimeService")
-  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
-  override lateinit var remoteService: RuntimeService
 
   @ProvidedScenarioState
   var processInstance: ProcessInstance? = null
