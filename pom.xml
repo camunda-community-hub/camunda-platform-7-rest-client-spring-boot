@@ -35,7 +35,7 @@
     <camunda.version.ee>7.14.5-ee</camunda.version.ee>
     <spin.version>1.10.0</spin.version>
 
-    <spring-boot.version>2.4.5</spring-boot.version>
+    <spring-boot.version>2.5.2</spring-boot.version>
     <spring-cloud.version>2020.0.3</spring-cloud.version>
 
     <kotlin.version>1.5.20</kotlin.version>
