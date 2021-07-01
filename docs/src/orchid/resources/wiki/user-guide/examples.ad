@@ -59,6 +59,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       remoteExternalTaskService:
         url: "http://localhost:8083/engine-rest/"
+      remoteTaskService:
+        url: "http://localhost:8083/engine-rest/"
 
 ----
 
@@ -133,5 +135,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       remoteExternalTaskService:
         url: "http://localhost:8083/engine-rest/"
+      remoteTaskService:
+        url: "http://localhost:8083/engine-rest/"
+
 ----
 
