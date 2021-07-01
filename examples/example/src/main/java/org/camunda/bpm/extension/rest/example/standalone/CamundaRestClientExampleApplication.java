@@ -33,9 +33,6 @@ public class CamundaRestClientExampleApplication {
     mapper.registerModule(new Jdk8Module());
     mapper.registerModule(new JavaTimeModule());
     mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'hh:MM:ss.SSSz"));
-    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    mapper.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
-    mapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
     return mapper;
   }
 

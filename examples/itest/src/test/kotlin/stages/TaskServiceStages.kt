@@ -178,12 +178,23 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
     taskAssertions(task!!, this)
   }
 
-
+  /**
+   * Task query assertion as a step function.
+   */
   fun task_query_succeeds(
     @Hidden taskQueryAssertions: (TaskQuery, AssertStage<*, TaskService>) -> Unit = { _, _ -> }
   ) = step {
     val query = remoteService.createTaskQuery()
     taskQueryAssertions(query, this)
+  }
+
+  /**
+   * General assertion as step function.
+   */
+  fun assertThat(
+    generalAssertion: (AssertStage<*, TaskService>) -> Unit = { _ -> }
+  ) = step {
+    generalAssertion(this)
   }
 
 }
