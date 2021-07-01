@@ -471,4 +471,14 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun setVariablesAsync(historicProcessInstanceQuery: HistoricProcessInstanceQuery?, processVariables: MutableMap<String, *>?): Batch =
     setVariablesAsync(processInstanceIds = null, processInstanceQuery = null, historicProcessInstanceQuery = historicProcessInstanceQuery, processVariables = processVariables)
 
+  /**
+   * @since 7.15
+   */
+  override fun setAnnotationForIncidentById(incidentId: String, annotation: String) {
+    TODO("Not yet implemented")
+  }
+
+  override fun clearAnnotationForIncidentById(incidentId: String) {
+    TODO("Not yet implemented")
+  }
 }

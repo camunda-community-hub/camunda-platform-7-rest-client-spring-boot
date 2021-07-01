@@ -97,4 +97,24 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
   override fun getTopicNames(withLockedTasks: Boolean, withUnlockedTasks: Boolean, withRetriesLeft: Boolean): MutableList<String> {
     TODO("Not yet implemented")
   }
+
+  /**
+   * @since 7.15
+   */
+  override fun handleFailure(
+    externalTaskId: String,
+    workerId: String,
+    errorMessage: String,
+    errorDetails: String,
+    retries: Int,
+    retryDuration: Long,
+    variables: MutableMap<String, Any>,
+    localVariables: MutableMap<String, Any>
+  ) {
+    TODO("Not yet implemented")
+  }
+
+  override fun lock(externalTaskId: String, workerId: String, lockDuration: Long) {
+    TODO("Not yet implemented")
+  }
 }
