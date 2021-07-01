@@ -31,9 +31,10 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <version.java>${java.version}</version.java>
 
-    <camunda.version.ce>7.14.0</camunda.version.ce>
-    <camunda.version.ee>7.14.5-ee</camunda.version.ee>
-    <spin.version>1.10.0</spin.version>
+    <camunda.version.base>7.15</camunda.version.base>
+    <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
+    <camunda.version.ee>${camunda.version.base}.1-ee</camunda.version.ee>
+    <spin.version>1.10.1</spin.version>
 
     <spring-boot.version>2.5.2</spring-boot.version>
     <spring-cloud.version>2020.0.3</spring-cloud.version>

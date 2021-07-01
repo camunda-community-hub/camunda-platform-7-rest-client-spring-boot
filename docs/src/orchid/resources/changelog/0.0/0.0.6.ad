@@ -4,15 +4,15 @@ version: 0.0.6
 
 == News & Noteworthy
 
-* Migrate to Camunda Community HUB
-
 == Features
 
 * Implement `TaskService` see #43. More details can be found in the support matrix.
 
 == Chore
 
-* Support of Camunda BPM 7.15
+* Support of Camunda BPM 7.15, see #52
+* Camunda Spin 1.10.1
+* Kotlin 1.5.20
 
 
 
