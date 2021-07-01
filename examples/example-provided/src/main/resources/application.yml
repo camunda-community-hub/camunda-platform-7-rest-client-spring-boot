@@ -29,11 +29,14 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       remoteExternalTaskService:
         url: "http://localhost:${server.port}/engine-rest/"
+      remoteTaskService:
+        url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:
     org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
     org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.TaskServiceClient: DEBUG
     # To log REST controllers
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
     # To log web access

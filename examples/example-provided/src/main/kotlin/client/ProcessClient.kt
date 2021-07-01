@@ -42,7 +42,9 @@ class ProcessClient(
   @Qualifier("remote") private val repositoryService: RepositoryService
 ) {
 
-  companion object : KLogging()
+  companion object : KLogging() {
+    const val RATE = 5_000L // loop with rate of five seconds
+  }
 
   /**
    * Periodically retrieve process definitions and log them.
@@ -53,15 +55,15 @@ class ProcessClient(
     logger.info { "CLIENT-90: Retrieving process definition" }
     val count = repositoryService.createProcessDefinitionQuery().count()
     logger.info { "CLIENT-91: Found $count deployed processes" }
-    val processDefinition = repositoryService.createProcessDefinitionQuery().singleResult()
-    logger.info { "CLIENT-92: Deployed process definition is ${processDefinition.toPrettyString()}" }
+    val processDefinitions = repositoryService.createProcessDefinitionQuery().list()
+    logger.info { "CLIENT-92: Deployed process definitions are ${processDefinitions.map{it.toPrettyString()}}" }
   }
 
 
   /**
    * Periodically start process.
    */
-  @Scheduled(initialDelay = 10_000, fixedDelay = 5_000)
+  @Scheduled(initialDelay = 10_000, fixedDelay = RATE)
   fun startProcess() {
 
     logger.trace { "CLIENT-100: Starting a process instance remote" }
@@ -77,7 +79,7 @@ class ProcessClient(
   /**
    * Periodically fire signals.
    */
-  @Scheduled(initialDelay = 12_500, fixedDelay = 5_000)
+  @Scheduled(initialDelay = 12_500, fixedDelay = RATE)
   fun fireSignal() {
 
     logger.info { "CLIENT-200: Sending signal" }
@@ -94,7 +96,7 @@ class ProcessClient(
   /**
    * Periodically correlate messages.
    */
-  @Scheduled(initialDelay = 13_500, fixedDelay = 5_000)
+  @Scheduled(initialDelay = 13_500, fixedDelay = RATE)
   fun correlateMessage() {
 
     logger.info { "CLIENT-300: Correlating message" }

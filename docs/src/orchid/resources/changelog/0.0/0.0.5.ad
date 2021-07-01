@@ -1,0 +1,20 @@
+---
+version: 0.0.5
+---
+
+== News & Noteworthy
+
+* Migrate to Camunda Community HUB
+
+== Features
+
+* Implement `RepositoryService#createProcessDefinitionQuery` see #46
+
+== Chore
+
+* Support of Camunda BPM 7.14
+
+
+
+
+

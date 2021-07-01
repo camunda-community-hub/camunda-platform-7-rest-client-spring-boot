@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionQueryDto
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
+import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionBean
 import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
 
@@ -72,8 +73,10 @@ class DelegatingProcessDefinitionQuery(
   private fun fillQueryDto(): ProcessDefinitionQueryDto {
     val queryDto = ProcessDefinitionQueryDto()
     queryDto.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
-    queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE || this.suspensionState == null)
-    queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
+    if (this.suspensionState != null) {
+      queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE)
+      queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
+    }
     queryDto.setCategory(this.category)
     queryDto.setCategoryLike(this.categoryLike)
     queryDto.setDeploymentId(this.deploymentId)

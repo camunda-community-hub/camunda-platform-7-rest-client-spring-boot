@@ -29,6 +29,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat
 import org.camunda.spin.spi.DataFormatConfigurator
+import java.text.SimpleDateFormat
 
 
 /**
@@ -42,7 +43,7 @@ class JacksonDataFormatConfigurator : DataFormatConfigurator<JacksonJsonDataForm
       registerModule(KotlinModule())
       registerModule(Jdk8Module())
       registerModule(JavaTimeModule())
-      disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+      dateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:MM:ss.SSSz")
     }
   }
 

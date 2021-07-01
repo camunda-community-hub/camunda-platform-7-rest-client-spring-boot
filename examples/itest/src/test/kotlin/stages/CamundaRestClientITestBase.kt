@@ -29,6 +29,7 @@ import com.tngtech.jgiven.integration.spring.EnableJGiven
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.extension.rest.EnableCamundaRestClient
 import org.camunda.bpm.extension.rest.exception.RemoteProcessEngineException
@@ -53,6 +54,7 @@ abstract class CamundaRestClientITestBase<SERVICE : Any, ACTION : ActionStage<AC
    */
   internal fun processDefinitionKey() = "KEY" + UUID.randomUUID().toString().replace("-", "")
 
+  internal fun taskDefinitionKey() = "task_" + UUID.randomUUID().toString().replace("-", "")
 }
 
 /**
