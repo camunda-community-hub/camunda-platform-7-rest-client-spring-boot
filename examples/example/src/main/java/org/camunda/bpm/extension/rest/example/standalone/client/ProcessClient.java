@@ -15,8 +15,12 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static org.camunda.bpm.engine.variable.Variables.*;
 
@@ -30,12 +34,13 @@ public class ProcessClient {
 
   private final RuntimeService runtimeService;
   private final RepositoryService repositoryService;
+  private final Map<String, String> instances = new ConcurrentHashMap();
 
   /**
    * Constructs the client.
    *
-   * @param runtimeService
-   * @param repositoryService
+   * @param runtimeService runtime service.
+   * @param repositoryService repository service.
    */
   public ProcessClient(
     @Qualifier("remote") RuntimeService runtimeService,
@@ -53,8 +58,9 @@ public class ProcessClient {
     LOGGER.info("CLIENT-90: Retrieving process definition");
     long count = repositoryService.createProcessDefinitionQuery().count();
     LOGGER.info("CLIENT-91: Found {} deployed processes", count);
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().singleResult();
-    LOGGER.info("CLIENT-92: Deployed process definition is {}", PrettyPrinter.toPrettyString(processDefinition));
+    List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery().list();
+    LOGGER.info("CLIENT-92: Deployed process definition are {}", processDefinitions.stream().map(PrettyPrinter::toPrettyString).collect(
+      Collectors.toList()) );
   }
 
   /**
@@ -65,8 +71,9 @@ public class ProcessClient {
     LOGGER.trace("CLIENT-100: Starting a process instance remote");
     VariableMap variables = createVariables()
       .putValueTyped("ID", stringValue("MESSAGING-" + UUID.randomUUID()));
-    ProcessInstance instance = runtimeService.startProcessInstanceByKey("process_messaging", "WAIT_FOR_MESSAGE", variables);
+    ProcessInstance instance = runtimeService.startProcessInstanceByKey("process_messaging", "WAIT_FOR_MESSAGE" + UUID.randomUUID(), variables);
     LOGGER.trace("CLIENT-101: Started instance {} - {}", instance.getId(), instance.getBusinessKey());
+    instances.put(instance.getId(), instance.getBusinessKey());
   }
 
   /**
@@ -102,13 +109,20 @@ public class ProcessClient {
     variables.putValueTyped("BYTES", byteArrayValue("Hello!".getBytes()));
     variables.putValueTyped("OBJECT", objectValue(new MyDataStructure("string", 100)).create());
 
-    List<MessageCorrelationResultWithVariables> result = runtimeService
-      .createMessageCorrelation("message_received")
-      .processInstanceBusinessKey("WAIT_FOR_MESSAGE")
-      .setVariables(variables)
-      .correlateAllWithResultAndVariables(true);
-
-    result.forEach(element -> LOGGER.info("CLIENT-301: {}", PrettyPrinter.toPrettyString(element)));
+    final Iterator<Map.Entry<String, String>> instanceIterator = instances.entrySet().iterator();
+    if (instanceIterator.hasNext()) {
+      final Map.Entry<String, String> instanceInfo = instanceIterator.next();
+      LOGGER.debug("Trying to message remote process instance {}", instanceInfo.getKey());
+      final List<MessageCorrelationResultWithVariables> result = runtimeService
+        .createMessageCorrelation("message_received")
+        .processInstanceBusinessKey(instanceInfo.getValue())
+        .setVariables(variables)
+        .correlateAllWithResultAndVariables(true);
+      result.forEach(element -> LOGGER.info("CLIENT-301: {}", PrettyPrinter.toPrettyString(element)));
+      instances.remove(instanceInfo.getKey());
+    } else {
+      LOGGER.info("CLIENT-301: No instances to correlate with.");
+    }
   }
 
 }
