@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.18.2-SNAPSHOT"/>
+<link rel="icon" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Changelog</title>
+
+
+<meta name="description" content="A Spring-Boot client for accessing Camunda BPM engine via REST.">
+
+
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.18.2-SNAPSHOT","baseUrl":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot","environment":"debug","version":"0.0.6"};
+</script>
+
+
+
+
+
+<!-- start:debug info -->
+
+<!-- THEME -->
+<!-- Type: BsDoc -->
+<!-- Class: com.eden.orchid.bsdoc.BSDocTheme -->
+
+<!-- PAGE -->
+<!-- Type: staticPage -->
+<!-- Class: com.eden.orchid.pages.pages.StaticPage -->
+<!-- Layout: geopattern, index -->
+<!-- Resolved Layout: templates/layouts/geopattern.peb -->
+<!-- Page Template: staticPage, page -->
+<!-- Resolved Page Template: templates/pages/page.peb -->
+
+<!-- RESOURCE -->
+<!-- Class: com.eden.orchid.api.resources.resource.FileResource -->
+<!-- Source Filename: pages/changelog.md -->
+
+<!-- COMPLETE PAGE CONFIGURATION -->
+<script>
+    window.allData = {"reference":{"path":"","baseUrl":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot","fileName":"changelog","extension":"html","usePrettyUrl":true,"link":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/changelog"},"description":"","title":"Changelog"};
+</script>
+
+<!-- end:debug info -->
+
+
+
+
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/css/bsdoc.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/assets/css/asciidoc-admonitionblock.css"  />
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/PrismJS/prism-themes/master/themes/prism-darcula.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-highlight/prism-line-highlight.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/toolbar/prism-toolbar.min.css"  />
+<!-- end:inject styles -->
+
+
+</head>
+<body>
+
+
+
+
+<a class="github-fork-ribbon left-top"
+   href="https://github.com/camunda/camunda-rest-client-spring-boot"
+   title="Fork me on GitHub">Fork me on GitHub</a>
+
+
+<header class="navbar navbar-fixed-top bs-docs-nav">
+    <div class="container">
+        <div class="navbar-header" role="banner">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot">Camunda REST client Spring-Boot</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    
+                        <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/quick-start">Quick Start</a></li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Introduction<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation">Motivation</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features">Features</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution">Solution Idea</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook">Further outlook</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">User Guide<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples">Working example</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix">Support Matrix</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging">Logging</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding">Error Decoding</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Developer Guide<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution">Contribution</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup">Project Setup</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/changelog">Changelog</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/license">License</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<div id="top"></div>
+
+
+    <div class="bs-docs-masthead" id="jumbotron">
+        <div class="container">
+            <h1 class="home-title">Changelog</h1>
+        </div>
+    </div>
+
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+        <nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+    
+    
+        <li class="breadcrumb-item active" aria-current="page">Changelog</li>
+    
+    
+    </ul>
+</nav>
+        
+
+        
+        
+            
+    <!-- start:inject components -->
+    
+        
+            
+        
+            
+                
+                    
+                        <div class="component component-changelog component-order-0">
+                            
+
+
+<details id="0.0.6" open>
+  <summary>0.0.6 </summary>
+  <div class="sect1">
+<h2 id="_news_noteworthy">News &amp; Noteworthy</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features">Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Implement <code>TaskService</code> see #43. More details can be found in the support matrix.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_chore">Chore</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Support of Camunda BPM 7.15, see #52</p>
+</li>
+<li>
+<p>Camunda Spin 1.10.1</p>
+</li>
+<li>
+<p>Kotlin 1.5.20</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+
+<details id="0.0.5" >
+  <summary>0.0.5 </summary>
+  <div class="sect1">
+<h2 id="_news_noteworthy">News &amp; Noteworthy</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Migrate to Camunda Community HUB</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features">Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Implement <code>RepositoryService#createProcessDefinitionQuery</code> see #46</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_chore">Chore</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Support of Camunda BPM 7.14</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+
+<details id="0.0.4" >
+  <summary>0.0.4 </summary>
+  <div class="sect1">
+<h2 id="_news_noteworthy">News &amp; Noteworthy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Current version supports Camunda BPM 7.13. This release introduces a change in base path of the
+REST endpoint of the engine. So if you are migrating from the previous version, please make sure
+to change your endpoints from <code>http(s)://&lt;host&gt;:&lt;port&gt;/rest/engine/default</code> to <code>http(s)://&lt;host&gt;:&lt;port&gt;/engine-rest/</code></p>
+</div>
+<div class="paragraph">
+<p>In addition, we activated the HTTP error decoding for HTTP error codes 400 and 500. This means that on those errors
+the library will NOT throw <code>FeignException</code>, but a <code>RemoteProcessEngineException</code>. If your code was relying on the
+<code>FeignException</code> on errors, please make sure to change this code accordingly.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features">Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Implement <code>ExternalTaskService#complete</code> see #34</p>
+</li>
+<li>
+<p>Bump versions to SpringBoot 2.2.8 and Camunda BPM 7.13, see #39</p>
+</li>
+<li>
+<p>Support http status code exception decoding, see #35</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_chore">Chore</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Extract I-Tests to separate module</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+
+<details id="0.0.3" >
+  <summary>0.0.3 </summary>
+  <div class="sect1">
+<h2 id="_features">Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>New starter <code>camunda-rest-client-spring-boot-starter</code> for standalone usage, see #19</p>
+</li>
+<li>
+<p>New starter <code>camunda-rest-client-spring-boot-starter-provided</code> for usage inside a process application, see #19</p>
+</li>
+<li>
+<p>Example for standalone usage (not a process application) in Java, see #30, #19</p>
+</li>
+<li>
+<p>Improved example for usage inside a process application</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+
+<details id="0.0.2" >
+  <summary>0.0.2 </summary>
+  <div class="sect1">
+<h2 id="_features">Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Runtime Service</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code># startProcessInstanceByKey</code></p>
+</li>
+<li>
+<p><code># startProcessInstanceById</code></p>
+</li>
+<li>
+<p><code># correlateMessage</code></p>
+</li>
+<li>
+<p><code># createMessageCorrelation</code></p>
+</li>
+<li>
+<p><code># signal</code></p>
+</li>
+<li>
+<p><code># signalEventReceived</code></p>
+</li>
+<li>
+<p><code># createSignalEvent</code></p>
+</li>
+<li>
+<p><code># getVariable</code></p>
+</li>
+<li>
+<p><code># getVariables</code></p>
+</li>
+<li>
+<p><code># setVariable</code></p>
+</li>
+<li>
+<p><code># setVariables</code></p>
+</li>
+<li>
+<p><code># removeVariable</code></p>
+</li>
+<li>
+<p><code># removeVariables</code></p>
+</li>
+<li>
+<p><code># getVariableTyped</code></p>
+</li>
+<li>
+<p><code># getVariablesTyped</code></p>
+</li>
+<li>
+<p><code># setVariableTyped</code></p>
+</li>
+<li>
+<p><code># setVariablesTyped</code></p>
+</li>
+<li>
+<p><code># getVariableLocal</code></p>
+</li>
+<li>
+<p><code># getVariablesLocal</code></p>
+</li>
+<li>
+<p><code># setVariableLocal</code></p>
+</li>
+<li>
+<p><code># setVariablesLocal</code></p>
+</li>
+<li>
+<p><code># removeVariableLocal</code></p>
+</li>
+<li>
+<p><code># removeVariablesLocal</code></p>
+</li>
+<li>
+<p><code># getVariableTypedLocal</code></p>
+</li>
+<li>
+<p><code># getVariablesTypedLocal</code></p>
+</li>
+<li>
+<p><code># setVariableTypedLocal</code></p>
+</li>
+<li>
+<p><code># setVariablesTypedLocal</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Repository Service</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code># createProcessDefinitionQuery</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Example Application</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_chore">Chore</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Orchid Docs for GitHubPages</p>
+</li>
+<li>
+<p>CI with Travis</p>
+</li>
+<li>
+<p>Codecov for coverage</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+
+
+                        </div>
+                    
+                
+            
+        
+            
+                
+                    
+                        
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+        
+        </div>
+
+        <!-- Page navigation
+        =========================================== -->
+        <div class="col-md-3" role="complementary">
+        <div class="bs-docs-sidebar hidden-print" id="bs-docs-sidebar">
+    <section id="search" >
+        <form data-orchid-search="">
+            <div class="input-group">
+                <input type="text" name="query" id="query" class="form-control" placeholder="Search&hellip;">
+                <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+            </div>
+        </form>
+        <div id="search-results" data-orchid-search-results style="display: none;">
+            <b>Search Results</b>
+            <ul></ul>
+        </div>
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+            <div class="loader">Loading...</div>
+        </div>
+    </section>
+
+    <ul class="nav bs-docs-sidenav">
+        
+    </ul>
+
+    
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+    <a class="back-to-top" href="#top">
+        <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+    </a>
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="footer">
+    <div class="container bs-docs-container">
+    <footer class="bs-docs-footer" role="contentinfo">
+    <div class="row">
+        <div class="col-xs-12">
+            <nav aria-label="navigateClasses">
+                <ul class="pager">
+                    
+
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="icons">
+    
+    
+        <a href="https://camunda.github.io/camunda-rest-client-spring-boot/" class="fa fas fa-home"></a>
+    
+        <a href="https://github.com/camunda/camunda-rest-client-spring-boot" class="fa fa-github"></a>
+    
+        <a href="https://twitter.com/CamundaBPM" class="fa fa-twitter"></a>
+    
+    
+    </div>
+    <br>
+    <p>
+    Documentation template based on the
+    <a href="https://github.com/mistic100/jekyll-bootstrap-doc">Jekyll Bootstrap Doc</a>
+    Jekyll theme by the <a href="https://getbootstrap.com">Bootstrap team</a>. Site created with
+    <a href="https://orchid.run">Orchid</a>.
+</p>
+
+
+</footer>
+    </div>
+</div>
+
+
+<!-- start:inject scripts -->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
+<script  src="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/js/bsdoc.js"></script>
+<script  src="https://unpkg.com/lunr/lunr.js"></script>
+<script  src="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/js/orchidSearch.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-yaml.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-json.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-markdown.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/toolbar/prism-toolbar.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/show-language/prism-show-language.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+<!-- end:inject scripts -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+
+<script>
+    $(function () {
+        window.colors = ['#B10000', '#000000'];
+                  
+    
+        geopattern('Changelog');
+    
+
+        buildNav();
+    });
+</script>
+
+</body>
+</html>

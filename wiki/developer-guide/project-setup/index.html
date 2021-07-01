@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.18.2-SNAPSHOT"/>
+<link rel="icon" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Project Setup</title>
+
+
+<meta name="description" content="A Spring-Boot client for accessing Camunda BPM engine via REST.">
+
+
+
+<link rel="prev" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution">
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.18.2-SNAPSHOT","baseUrl":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot","environment":"debug","version":"0.0.6"};
+</script>
+
+
+
+
+
+<!-- start:debug info -->
+
+<!-- THEME -->
+<!-- Type: BsDoc -->
+<!-- Class: com.eden.orchid.bsdoc.BSDocTheme -->
+
+<!-- PAGE -->
+<!-- Type: wiki -->
+<!-- Class: com.eden.orchid.wiki.pages.WikiPage -->
+<!-- Layout: geopattern2, index -->
+<!-- Resolved Layout: templates/layouts/geopattern2.peb -->
+<!-- Page Template: wiki, page -->
+<!-- Resolved Page Template: templates/pages/page.peb -->
+
+<!-- RESOURCE -->
+<!-- Class: com.eden.orchid.api.resources.resource.FileResource -->
+<!-- Source Filename: wiki/developer-guide/project-setup.ad -->
+
+<!-- COMPLETE PAGE CONFIGURATION -->
+<script>
+    window.allData = {"reference":{"path":"wiki/developer-guide","baseUrl":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot","fileName":"project-setup","extension":"html","usePrettyUrl":true,"link":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup"},"previous":{"path":"wiki/developer-guide","baseUrl":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot","fileName":"contribution","extension":"html","usePrettyUrl":true,"link":"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution"},"description":"","title":"Project Setup"};
+</script>
+
+<!-- end:debug info -->
+
+
+
+
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/css/bsdoc.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/assets/css/asciidoc-admonitionblock.css"  />
+<link rel="stylesheet" type="text/css" href="https://rawgit.com/PrismJS/prism-themes/master/themes/prism-darcula.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-highlight/prism-line-highlight.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/toolbar/prism-toolbar.min.css"  />
+<!-- end:inject styles -->
+
+
+</head>
+<body>
+
+
+
+
+<a class="github-fork-ribbon right-top"
+   href="https://github.com/camunda/camunda-rest-client-spring-boot"
+   title="Fork me on GitHub">Fork me on GitHub</a>
+
+
+<header class="navbar navbar-fixed-top bs-docs-nav">
+    <div class="container">
+        <div class="navbar-header" role="banner">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot">Camunda REST client Spring-Boot</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    
+                        <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/quick-start">Quick Start</a></li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Introduction<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation">Motivation</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features">Features</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution">Solution Idea</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook">Further outlook</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">User Guide<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples">Working example</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix">Support Matrix</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging">Logging</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding">Error Decoding</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Developer Guide<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution">Contribution</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup">Project Setup</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+                    
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
+                            <ul class="dropdown-menu scrollable-menu">
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/changelog">Changelog</a></li>
+                                
+                                    <li><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/license">License</a></li>
+                                
+                            </ul>
+                        </li>
+                    
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<div id="top"></div>
+
+
+    <div class="bs-docs-header" id="jumbotron">
+        <div class="container">
+            <h1 class="home-title">Project Setup</h1>
+        </div>
+    </div>
+
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+        <nav aria-label="breadcrumb">
+    <ul class="breadcrumb">
+    
+    
+        <li class="breadcrumb-item"><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki">Wiki</a></li>
+    
+    
+    
+        <li class="breadcrumb-item"><a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide">Developer Guide</a></li>
+    
+    
+    
+        <li class="breadcrumb-item active" aria-current="page">Project Setup</li>
+    
+    
+    </ul>
+</nav>
+        
+
+        
+        
+            
+    <!-- start:inject components -->
+    
+        
+            
+        
+            
+                
+                    
+                        <div class="sect1">
+<h2 id="_project_setup">Project Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are interested in developing and building the project please read the following the instructions carefully.</p>
+</div>
+<div class="sect2">
+<h3 id="_version_control">Version control</h3>
+<div class="paragraph">
+<p>To get sources of the project, please execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">git clone https://github.com/camunda/camunda-rest-client-spring-boot.git
+cd camunda-rest-client-spring-boot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We are using gitflow in our git SCM for naming branches. That means that you should start from <code>develop</code> branch,
+create a <code>feature/&lt;name&gt;</code> out of it and once it is completed create a pull request containing
+it. Please squash your commits before submitting and use semantic commit messages, if possible.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_project_build">Project Build</h3>
+<div class="paragraph">
+<p>Perform the following steps to get a development setup up and running.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw clean install</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_integration_tests">Integration Tests</h3>
+<div class="paragraph">
+<p>By default, the build command will ignore the run of <code>failsafe</code> Maven plugin executing the integration tests
+(usual JUnit tests with class names ending with ITest). In order to run integration tests, please
+call from your command line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw -Pitest</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_project_build_modes_and_profiles">Project build modes and profiles</h3>
+<div class="sect3">
+<h4 id="_camunda_version">Camunda Version</h4>
+<div class="paragraph">
+<p>You can choose the used Camunda version by specifying the profile <code>camunda-ee</code> or <code>camunda-ce</code>. The default
+version is a Community Edition. Specify <code>-Pcamunda-ee</code> to switch to Camunda Enterprise edition. This will
+require a valid Camunda license. You can put it into a file <code>~/.camunda/license.txt</code> and it will be detected
+automatically.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_documentation">Documentation</h4>
+<div class="paragraph">
+<p>We are using <a href="https://github.com/JavaEden/Orchid">JavaEden Orchid</a> for generation of a static site documentation and
+rely on AsciiDoc as much as possible.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+If you want to develop your docs in 'live' mode, run <code>./mvnw -f docs -Pserve-docs</code> and access
+the <a href="http://localhost:8080/" class="bare">http://localhost:8080/</a> from your browser.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For creation of documentation, please run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw -f docs orchid:build</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+This operation requires special permissions. You need to replace <code>GITHUB_TOKEN</code> by the token of
+the github pages repository, allowing to publish the pages.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In order to publish documentation to github pages, please run from command line</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw -f docs -Pdeploy-docs -DgithubToken=GITHUB_TOKEN</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generation_of_javadoc_and_sources">Generation of JavaDoc and Sources</h4>
+<div class="paragraph">
+<p>By default, the sources and javadoc API documentation are not generated from the source code. To enable this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvnw clean install -Prelease</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_starting_example_applications">Starting example applications</h4>
+<div class="paragraph">
+<p>To start applications, either use your IDE and create
+run configuration for the class:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>org.camunda.bpm.extension.rest.example.standalone.CamundaRestClientExampleApplication</code></p>
+</li>
+<li>
+<p><code>org.camunda.bpm.extension.rest.example.processapplication.CamundaRestClientExampleApplicationWithEngineProvided</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can run them from the command line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">./mvn spring-boot:run -f examples/example
+./mvn spring-boot:run -f examples/example-provided</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_continuous_integration">Continuous Integration</h3>
+<div class="paragraph">
+<p>Travis CI is building all branches on commit hook (for codecov).
+In addition, a Github Actions are used to build PRs and all branches.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_release_management">Release Management</h3>
+<div class="paragraph">
+<p>The release is produced by using the github feature to "Publish a Release".</p>
+</div>
+<div class="sect3">
+<h4 id="_what_modules_get_deployed_to_repository">What modules get deployed to repository</h4>
+<div class="paragraph">
+<p>Every Maven module is enabled by default. If you want to change this, please provide the property</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;maven.deploy.skip&gt;true&lt;/maven.deploy.skip&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>inside the corresponding <code>pom.xml</code>. Currently, all <code>examples</code> and <code>docs</code>
+are <em>EXCLUDED</em> from publication into Maven Central.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+        
+        </div>
+
+        <!-- Page navigation
+        =========================================== -->
+        <div class="col-md-3" role="complementary">
+        <div class="bs-docs-sidebar hidden-print" id="bs-docs-sidebar">
+    <section id="search" >
+        <form data-orchid-search="">
+            <div class="input-group">
+                <input type="text" name="query" id="query" class="form-control" placeholder="Search&hellip;">
+                <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+            </div>
+        </form>
+        <div id="search-results" data-orchid-search-results style="display: none;">
+            <b>Search Results</b>
+            <ul></ul>
+        </div>
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+            <div class="loader">Loading...</div>
+        </div>
+    </section>
+
+    <ul class="nav bs-docs-sidenav">
+        
+        
+            
+                
+                    <li><a class="divider-subheader">In This Page</a></li>
+                
+            
+        
+        
+            
+                <li class="has-children ">
+                    <a>Project Setup</a>
+                    <ul class="nav">
+                        
+                        
+                            
+                                <li class="">
+                                    <a href="#_version_control">Version control</a>
+                                </li>
+                            
+                        
+                            
+                                <li class="">
+                                    <a href="#_project_build">Project Build</a>
+                                </li>
+                            
+                        
+                            
+                                <li class="">
+                                    <a href="#_integration_tests">Integration Tests</a>
+                                </li>
+                            
+                        
+                            
+                                <li class="">
+                                    <a href="#_project_build_modes_and_profiles">Project build modes and profiles</a>
+                                </li>
+                            
+                        
+                            
+                                <li class="">
+                                    <a href="#_continuous_integration">Continuous Integration</a>
+                                </li>
+                            
+                        
+                            
+                                <li class="">
+                                    <a href="#_release_management">Release Management</a>
+                                </li>
+                            
+                        
+                    </ul>
+                </li>
+            
+        
+        
+            
+                
+                    <li><a class="divider-subheader">Developer Guide</a></li>
+                
+            
+        
+    </ul>
+
+    
+    <!-- start:inject components -->
+    
+    <!-- end:inject components -->
+
+
+
+    <a class="back-to-top" href="#top">
+        <i class="glyphicon glyphicon-chevron-up"></i> Back to top
+    </a>
+</div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="footer">
+    <div class="container bs-docs-container">
+    <footer class="bs-docs-footer" role="contentinfo">
+    <div class="row">
+        <div class="col-xs-12">
+            <nav aria-label="navigateClasses">
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution">
+                                <span aria-hidden="true">&larr;</span>
+                                <span>Contribution</span>
+                            </a>
+                        </li>
+                    
+
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="icons">
+    
+    
+        <a href="https://camunda.github.io/camunda-rest-client-spring-boot/" class="fa fas fa-home"></a>
+    
+        <a href="https://github.com/camunda/camunda-rest-client-spring-boot" class="fa fa-github"></a>
+    
+        <a href="https://twitter.com/CamundaBPM" class="fa fa-twitter"></a>
+    
+    
+    </div>
+    <br>
+    <p>
+    Documentation template based on the
+    <a href="https://github.com/mistic100/jekyll-bootstrap-doc">Jekyll Bootstrap Doc</a>
+    Jekyll theme by the <a href="https://getbootstrap.com">Bootstrap team</a>. Site created with
+    <a href="https://orchid.run">Orchid</a>.
+</p>
+
+
+</footer>
+    </div>
+</div>
+
+
+<!-- start:inject scripts -->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js"></script>
+<script  src="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/js/bsdoc.js"></script>
+<script  src="https://unpkg.com/lunr/lunr.js"></script>
+<script  src="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/BsDoc/fa7646eb/assets/js/orchidSearch.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-yaml.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-json.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-markdown.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/toolbar/prism-toolbar.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/show-language/prism-show-language.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+<!-- end:inject scripts -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+
+<script>
+    $(function () {
+        window.colors = ['#B10000', '#000000'];
+                  
+    
+        geopattern('Project Setup');
+    
+
+        buildNav();
+    });
+</script>
+
+</body>
+</html>

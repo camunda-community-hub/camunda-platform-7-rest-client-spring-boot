@@ -1,0 +1,470 @@
+{
+  "ownKey": "index",
+  "childrenPages": {
+    "license": {
+      "ownKey": "license",
+      "ownPages": [{
+        "reference": {
+          "path": "",
+          "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+          "fileName": "license",
+          "extension": "html",
+          "usePrettyUrl": true,
+          "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/license"
+        },
+        "description": "",
+        "title": "License",
+        "content": ""
+      }]
+    },
+    "wiki": {
+      "ownKey": "wiki",
+      "childrenPages": {
+        "developer-guide": {
+          "ownKey": "developer-guide",
+          "childrenPages": {
+            "contribution": {
+              "ownKey": "contribution",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/developer-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "contribution",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution"
+                },
+                "next": {
+                  "path": "wiki/developer-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "project-setup",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup"
+                },
+                "description": "",
+                "title": "Contribution",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_contribution\">Contribution<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>There are several ways in which you may contribute to this project.<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p><a href=\"https://github.com/camunda/camunda-rest-client-spring-boot/issues\">File issues<\/a><\/p>\n<\/li>\n<li>\n<p>Submit a pull requests<\/p>\n<\/li>\n<\/ul>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_found_a_bug_or_missing_feature\">Found a bug or missing feature?<\/h3>\n<div class=\"paragraph\">\n<p>Please <a href=\"https://github.com/camunda/camunda-rest-client-spring-boot/issues\">file an issue<\/a> in our\nissue tracking system.<\/p>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_submit_a_pull_request\">Submit a Pull Request<\/h3>\n<div class=\"paragraph\">\n<p>If you found a solution to an <a href=\"https://github.com/camunda/camunda-rest-client-spring-boot\">open issue<\/a>\nand implemented it, we would be happy to add your contribution in the code base. For doing so,\nplease create a pull request. Prior to that, please make sure you<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>rebased against the <code>develop<\/code> branch<\/p>\n<\/li>\n<li>\n<p>stick to project coding conventions<\/p>\n<\/li>\n<li>\n<p>added test cases for the problem you are solving<\/p>\n<\/li>\n<li>\n<p>added docs, describing the change<\/p>\n<\/li>\n<li>\n<p>generally comply with codeacy report<\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "project-setup": {
+              "ownKey": "project-setup",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/developer-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "project-setup",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup"
+                },
+                "previous": {
+                  "path": "wiki/developer-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "contribution",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution"
+                },
+                "description": "",
+                "title": "Project Setup",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_project_setup\">Project Setup<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>If you are interested in developing and building the project please read the following the instructions carefully.<\/p>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_version_control\">Version control<\/h3>\n<div class=\"paragraph\">\n<p>To get sources of the project, please execute:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">git clone https://github.com/camunda/camunda-rest-client-spring-boot.git\ncd camunda-rest-client-spring-boot<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>We are using gitflow in our git SCM for naming branches. That means that you should start from <code>develop<\/code> branch,\ncreate a <code>feature/&lt;name&gt;<\/code> out of it and once it is completed create a pull request containing\nit. Please squash your commits before submitting and use semantic commit messages, if possible.<\/p>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_project_build\">Project Build<\/h3>\n<div class=\"paragraph\">\n<p>Perform the following steps to get a development setup up and running.<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvnw clean install<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_integration_tests\">Integration Tests<\/h3>\n<div class=\"paragraph\">\n<p>By default, the build command will ignore the run of <code>failsafe<\/code> Maven plugin executing the integration tests\n(usual JUnit tests with class names ending with ITest). In order to run integration tests, please\ncall from your command line:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvnw -Pitest<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_project_build_modes_and_profiles\">Project build modes and profiles<\/h3>\n<div class=\"sect3\">\n<h4 id=\"_camunda_version\">Camunda Version<\/h4>\n<div class=\"paragraph\">\n<p>You can choose the used Camunda version by specifying the profile <code>camunda-ee<\/code> or <code>camunda-ce<\/code>. The default\nversion is a Community Edition. Specify <code>-Pcamunda-ee<\/code> to switch to Camunda Enterprise edition. This will\nrequire a valid Camunda license. You can put it into a file <code>~/.camunda/license.txt<\/code> and it will be detected\nautomatically.<\/p>\n<\/div>\n<\/div>\n<div class=\"sect3\">\n<h4 id=\"_documentation\">Documentation<\/h4>\n<div class=\"paragraph\">\n<p>We are using <a href=\"https://github.com/JavaEden/Orchid\">JavaEden Orchid<\/a> for generation of a static site documentation and\nrely on AsciiDoc as much as possible.<\/p>\n<\/div>\n<div class=\"admonitionblock tip\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Tip<\/div>\n<\/td>\n<td class=\"content\">\nIf you want to develop your docs in 'live' mode, run <code>./mvnw -f docs -Pserve-docs<\/code> and access\nthe <a href=\"http://localhost:8080/\" class=\"bare\">http://localhost:8080/<\/a> from your browser.\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<div class=\"paragraph\">\n<p>For creation of documentation, please run:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvnw -f docs orchid:build<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"admonitionblock warning\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Warning<\/div>\n<\/td>\n<td class=\"content\">\nThis operation requires special permissions. You need to replace <code>GITHUB_TOKEN<\/code> by the token of\nthe github pages repository, allowing to publish the pages.\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to publish documentation to github pages, please run from command line<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvnw -f docs -Pdeploy-docs -DgithubToken=GITHUB_TOKEN<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect3\">\n<h4 id=\"_generation_of_javadoc_and_sources\">Generation of JavaDoc and Sources<\/h4>\n<div class=\"paragraph\">\n<p>By default, the sources and javadoc API documentation are not generated from the source code. To enable this:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvnw clean install -Prelease<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect3\">\n<h4 id=\"_starting_example_applications\">Starting example applications<\/h4>\n<div class=\"paragraph\">\n<p>To start applications, either use your IDE and create\nrun configuration for the class:<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code>org.camunda.bpm.extension.rest.example.standalone.CamundaRestClientExampleApplication<\/code><\/p>\n<\/li>\n<li>\n<p><code>org.camunda.bpm.extension.rest.example.processapplication.CamundaRestClientExampleApplicationWithEngineProvided<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<div class=\"paragraph\">\n<p>Alternatively, you can run them from the command line:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-bash\" data-lang=\"bash\">./mvn spring-boot:run -f examples/example\n./mvn spring-boot:run -f examples/example-provided<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_continuous_integration\">Continuous Integration<\/h3>\n<div class=\"paragraph\">\n<p>Travis CI is building all branches on commit hook (for codecov).\nIn addition, a Github Actions are used to build PRs and all branches.<\/p>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_release_management\">Release Management<\/h3>\n<div class=\"paragraph\">\n<p>The release is produced by using the github feature to \"Publish a Release\".<\/p>\n<\/div>\n<div class=\"sect3\">\n<h4 id=\"_what_modules_get_deployed_to_repository\">What modules get deployed to repository<\/h4>\n<div class=\"paragraph\">\n<p>Every Maven module is enabled by default. If you want to change this, please provide the property<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-xml\" data-lang=\"xml\">&lt;maven.deploy.skip&gt;true&lt;/maven.deploy.skip&gt;<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>inside the corresponding <code>pom.xml<\/code>. Currently, all <code>examples<\/code> and <code>docs<\/code>\nare <em>EXCLUDED<\/em> from publication into Maven Central.<\/p>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            }
+          },
+          "ownPages": [
+            {
+              "reference": {
+                "path": "wiki",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "developer-guide",
+                "extension": "html",
+                "usePrettyUrl": true,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide"
+              },
+              "description": "",
+              "title": "Developer Guide",
+              "content": "<html>\n <head><\/head>\n <body>\n  <h2><a href=\"#\" class=\"anchor\"><\/a><\/h2> \n  <p><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution\">Contribution<\/a><\/p> \n  <p><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup\">Project Setup<\/a><\/p> \n <\/body>\n<\/html>\n"
+            },
+            {
+              "reference": {
+                "path": "wiki/developer-guide",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "book",
+                "extension": "pdf",
+                "usePrettyUrl": false,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/book.pdf"
+              },
+              "description": "",
+              "title": "Developer Guide Book",
+              "content": ""
+            }
+          ]
+        },
+        "user-guide": {
+          "ownKey": "user-guide",
+          "childrenPages": {
+            "error-decoding": {
+              "ownKey": "error-decoding",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "error-decoding",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding"
+                },
+                "previous": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "logging",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging"
+                },
+                "description": "",
+                "title": "Error Decoding",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_error_decoding\">Error Decoding<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>The <code>camunda-rest-client-spring-boot<\/code> uses HTTP to access a remote Camunda REST API. If any errors occur on\nthis access, Camunda REST API will send with corresponding HTTP error code and embed information about the error\ninto http response. <code>camunda-rest-client-spring-boot<\/code> tries to parse this response and throw an exception on the client\nside similar to the original exception thrown on the remote Camunda Engine.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>By default, the library tries to decode HTTP codes and will throw a <code>RemoteProcessEngineException<\/code>. If the response decoding\nwas successful, the <em>cause<\/em> of the thrown <code>RemoteProcessEngineException<\/code> will be the instance of the exception class thrown\non remote Camunda engine and the <em>reason<\/em> of the latter exception will be the original reason from the server.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>If anything goes wrong on HTTP error decoding, the <code>RemoteProcessEngineException<\/code> will contain a generic message extracted from\nthe REST call. If the error decoding is deactivated, <code>FeignException<\/code> is wrapping any exception occurring during the remote access.<\/p>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_configuration\">Configuration<\/h3>\n<div class=\"paragraph\">\n<p>By default, the HTTP error decoding is switched on and the libary reacts on HTTP codes 400 and 500. Those defaults can be\nchanged by setting the following properties.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to configure it, a block of properties e.g. in <code>application.yml<\/code> is required. Here are the defaults:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-yaml\" data-lang=\"yaml\">camunda:\n  rest:\n    client:\n      error-decoding:\n        enabled: true\n        http-codes: 400, 500<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"admonitionblock tip\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Tip<\/div>\n<\/td>\n<td class=\"content\">\nIf you are using the remote version of the <code>ExternalTaskService<\/code> this will report HTTP 404 if you try\nto complete a non-existing task. By changing the <code>camunda.rest.client.error-decoding.http-codes<\/code> property you\ncan cover this response too.\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "examples": {
+              "ownKey": "examples",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "examples",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples"
+                },
+                "next": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "support-matrix",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix"
+                },
+                "description": "",
+                "title": "Working example",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_working_example\">Working example<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>We provide demonstrating the usage of the library, depending on the context.<\/p>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_standalone_usage\">Standalone usage<\/h3>\n<div class=\"paragraph\">\n<p>The example demonstrates the usage of the library accessing a process engine via REST from an arbitrary SpringBoot\napplication. The client executes the following steps:<\/p>\n<\/div>\n<table class=\"tableblock frame-all grid-all stretch\">\n<caption class=\"title\">Table 1. Timing overview of the example<\/caption>\n<colgroup>\n<col style=\"width: 20%;\">\n<col style=\"width: 20%;\">\n<col style=\"width: 60%;\">\n<\/colgroup>\n<thead>\n<tr>\n<th class=\"tableblock halign-left valign-top\">Initial offset<\/th>\n<th class=\"tableblock halign-left valign-top\">Repeat<\/th>\n<th class=\"tableblock halign-left valign-top\">Invoked method<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">8.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">-<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Get deployed processes<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">10.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Start process<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">12.5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Send signal<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">13.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Correlate message<\/p><\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<div class=\"sect3\">\n<h4 id=\"_how_does_it_work\">How does it work<\/h4>\n<div class=\"paragraph\">\n<p>The application uses the library by adding it to the classpath via Apache Maven dependency. That is:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-xml\" data-lang=\"xml\">&lt;dependency&gt;\n  &lt;groupId&gt;org.camunda.bpm.extension.rest&lt;/groupId&gt;\n  &lt;artifactId&gt;camunda-rest-client-spring-boot-starter&lt;/artifactId&gt;\n  &lt;version&gt;${project.version}&lt;/version&gt;\n&lt;/dependency&gt;<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to activate the library, the <code>@EnableCamundaRestClient<\/code> has been put\non the configuration class of the application. The interesting part is now the <code>ProcessClient<\/code> component.\nThis Spring Component has several methods marked with <code>@Scheduled<\/code> annotation to demonstrate\nthe time-based execution of desired functionality. To do so, the component has two injected resources,\nboth marked with the <code>@Qualifier(\"remote\")<\/code> annotation. This annotation indicates that the\nremote version of the Camunda API services are used.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to configure the library, a block of properties e.g. in <code>application.yml<\/code> is required.\nThe values specify the location of the remote process engine:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-yaml\" data-lang=\"yaml\">feign:\n  client:\n    config:\n      remoteRuntimeService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteRepositoryService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteExternalTaskService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteTaskService:\n        url: \"http://localhost:8083/engine-rest/\"<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>To run this example, you will need the server part from the next example. To activate the server part only, please\nrun from command line:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-sh\" data-lang=\"sh\">mvn clean install\nmvn -f examples/example -Prun\nmvn -f examples/example-provided -Prun-server-only<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect2\">\n<h3 id=\"_usage_inside_a_process_application\">Usage inside a process application<\/h3>\n<div class=\"paragraph\">\n<p>The example demonstrates the usage of the library for accessing a process engine via REST from a Camunda process application.\nThe key difference to the previous example is that the required Camunda classes are already present on the classpath and\nan engine is initialized and is running.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>Imagine the process engine has the following process deployed:<\/p>\n<\/div>\n<div class=\"imageblock\">\n<div class=\"content\">\n<img src=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/assets/media/process_messaging.png\" alt=\"Example messaging process\" width=\"60% 60%\">\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>The client (running technically in the same JVM, but accessing the engine via REST) again executes the following steps:<\/p>\n<\/div>\n<table class=\"tableblock frame-all grid-all stretch\">\n<caption class=\"title\">Table 2. Timing overview of the example<\/caption>\n<colgroup>\n<col style=\"width: 20%;\">\n<col style=\"width: 20%;\">\n<col style=\"width: 60%;\">\n<\/colgroup>\n<thead>\n<tr>\n<th class=\"tableblock halign-left valign-top\">Initial offset<\/th>\n<th class=\"tableblock halign-left valign-top\">Repeat<\/th>\n<th class=\"tableblock halign-left valign-top\">Invoked method<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">8.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">-<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Get deployed processes<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">10.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Start process<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">12.5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Send signal<\/p><\/td>\n<\/tr>\n<tr>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">13.0 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">5 sec<\/p><\/td>\n<td class=\"tableblock halign-left valign-top\"><p class=\"tableblock\">Correlate message<\/p><\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<div class=\"sect3\">\n<h4 id=\"_how_does_it_work_2\">How does it work<\/h4>\n<div class=\"paragraph\">\n<p>The application uses the library by adding it to the classpath via Apache Maven dependency. That is:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-xml\" data-lang=\"xml\">&lt;dependency&gt;\n  &lt;groupId&gt;org.camunda.bpm.extension.rest&lt;/groupId&gt;\n  &lt;artifactId&gt;camunda-rest-client-spring-boot-starter-provided&lt;/artifactId&gt;\n  &lt;version&gt;${project.version}&lt;/version&gt;\n&lt;/dependency&gt;<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"admonitionblock note\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Note<\/div>\n<\/td>\n<td class=\"content\">\nPlease note that we use a different starter. The suffix <code>provided<\/code> in the artifact name indicates that the engine\nis already a part of the application and doesn&#8217;t need to be put on classpath.\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to activate the library, the <code>@EnableCamundaRestClient<\/code> has been put\non the configuration class of the application. The interesting part is now the <code>ProcessClient<\/code> component.\nThis Spring Component has several methods marked with <code>@Scheduled<\/code> annotation to demonstrate the time-based execution\nof desired functionality. To do so, the component has two injected resources, both marked with the <code>@Qualifier(\"remote\")<\/code>\nannotation. This annotation indicates that the remote version of the Camunda API services are used.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to configure the library, a block of properties e.g. in <code>application.yml<\/code> is required:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-yaml\" data-lang=\"yaml\">feign:\n  client:\n    config:\n      remoteRuntimeService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteRepositoryService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteExternalTaskService:\n        url: \"http://localhost:8083/engine-rest/\"\n      remoteTaskService:\n        url: \"http://localhost:8083/engine-rest/\"<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "support-matrix": {
+              "ownKey": "support-matrix",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "support-matrix",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix"
+                },
+                "next": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "logging",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging"
+                },
+                "previous": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "examples",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples"
+                },
+                "description": "",
+                "title": "Support Matrix",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_support_matrix\">Support Matrix<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>Here are currently implemented methods.<\/p>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_task_service_0_0_6\">Task Service @ 0.0.6<\/h2>\n<div class=\"sectionbody\">\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code># createTaskQuery<\/code><\/p>\n<\/li>\n<li>\n<p><code># claim<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteTask<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteTasks<\/code><\/p>\n<\/li>\n<li>\n<p><code># resolveTask<\/code><\/p>\n<\/li>\n<li>\n<p><code># complete<\/code><\/p>\n<\/li>\n<li>\n<p><code># saveTask<\/code><\/p>\n<\/li>\n<li>\n<p><code># setAssignee<\/code><\/p>\n<\/li>\n<li>\n<p><code># setPriority<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableLocalTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesLocalTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getIdentityLinksForTask<\/code><\/p>\n<\/li>\n<li>\n<p><code># addCandidateUser<\/code><\/p>\n<\/li>\n<li>\n<p><code># addCandidateGroup<\/code><\/p>\n<\/li>\n<li>\n<p><code># addUserIdentityLink<\/code><\/p>\n<\/li>\n<li>\n<p><code># addGroupIdentityLink<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteCandidateUser<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteCandidateGroup<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteUserIdentityLink<\/code><\/p>\n<\/li>\n<li>\n<p><code># deleteGroupIdentityLink<\/code><\/p>\n<\/li>\n<li>\n<p><code># handleBpmnError<\/code><\/p>\n<\/li>\n<li>\n<p><code># handleEscalation<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_runtime_service_0_0_5\">Runtime Service @ 0.0.5<\/h2>\n<div class=\"sectionbody\">\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code># startProcessInstanceByKey<\/code><\/p>\n<\/li>\n<li>\n<p><code># startProcessInstanceById<\/code><\/p>\n<\/li>\n<li>\n<p><code># correlateMessage<\/code><\/p>\n<\/li>\n<li>\n<p><code># createMessageCorrelation<\/code><\/p>\n<\/li>\n<li>\n<p><code># createProcessInstanceQuery<\/code><\/p>\n<\/li>\n<li>\n<p><code># signal<\/code><\/p>\n<\/li>\n<li>\n<p><code># signalEventReceived<\/code><\/p>\n<\/li>\n<li>\n<p><code># createSignalEvent<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariable<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariables<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariableTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariablesTyped<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariableLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># removeVariablesLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariableTypedLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># getVariablesTypedLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariableTypedLocal<\/code><\/p>\n<\/li>\n<li>\n<p><code># setVariablesTypedLocal<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_repositoryservice_0_0_4\">RepositoryService @ 0.0.4<\/h2>\n<div class=\"sectionbody\">\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code># createProcessDefinitionQuery<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_externaltaskservice_0_0_5\">ExternalTaskService @ 0.0.5<\/h2>\n<div class=\"sectionbody\">\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code># complete<\/code><\/p>\n<\/li>\n<li>\n<p><code># handleBpmnError<\/code><\/p>\n<\/li>\n<li>\n<p><code># handleFailure<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "logging": {
+              "ownKey": "logging",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "logging",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging"
+                },
+                "next": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "error-decoding",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding"
+                },
+                "previous": {
+                  "path": "wiki/user-guide",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "support-matrix",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix"
+                },
+                "description": "",
+                "title": "Logging",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_logging\">Logging<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>OpenFeign library used in the <code>camunda-rest-client-spring-boot<\/code> has a high-configurable logging facility.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to configure it, a block of properties e.g. in <code>application.yml<\/code> is required:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-yaml\" data-lang=\"yaml\">logging:\n  level:\n    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG\n    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG\n    org.camunda.bpm.extension.rest.client.ExternalTaskServiceClient: DEBUG<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to enable Request/Response logging, you need to configure additional Feign logging\nby providing a factory bean:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-java\" data-lang=\"java\">import feign.Logger;\n\n@Configuration\npublic class MyConfiguration {\n    /**\n     * Full debug of feign client, including request/response\n     */\n    @Bean\n    public Logger.Level feignLoggerLevel() {\n        return Logger.Level.FULL;\n    }\n}<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            }
+          },
+          "ownPages": [
+            {
+              "reference": {
+                "path": "wiki",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "user-guide",
+                "extension": "html",
+                "usePrettyUrl": true,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide"
+              },
+              "description": "",
+              "title": "User Guide",
+              "content": "<html>\n <head><\/head>\n <body>\n  <h2 id=\"examples\"><a href=\"#examples\" id=\"examples\" class=\"anchor\"><\/a>Examples<\/h2> \n  <ul> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples\">Examples<\/a><\/li> \n  <\/ul> \n  <h2 id=\"configuration\"><a href=\"#configuration\" id=\"configuration\" class=\"anchor\"><\/a>Configuration<\/h2> \n  <ul> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix\">Support Matrix<\/a><\/li> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging\">Logging<\/a><\/li> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding\">HTTP Error Decoding<\/a><\/li> \n  <\/ul> \n <\/body>\n<\/html>\n"
+            },
+            {
+              "reference": {
+                "path": "wiki/user-guide",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "book",
+                "extension": "pdf",
+                "usePrettyUrl": false,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/book.pdf"
+              },
+              "description": "",
+              "title": "User Guide Book",
+              "content": ""
+            }
+          ]
+        },
+        "introduction": {
+          "ownKey": "introduction",
+          "childrenPages": {
+            "features": {
+              "ownKey": "features",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "features",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features"
+                },
+                "next": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "solution",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution"
+                },
+                "previous": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "motivation",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation"
+                },
+                "description": "",
+                "title": "Features",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_features\">Features<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>The library supports the following features:<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>Usage of Open Feign library to allow for high-customizable REST client<\/p>\n<\/li>\n<li>\n<p>Provides a SpringBoot starter for usage in standalone client mode<\/p>\n<\/li>\n<li>\n<p>Provides a SpringBoot starter for usage inside a process application<\/p>\n<\/li>\n<li>\n<p>Decode HTTP error response and simulate exceptions, as if they are thrown locally by the service.<\/p>\n<\/li>\n<li>\n<p>Implemented Services:<\/p>\n<div class=\"ulist\">\n<ul>\n<li>\n<p><code>RuntimeService<\/code><\/p>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>Process start by key: <code>#startProcessInstanceByKey()<\/code><\/p>\n<\/li>\n<li>\n<p>Process start by id: <code>#startProcessInstanceById()<\/code><\/p>\n<\/li>\n<li>\n<p>Process instance query: <code>#createProcessInstanceQuery()<\/code><\/p>\n<\/li>\n<li>\n<p>Message correlation: <code>#correlateMessage()<\/code>, <code>#createMessageCorrelation()<\/code><\/p>\n<\/li>\n<li>\n<p>Signal event: <code>#signalEventReceived()<\/code>, <code>#createSignalEvent()<\/code><\/p>\n<\/li>\n<li>\n<p>Execution trigger: <code>#signal()<\/code><\/p>\n<\/li>\n<li>\n<p>Read variables: <code>#getVariable()<\/code>,<code>#getVariables()<\/code>, <code>#getVariableTyped()<\/code>, <code>#getVariablesTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Read local variables: <code>#getVariableLocal()<\/code>,<code>#getVariablesLocal()<\/code>, <code>#getVariableLocalTyped()<\/code>, <code>#getVariablesLocalTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Write variables: <code>#setVariable()<\/code>,<code>#setVariables()<\/code>, <code>#setVariableTyped()<\/code>, <code>#setVariablesTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Delete variables: <code>#removeVariable()<\/code>,<code>#removeVariables()<\/code><\/p>\n<\/li>\n<li>\n<p>Write local variables: <code>#setVariableLocal()<\/code>,<code>#setVariablesLocal()<\/code>, <code>#setVariableLocalTyped()<\/code>, <code>#setVariablesLocalTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Delete local variables: <code>#removeVariableLocal()<\/code>,<code>#removeVariablesLocal()<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/li>\n<li>\n<p><code>RepositoryService<\/code><\/p>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>Query for process definitions: <code>#createProcessDefinitionQuery()<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/li>\n<li>\n<p><code>TaskService<\/code><\/p>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>Query for tasks: <code>#createTaskQuery()<\/code><\/p>\n<\/li>\n<li>\n<p>Task assignment: <code>#claim()<\/code>, <code>#defer()<\/code>, <code>#resolve()<\/code>, <code>#addCandidateGroup()<\/code>, <code>#deleteCandidateGroup()<\/code>, <code>#addCadidateUser()<\/code>, <code>#deleteCandidateUser()<\/code><\/p>\n<\/li>\n<li>\n<p>Identity links: <code>#addUserIdentityLink()<\/code>, <code>#addGroupIdentityLink()<\/code>, <code>#deleteUserIdentityLink()<\/code>, <code>#deleteGroupIdentityLink()<\/code>,<\/p>\n<\/li>\n<li>\n<p>Task completion: <code>#complete()<\/code><\/p>\n<\/li>\n<li>\n<p>Task deletion: <code>#deleteTasks()<\/code><\/p>\n<\/li>\n<li>\n<p>Task attributes: <code>#setPriority()<\/code>, <code>#setOwner()<\/code>, <code>#setAssignee()<\/code>, <code>#saveTask()<\/code><\/p>\n<\/li>\n<li>\n<p>Handling Errors and Escalation: <code>#handleBpmnError()<\/code>, <code>#handleEscalation()<\/code><\/p>\n<\/li>\n<li>\n<p>Read variables: <code>#getVariable()<\/code>,<code>#getVariables()<\/code>, <code>#getVariableTyped()<\/code>, <code>#getVariablesTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Read local variables: <code>#getVariableLocal()<\/code>,<code>#getVariablesLocal()<\/code>, <code>#getVariableLocalTyped()<\/code>, <code>#getVariablesLocalTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Write variables: <code>#setVariable()<\/code>,<code>#setVariables()<\/code>, <code>#setVariableTyped()<\/code>, <code>#setVariablesTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Delete variables: <code>#removeVariable()<\/code>,<code>#removeVariables()<\/code><\/p>\n<\/li>\n<li>\n<p>Write local variables: <code>#setVariableLocal()<\/code>,<code>#setVariablesLocal()<\/code>, <code>#setVariableLocalTyped()<\/code>, <code>#setVariablesLocalTyped()<\/code><\/p>\n<\/li>\n<li>\n<p>Delete local variables: <code>#removeVariableLocal()<\/code>,<code>#removeVariablesLocal()<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/li>\n<li>\n<p><code>ExternalTaskService<\/code>\nWe are not aiming to replace the existing <a href=\"https://docs.camunda.org/manual/latest/user-guide/ext-client/\">External Task Client<\/a>,\nbut still provide an alternative implementation for some methods.<\/p>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>Complete a task by id: <code>#complete()<\/code><\/p>\n<\/li>\n<li>\n<p>Handle BPMN Errors: <code>#handleBpmnError()<\/code><\/p>\n<\/li>\n<li>\n<p>Handle failures: <code>#handleFailure()<\/code><\/p>\n<\/li>\n<\/ul>\n<\/div>\n<\/li>\n<\/ul>\n<\/div>\n<\/li>\n<\/ul>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "solution": {
+              "ownKey": "solution",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "solution",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution"
+                },
+                "next": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "further-outlook",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook"
+                },
+                "previous": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "features",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features"
+                },
+                "description": "",
+                "title": "Solution Idea",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_solution_idea\">Solution Idea<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>The library uses the popular Java REST client OpenFeign embedded into Spring-Cloud-Feign-Starter\nand provides implementations of <a href=\"https://docs.camunda.org/javadoc/camunda-bpm-platform/7.13/\">Java Camunda Engine Core API<\/a>, accessing the remote engine via REST API.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>In doing so, the remote version of the Camunda Engine API can be easily integrated in\nexisting application using a SpringBoot Starter.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>Depending on your usage scenario, you can choose from two starters shipped by the library.<\/p>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "further-outlook": {
+              "ownKey": "further-outlook",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "further-outlook",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook"
+                },
+                "previous": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "solution",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution"
+                },
+                "description": "",
+                "title": "Further outlook",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_further_outlook\">Further outlook<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>Support query methods of <code>RuntimeService<\/code> for:<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>executions<\/p>\n<\/li>\n<li>\n<p>process instances<\/p>\n<\/li>\n<li>\n<p>incidents<\/p>\n<\/li>\n<\/ul>\n<\/div>\n<div class=\"paragraph\">\n<p>Support methods of <code>ManagementService<\/code> for:<\/p>\n<\/div>\n<div class=\"ulist\">\n<ul>\n<li>\n<p>jobs<\/p>\n<\/li>\n<li>\n<p>batches<\/p>\n<\/li>\n<\/ul>\n<\/div>\n<div class=\"paragraph\">\n<p>Is the library missing a feature important for you? Please <a href=\"https://github.com/camunda/camunda-rest-client-spring-boot/issues\">report it.<\/a><\/p>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            },
+            "motivation": {
+              "ownKey": "motivation",
+              "ownPages": [{
+                "reference": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "motivation",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation"
+                },
+                "next": {
+                  "path": "wiki/introduction",
+                  "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                  "fileName": "features",
+                  "extension": "html",
+                  "usePrettyUrl": true,
+                  "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features"
+                },
+                "description": "",
+                "title": "Motivation",
+                "content": "<div class=\"sect1\">\n<h2 id=\"_motivation\">Motivation<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>During the development of Camunda process applications you have to choose if your applications is either\n<em>using<\/em> Camunda Engine or <em>is<\/em> Camunda Engine. Depending on this decision, you are accessing Camunda via REST\nor Java API.<\/p>\n<\/div>\n<div class=\"paragraph\">\n<p>While Camunda Engine Core API provides well-designed and easy-accessible programming interface for Java, the\nusage of REST interface requires additional development. In order to enable the usage of REST API from Java\nand allow for easy integration into Spring Boot applications, the Camunda REST Client Spring-Boot library has\nbeen developed.<\/p>\n<\/div>\n<\/div>\n<\/div>"
+              }]
+            }
+          },
+          "ownPages": [
+            {
+              "reference": {
+                "path": "wiki",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "introduction",
+                "extension": "html",
+                "usePrettyUrl": true,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction"
+              },
+              "description": "",
+              "title": "Introduction",
+              "content": "<html>\n <head><\/head>\n <body>\n  <h2><a href=\"#\" class=\"anchor\"><\/a><\/h2> \n  <ul> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation\">Motivation<\/a><\/li> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features\">Features<\/a><\/li> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution\">Solution Strategy<\/a><\/li> \n   <li><a href=\"https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook\">Further Outlook<\/a><\/li> \n  <\/ul> \n <\/body>\n<\/html>\n"
+            },
+            {
+              "reference": {
+                "path": "wiki/introduction",
+                "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+                "fileName": "book",
+                "extension": "pdf",
+                "usePrettyUrl": false,
+                "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/book.pdf"
+              },
+              "description": "",
+              "title": "Introduction Book",
+              "content": ""
+            }
+          ]
+        }
+      },
+      "ownPages": [{
+        "reference": {
+          "path": "",
+          "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+          "fileName": "wiki",
+          "extension": "html",
+          "usePrettyUrl": true,
+          "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki"
+        },
+        "description": "",
+        "title": "Wiki",
+        "content": ""
+      }]
+    },
+    "changelog": {
+      "ownKey": "changelog",
+      "ownPages": [{
+        "reference": {
+          "path": "",
+          "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+          "fileName": "changelog",
+          "extension": "html",
+          "usePrettyUrl": true,
+          "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/changelog"
+        },
+        "description": "",
+        "title": "Changelog",
+        "content": ""
+      }]
+    },
+    "quick-start": {
+      "ownKey": "quick-start",
+      "ownPages": [{
+        "reference": {
+          "path": "",
+          "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+          "fileName": "quick-start",
+          "extension": "html",
+          "usePrettyUrl": true,
+          "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/quick-start"
+        },
+        "description": "",
+        "title": "Quick Start",
+        "content": "<div class=\"sect1\">\n<h2 id=\"_quick_start\">Quick Start<\/h2>\n<div class=\"sectionbody\">\n<div class=\"admonitionblock tip\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Tip<\/div>\n<\/td>\n<td class=\"content\">\nIf you are using the extension from an application containing Camunda BPM Engine classes on the classpath, please check the\n<a href=\"../user-guide/examples#_usage_inside_a_process_application\">Working Example<\/a> section of our user guide.\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_install_dependency\">Install Dependency<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>First install the extension dependency and configure Feign and Feign client:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-xml\" data-lang=\"xml\">&lt;properties&gt;\n  &lt;camunda-rest-client-spring-boot.version&gt;0.0.3&lt;/camunda-rest-client-spring-boot.version&gt;\n  &lt;spring-cloud.version&gt;Hoxton.SR2&lt;/spring-cloud.version&gt;\n&lt;/properties&gt;\n\n&lt;dependencyManagement&gt;\n  &lt;dependencies&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n      &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;\n      &lt;version&gt;${spring-cloud.version}&lt;/version&gt;\n      &lt;type&gt;pom&lt;/type&gt;\n      &lt;scope&gt;import&lt;/scope&gt;\n    &lt;/dependency&gt;\n  &lt;/dependencies&gt;\n&lt;/dependencyManagement&gt;\n&lt;dependencies&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;org.camunda.bpm.extension.rest&lt;/groupId&gt;\n      &lt;artifactId&gt;camunda-rest-client-spring-boot-starter&lt;/artifactId&gt;\n      &lt;version&gt;${camunda-rest-client-spring-boot.version}&lt;/version&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n      &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;io.github.openfeign&lt;/groupId&gt;\n      &lt;artifactId&gt;feign-httpclient&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"admonitionblock tip\">\n<table>\n<tr>\n<td class=\"icon\">\n<div class=\"title\">Tip<\/div>\n<\/td>\n<td class=\"content\">\nPlease make sure your Spring Cloud version matches your Spring Boot version as described in the <a href=\"https://spring.io/projects/spring-cloud#release-trains\">Spring Cloud documentation<\/a>\n<\/td>\n<\/tr>\n<\/table>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_configuration\">Configuration<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>In your client code, activate the usage of REST client by adding the following annotation\nto your configuration:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-java\" data-lang=\"java\">@Configuration\n@EnableCamundaRestClient\npublic class MyClientConfiguration {\n\n}<\/code><\/pre>\n<\/div>\n<\/div>\n<div class=\"paragraph\">\n<p>In order to configure the feign client, make sure to provide usual feign client configuration\n(e.g. using <code>application.yml<\/code>). To set-up the engine base URL, please set-up the property:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-yaml\" data-lang=\"yaml\">feign:\n  client:\n    config:\n      remoteRuntimeService:\n        url: \"http://your-process-engine-host/rest/engine/default/\"<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>\n<div class=\"sect1\">\n<h2 id=\"_usage\">Usage<\/h2>\n<div class=\"sectionbody\">\n<div class=\"paragraph\">\n<p>To access the remote API, inject the remote API implementation:<\/p>\n<\/div>\n<div class=\"listingblock\">\n<div class=\"content\">\n<pre class=\"highlight\"><code class=\"language-java\" data-lang=\"java\">@Component\npublic class MyClient {\n\n    private RuntimeService runtimeService;\n\n    public MyClient(@Qualifier(\"remote\") RuntimeService runtimeService) {\n        this.runtimeService = runtimeService;\n    }\n\n    public void start() {\n        this.runtimeService\n            .startProcessInstanceByKey(\"my_process_key\");\n    }\n\n    public void correlate() {\n        this.runtimeService\n            .createMessageCorrelation(\"message_received\")\n            .processInstanceBusinessKey(\"WAIT_FOR_MESSAGE\")\n            .correlateAllWithResult();\n    }\n}<\/code><\/pre>\n<\/div>\n<\/div>\n<\/div>\n<\/div>"
+      }]
+    }
+  },
+  "ownPages": [
+    {
+      "reference": {
+        "path": "",
+        "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+        "fileName": "",
+        "extension": "html",
+        "usePrettyUrl": true,
+        "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot"
+      },
+      "description": "",
+      "title": "Home",
+      "content": ""
+    },
+    {
+      "reference": {
+        "path": "",
+        "baseUrl": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot",
+        "fileName": "404",
+        "extension": "html",
+        "usePrettyUrl": false,
+        "link": "https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/404.html"
+      },
+      "description": "",
+      "title": "Not Found",
+      "content": ""
+    }
+  ]
+}

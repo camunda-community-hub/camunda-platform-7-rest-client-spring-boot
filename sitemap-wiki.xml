@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/book.pdf</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/project-setup</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/book.pdf</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/logging</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/user-guide/error-decoding</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/book.pdf</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/motivation</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/features</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/solution</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    <url>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/wiki/introduction/further-outlook</loc>
+        <lastmod>2021-07-01</lastmod>
+        <priority>0.0</priority>
+        
+    </url>
+    
+</urlset>

@@ -1,0 +1,74 @@
+.admonitionblock > table {
+  border-collapse: separate;
+  border: 0;
+  background: none;
+  width: 100%; }
+
+.admonitionblock > table td.icon {
+  text-align: center;
+  width: 80px; }
+
+.admonitionblock > table td.icon img {
+  max-width: none; }
+
+.admonitionblock > table td.icon .title {
+  font-weight: bold;
+  font-family: "Open Sans","DejaVu Sans",sans-serif;
+  text-transform: uppercase;
+  padding: 0.5em; }
+
+.admonitionblock > table td.content {
+  padding-left: 1.125em;
+  padding-right: 1.25em;
+  border-left: 1px solid #dddddf;
+  color: rgba(0, 0, 0, 0.6); }
+
+.admonitionblock > table td.content > .title {
+  line-height: 1.45;
+  color: #7a2518;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: .25em; }
+
+.admonitionblock > table td.content > .title {
+  text-rendering: optimizeLegibility;
+  text-align: left;
+  font-family: "Noto Serif","DejaVu Serif",serif;
+  font-size: 1rem;
+  font-style: italic; }
+
+.admonitionblock > table td.content > :last-child > :last-child {
+  margin-bottom: 0; }
+
+.admonitionblock td.icon [class^="fa icon-"] {
+  font-size: 2.5em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  cursor: default; }
+
+.admonitionblock td.icon .title::before {
+  font-family: FontAwesome;
+  display: inline-block;
+  padding-right: 6px;
+  vertical-align: middle;
+  font-size: 4em; }
+
+.note td.icon .title::before {
+  content: "\f05a";
+  color: #19407c; }
+
+.tip td.icon .title::before {
+  content: "\f0eb";
+  text-shadow: 1px 1px 2px rgba(155, 155, 0, 0.8);
+  color: #111; }
+
+.warning td.icon .title::before {
+  content: "\f071";
+  color: #bf6900; }
+
+.caution td.icon .title::before {
+  content: "\f06d";
+  color: #bf3400; }
+
+.important td.icon .title::before {
+  content: "\f06a";
+  color: #bf0000; }

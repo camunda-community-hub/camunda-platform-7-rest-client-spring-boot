@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-assets.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-home.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-pages.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-wiki.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-changelog.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-external.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-sitemap.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap-indices.xml</loc>
+        <lastmod>2021-07-01</lastmod>
+    </sitemap>
+    
+</sitemapindex>
