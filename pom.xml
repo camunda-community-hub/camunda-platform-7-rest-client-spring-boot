@@ -36,7 +36,7 @@
     <camunda.version.ee>${camunda.version.base}.1-ee</camunda.version.ee>
     <spin.version>1.10.1</spin.version>
 
-    <spring-boot.version>2.5.2</spring-boot.version>
+    <spring-boot.version>2.5.3</spring-boot.version>
     <spring-cloud.version>2020.0.3</spring-cloud.version>
 
     <kotlin.version>1.5.20</kotlin.version>
