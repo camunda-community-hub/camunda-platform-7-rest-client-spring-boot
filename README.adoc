@@ -53,4 +53,4 @@ If you want to contribute to this project, feel free to do so. Start with link:h
 
 == Maintainer
 
-* link:https://gihub.com/zambrovski[Simon Zambrovski, Holisticon AG]
+* link:https://github.com/zambrovski[Simon Zambrovski, Holisticon AG]
