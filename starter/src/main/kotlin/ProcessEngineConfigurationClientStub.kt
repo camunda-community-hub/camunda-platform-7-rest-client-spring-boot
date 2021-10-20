@@ -3,13 +3,13 @@ package org.camunda.bpm.extension.rest.starter
 import org.camunda.bpm.engine.*
 import org.camunda.bpm.engine.impl.variable.ValueTypeResolverImpl
 
-/**
- * Configuration for building a process engine abstraction for the client
- * which is not using the process engine itself, but is used just to provide
- * the facade to encapsulate required facilities:
- * <ul>
- *   <li>ValueTypeResolver</li>
- * </ul>
+/*
+  -> Configuration for Building a Process Engine Abstraction for the Client
+  -> which is not using the Process Engine itself, but is used just to provide
+  -> the Facade to Encapsulate required Facilities:
+  -> <ul>
+  -> <li>ValueTypeResolver</li>
+ ->  </ul>
  */
 internal class ProcessEngineConfigurationClientStub : ProcessEngineConfiguration() {
 
@@ -22,8 +22,8 @@ internal class ProcessEngineConfigurationClientStub : ProcessEngineConfiguration
   }
 }
 
-/**
- * Client process engine representation.
+/*
+ -> Client Process Engine Representation.
  */
 internal class ProcessEngineClientStub(
   private val configuration: ProcessEngineConfiguration
