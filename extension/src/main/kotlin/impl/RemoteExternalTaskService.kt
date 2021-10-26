@@ -2,11 +2,11 @@ package org.camunda.bpm.extension.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.rest.dto.externaltask.CompleteExternalTaskDto
-import org.camunda.bpm.engine.rest.dto.externaltask.ExternalTaskBpmnError
-import org.camunda.bpm.engine.rest.dto.externaltask.ExternalTaskFailureDto
 import org.camunda.bpm.extension.rest.adapter.AbstractExternalTaskServiceAdapter
-import org.camunda.bpm.extension.rest.client.ExternalTaskServiceClient
+import org.camunda.bpm.extension.rest.client.api.ExternalTaskApiClient
+import org.camunda.bpm.extension.rest.client.model.CompleteExternalTaskDto
+import org.camunda.bpm.extension.rest.client.model.ExternalTaskBpmnError
+import org.camunda.bpm.extension.rest.client.model.ExternalTaskFailureDto
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
 @Component
 @Qualifier("remote")
 class RemoteExternalTaskService(
-  private val externalTaskServiceClient: ExternalTaskServiceClient,
+  private val externalTaskApiClient: ExternalTaskApiClient,
   processEngine: ProcessEngine,
   objectMapper: ObjectMapper
 ) : AbstractExternalTaskServiceAdapter() {
@@ -44,7 +44,7 @@ class RemoteExternalTaskService(
     variables: MutableMap<String, Any>,
     localVariables: MutableMap<String, Any>
   ) {
-    return externalTaskServiceClient.completeTask(externalTaskId, CompleteExternalTaskDto().apply {
+    externalTaskApiClient.completeExternalTaskResource(externalTaskId, CompleteExternalTaskDto().apply {
       this.variables = valueMapper.mapValues(variables)
       this.localVariables = valueMapper.mapValues(localVariables)
       this.workerId = workerId
@@ -66,7 +66,7 @@ class RemoteExternalTaskService(
     errorMessage: String?,
     variables: MutableMap<String, Any>
   ) {
-    externalTaskServiceClient.handleBpmnError(externalTaskId, ExternalTaskBpmnError().apply {
+    externalTaskApiClient.handleExternalTaskBpmnError(externalTaskId, ExternalTaskBpmnError().apply {
       this.workerId = workerId
       this.errorCode = errorCode
       this.errorMessage = errorMessage
@@ -86,7 +86,7 @@ class RemoteExternalTaskService(
     retries: Int,
     retryTimeout: Long
   ) {
-    externalTaskServiceClient.handleFailure(externalTaskId, ExternalTaskFailureDto().apply {
+    externalTaskApiClient.handleFailure(externalTaskId, ExternalTaskFailureDto().apply {
       this.workerId = workerId
       this.retries = retries
       this.retryTimeout = retryTimeout

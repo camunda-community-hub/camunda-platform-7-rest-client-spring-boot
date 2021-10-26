@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +22,8 @@
  */
 package org.camunda.bpm.extension.rest.adapter
 
-import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
 import org.camunda.bpm.engine.runtime.Execution
+import org.camunda.bpm.extension.rest.client.model.ExecutionDto
 
 /**
  * Implementation of Camunda API Execution backed by a bean.
@@ -56,7 +56,7 @@ data class ExecutionBean(
       ExecutionBean(
         id = dto.id,
         processInstanceId = dto.processInstanceId,
-        ended = dto.isEnded,
+        ended = dto.ended,
         suspended = false,
         tenantId = dto.tenantId
       )

@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +22,9 @@
  */
 package org.camunda.bpm.extension.rest.adapter
 
-import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.extension.rest.client.model.ProcessInstanceDto
+import org.camunda.bpm.extension.rest.client.model.ProcessInstanceWithVariablesDto
 
 /**
  * Implementation of Camunda API Process Instance backed by a bean.
@@ -86,8 +87,33 @@ data class InstanceBean(
     fun fromProcessInstanceDto(processInstance: ProcessInstanceDto) =
       InstanceBean(
         id = processInstance.id,
-        ended = processInstance.isEnded,
-        suspended = processInstance.isSuspended,
+        ended = processInstance.ended,
+        suspended = processInstance.suspended,
+        businessKey = processInstance.businessKey,
+        tenantId = processInstance.tenantId,
+        type = if (processInstance.caseInstanceId != null) {
+          InstanceType.CASE
+        } else {
+          InstanceType.PROCESS
+        },
+        instanceId = if (processInstance.caseInstanceId != null) {
+          processInstance.caseInstanceId
+        } else {
+          processInstance.id
+        },
+        processDefinitionId = processInstance.definitionId
+      )
+
+    /**
+     * Factory method to construct the bean from DTO.
+     * @param dto: REST representation of process instance.
+     */
+    @JvmStatic
+    fun fromProcessInstanceDto(processInstance: ProcessInstanceWithVariablesDto) =
+      InstanceBean(
+        id = processInstance.id,
+        ended = processInstance.ended,
+        suspended = processInstance.suspended,
         businessKey = processInstance.businessKey,
         tenantId = processInstance.tenantId,
         type = if (processInstance.caseInstanceId != null) {

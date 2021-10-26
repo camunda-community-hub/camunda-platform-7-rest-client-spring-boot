@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,9 +23,9 @@
 
 package org.camunda.bpm.extension.rest.impl.builder
 
-import org.camunda.bpm.engine.rest.dto.SignalDto
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
-import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
+import org.camunda.bpm.extension.rest.client.api.SignalApiClient
+import org.camunda.bpm.extension.rest.client.model.SignalDto
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 
 /**
@@ -33,7 +33,7 @@ import org.camunda.bpm.extension.rest.variables.ValueMapper
  */
 class DelegatingSignalEventReceivedBuilder(
   signalName: String,
-  private val runtimeServiceClient: RuntimeServiceClient,
+  private val signalApiClient: SignalApiClient,
   private val valueMapper: ValueMapper
 ) : SignalEventReceivedBuilder {
 
@@ -58,12 +58,12 @@ class DelegatingSignalEventReceivedBuilder(
   }
 
   override fun withoutTenantId(): SignalEventReceivedBuilder {
-    signalDto.isWithoutTenantId = true
+    signalDto.withoutTenantId = true
     return this
   }
 
   override fun send() {
-    runtimeServiceClient.signalEventReceived(signalDto)
+    signalApiClient.throwSignal(signalDto)
   }
 
 }

@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ package org.camunda.bpm.extension.rest.impl
 
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.extension.rest.adapter.AbstractRepositoryServiceAdapter
-import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
+import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -38,10 +38,10 @@ import org.springframework.stereotype.Component
 @Component
 @Qualifier("remote")
 class RemoteRepositoryService(
-  private val repositoryServiceClient: RepositoryServiceClient
+  private val processDefinitionApiClient: ProcessDefinitionApiClient
 ) : AbstractRepositoryServiceAdapter() {
 
   override fun createProcessDefinitionQuery(): ProcessDefinitionQuery {
-    return DelegatingProcessDefinitionQuery(repositoryServiceClient)
+    return DelegatingProcessDefinitionQuery(processDefinitionApiClient)
   }
 }
