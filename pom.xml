@@ -93,6 +93,11 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-engine-rest-openapi</artifactId>
+        <version>${camunda.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.camunda.spin</groupId>
         <artifactId>camunda-spin-bom</artifactId>
         <version>${spin.version}</version>
@@ -257,6 +262,7 @@
               <configuration>
                 <sourceDirs>
                   <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                  <sourceDir>${project.basedir}/target/generated-sources/openapi/src/main/java</sourceDir>
                 </sourceDirs>
               </configuration>
             </execution>

@@ -1,0 +1,44 @@
+package {{package}};
+
+import java.util.Arrays;
+import java.util.Objects;
+{{#imports}}import {{import}};
+{{/imports}}
+{{#openApiNullable}}
+import org.openapitools.jackson.nullable.JsonNullable;
+{{/openApiNullable}}
+{{#serializableModel}}
+import java.io.Serializable;
+{{/serializableModel}}
+{{#useBeanValidation}}
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+{{/useBeanValidation}}
+{{#performBeanValidation}}
+import org.hibernate.validator.constraints.*;
+{{/performBeanValidation}}
+{{#jackson}}
+{{#withXml}}
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+{{/withXml}}
+{{/jackson}}
+{{#withXml}}
+import javax.xml.bind.annotation.*;
+{{/withXml}}
+{{^parent}}
+{{#hateoas}}
+import org.springframework.hateoas.RepresentationModel;
+{{/hateoas}}
+{{/parent}}
+
+{{#models}}
+{{#model}}
+{{#isEnum}}
+{{>enumOuterClass}}
+{{/isEnum}}
+{{^isEnum}}
+{{>pojo}}
+{{/isEnum}}
+{{/model}}
+{{/models}}

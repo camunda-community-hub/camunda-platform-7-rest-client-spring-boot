@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,17 +28,20 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.ProcessEngines
-import org.camunda.bpm.engine.rest.dto.VariableValueDto
+import org.camunda.bpm.engine.impl.QueryOperator
+import org.camunda.bpm.engine.impl.QueryVariableValue
+import org.camunda.bpm.engine.impl.digest._apacheCommonsCodec.Base64
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedNullValue
 import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.impl.value.ObjectValueImpl
-import org.camunda.bpm.engine.variable.type.SerializableValueType
-import org.camunda.bpm.engine.variable.type.ValueType
-import org.camunda.bpm.engine.variable.type.ValueTypeResolver
+import org.camunda.bpm.engine.variable.type.*
+import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
+import org.camunda.bpm.extension.rest.client.model.VariableQueryParameterDto
+import org.camunda.bpm.extension.rest.client.model.VariableValueDto
 import java.util.*
 
 
@@ -70,7 +73,28 @@ class ValueMapper(
     if (variableValue is SerializableValue) {
       serializeValue(variableValue)
     }
-    return VariableValueDto.fromTypedValue(variableValue, true)
+    return variableValue.toDto()
+  }
+
+  private fun TypedValue.toDto() = VariableValueDto().apply {
+    this@toDto.type?.let {
+      type = toRestApiTypeName(it.name)
+      valueInfo = it.getValueInfo(this@toDto)
+    }
+
+    value = when (this@toDto) {
+      is SerializableValue -> this@toDto.valueSerialized
+      is FileValue -> null //do not set the value for FileValues since we don't want to send megabytes over the network without explicit request
+      else -> this@toDto.value
+    }
+  }
+
+  fun toRestApiTypeName(name: String): String {
+    return name.substring(0, 1).uppercase(Locale.getDefault()) + name.substring(1)
+  }
+
+  fun fromRestApiTypeName(name: String): String {
+    return name.substring(0, 1).lowercase(Locale.getDefault()) + name.substring(1)
   }
 
   /**
@@ -115,13 +139,50 @@ class ValueMapper(
     } as T
   }
 
+  private fun VariableValueDto.toTypedValue(processEngine: ProcessEngine, objectMapper: ObjectMapper): TypedValue {
+    val valueTypeResolver = processEngine.processEngineConfiguration.valueTypeResolver
+    return if (type == null) {
+      if (valueInfo != null && valueInfo["transient"] is Boolean) untypedValue(value, valueInfo["transient"] as Boolean) else untypedValue(value)
+    } else {
+      when (val valueType = valueTypeResolver.typeForName(fromRestApiTypeName(type))) {
+        is PrimitiveValueType -> {
+          val javaType = valueType.javaType
+          var mappedValue: Any? = null
+          if (value != null) {
+            mappedValue = if (javaType.isAssignableFrom(value.javaClass)) {
+              value
+            } else {
+              objectMapper.readValue("\"" + value + "\"", javaType)
+            }
+          }
+          valueType.createValue(mappedValue, valueInfo)
+        }
+        is SerializableValueType -> {
+          if (value != null && value !is String) {
+            throw IllegalArgumentException("Must provide 'null' or String value for value of SerializableValue type '$type'.")
+          } else {
+            valueType.createValueFromSerialized(value as String, valueInfo)
+          }
+        }
+        is FileValueType -> {
+          if (value is String) {
+            value = Base64.decodeBase64(value as String)
+          }
+          valueType.createValue(value, valueInfo)
+        }
+        else -> if (valueType == null) throw IllegalArgumentException("Unsupported value type '$type'") else valueType.createValue(value, valueInfo)
+      }
+    }
+
+  }
+
   /**
    * In case of object values, Jackson serializes any JSON to a map of String -> Object.
    * We want to make use of type information provided by and therefor restore the original JSON.
    */
   private fun restoreObjectJsonIfNeeded(dto: VariableValueDto): VariableValueDto {
     val valueTypeResolver: ValueTypeResolver = processEngine.processEngineConfiguration.valueTypeResolver
-    val valueType: ValueType = valueTypeResolver.typeForName(VariableValueDto.fromRestApiTypeName(dto.type))
+    val valueType: ValueType = valueTypeResolver.typeForName(fromRestApiTypeName(dto.type))
 
     if (valueType is SerializableValueType) {
       if (dto.value != null && dto.value !is String && dto.value is Map<*, *>) {
@@ -211,4 +272,23 @@ class ValueMapper(
   }
 
 }
+
+fun QueryOperator.toRestOperator() = when (this) {
+  QueryOperator.EQUALS -> VariableQueryParameterDto.OperatorEnum.EQ
+  QueryOperator.GREATER_THAN -> VariableQueryParameterDto.OperatorEnum.GT
+  QueryOperator.GREATER_THAN_OR_EQUAL -> VariableQueryParameterDto.OperatorEnum.GTEQ
+  QueryOperator.LESS_THAN -> VariableQueryParameterDto.OperatorEnum.LT
+  QueryOperator.LESS_THAN_OR_EQUAL -> VariableQueryParameterDto.OperatorEnum.LTEQ
+  QueryOperator.LIKE -> VariableQueryParameterDto.OperatorEnum.LIKE
+  QueryOperator.NOT_EQUALS -> VariableQueryParameterDto.OperatorEnum.NEQ
+  QueryOperator.NOT_LIKE -> throw IllegalArgumentException()
+  else -> throw IllegalArgumentException()
+}
+
+fun List<QueryVariableValue>.toDto() = if (this.isEmpty()) null else this.map { it.toDto() }
+
+fun QueryVariableValue.toDto(): VariableQueryParameterDto = VariableQueryParameterDto()
+  .name(this.name)
+  .value(this.value)
+  .operator(this.operator.toRestOperator())
 

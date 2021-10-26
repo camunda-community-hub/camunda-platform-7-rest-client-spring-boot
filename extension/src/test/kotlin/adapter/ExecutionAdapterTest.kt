@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,19 +23,20 @@
 package org.camunda.bpm.extension.rest.adapter
 
 import org.assertj.core.api.Assertions.assertThat
-import org.camunda.bpm.engine.rest.dto.runtime.ExecutionDto
+import org.camunda.bpm.extension.rest.client.model.ExecutionDto
 import org.junit.Test
 
 class ExecutionAdapterTest {
 
-  private val executionBean = ExecutionBean(id = "id",
-    processInstanceId = "processInstanceId",
-    ended = true,
-    suspended = true,
-    tenantId = "tenantId")
+  private val dto = ExecutionDto()
+    .id("id")
+    .processInstanceId("processInstanceId")
+    .ended(true)
+    .tenantId("tenantId")
 
   @Test
   fun `should delegate`() {
+    val executionBean = ExecutionBean.fromExecutionDto(dto)
     val executionAdapter = ExecutionAdapter(executionBean)
     assertThat(executionAdapter.isEnded).isEqualTo(executionBean.ended)
     assertThat(executionAdapter.isSuspended).isEqualTo(executionBean.suspended)
@@ -45,11 +46,10 @@ class ExecutionAdapterTest {
 
   @Test
   fun `should construct from dto`() {
-    val dto = ExecutionDto.fromExecution(ExecutionAdapter(executionBean))
     val bean = ExecutionBean.fromExecutionDto(dto)
 
     assertThat(dto.id).isEqualTo(bean.id)
-    assertThat(dto.isEnded).isEqualTo(bean.ended)
+    assertThat(dto.ended).isEqualTo(bean.ended)
     assertThat(dto.processInstanceId).isEqualTo(bean.processInstanceId)
     assertThat(dto.tenantId).isEqualTo(bean.tenantId)
 

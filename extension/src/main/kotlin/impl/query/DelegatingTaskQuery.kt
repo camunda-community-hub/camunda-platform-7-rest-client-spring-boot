@@ -22,43 +22,40 @@
  */
 package org.camunda.bpm.extension.rest.impl.query
 
+import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
-import org.camunda.bpm.engine.impl.QueryVariableValue
 import org.camunda.bpm.engine.impl.TaskQueryImpl
-import org.camunda.bpm.engine.impl.TaskQueryVariableValue
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
-import org.camunda.bpm.engine.rest.dto.VariableQueryParameterDto
-import org.camunda.bpm.engine.rest.dto.task.TaskQueryDto
+import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.TaskBean
-import org.camunda.bpm.extension.rest.client.TaskServiceClient
+import org.camunda.bpm.extension.rest.client.api.TaskApiClient
+import org.camunda.bpm.extension.rest.client.model.TaskQueryDto
+import org.camunda.bpm.extension.rest.variables.toDto
+import java.time.format.DateTimeFormatter
+import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 
 /**
  * Implementation of the task query.
  */
 class DelegatingTaskQuery(
-  private val taskServiceClient: TaskServiceClient
+  private val taskApiClient: TaskApiClient
 ) : TaskQueryImpl() {
 
-  override fun list(): List<Task> {
-    val tasks = taskServiceClient.getTasks(fillQueryDto(), this.firstResult, this.maxResults)
-    return tasks.map {
-      TaskAdapter(TaskBean.fromDto(it))
-    }
-  }
+  companion object : KLogging()
 
-  override fun listPage(firstResult: Int, maxResults: Int): List<Task> {
-    val tasks = taskServiceClient.getTasks(fillQueryDto(), firstResult, maxResults)
-    return tasks.map {
-      TaskAdapter(TaskBean.fromDto(it))
-    }
-  }
+  override fun list(): List<Task> =
+    taskApiClient.queryTasks(this.firstResult, this.maxResults, fillQueryDto()).body!!.map { TaskAdapter(TaskBean.fromDto(it)) }
 
-  override fun count(): Long {
-    val count = taskServiceClient.getTaskCount(fillQueryDto(), this.firstResult, this.maxResults)
-    return count.count
-  }
+  override fun listPage(firstResult: Int, maxResults: Int): List<Task> =
+    taskApiClient.queryTasks(firstResult, maxResults, fillQueryDto()).body!!.map { TaskAdapter(TaskBean.fromDto(it)) }
+
+  override fun count(): Long =
+    taskApiClient.queryTasksCount(fillQueryDto()).body!!.count
 
   override fun singleResult(): Task? {
     val results = list()
@@ -69,206 +66,71 @@ class DelegatingTaskQuery(
     }
   }
 
-  /**
-   * Fill the DTO from the builder.
-   */
-  private fun fillQueryDto(): TaskQueryDto {
-    val queryDto = TaskQueryDto()
-
-    queryDto.setAssigned(this.assigned)
-    queryDto.unassigned = this.unassigned
-    queryDto.includeAssignedTasks = this.includeAssignedTasks
-
-    queryDto.processInstanceId = this.processInstanceId
-    queryDto.processInstanceIdIn = this.processInstanceIdIn
-
-    queryDto.processInstanceBusinessKeyIn = this.processInstanceBusinessKeys
-    queryDto.processInstanceBusinessKey = this.processInstanceBusinessKey
-    queryDto.processInstanceBusinessKeyLike = this.processInstanceBusinessKeyLike
-
-    queryDto.processInstanceBusinessKeyExpression = this.expressions["processInstanceBusinessKey"]
-    queryDto.processInstanceBusinessKeyLikeExpression = this.expressions["processInstanceBusinessKeyLike"]
-
-    queryDto.processDefinitionId = this.processDefinitionId
-    queryDto.processDefinitionKeyIn = this.processDefinitionKeys
-    queryDto.processDefinitionKey = this.processDefinitionKey
-    queryDto.processDefinitionName = this.processDefinitionName
-    queryDto.processDefinitionNameLike = this.processDefinitionNameLike
-
-    queryDto.executionId = this.executionId
-
-    if (this.suspensionState != null) {
-      queryDto.active = this.suspensionState == SuspensionState.ACTIVE
-      queryDto.suspended = this.suspensionState == SuspensionState.SUSPENDED
-    }
-
-    queryDto.activityInstanceIdIn = this.activityInstanceIdIn
-
-    queryDto.assignee = this.assignee
-    queryDto.assigneeLike = this.assigneeLike
-    queryDto.assigneeIn = this.assigneeIn?.toTypedArray()
-    queryDto.assigneeNotIn = this.assigneeNotIn?.toTypedArray()
-    queryDto.assigneeExpression = this.expressions["taskAssignee"]
-    queryDto.assigneeLikeExpression = this.expressions["taskAssigneeLike"]
-
-    if (this.isWithCandidateGroups) {
-      queryDto.setWithCandidateGroups(this.isWithCandidateGroups)
-    }
-    if (this.candidateGroup != null) {
-      queryDto.candidateGroup = this.candidateGroup
-    }
-    if (this.candidateGroups != null && this.candidateGroups.isNotEmpty()) {
-      queryDto.candidateGroups = this.candidateGroups
-    }
-    if (this.expressions["taskCandidateGroup"] != null) {
-      queryDto.candidateGroupExpression = this.expressions["taskCandidateGroup"]
-    }
-    if (this.expressions["taskCandidateGroupIn"] != null) {
-      queryDto.candidateGroupsExpression = this.expressions["taskCandidateGroupIn"]
-    }
-
-    if (this.isWithoutCandidateGroups) {
-      queryDto.setWithoutCandidateGroups(this.isWithoutCandidateGroups)
-    }
-
-    if (this.isWithCandidateUsers) {
-      queryDto.setWithCandidateUsers(this.isWithCandidateUsers)
-    }
-    if (this.candidateUser != null) {
-      queryDto.candidateUser = this.candidateUser
-    }
-    if (this.expressions["taskCandidateUser"] != null) {
-      queryDto.candidateUserExpression = this.expressions["taskCandidateUser"]
-    }
-
-    if (this.isWithoutCandidateUsers) {
-      queryDto.setWithoutCandidateUsers(this.isWithoutCandidateUsers)
-    }
-
-    queryDto.caseDefinitionId = this.caseDefinitionId
-    queryDto.caseDefinitionKey = this.caseDefinitionKey
-    queryDto.caseDefinitionName = this.caseDefinitionName
-    queryDto.caseDefinitionNameLike = this.caseDefinitionNameLike
-    queryDto.caseExecutionId = this.caseExecutionId
-    queryDto.caseInstanceId = this.caseInstanceId
-
-    queryDto.caseInstanceBusinessKey = this.caseInstanceBusinessKey
-    queryDto.caseInstanceBusinessKeyLike = this.caseInstanceBusinessKeyLike
-
-    queryDto.name = this.name
-    queryDto.nameLike = this.nameLike
-    queryDto.nameNotEqual = this.nameNotEqual
-    queryDto.nameNotLike = this.nameNotLike
-
-    queryDto.taskDefinitionKey = this.key
-    queryDto.taskDefinitionKeyIn = this.keys
-    queryDto.taskDefinitionKeyLike = this.keyLike
-
-    queryDto.description = this.description
-    queryDto.descriptionLike = this.descriptionLike
-
-    queryDto.priority = this.priority
-    queryDto.maxPriority = this.maxPriority
-    queryDto.minPriority = this.minPriority
-
-    queryDto.owner = this.owner
-    queryDto.ownerExpression = this.expressions["taskOwner"]
-
-    queryDto.involvedUser = this.involvedUser
-    queryDto.involvedUserExpression = this.expressions["taskInvolvedUser"]
-
-    queryDto.parentTaskId = this.parentTaskId
-
-    queryDto.delegationState = this.delegationStateString
-
-    queryDto.dueDate = this.dueDate
-    queryDto.dueAfter = this.dueAfter
-    queryDto.dueBefore = this.dueBefore
-    queryDto.dueDateExpression = this.expressions["dueDate"]
-    queryDto.dueAfterExpression = this.expressions["dueDateAfter"]
-    queryDto.dueBeforeExpression = this.expressions["dueDateBefore"]
-
-    queryDto.followUpDate = this.followUpDate
-    queryDto.followUpAfter = this.followUpAfter
-    queryDto.followUpBefore = this.followUpBefore
-    queryDto.followUpBeforeOrNotExistent = this.followUpBefore
-    queryDto.followUpBeforeOrNotExistentExpression = this.expressions["followUpBeforeOrNotExistent"]
-    queryDto.followUpDateExpression = this.expressions["followUpDate"]
-    queryDto.followUpAfterExpression = this.expressions["followUpDateAfter"]
-    queryDto.followUpBeforeExpression = this.expressions["followUpDateBefore"]
-
-    queryDto.createdOn = this.createTime
-    queryDto.createdAfter = this.createTimeAfter
-    queryDto.createdBefore = this.createTimeAfter
-
-    queryDto.createdAfterExpression = this.expressions["taskCreatedAfter"]
-    queryDto.createdBeforeExpression = this.expressions["taskCreatedBefore"]
-    queryDto.createdOnExpression = this.expressions["taskCreatedOn"]
-
-    val taskVars = this.variables.filter { !it.isProcessInstanceVariable && it.isLocal }
-    val procVars = this.variables.filter { it.isProcessInstanceVariable && !it.isLocal }
-    val caseVars = this.variables.filter { !it.isProcessInstanceVariable && !it.isLocal }
-    queryDto.taskVariables = if (taskVars.isEmpty()) {
-      null
-    } else {
-      taskVars.map { it.toTaskVariableDto() }
-    }
-    queryDto.processVariables = if (procVars.isEmpty()) {
-      null
-    } else {
-      procVars.map { it.toProcessInstanceVariableDto() }
-    }
-    queryDto.caseInstanceVariables = if (caseVars.isEmpty()) {
-      null
-    } else {
-      caseVars.map { it.toCaseInstanceVariableDto() }
-    }
-
-    queryDto.isVariableNamesIgnoreCase = this.isVariableNamesIgnoreCase
-    queryDto.isVariableValuesIgnoreCase = this.isVariableValuesIgnoreCase
-
-    // bad method name, but still using it
-    if (this.isTenantIdSet) {
-      queryDto.withoutTenantId = true
-    } else {
-      if (this.tenantIds != null) {
-        queryDto.tenantIdIn = this.tenantIds
+  private fun fillQueryDto() = TaskQueryDto().apply {
+    val dtoPropertiesByName = TaskQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
+    val queryPropertiesByName = TaskQueryImpl::class.memberProperties.associateBy { it.name }
+    dtoPropertiesByName.forEach {
+      val valueToSet = when (it.key) {
+        "processInstanceBusinessKeyExpression" -> this@DelegatingTaskQuery.expressions["processInstanceBusinessKey"]
+        "processInstanceBusinessKeyIn" -> this@DelegatingTaskQuery.processInstanceBusinessKeys?.toList()
+        "processInstanceBusinessKeyLikeExpression" -> this@DelegatingTaskQuery.expressions["processInstanceBusinessKeyLike"]
+        "processInstanceIdIn" -> this@DelegatingTaskQuery.processInstanceIdIn?.toList()
+        "processDefinitionKeyIn" -> this@DelegatingTaskQuery.processDefinitionKeys?.toList()
+        "activityInstanceIdIn" -> this@DelegatingTaskQuery.activityInstanceIdIn?.toList()
+        "tenantIdIn" -> this@DelegatingTaskQuery.tenantIds?.toList()
+        "withoutTenantId" -> this@DelegatingTaskQuery.isWithoutTenantId
+        "assigneeExpression" -> this@DelegatingTaskQuery.expressions["taskAssignee"]
+        "assigneeLikeExpression" -> this@DelegatingTaskQuery.expressions["taskAssigneeLike"]
+        "assigneeIn" -> this@DelegatingTaskQuery.assigneeIn?.toList()
+        "ownerExpression" -> this@DelegatingTaskQuery.expressions["taskOwner"]
+        "candidateGroupExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroup"]
+        "candidateUserExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateUser"]
+        "involvedUserExpression" -> this@DelegatingTaskQuery.expressions["taskInvolvedUser"]
+        "taskDefinitionKey" -> this@DelegatingTaskQuery.key
+        "taskDefinitionKeyIn" -> this@DelegatingTaskQuery.keys?.toList()
+        "taskDefinitionKeyLike" -> this@DelegatingTaskQuery.keyLike
+        "dueDateExpression" -> this@DelegatingTaskQuery.expressions["dueDate"]
+        "dueAfterExpression" -> this@DelegatingTaskQuery.expressions["dueDateAfter"]
+        "dueBeforeExpression" -> this@DelegatingTaskQuery.expressions["dueDateBefore"]
+        "withoutDueDate" -> this@DelegatingTaskQuery.isWithoutDueDate
+        "followUpBefore" -> this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_DATE_TIME.format(it.toInstant()) }
+        "followUpDateExpression" -> this@DelegatingTaskQuery.expressions["followUpDate"]
+        "followUpAfterExpression" -> this@DelegatingTaskQuery.expressions["followUpDateAfter"]
+        "followUpBeforeExpression" -> this@DelegatingTaskQuery.expressions["followUpDateBefore"]
+        "followUpBeforeOrNotExistent" -> this@DelegatingTaskQuery.followUpBefore
+        "followUpBeforeOrNotExistentExpression" -> this@DelegatingTaskQuery.expressions["followUpBeforeOrNotExistent"]
+        "createdOn" -> this@DelegatingTaskQuery.createTime
+        "createdOnExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedOn"]
+        "createdAfter" -> this@DelegatingTaskQuery.createTimeAfter
+        "createdAfterExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedAfter"]
+        "createdBefore" -> this@DelegatingTaskQuery.createTimeBefore
+        "createdBeforeExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedBefore"]
+        "candidateGroupsExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroupIn"]
+        "active" -> this@DelegatingTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
+        "suspended" -> this@DelegatingTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
+        "taskVariables" -> this@DelegatingTaskQuery.variables.filter { !it.isProcessInstanceVariable && it.isLocal }.toDto()
+        "processVariables" -> this@DelegatingTaskQuery.variables.filter { it.isProcessInstanceVariable && !it.isLocal }.toDto()
+        "caseInstanceVariables" -> this@DelegatingTaskQuery.variables.filter { !it.isProcessInstanceVariable && !it.isLocal }.toDto()
+        "delegationState" -> this@DelegatingTaskQuery.delegationState?.let {
+          if (it == DelegationState.PENDING) TaskQueryDto.DelegationStateEnum.PENDING else TaskQueryDto.DelegationStateEnum.RESOLVED
+        }
+        "orQueries" -> if (this@DelegatingTaskQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
+        "sorting" -> null
+        else -> {
+          val queryProperty = queryPropertiesByName[it.key]
+          if (queryProperty == null) {
+            throw IllegalArgumentException("no property found for ${it.key}")
+          } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
+            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
+          } else {
+            queryProperty.isAccessible = true
+            queryProperty.get(this@DelegatingTaskQuery)
+          }
+        }
       }
+      it.value.isAccessible = true
+      it.value.set(this, valueToSet)
     }
-
-    // FIXME: Or Queries not supported yet!
-    val orQueries: List<TaskQueryDto>? = null
-
-    return queryDto
   }
-}
 
-/**
- * Camunda constructor for the DTO is strange, but we use it here.
- */
-fun QueryVariableValue.toTaskVariableDto(): VariableQueryParameterDto {
-  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
-  // since we want to query for the task variables, we pass true to the task flag and false to the process instance flag
-  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
-  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, true, false))
-}
-
-/**
- * Camunda constructor for the DTO is strange, but we use it here.
- */
-fun QueryVariableValue.toCaseInstanceVariableDto(): VariableQueryParameterDto {
-  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
-  // since we want to query for the case variables, we pass false twice
-  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
-  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, false, false))
-}
-
-/**
- * Camunda constructor for the DTO is strange, but we use it here.
- */
-fun QueryVariableValue.toProcessInstanceVariableDto(): VariableQueryParameterDto {
-  // the task query variable value constructor parameter four and five reflect "isTaskVariable" and "isProcessVariable".
-  // since we want to query for the process instance variables, we pass pass false to the task flag and true to the process flag
-  // see QueryVariableValue class and AbstractVariableQueryImpl#addVariable
-  return VariableQueryParameterDto(TaskQueryVariableValue(this.name, this.value, this.operator, false, true))
 }

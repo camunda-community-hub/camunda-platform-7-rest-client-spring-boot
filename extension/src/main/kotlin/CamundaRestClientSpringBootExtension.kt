@@ -23,8 +23,8 @@
 package org.camunda.bpm.extension.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
-import org.camunda.bpm.extension.rest.mixin.CamundaMixinModule
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
@@ -46,7 +46,6 @@ class CamundaRestClientSpringBootExtension {
    */
   @Autowired(required = false)
   fun configureJackson(objectMapper: ObjectMapper) {
-    objectMapper.registerModule(CamundaMixinModule())
   }
 }
 

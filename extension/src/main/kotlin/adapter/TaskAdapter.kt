@@ -23,9 +23,9 @@
 
 package org.camunda.bpm.extension.rest.adapter
 
-import org.camunda.bpm.engine.rest.dto.task.TaskDto
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
+import org.camunda.bpm.extension.rest.client.model.TaskDto
 import java.util.*
 
 /**
@@ -162,15 +162,15 @@ data class TaskBean(
       caseDefinitionId = dto.caseDefinitionId,
       caseExecutionId = dto.caseExecutionId,
       caseInstanceId = dto.caseInstanceId,
-      suspended = dto.isSuspended,
-      created = dto.created,
-      due = dto.due,
-      followUp = dto.followUp,
+      suspended = dto.suspended,
+      created = dto.created?.let { Date.from(it.toInstant()) },
+      due = dto.due?.let { Date.from(it.toInstant()) },
+      followUp = dto.followUp?.let { Date.from(it.toInstant()) },
       formKey = dto.formKey,
       processDefinitionId = dto.processDefinitionId,
       processInstanceId = dto.processInstanceId,
       processExecutionId = dto.executionId,
-      delegationState = if (dto.delegationState != null) { DelegationState.valueOf(dto.delegationState) } else { null },
+      delegationState = if (dto.delegationState != null) DelegationState.valueOf(dto.delegationState.name) else null,
       tenantId = dto.tenantId,
       description = dto.description,
       priority = dto.priority,
