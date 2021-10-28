@@ -72,6 +72,24 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
       .name("deployment" + UUID.randomUUID().toString().replace("-", ""))
       .deploy()
   }
+
+  fun process_definitions_are_deployed(
+    processDefinitionKey: String, versionTag: String? = null,
+  ) = step {
+    val instance = Bpmn
+      .createExecutableProcess(processDefinitionKey)
+      .camundaVersionTag(versionTag)
+      .startEvent("start")
+      .endEvent("end")
+      .done()
+
+    remoteService.createDeployment()
+      .addModelInstance("$processDefinitionKey.bpmn", instance)
+      .addClasspathResource("messages.bpmn")
+      .name("deployment" + UUID.randomUUID().toString().replace("-", ""))
+      .deploy()
+  }
+
 }
 
 @JGivenStage
@@ -93,6 +111,7 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
     val query = remoteService.createProcessDefinitionQuery()
     processDefinitionQueryAssertions(query, this)
   }
+
 }
 
 @IsTag(name = "RepositoryService")

@@ -26,6 +26,7 @@ import org.camunda.bpm.application.ProcessApplicationReference
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.*
 import org.camunda.bpm.engine.task.IdentityLink
+import org.camunda.bpm.extension.rest.impl.RemoteRepositoryService
 import org.camunda.bpm.extension.rest.impl.implementedBy
 import org.camunda.bpm.model.bpmn.BpmnModelInstance
 import org.camunda.bpm.model.cmmn.CmmnModelInstance
@@ -38,11 +39,11 @@ import java.util.*
  */
 abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   override fun updateDecisionDefinitionHistoryTimeToLive(decisionDefinitionId: String?, historyTimeToLive: Int?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun updateProcessDefinitionHistoryTimeToLive(processDefinitionId: String?, historyTimeToLive: Int?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun addCandidateStarterUser(processDefinitionId: String?, userId: String?) {
@@ -62,7 +63,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun deleteDeploymentCascade(deploymentId: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getProcessDefinition(processDefinitionId: String?): ProcessDefinition {
@@ -130,7 +131,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun updateProcessDefinitionSuspensionState(): UpdateProcessDefinitionSuspensionStateSelectBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getDecisionRequirementsModel(decisionRequirementsDefinitionId: String?): InputStream {
@@ -138,7 +139,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun createDeployment(): DeploymentBuilder {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun createDeployment(processApplication: ProcessApplicationReference?): ProcessApplicationDeploymentBuilder {
@@ -146,19 +147,19 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun deleteDeployment(deploymentId: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteDeployment(deploymentId: String?, cascade: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteDeployment(deploymentId: String?, cascade: Boolean, skipCustomListeners: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteDeployment(deploymentId: String?, cascade: Boolean, skipCustomListeners: Boolean, skipIoMappings: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getProcessDiagram(processDefinitionId: String?): InputStream {
@@ -190,19 +191,19 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun deleteProcessDefinition(processDefinitionId: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteProcessDefinition(processDefinitionId: String?, cascade: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteProcessDefinition(processDefinitionId: String?, cascade: Boolean, skipCustomListeners: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteProcessDefinition(processDefinitionId: String?, cascade: Boolean, skipCustomListeners: Boolean, skipIoMappings: Boolean) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun updateCaseDefinitionHistoryTimeToLive(caseDefinitionId: String?, historyTimeToLive: Int?) {

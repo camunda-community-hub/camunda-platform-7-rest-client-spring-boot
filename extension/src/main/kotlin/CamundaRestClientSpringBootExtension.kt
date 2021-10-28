@@ -22,12 +22,22 @@
  */
 package org.camunda.bpm.extension.rest
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import feign.codec.Encoder
+import feign.form.ContentType
+import feign.form.MultipartFormContentProcessor
+import feign.form.multipart.Output
+import feign.form.spring.SpringFormEncoder
+import feign.form.spring.SpringManyMultipartFilesWriter
+import feign.form.spring.SpringSingleMultipartFileWriter
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+
 
 /**
  * Basic configuration of the extension.
@@ -36,7 +46,38 @@ import org.springframework.context.annotation.Import
 @ComponentScan
 @EnableFeignClients
 @EnableConfigurationProperties(CamundaRestClientProperties::class)
-class CamundaRestClientSpringBootExtension
+class CamundaRestClientSpringBootExtension {
+
+  @Bean
+  fun feignEncoder(objectMapper: ObjectMapper): Encoder {
+    return MultipartFormEncoder()
+  }
+
+  class MultipartFormEncoder : SpringFormEncoder() {
+    init {
+      val processor = getContentProcessor(ContentType.MULTIPART) as MultipartFormContentProcessor
+      processor.addFirstWriter(KeyChangingSpringManyMultipartFilesWriter(SpringSingleMultipartFileWriter()))
+    }
+  }
+
+  class KeyChangingSpringManyMultipartFilesWriter(
+    private val fileWriter: SpringSingleMultipartFileWriter
+  ) : SpringManyMultipartFilesWriter() {
+
+    override fun write(output: Output?, boundary: String?, key: String?, value: Any?) {
+      // Camunda needs a different key for each file sent over the API -> enhance key with index
+      when (value) {
+        is Array<*> -> value.forEachIndexed { index, file -> fileWriter.write(output, boundary, "$key$index", file) }
+        is Iterable<*> -> value.forEachIndexed { index, file -> fileWriter.write(output, boundary, "$key$index", file) }
+        else -> {
+          throw IllegalArgumentException()
+        }
+      }
+    }
+  }
+
+}
+
 
 /**
  * Enables the registration of REST client beans.
