@@ -15,23 +15,33 @@ camunda:
       create: true
 server:
   port: 8085
-feign:
 
+feign:
   client:
     config:
-      remoteRuntimeService:
+      processInstance:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteExternalTaskService:
+      processDefinition:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteRepositoryService:
+      message:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteTaskService:
+      signal:
         url: "http://localhost:${server.port}/engine-rest/"
-        # loggerLevel: full
-
+      execution:
+        url: "http://localhost:${server.port}/engine-rest/"
+      task:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskLocalVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskIdentityLink:
+        url: "http://localhost:${server.port}/engine-rest/"
+      externalTask:
+        url: "http://localhost:${server.port}/engine-rest/"
+      default:
+        loggerLevel: basic
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: INFO
-    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: INFO
-    org.camunda.bpm.extension.rest.client.TaskServiceClient: INFO
+    org.camunda.bpm.extension.rest.client.api: INFO

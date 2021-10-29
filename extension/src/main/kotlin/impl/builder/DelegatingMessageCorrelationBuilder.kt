@@ -10,9 +10,9 @@
  *  ownership. Camunda licenses this file to you under the Apache License,
  *  Version 2.0; you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,13 +24,12 @@
 package org.camunda.bpm.extension.rest.impl.builder
 
 import mu.KLogging
-import org.camunda.bpm.engine.rest.dto.message.CorrelationMessageDto
-import org.camunda.bpm.engine.rest.dto.message.MessageCorrelationResultDto
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
 import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.extension.rest.client.RuntimeServiceClient
+import org.camunda.bpm.extension.rest.client.api.MessageApiClient
+import org.camunda.bpm.extension.rest.client.model.CorrelationMessageDto
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.camunda.bpm.extension.rest.variables.fromDto
 
@@ -39,7 +38,7 @@ import org.camunda.bpm.extension.rest.variables.fromDto
  */
 class DelegatingMessageCorrelationBuilder(
   messageName: String,
-  private val runtimeServiceClient: RuntimeServiceClient,
+  private val messageApiClient: MessageApiClient,
   private val valueMapper: ValueMapper
 ) : MessageCorrelationBuilder {
 
@@ -55,7 +54,7 @@ class DelegatingMessageCorrelationBuilder(
 
 
   override fun withoutTenantId(): MessageCorrelationBuilder {
-    correlationMessageDto.isWithoutTenantId = true
+    correlationMessageDto.withoutTenantId = true
     return this
   }
 
@@ -143,14 +142,14 @@ class DelegatingMessageCorrelationBuilder(
   override fun correlateStartMessage(): ProcessInstance {
     // FIXME: check if this can be solved
     logger.debug { "Restriction to start messages only is not supported by remote message correlation" }
-    correlationMessageDto.isResultEnabled = true
-    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    correlationMessageDto.resultEnabled = true
+    val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
     return when (result.size) {
       0 -> throw IllegalStateException("No result received")
-      1 -> (result[0] as MessageCorrelationResultDto).fromDto().processInstance
+      1 -> result[0].fromDto(valueMapper).processInstance
       else -> {
         logger.warn { "Multiple results received, returning the first one." }
-        (result[0] as MessageCorrelationResultDto).fromDto().processInstance
+        result[0].fromDto(valueMapper).processInstance
       }
     }
   }
@@ -158,9 +157,9 @@ class DelegatingMessageCorrelationBuilder(
   override fun correlateWithResultAndVariables(deserializeValues: Boolean): MessageCorrelationResultWithVariables {
     // FIXME: check if this flag can be used during de-serialization
     logger.debug { "Ignoring 'deserializeValues' flag." }
-    correlationMessageDto.isResultEnabled = true
-    correlationMessageDto.isVariablesInResultEnabled = true
-    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    correlationMessageDto.resultEnabled = true
+    correlationMessageDto.variablesInResultEnabled = true
+    val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
     return when (result.size) {
       0 -> throw IllegalStateException("No result received")
       1 -> result[0].fromDto(valueMapper)
@@ -172,30 +171,30 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun correlateAllWithResultAndVariables(deserializeValues: Boolean): MutableList<MessageCorrelationResultWithVariables> {
-    correlationMessageDto.isResultEnabled = true
-    correlationMessageDto.isVariablesInResultEnabled = true
+    correlationMessageDto.resultEnabled = true
+    correlationMessageDto.variablesInResultEnabled = true
     // FIXME: check if this flag can be used during de-serialization
     logger.debug { "Ignoring 'deserializeValues' flag." }
-    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
     return result.map { result[0].fromDto(valueMapper) }.toMutableList()
   }
 
   override fun correlateAllWithResult(): MutableList<MessageCorrelationResult> {
-    correlationMessageDto.isAll = true
-    correlationMessageDto.isResultEnabled = true
-    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
-    return result.map { (it as MessageCorrelationResultDto).fromDto() }.toMutableList()
+    correlationMessageDto.all = true
+    correlationMessageDto.resultEnabled = true
+    val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
+    return result.map { it.fromDto(valueMapper) }.toMutableList()
   }
 
   override fun correlateWithResult(): MessageCorrelationResult {
-    correlationMessageDto.isResultEnabled = true
-    val result = runtimeServiceClient.correlateMessage(correlationMessageDto)
+    correlationMessageDto.resultEnabled = true
+    val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
     return when (result.size) {
       0 -> throw IllegalStateException("No result received")
-      1 -> (result[0] as MessageCorrelationResultDto).fromDto()
+      1 -> result[0].fromDto(valueMapper)
       else -> {
         logger.warn { "Multiple results received, returning the first one." }
-        (result[0] as MessageCorrelationResultDto).fromDto()
+        result[0].fromDto(valueMapper)
       }
     }
   }
@@ -207,11 +206,11 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun correlateAll() {
-    correlationMessageDto.isAll = true
-    runtimeServiceClient.correlateMessage(correlationMessageDto)
+    correlationMessageDto.all = true
+    messageApiClient.deliverMessage(correlationMessageDto)
   }
 
   override fun correlate() {
-    runtimeServiceClient.correlateMessage(correlationMessageDto)
+    messageApiClient.deliverMessage(correlationMessageDto)
   }
 }

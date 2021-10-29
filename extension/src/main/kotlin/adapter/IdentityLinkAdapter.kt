@@ -22,9 +22,9 @@
  */
 package org.camunda.bpm.extension.rest.adapter
 
-import org.camunda.bpm.engine.rest.dto.task.IdentityLinkDto
 import org.camunda.bpm.engine.task.IdentityLink
 import org.camunda.bpm.engine.task.IdentityLinkType
+import org.camunda.bpm.extension.rest.client.model.IdentityLinkDto
 
 /**
  * Implementation of identity link delegating to a simple bean.

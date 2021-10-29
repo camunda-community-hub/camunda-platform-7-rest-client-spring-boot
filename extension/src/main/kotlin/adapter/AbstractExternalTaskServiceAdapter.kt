@@ -114,6 +114,9 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
     TODO("Not yet implemented")
   }
 
+  /**
+   * @since 7.15
+   */
   override fun lock(externalTaskId: String, workerId: String, lockDuration: Long) {
     TODO("Not yet implemented")
   }

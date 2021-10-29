@@ -15,6 +15,8 @@
   <properties>
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
+    <openapi-generator-version>5.2.1</openapi-generator-version>
+    <camunda.openapi.package>org.camunda.bpm.extension.rest.client</camunda.openapi.package>
   </properties>
 
   <dependencies>
@@ -30,11 +32,6 @@
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-rest-jaxrs2</artifactId>
       <scope>provided</scope>
     </dependency>
     <!-- Jackson -->
@@ -68,6 +65,16 @@
       <artifactId>jackson-module-kotlin</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>1.6.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-rest-openapi</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -75,6 +82,85 @@
       <optional>true</optional>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>unpack-dependencies</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeArtifactIds>camunda-engine-rest-openapi</includeArtifactIds>
+              <outputDirectory>${project.build.directory}/camunda-openapi</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator-version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.build.directory}/camunda-openapi/openapi.json</inputSpec>
+              <generatorName>spring</generatorName>
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateModelDocumentation>false</generateModelDocumentation>
+              <templateDirectory>openapi-templates</templateDirectory>
+              <configOptions>
+                <library>spring-cloud</library>
+                <dateLibrary>legacy</dateLibrary>
+                <invokerPackage>${camunda.openapi.package}</invokerPackage>
+                <apiPackage>${camunda.openapi.package}.api</apiPackage>
+                <modelPackage>${camunda.openapi.package}.model</modelPackage>
+                <useBeanValidation>false</useBeanValidation>
+                <openApiNullable>false</openApiNullable>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <executions>
+          <execution>
+            <id>removeUnusedAnnotationImports</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <basedir>${project.basedir}</basedir>
+              <includes>
+                <include>target/generated-sources/openapi/**/*.java</include>
+              </includes>
+              <regex>false</regex>
+              <replacements>
+                <replacement>
+                  <token>import springfox.documentation.annotations.ApiIgnore;</token>
+                  <value />
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>

@@ -22,10 +22,7 @@
  */
 package org.camunda.bpm.extension.rest
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
-import org.camunda.bpm.extension.rest.mixin.CamundaMixinModule
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.ComponentScan
@@ -39,17 +36,7 @@ import org.springframework.context.annotation.Import
 @ComponentScan
 @EnableFeignClients
 @EnableConfigurationProperties(CamundaRestClientProperties::class)
-class CamundaRestClientSpringBootExtension {
-
-  /**
-   * Configures Jackson to use Camunda Mixins for JSON - DTO mapping.
-   */
-  @Autowired(required = false)
-  fun configureJackson(objectMapper: ObjectMapper) {
-    objectMapper.registerModule(CamundaMixinModule())
-  }
-}
-
+class CamundaRestClientSpringBootExtension
 
 /**
  * Enables the registration of REST client beans.

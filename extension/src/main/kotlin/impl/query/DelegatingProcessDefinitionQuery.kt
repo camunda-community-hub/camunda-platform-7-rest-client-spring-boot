@@ -22,40 +22,61 @@
  */
 package org.camunda.bpm.extension.rest.impl.query
 
+import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
-import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionQueryDto
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
-import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionBean
-import org.camunda.bpm.extension.rest.client.RepositoryServiceClient
+import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
+import org.springframework.web.bind.annotation.RequestParam
+import kotlin.reflect.KParameter
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.jvm.isAccessible
 
 /**
  * Implementation of the process definition query.
  */
 class DelegatingProcessDefinitionQuery(
-  private val repositoryServiceClient: RepositoryServiceClient
+  private val processDefinitionApiClient: ProcessDefinitionApiClient
 ) : ProcessDefinitionQueryImpl() {
 
-  override fun list(): List<ProcessDefinition> {
-    val definitions = repositoryServiceClient.getProcessDefinitions(fillQueryDto(), this.firstResult, this.maxResults)
-    return definitions.map {
-      ProcessDefinitionAdapter(ProcessDefinitionBean.fromDto(it))
-    }
-  }
+  companion object : KLogging()
+
+  override fun list(): List<ProcessDefinition> = listPage(this.firstResult, this.maxResults)
 
   override fun listPage(firstResult: Int, maxResults: Int): List<ProcessDefinition> {
-    val definitions = repositoryServiceClient.getProcessDefinitions(fillQueryDto(), firstResult, maxResults)
-    return definitions.map {
-      ProcessDefinitionAdapter(ProcessDefinitionBean.fromDto(it))
+    with(ProcessDefinitionApiClient::getProcessDefinitions) {
+      val result = callBy(parameters.associateWith { parameter ->
+        when (parameter.kind) {
+          KParameter.Kind.INSTANCE -> processDefinitionApiClient
+          else -> {
+            when (parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }) {
+              "firstResult" -> firstResult
+              "maxResults" -> maxResults
+              else -> this@DelegatingProcessDefinitionQuery.getQueryParam(parameter)
+            }
+          }
+        }
+      })
+      return result.body!!.map {
+        ProcessDefinitionAdapter(ProcessDefinitionBean.fromDto(it))
+      }
     }
   }
 
   override fun count(): Long {
-    val count = repositoryServiceClient.countProcessDefinitions(fillQueryDto(), this.firstResult, this.maxResults)
-    return count.count
+    with (ProcessDefinitionApiClient::getProcessDefinitionsCount) {
+      val result = callBy(parameters.associateWith { parameter ->
+        when (parameter.kind) {
+          KParameter.Kind.INSTANCE -> processDefinitionApiClient
+          else -> this@DelegatingProcessDefinitionQuery.getQueryParam(parameter)
+        }
+      })
+      return result.body!!.count
+    }
   }
 
   override fun singleResult(): ProcessDefinition? {
@@ -67,51 +88,38 @@ class DelegatingProcessDefinitionQuery(
     }
   }
 
-  /**
-   * Fill the DTO from the builder.
-   */
-  private fun fillQueryDto(): ProcessDefinitionQueryDto {
-    val queryDto = ProcessDefinitionQueryDto()
-    queryDto.setIncludeProcessDefinitionsWithoutTenantId(this.includeDefinitionsWithoutTenantId)
-    if (this.suspensionState != null) {
-      queryDto.setActive(this.suspensionState == SuspensionState.ACTIVE)
-      queryDto.setSuspended(this.suspensionState == SuspensionState.SUSPENDED)
-    }
-    queryDto.setCategory(this.category)
-    queryDto.setCategoryLike(this.categoryLike)
-    queryDto.setDeploymentId(this.deploymentId)
-    queryDto.setIncidentId(this.incidentId)
-    queryDto.setIncidentMessage(this.incidentMessage)
-    queryDto.setIncidentMessageLike(this.incidentMessageLike)
-    queryDto.setIncidentType(this.incidentType)
-    queryDto.setKey(this.key)
-    queryDto.setKeyLike(this.keyLike)
-    if (this.keys != null) { // TODO: check
-      queryDto.setKeysIn(this.keys.toList())
-    }
-    queryDto.setLatestVersion(this.latest)
-    queryDto.setName(this.name)
-    queryDto.setNameLike(this.nameLike)
-    queryDto.setNotStartableInTasklist(this.isNotStartableInTasklist)
-    queryDto.setProcessDefinitionId(this.id)
-    if (this.ids != null) { // TODO: check
-      queryDto.setProcessDefinitionIdIn(this.ids.toList())
-    }
-    queryDto.setResourceName(this.resourceName)
-    queryDto.setResourceNameLike(this.resourceNameLike)
-    queryDto.setStartableBy(this.authorizationUserId)
-    queryDto.setStartablePermissionCheck(this.startablePermissionCheck)
-    if (this.isTenantIdSet) { // TODO: check
-      if (this.tenantIds != null) {
-        queryDto.setTenantIdIn(this.tenantIds.toList())
-      } else {
-        queryDto.setWithoutTenantId(true)
+  private fun getQueryParam(parameter: KParameter): Any? {
+    val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
+    val propertiesByName = ProcessDefinitionQueryImpl::class.declaredMemberProperties.associateBy { it.name }
+    return when(value) {
+      "processDefinitionId" -> this.id
+      "processDefinitionIdIn" -> this.ids?.joinToString(",")
+      "keysIn" -> this.keys?.joinToString(",")
+      "latestVersion" -> this.latest
+      "startableBy" -> this.authorizationUserId
+      "active" -> this.suspensionState?.let { it == SuspensionState.ACTIVE }
+      "suspended" -> this.suspensionState?.let { it == SuspensionState.SUSPENDED }
+      "tenantIdIn" -> this.tenantIds?.joinToString(",")
+      "withoutTenantId" -> this.isTenantIdSet && (this.tenantIds == null)
+      "withoutVersionTag" -> this.isVersionTagSet && (this.versionTag == null)
+      "includeProcessDefinitionsWithoutTenantId" -> includeDefinitionsWithoutTenantId
+      "notStartableInTasklist" -> isNotStartableInTasklist
+      "startableInTasklist" -> isStartableInTasklist
+      //FIXME support sorting
+      "sortBy", "sortOrder" -> if (this.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
+      else -> {
+        val property = propertiesByName[value]
+        if (property == null) {
+          throw IllegalArgumentException("no property found for $value")
+        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
+          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
+        } else {
+          property.isAccessible = true
+          val propValue = property.get(this)
+          if (propValue is Collection<*>) propValue.joinToString(",") else propValue
+        }
       }
     }
-    queryDto.setVersion(this.version)
-    queryDto.setVersionTag(this.versionTag)
-    queryDto.setVersionTagLike(this.versionTagLike)
-
-    return queryDto
   }
+
 }
