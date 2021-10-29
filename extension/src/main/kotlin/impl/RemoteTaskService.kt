@@ -3,7 +3,6 @@ package org.camunda.bpm.extension.rest.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.IdentityLink
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.engine.task.TaskQuery
@@ -20,8 +19,6 @@ import org.camunda.bpm.extension.rest.impl.query.DelegatingTaskQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /**
  * Remote implementation of Camunda Core TaskService API, delegating
@@ -342,35 +339,3 @@ class RemoteTaskService(
     })
   }
 }
-
-fun Task.toDto() = TaskDto()
-  .id(this.id)
-  .name(this.name)
-  .assignee(this.assignee)
-  .owner(this.owner)
-  .created(this.createTime)
-  .due(this.dueDate)
-  .followUp(this.followUpDate)
-  .delegationState(when (this.delegationState) {
-    DelegationState.PENDING -> TaskDto.DelegationStateEnum.PENDING
-    DelegationState.RESOLVED -> TaskDto.DelegationStateEnum.RESOLVED
-    else -> null
-  })
-  .description(this.description)
-  .executionId(this.executionId)
-  .parentTaskId(this.parentTaskId)
-  .priority(this.priority)
-  .processDefinitionId(this.processDefinitionId)
-  .processInstanceId(this.processInstanceId)
-  .caseDefinitionId(this.caseDefinitionId)
-  .caseInstanceId(this.caseInstanceId)
-  .caseExecutionId(this.caseExecutionId)
-  .taskDefinitionKey(this.taskDefinitionKey)
-  .suspended(this.isSuspended)
-  .formKey(this.formKey)
-  .tenantId(this.tenantId)
-
-fun IdentityLinkAdapter.toDto() = IdentityLinkDto()
-  .userId(this.userId)
-  .groupId(this.groupId)
-  .type(this.type)
