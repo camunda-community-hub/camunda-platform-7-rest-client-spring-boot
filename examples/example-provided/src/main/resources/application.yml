@@ -1,7 +1,7 @@
 #
 # Controls a client running in the same process.
 #
-client.enabled: true
+client.enabled: false
 
 server:
   port: 8083
@@ -23,20 +23,30 @@ camunda:
 feign:
   client:
     config:
-      remoteRuntimeService:
+      processInstance:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteRepositoryService:
+      processDefinition:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteExternalTaskService:
+      message:
         url: "http://localhost:${server.port}/engine-rest/"
-      remoteTaskService:
+      signal:
+        url: "http://localhost:${server.port}/engine-rest/"
+      execution:
+        url: "http://localhost:${server.port}/engine-rest/"
+      task:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskLocalVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskIdentityLink:
+        url: "http://localhost:${server.port}/engine-rest/"
+      externalTask:
         url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
-    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
-    org.camunda.bpm.extension.rest.client.TaskServiceClient: DEBUG
+    org.camunda.bpm.extension.rest.client.api: DEBUG
     # To log REST controllers
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
     # To log web access

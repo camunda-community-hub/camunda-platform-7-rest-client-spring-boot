@@ -22,10 +22,7 @@
  */
 package org.camunda.bpm.extension.rest
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.ComponentScan
@@ -39,10 +36,7 @@ import org.springframework.context.annotation.Import
 @ComponentScan
 @EnableFeignClients
 @EnableConfigurationProperties(CamundaRestClientProperties::class)
-class CamundaRestClientSpringBootExtension {
-
-}
-
+class CamundaRestClientSpringBootExtension
 
 /**
  * Enables the registration of REST client beans.
