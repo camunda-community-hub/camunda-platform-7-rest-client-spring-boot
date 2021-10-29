@@ -33,6 +33,7 @@ import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.jvm.isAccessible
 
 /**
@@ -104,11 +105,14 @@ class DelegatingProcessDefinitionQuery(
       "includeProcessDefinitionsWithoutTenantId" -> includeDefinitionsWithoutTenantId
       "notStartableInTasklist" -> isNotStartableInTasklist
       "startableInTasklist" -> isStartableInTasklist
+      //FIXME support sorting
+      "sortBy", "sortOrder" -> if (this.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
       else -> {
         val property = propertiesByName[value]
         if (property == null) {
-          logger.warn { "property not found $value" }
-          null
+          throw IllegalArgumentException("no property found for $value")
+        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
+          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
         } else {
           property.isAccessible = true
           val propValue = property.get(this)

@@ -1,7 +1,7 @@
 #
 # Controls a client running in the same process.
 #
-client.enabled: false
+client.enabled: true
 
 server:
   port: 8083
