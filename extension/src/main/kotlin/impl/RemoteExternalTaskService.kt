@@ -26,10 +26,6 @@ class RemoteExternalTaskService(
 
   private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
 
-  override fun lock(externalTaskId: String, workerId: String, lockDuration: Long) {
-    implementedBy(RemoteExternalTaskService::class)
-  }
-
   override fun complete(externalTaskId: String, workerId: String) {
     this.complete(externalTaskId, workerId, mutableMapOf())
   }
