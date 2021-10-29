@@ -215,7 +215,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun createDeploymentQuery(): DeploymentQuery {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun deleteCandidateStarterGroup(processDefinitionId: String?, groupId: String?) {

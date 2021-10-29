@@ -55,6 +55,21 @@ data class DeploymentBean(
       deployedDecisionDefinitions = dto.deployedDecisionDefinitions?.map { it.value.toBean() },
       deployedDecisionRequirementsDefinitions = dto.deployedDecisionRequirementsDefinitions?.map { it.value.toBean() }
     )
+    /**
+     * Factory method to create bean from REST representation.
+     */
+    @JvmStatic
+    fun fromDto(dto: DeploymentDto) = DeploymentBean(
+      id = dto.id,
+      name = dto.name,
+      deploymentTime = dto.deploymentTime,
+      source = dto.source,
+      tenantId = dto.tenantId,
+      deployedCaseDefinitions = null,
+      deployedProcessDefinitions = null,
+      deployedDecisionDefinitions = null,
+      deployedDecisionRequirementsDefinitions = null
+    )
   }
 }
 

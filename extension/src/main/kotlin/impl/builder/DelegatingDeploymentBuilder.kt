@@ -163,20 +163,16 @@ class DelegatingDeploymentBuilder(
     this.deployChangedOnly = deployChangedOnly
   }
 
-  override fun activateProcessDefinitionsOn(date: Date): DeploymentBuilder {
-    TODO("Not yet implemented")
-  }
+  override fun activateProcessDefinitionsOn(date: Date): DeploymentBuilder = throw UnsupportedOperationException("activation on a specific date is not yet supported")
 
   override fun source(source: String) = this.apply { this.deploymentSource = source }
 
-  override fun deploy(): Deployment =
-    DeploymentAdapter(DeploymentBean.fromDto(
-      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName, resources).body!!
-    ))
+  override fun deploy(): Deployment = deployWithResult()
 
-  override fun deployWithResult(): DeploymentWithDefinitions {
-    TODO("Not yet implemented")
-  }
+  override fun deployWithResult() =
+    DeploymentAdapter(DeploymentBean.fromDto(
+      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName, resources.toTypedArray()).body!!
+    ))
 
   override fun getResourceNames(): MutableCollection<String> = this.resources.map { it.name }.toMutableList()
 

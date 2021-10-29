@@ -23,7 +23,6 @@
 package org.camunda.bpm.extension.rest.itest
 
 import com.tngtech.jgiven.annotation.As
-import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
@@ -47,7 +46,7 @@ class RepositoryServiceDeploymentITest :
     GIVEN
       .no_deployment_exists()
     WHEN
-      .process_definitions_are_deployed("test")
+      .process_definitions_are_deployed("testdeployment","test")
     THEN
       .process_definition_query_succeeds { query, _ ->
         assertThat(
@@ -57,6 +56,46 @@ class RepositoryServiceDeploymentITest :
         assertThat(
           query.list().map { it.key }
         ).containsAll(listOf("test", "process_messaging"))
+      }
+  }
+
+
+  @Test
+  fun `should find deployments with query`() {
+    GIVEN
+      .no_deployment_exists()
+    WHEN
+      .process_is_deployed("test", deploymentName = "deployment1")
+      .process_is_deployed("test2", deploymentName = "deployment2")
+    THEN
+      .deployment_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .count()
+        ).isEqualTo(2)
+        assertThat(
+          query.list().map { it.name }
+        ).containsAll(listOf("deployment1", "deployment2"))
+      }
+  }
+
+  @Test
+  fun `should suspend process definition`() {
+    GIVEN
+      .no_deployment_exists()
+      .and()
+      .process_is_deployed("test")
+    WHEN
+      .process_definition_is_suspended("test")
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .count()
+        ).isEqualTo(1)
+        assertThat(
+          query.singleResult().isSuspended
+        ).isTrue()
       }
   }
 

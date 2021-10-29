@@ -31,8 +31,11 @@ import feign.form.spring.SpringFormEncoder
 import feign.form.spring.SpringManyMultipartFilesWriter
 import feign.form.spring.SpringSingleMultipartFileWriter
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
+import org.springframework.beans.factory.ObjectFactory
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.openfeign.EnableFeignClients
+import org.springframework.cloud.openfeign.support.SpringEncoder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -49,8 +52,8 @@ import org.springframework.context.annotation.Import
 class CamundaRestClientSpringBootExtension {
 
   @Bean
-  fun feignEncoder(objectMapper: ObjectMapper): Encoder {
-    return MultipartFormEncoder()
+  fun feignEncoder(messageConverters: ObjectFactory<HttpMessageConverters>): Encoder {
+    return SpringEncoder(MultipartFormEncoder(), messageConverters)
   }
 
   class MultipartFormEncoder : SpringFormEncoder() {

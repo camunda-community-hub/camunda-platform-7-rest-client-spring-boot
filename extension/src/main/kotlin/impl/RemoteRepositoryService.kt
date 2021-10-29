@@ -24,6 +24,7 @@
 package org.camunda.bpm.extension.rest.impl
 
 import org.camunda.bpm.engine.impl.util.EnsureUtil
+import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.extension.rest.adapter.AbstractRepositoryServiceAdapter
 import org.camunda.bpm.extension.rest.client.api.DecisionDefinitionApiClient
@@ -32,6 +33,7 @@ import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.camunda.bpm.extension.rest.client.model.HistoryTimeToLiveDto
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingDeploymentBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingUpdateProcessDefinitionSuspensionStateSelectBuilder
+import org.camunda.bpm.extension.rest.impl.query.DelegatingDeploymentQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -49,9 +51,9 @@ class RemoteRepositoryService(
   private val deploymentApiClient: DeploymentApiClient
 ) : AbstractRepositoryServiceAdapter() {
 
-  override fun createProcessDefinitionQuery(): ProcessDefinitionQuery {
-    return DelegatingProcessDefinitionQuery(processDefinitionApiClient)
-  }
+  override fun createProcessDefinitionQuery(): ProcessDefinitionQuery = DelegatingProcessDefinitionQuery(processDefinitionApiClient)
+
+  override fun createDeploymentQuery(): DeploymentQuery = DelegatingDeploymentQuery(deploymentApiClient)
 
   override fun createDeployment() = DelegatingDeploymentBuilder(deploymentApiClient)
 
