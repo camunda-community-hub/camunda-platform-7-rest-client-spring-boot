@@ -39,6 +39,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       externalTask:
         url: "http://localhost:${server.port}/engine-rest/"
+      deployment:
+        url: "http://localhost:${server.port}/engine-rest/"
       default:
         loggerLevel: basic
 

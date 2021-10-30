@@ -29,6 +29,7 @@ import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.Deployment
+import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,7 +58,8 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
     }
   }
 
-  fun process_is_deployed(processDefinitionKey: String, versionTag: String? = null) = step {
+  fun process_is_deployed(processDefinitionKey: String, versionTag: String? = null,
+                          deploymentName: String = "deployment" + UUID.randomUUID().toString().replace("-", "")) = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -69,9 +71,35 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
     deployment = localService
       .createDeployment()
       .addModelInstance("$processDefinitionKey.bpmn", instance)
-      .name("deployment" + UUID.randomUUID().toString().replace("-", ""))
+      .name(deploymentName)
       .deploy()
   }
+
+  fun process_definitions_are_deployed(
+    deploymentName: String, processDefinitionKey: String, versionTag: String? = null,
+  ) = step {
+    val instance = Bpmn
+      .createExecutableProcess(processDefinitionKey)
+      .camundaVersionTag(versionTag)
+      .startEvent("start")
+      .endEvent("end")
+      .done()
+
+    remoteService.createDeployment()
+      .addModelInstance("$processDefinitionKey.bpmn", instance)
+      .addClasspathResource("messages.bpmn")
+      .name(deploymentName)
+      .deploy()
+  }
+
+  fun process_definition_is_suspended(processDefinitionKey: String) {
+    remoteService.updateProcessDefinitionSuspensionState().byProcessDefinitionKey(processDefinitionKey).suspend()
+  }
+
+  fun process_definition_is_activated(processDefinitionKey: String) {
+    remoteService.updateProcessDefinitionSuspensionState().byProcessDefinitionKey(processDefinitionKey).suspend()
+  }
+
 }
 
 @JGivenStage
@@ -93,6 +121,14 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
     val query = remoteService.createProcessDefinitionQuery()
     processDefinitionQueryAssertions(query, this)
   }
+
+  fun deployment_query_succeeds(
+    deploymentQueryAssertions: (DeploymentQuery, AssertStage<*, RepositoryService>) -> Unit = { _, _ -> }
+  ): RepositoryServiceAssertStage = step {
+    val query = remoteService.createDeploymentQuery()
+    deploymentQueryAssertions(query, this)
+  }
+
 }
 
 @IsTag(name = "RepositoryService")
