@@ -32,6 +32,7 @@ import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.TaskBean
 import org.camunda.bpm.extension.rest.client.api.TaskApiClient
 import org.camunda.bpm.extension.rest.client.model.TaskQueryDto
+import org.camunda.bpm.extension.rest.impl.toTaskSorting
 import org.camunda.bpm.extension.rest.variables.toDto
 import java.time.format.DateTimeFormatter
 import kotlin.reflect.KMutableProperty1
@@ -115,8 +116,7 @@ class DelegatingTaskQuery(
           if (it == DelegationState.PENDING) TaskQueryDto.DelegationStateEnum.PENDING else TaskQueryDto.DelegationStateEnum.RESOLVED
         }
         "orQueries" -> if (this@DelegatingTaskQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        //FIXME support sorting
-        "sorting" -> if (this@DelegatingTaskQuery.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
+        "sorting" -> this@DelegatingTaskQuery.orderingProperties.map { it.toTaskSorting() }.filterNotNull().filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {

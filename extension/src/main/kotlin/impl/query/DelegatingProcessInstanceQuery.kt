@@ -9,6 +9,7 @@ import org.camunda.bpm.extension.rest.adapter.InstanceBean
 import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.rest.client.api.ProcessInstanceApiClient
 import org.camunda.bpm.extension.rest.client.model.ProcessInstanceQueryDto
+import org.camunda.bpm.extension.rest.impl.toProcessInstanceSorting
 import org.camunda.bpm.extension.rest.variables.toDto
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.isSubtypeOf
@@ -80,8 +81,7 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
         "leafProcessInstances" -> this@DelegatingProcessInstanceQuery.isLeafProcessInstances
         "variables" -> this@DelegatingProcessInstanceQuery.queryVariableValues?.toDto()
         "orQueries" -> if (this@DelegatingProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        //FIXME support sorting
-        "sorting" -> if (this@DelegatingProcessInstanceQuery.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
+        "sorting" -> this@DelegatingProcessInstanceQuery.orderingProperties.map { it.toProcessInstanceSorting() }.filterNotNull().filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {
