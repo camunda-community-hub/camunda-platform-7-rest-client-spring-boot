@@ -41,12 +41,9 @@ fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto()
   .groupId(this.groupId)
   .type(this.type)
 
-fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSorting? {
-  val dtoSorting = ProcessInstanceQueryDtoSorting()
+fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSorting = ProcessInstanceQueryDtoSorting()
     .sortOrder(if (this.direction == Direction.DESCENDING) ProcessInstanceQueryDtoSorting.SortOrderEnum.DESC else ProcessInstanceQueryDtoSorting.SortOrderEnum.ASC)
-  return when (this.relation) {
-    null -> dtoSorting.apply {
-      this.sortBy = when (this@toProcessInstanceSorting.queryProperty) {
+    .sortBy(when (this@toProcessInstanceSorting.queryProperty) {
         ProcessInstanceQueryProperty.PROCESS_INSTANCE_ID -> ProcessInstanceQueryDtoSorting.SortByEnum.INSTANCEID
         ProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> ProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONID
         ProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> ProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONKEY
@@ -56,15 +53,8 @@ fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSor
           logger.warn { "query property ${this@toProcessInstanceSorting.queryProperty} is not supported for sorting" }
           null
         }
-      }
-    }
-    else -> {
-      logger.warn { "relation ${this.relation} is not supported for sorting yet" }
-      null
-    }
-  }
+    })
 
-}
 
 fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSorting? {
   val dtoSorting = TaskQueryDtoSorting()
@@ -95,7 +85,7 @@ fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSorting? {
           }
       }
     }
-    null -> dtoSorting.apply {
+    else -> dtoSorting.apply {
       this.sortBy = when (this@toTaskSorting.queryProperty) {
         TaskQueryProperty.ASSIGNEE -> TaskQueryDtoSorting.SortByEnum.ASSIGNEE
         TaskQueryProperty.TASK_ID -> TaskQueryDtoSorting.SortByEnum.ID
@@ -114,10 +104,6 @@ fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSorting? {
           null
         }
       }
-    }
-    else -> {
-      logger.warn { "relation ${this.relation} is not supported yet" }
-      null
     }
   }
 }

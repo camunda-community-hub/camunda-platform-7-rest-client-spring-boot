@@ -81,7 +81,7 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
         "leafProcessInstances" -> this@DelegatingProcessInstanceQuery.isLeafProcessInstances
         "variables" -> this@DelegatingProcessInstanceQuery.queryVariableValues?.toDto()
         "orQueries" -> if (this@DelegatingProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        "sorting" -> this@DelegatingProcessInstanceQuery.orderingProperties.map { it.toProcessInstanceSorting() }.filterNotNull().filter { it.sortBy != null }
+        "sorting" -> this@DelegatingProcessInstanceQuery.orderingProperties.mapNotNull { it.toProcessInstanceSorting() }.filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {

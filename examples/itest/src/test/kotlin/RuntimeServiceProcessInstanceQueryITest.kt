@@ -111,4 +111,87 @@ class RuntimeServiceProcessInstanceQueryITest :
 
   }
 
+  @Test
+  fun `find process sorted by business key`() {
+    val processDefinitionKey = processDefinitionKey()
+    val key1 = "businessKey1"
+    val vars1 = createVariables().putValue("VAR1", "value1")
+    val key2 = "businessKey2"
+    val vars2 = createVariables().putValue("VAR1", "value2")
+    val key3 = "businessKey3"
+
+    GIVEN
+      .process_with_user_task_is_deployed(processDefinitionKey)
+
+    WHEN
+      .apply {
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key3, vars1)
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key2, vars2)
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key1, vars2)
+        localService.startProcessInstanceById(GIVEN.processDefinition.id, key2, vars2)
+      }
+
+    THEN
+      .process_instance_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByBusinessKey().asc()
+            .list()
+            .map { it.businessKey }
+        ).containsExactly(key1, key2, key2, key3)
+      }
+      .and()
+      .process_instance_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByBusinessKey().desc()
+            .list()
+            .map { it.businessKey }
+        ).containsExactly(key3, key2, key2, key1)
+      }
+  }
+
+  @Test
+  fun `find process sorted by process definition key and business key`() {
+    val processDefinitionKey1 = "processDefinitionKey1"
+    val processDefinitionKey2 = "processDefinitionKey2"
+    val key1 = "businessKey1"
+    val key2 = "businessKey2"
+    val key3 = "businessKey3"
+
+    val processDefinition1 = GIVEN
+      .process_with_user_task_is_deployed(processDefinitionKey1)
+      .processDefinition.id
+
+    val processDefinition2 = GIVEN
+      .process_with_user_task_is_deployed(processDefinitionKey2)
+      .processDefinition.id
+
+    WHEN
+      .apply {
+        localService.startProcessInstanceByKey(processDefinitionKey1, key3)
+        localService.startProcessInstanceByKey(processDefinitionKey2, key3)
+        localService.startProcessInstanceByKey(processDefinitionKey1, key1)
+        localService.startProcessInstanceByKey(processDefinitionKey1, key2)
+        localService.startProcessInstanceByKey(processDefinitionKey2, key2)
+        localService.startProcessInstanceByKey(processDefinitionKey2, key1)
+        localService.startProcessInstanceByKey(processDefinitionKey2, key3)
+      }
+
+    THEN
+      .process_instance_query_succeeds { query, _ ->
+        val result = query
+          .orderByBusinessKey().asc()
+          .orderByProcessDefinitionKey().desc()
+          .list()
+        assertThat(
+          result.map { it.businessKey }
+        ).containsExactly(key1, key1, key2, key2, key3, key3, key3)
+        assertThat(
+          result.map { it.processDefinitionId }
+        ).containsExactly(processDefinition2, processDefinition1, processDefinition2, processDefinition1, processDefinition2, processDefinition2, processDefinition1)
+      }
+  }
+
+
 }

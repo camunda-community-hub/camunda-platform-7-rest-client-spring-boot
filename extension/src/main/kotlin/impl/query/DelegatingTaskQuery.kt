@@ -116,7 +116,7 @@ class DelegatingTaskQuery(
           if (it == DelegationState.PENDING) TaskQueryDto.DelegationStateEnum.PENDING else TaskQueryDto.DelegationStateEnum.RESOLVED
         }
         "orQueries" -> if (this@DelegatingTaskQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        "sorting" -> this@DelegatingTaskQuery.orderingProperties.map { it.toTaskSorting() }.filterNotNull().filter { it.sortBy != null }
+        "sorting" -> this@DelegatingTaskQuery.orderingProperties.mapNotNull { it.toTaskSorting() }.filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {
