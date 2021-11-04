@@ -24,7 +24,9 @@ package org.camunda.bpm.extension.rest.impl.query
 
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
+import org.camunda.bpm.engine.impl.Direction
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
+import org.camunda.bpm.engine.impl.ProcessDefinitionQueryProperty
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
@@ -91,6 +93,8 @@ class DelegatingProcessDefinitionQuery(
   private fun getQueryParam(parameter: KParameter): Any? {
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
     val propertiesByName = ProcessDefinitionQueryImpl::class.declaredMemberProperties.associateBy { it.name }
+    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
+    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "processDefinitionId" -> this.id
       "processDefinitionIdIn" -> this.ids?.joinToString(",")
@@ -105,8 +109,22 @@ class DelegatingProcessDefinitionQuery(
       "includeProcessDefinitionsWithoutTenantId" -> includeDefinitionsWithoutTenantId
       "notStartableInTasklist" -> isNotStartableInTasklist
       "startableInTasklist" -> isStartableInTasklist
-      //FIXME support sorting
-      "sortBy", "sortOrder" -> if (this.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
+      "sortBy" -> when (sortProperty?.queryProperty) {
+        ProcessDefinitionQueryProperty.PROCESS_DEFINITION_ID -> "id"
+        ProcessDefinitionQueryProperty.PROCESS_DEFINITION_KEY -> "key"
+        ProcessDefinitionQueryProperty.PROCESS_DEFINITION_CATEGORY -> "category"
+        ProcessDefinitionQueryProperty.PROCESS_DEFINITION_NAME -> "name"
+        ProcessDefinitionQueryProperty.PROCESS_DEFINITION_VERSION -> "version"
+        ProcessDefinitionQueryProperty.DEPLOYMENT_ID -> "deploymentId"
+        ProcessDefinitionQueryProperty.DEPLOY_TIME -> "deployTime"
+        ProcessDefinitionQueryProperty.TENANT_ID -> "tenantId"
+        ProcessDefinitionQueryProperty.VERSION_TAG -> "versionTag"
+        null -> null
+        else -> {
+          logger.warn { "unknown query property ${sortProperty.queryProperty}, ignoring it" }
+        }
+      }
+      "sortOrder" -> sortProperty?.direction?.let { if (it == Direction.DESCENDING) "desc" else "asc" }
       else -> {
         val property = propertiesByName[value]
         if (property == null) {
