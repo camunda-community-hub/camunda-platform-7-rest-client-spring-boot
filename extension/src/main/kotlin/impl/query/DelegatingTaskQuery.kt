@@ -68,6 +68,7 @@ class DelegatingTaskQuery(
   }
 
   private fun fillQueryDto() = TaskQueryDto().apply {
+    checkQueryOk()
     val dtoPropertiesByName = TaskQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
     val queryPropertiesByName = TaskQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {

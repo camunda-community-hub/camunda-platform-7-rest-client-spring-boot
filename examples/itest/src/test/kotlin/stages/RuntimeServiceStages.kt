@@ -66,6 +66,12 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var execution: Execution
 
+  fun no_deployment_exists() = step {
+    repositoryService.createDeploymentQuery().list().map {
+      repositoryService.deleteDeployment(it.id, true)
+    }
+  }
+
   fun process_with_user_task_is_deployed(
     processDefinitionKey: String = "process_with_user_task",
     userTaskId: String = "user_task"

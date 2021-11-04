@@ -53,7 +53,10 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
     }
   }
 
+  override fun ensureVariablesInitialized() = Unit
+
   private fun fillQueryDto() = ProcessInstanceQueryDto().apply {
+    checkQueryOk()
     val dtoPropertiesByName = ProcessInstanceQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ProcessInstanceQueryDto, Any?>>().associateBy { it.name }
     val queryPropertiesByName = ProcessInstanceQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {

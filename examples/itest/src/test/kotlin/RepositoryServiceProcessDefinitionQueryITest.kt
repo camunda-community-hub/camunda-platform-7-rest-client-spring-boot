@@ -118,4 +118,30 @@ class RepositoryServiceProcessDefinitionQueryITest :
       }
   }
 
+  @Test
+  fun `should sort deployed processes by process definition key`() {
+    val processDefinitionKey1 = "AAA"
+    val processDefinitionKey2 = "BBB"
+    val processDefinitionKey3 = "CCC"
+
+    GIVEN
+      .no_deployment_exists()
+
+    WHEN
+      .process_is_deployed(processDefinitionKey1)
+      .process_is_deployed(processDefinitionKey2)
+      .process_is_deployed(processDefinitionKey3)
+
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByProcessDefinitionKey().desc()
+            .list()
+            .map { it.key }
+        ).containsExactly(processDefinitionKey3, processDefinitionKey2, processDefinitionKey1)
+
+      }
+  }
+
 }

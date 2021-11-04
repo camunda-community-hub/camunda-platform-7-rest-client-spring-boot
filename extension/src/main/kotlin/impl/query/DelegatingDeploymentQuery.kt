@@ -74,6 +74,7 @@ class DelegatingDeploymentQuery(
   }
 
   private fun getQueryParam(parameter: KParameter): Any? {
+    checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
     val propertiesByName = DeploymentQueryImpl::class.declaredMemberProperties.associateBy { it.name }
     if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }

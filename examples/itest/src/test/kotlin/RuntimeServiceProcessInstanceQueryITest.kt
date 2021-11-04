@@ -51,6 +51,8 @@ class RuntimeServiceProcessInstanceQueryITest :
     val vars2 = createVariables().putValue("VAR1", "value2")
 
     GIVEN
+      .no_deployment_exists()
+      .and()
       .process_with_user_task_is_deployed(processDefinitionKey)
 
     WHEN
@@ -121,6 +123,8 @@ class RuntimeServiceProcessInstanceQueryITest :
     val key3 = "businessKey3"
 
     GIVEN
+      .no_deployment_exists()
+      .and()
       .process_with_user_task_is_deployed(processDefinitionKey)
 
     WHEN
@@ -158,6 +162,8 @@ class RuntimeServiceProcessInstanceQueryITest :
     val key1 = "businessKey1"
     val key2 = "businessKey2"
     val key3 = "businessKey3"
+
+    GIVEN.no_deployment_exists()
 
     val processDefinition1 = GIVEN
       .process_with_user_task_is_deployed(processDefinitionKey1)
