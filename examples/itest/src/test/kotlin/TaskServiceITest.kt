@@ -9,6 +9,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.TaskService
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.variable.Variables.*
+import org.camunda.bpm.engine.variable.type.ValueType
 import org.camunda.bpm.engine.variable.value.IntegerValue
 import org.camunda.bpm.engine.variable.value.StringValue
 import org.camunda.bpm.extension.rest.itest.stages.CamundaRestClientITestBase
@@ -452,6 +453,47 @@ class TaskServiceITest
         ).apply {
           this.extracting { task -> task.id }.isEqualTo(GIVEN.task.id)
         }
+      }
+  }
+
+  @Test
+  fun `find tasks sorted`() {
+    val processDefinitionKey = processDefinitionKey()
+    val taskDefinitionKey = taskDefinitionKey()
+    val key1 = "businessKey1"
+    val vars1 = createVariables().putValue("VAR1", "value1")
+    val key2 = "businessKey2"
+    val vars2 = createVariables().putValue("VAR1", "value2")
+
+    GIVEN
+      .no_deployment_exists()
+      .AND
+      .process_with_user_task_is_deployed(processDefinitionKey, taskDefinitionKey)
+
+    val processInstanceId1 = WHEN
+      .process_is_started_by_key(processDefinitionKey, key1, vars1)
+      .processInstance.id
+    val processInstanceId2 = WHEN
+      .process_is_started_by_key(processDefinitionKey, key2, vars2)
+      .processInstance.id
+
+    THEN
+      .task_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByProcessVariable("VAR1", ValueType.STRING).desc()
+            .list()
+            .map { it.processInstanceId }
+        ).containsExactly(processInstanceId2, processInstanceId1)
+      }
+      .AND
+      .task_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByTaskCreateTime().asc()
+            .list()
+            .map { it.processInstanceId }
+        ).containsExactly(processInstanceId1, processInstanceId2)
       }
   }
 
