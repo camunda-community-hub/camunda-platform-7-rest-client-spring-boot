@@ -10,3 +10,4 @@ target/
 jgiven-reports/
 pom.xml.versionsBackup
 
+*.log

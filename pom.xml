@@ -60,6 +60,7 @@
     <module>extension</module>
     <module>starter</module>
     <module>starter-provided</module>
+    <module>shell</module>
   </modules>
 
   <dependencyManagement>
