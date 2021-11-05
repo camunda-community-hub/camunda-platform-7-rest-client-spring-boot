@@ -42,7 +42,7 @@ internal class ProcessEngineClientStub(
   }
 
   override fun getName(): String {
-    TODO("not implemented")
+    return "rest-client-engine-stub"
   }
 
   override fun getCaseService(): CaseService {
@@ -86,7 +86,7 @@ internal class ProcessEngineClientStub(
   }
 
   override fun close() {
-    TODO("not implemented")
+    // nothing to do here, but we need to implement this to comply with the contract.
   }
 
 }
