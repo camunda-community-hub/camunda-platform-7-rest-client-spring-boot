@@ -80,6 +80,25 @@ class RepositoryServiceDeploymentITest :
   }
 
   @Test
+  fun `should sort deployments by name`() {
+    GIVEN
+      .no_deployment_exists()
+    WHEN
+      .process_is_deployed("test", deploymentName = "BBB")
+      .process_is_deployed("test2", deploymentName = "AAA")
+      .process_is_deployed("test3", deploymentName = "CCC")
+    THEN
+      .deployment_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .orderByDeploymentName().asc()
+            .list()
+            .map { it.name }
+        ).containsExactly("AAA", "BBB", "CCC")
+      }
+  }
+
+  @Test
   fun `should suspend process definition`() {
     GIVEN
       .no_deployment_exists()

@@ -3,15 +3,12 @@ package org.camunda.bpm.extension.rest.impl.query
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.DeploymentQueryImpl
+import org.camunda.bpm.engine.impl.DeploymentQueryProperty
+import org.camunda.bpm.engine.impl.Direction
 import org.camunda.bpm.engine.repository.Deployment
-import org.camunda.bpm.engine.repository.DeploymentQuery
-import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.extension.rest.adapter.DeploymentAdapter
 import org.camunda.bpm.extension.rest.adapter.DeploymentBean
-import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionAdapter
-import org.camunda.bpm.extension.rest.adapter.ProcessDefinitionBean
 import org.camunda.bpm.extension.rest.client.api.DeploymentApiClient
-import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.declaredMemberProperties
@@ -77,8 +74,11 @@ class DelegatingDeploymentQuery(
   }
 
   private fun getQueryParam(parameter: KParameter): Any? {
+    checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
     val propertiesByName = DeploymentQueryImpl::class.declaredMemberProperties.associateBy { it.name }
+    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
+    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "id" -> deploymentId
       "withoutSource" -> sourceQueryParamEnabled && source == null
@@ -86,8 +86,17 @@ class DelegatingDeploymentQuery(
       "withoutTenantId" -> isTenantIdSet && tenantIds == null
       "after" -> deploymentAfter
       "before" -> deploymentBefore
-      //FIXME support sorting
-      "sortBy", "sortOrder" -> if (this.orderingProperties.isNotEmpty()) logger.warn { "sorting is not supported yet" } else null
+      "sortBy" -> when (sortProperty?.queryProperty) {
+        DeploymentQueryProperty.DEPLOYMENT_ID -> "id"
+        DeploymentQueryProperty.DEPLOYMENT_NAME -> "name"
+        DeploymentQueryProperty.DEPLOY_TIME -> "deploymentTime"
+        DeploymentQueryProperty.TENANT_ID -> "tenantId"
+        null -> null
+        else -> {
+          logger.warn { "unknown query property ${sortProperty.queryProperty}, ignoring it" }
+        }
+      }
+      "sortOrder" -> sortProperty?.direction?.let { if (it == Direction.DESCENDING) "desc" else "asc" }
       else -> {
         val property = propertiesByName[value]
         if (property == null) {
