@@ -33,9 +33,7 @@ import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
-import org.camunda.bpm.engine.runtime.Execution
-import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
+import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -62,6 +60,9 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var processInstance: ProcessInstance
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  lateinit var incident: Incident
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var execution: Execution
@@ -219,6 +220,29 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
           .executionId
       ).singleResult()
   }
+
+  fun incident_is_created_locally(incidentType: String, configuration: String, message: String? = null) = step {
+    incident = localService
+      .createIncident(incidentType, processInstance.id, configuration, message)
+  }
+
+  fun incident_is_created(incidentType: String, configuration: String, message: String? = null) = step {
+    incident = remoteService
+      .createIncident(incidentType, processInstance.id, configuration, message)
+  }
+
+  fun incident_is_resolved() = step {
+    remoteService.resolveIncident(incident.id)
+  }
+
+  fun annotation_is_set_on_incident(annotation: String) = step {
+    remoteService.setAnnotationForIncidentById(incident.id, annotation)
+  }
+
+  fun annotation_is_cleared_on_incident() = step {
+    remoteService.clearAnnotationForIncidentById(incident.id)
+  }
+
 }
 
 @JGivenStage
@@ -278,6 +302,14 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     val query = remoteService.createProcessInstanceQuery()
     processInstanceQueryAssertions(query, this)
   }
+
+  fun incident_query_succeeds(
+    @Hidden incidentQueryAssertions: (IncidentQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
+  ) = step {
+    val query = remoteService.createIncidentQuery()
+    incidentQueryAssertions(query, this)
+  }
+
 }
 
 @IsTag(name = "RuntimeService")

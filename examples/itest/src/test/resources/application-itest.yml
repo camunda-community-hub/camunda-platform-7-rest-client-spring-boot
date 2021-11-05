@@ -41,6 +41,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       deployment:
         url: "http://localhost:${server.port}/engine-rest/"
+      incident:
+        url: "http://localhost:${server.port}/engine-rest/"
       default:
         loggerLevel: basic
 
