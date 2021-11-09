@@ -27,17 +27,17 @@ import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
+import org.camunda.bpm.engine.runtime.UpdateProcessInstanceSuspensionStateSelectBuilder
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.bpm.extension.rest.adapter.AbstractRuntimeServiceAdapter
 import org.camunda.bpm.extension.rest.adapter.InstanceBean
 import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
 import org.camunda.bpm.extension.rest.client.api.*
-import org.camunda.bpm.extension.rest.client.model.ExecutionTriggerDto
-import org.camunda.bpm.extension.rest.client.model.PatchVariablesDto
-import org.camunda.bpm.extension.rest.client.model.StartProcessInstanceDto
+import org.camunda.bpm.extension.rest.client.model.*
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
+import org.camunda.bpm.extension.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -412,6 +412,34 @@ class RemoteRuntimeService(
   override fun createProcessInstanceQuery(): ProcessInstanceQuery {
     return DelegatingProcessInstanceQuery(processInstanceApiClient)
   }
+
+  override fun activateProcessInstanceById(processInstanceId: String?) {
+    processInstanceApiClient.updateSuspensionStateById(processInstanceId, SuspensionStateDto().suspended(false))
+  }
+
+  override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false));
+  }
+
+  override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false));
+  }
+
+  override fun suspendProcessInstanceById(processInstanceId: String?) {
+    processInstanceApiClient.updateSuspensionStateById(processInstanceId, SuspensionStateDto().suspended(true))
+  }
+
+  override fun suspendProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true));
+  }
+
+  override fun suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true));
+  }
+
+  override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder =
+    RemoteUpdateProcessInstanceSuspensionStateSelectBuilder(processInstanceApiClient)
+
 }
 
 
