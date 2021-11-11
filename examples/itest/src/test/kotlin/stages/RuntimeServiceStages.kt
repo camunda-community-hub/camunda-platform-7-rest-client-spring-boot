@@ -278,6 +278,22 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     ).isNotNull
   }
 
+  fun process_instance_is_suspended() = step {
+    remoteService.suspendProcessInstanceById(processInstance!!.id)
+  }
+
+  fun process_instance_is_suspended_by_process_definition_key(processDefinitionKey: String) = step {
+    remoteService.suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey)
+  }
+
+  fun process_instance_is_activated() = step {
+    remoteService.activateProcessInstanceById(processInstance!!.id)
+  }
+
+  fun process_instance_is_activated_by_process_definition_key(processDefinitionKey: String) = step {
+    remoteService.activateProcessInstanceByProcessDefinitionKey(processDefinitionKey)
+  }
+
   fun process_instance_query_succeeds(
     @Hidden processInstanceQueryAssertions: (ProcessInstanceQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
   ) = step {

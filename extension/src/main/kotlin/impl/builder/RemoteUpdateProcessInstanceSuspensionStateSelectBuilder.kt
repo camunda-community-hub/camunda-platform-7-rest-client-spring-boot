@@ -1,6 +1,9 @@
 package org.camunda.bpm.extension.rest.impl.builder
 
+import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
+import org.camunda.bpm.engine.impl.ProcessEngineLogger
+import org.camunda.bpm.engine.impl.util.EnsureUtil
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.extension.rest.adapter.BatchAdapter
 import org.camunda.bpm.extension.rest.adapter.BatchBean
@@ -46,7 +49,7 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
 
   private var withoutTenant: Boolean? = null
   private var tenantId: String? = null
-  private val processInstanceIds = mutableListOf<String>()
+  private var processInstanceIds: MutableList<String>? = null
   private var processInstanceQuery: ProcessInstanceQuery? = null
   private var historicProcessInstanceQuery: HistoricProcessInstanceQuery? = null
 
@@ -63,11 +66,13 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
   override fun suspend() = updateSuspensionState(true)
 
   override fun byProcessInstanceIds(processInstanceIds: MutableList<String>?) = this.apply {
-    processInstanceIds?.let { this.processInstanceIds.addAll(processInstanceIds) }
+    this.processInstanceIds = (this.processInstanceIds ?: mutableListOf()).apply {
+      processInstanceIds?.let { this.addAll(processInstanceIds) }
+    }
   }
 
   override fun byProcessInstanceIds(vararg processInstanceIds: String) = this.apply {
-    this.processInstanceIds.addAll(processInstanceIds.toList())
+    this.processInstanceIds = (this.processInstanceIds ?: mutableListOf()).apply { this.addAll(processInstanceIds.toList()) }
   }
 
   override fun byProcessInstanceQuery(processInstanceQuery: ProcessInstanceQuery) = this.apply {
@@ -83,6 +88,7 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
   override fun suspendAsync() = updateSuspensionStateAsync(true)
 
   private fun updateSuspensionState(suspended: Boolean) {
+    validateParameters()
     processInstanceApiClient.updateSuspensionState(
       ProcessInstanceSuspensionStateDto()
         .processDefinitionId(processDefinitionId)
@@ -96,8 +102,9 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
     )
   }
 
-  private fun updateSuspensionStateAsync(suspended: Boolean) =
-    BatchAdapter(BatchBean.fromDto(
+  private fun updateSuspensionStateAsync(suspended: Boolean): Batch {
+    validateParameters()
+    return BatchAdapter(BatchBean.fromDto(
       processInstanceApiClient.updateSuspensionStateAsyncOperation(
         ProcessInstanceSuspensionStateAsyncDto()
           .processInstanceIds(processInstanceIds)
@@ -106,6 +113,16 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
           .suspended(suspended)
       ).body!!
     ))
+  }
+
+
+  private fun validateParameters() {
+    EnsureUtil.ensureOnlyOneNotNull("Need to specify either a process instance id (or query), a process definition id or a process definition key.",
+      processInstanceIds ?: processInstanceQuery ?: historicProcessInstanceQuery, processDefinitionId, processDefinitionKey)
+    if ((withoutTenant != null || tenantId != null) && (processInstanceIds != null || processDefinitionId != null)) {
+      throw ProcessEngineLogger.CMD_LOGGER.exceptionUpdateSuspensionStateForTenantOnlyByProcessDefinitionKey()
+    }
+  }
 
   private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 

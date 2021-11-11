@@ -34,7 +34,7 @@ data class BatchBean(
   val monitorJobDefinitionId: String?,
   val batchJobDefinitionId: String?,
   val tenantId: String?,
-  val createUserId: String,
+  val createUserId: String?,
   val suspended: Boolean
 ) {
   companion object {
