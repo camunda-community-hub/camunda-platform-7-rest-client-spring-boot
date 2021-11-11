@@ -29,6 +29,7 @@ import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.HistoryService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
@@ -233,6 +234,11 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   @Qualifier("runtimeService")
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: RuntimeService
+
+  @Autowired
+  @Qualifier("remote")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var historyService: HistoryService
 
   @ProvidedScenarioState
   var processInstance: ProcessInstance? = null

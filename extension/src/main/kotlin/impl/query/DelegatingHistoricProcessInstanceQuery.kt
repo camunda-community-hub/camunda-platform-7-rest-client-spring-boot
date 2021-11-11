@@ -3,12 +3,14 @@ package org.camunda.bpm.extension.rest.impl.query
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.history.HistoricProcessInstance
+import org.camunda.bpm.engine.history.IncidentState
 import org.camunda.bpm.engine.impl.HistoricProcessInstanceQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.extension.rest.adapter.HistoricInstanceBean
 import org.camunda.bpm.extension.rest.adapter.HistoricProcessInstanceAdapter
 import org.camunda.bpm.extension.rest.client.api.HistoricProcessInstanceApiClient
 import org.camunda.bpm.extension.rest.client.model.HistoricProcessInstanceQueryDto
+import org.camunda.bpm.extension.rest.impl.toHistoricProcessInstanceSorting
 import org.camunda.bpm.extension.rest.impl.toProcessInstanceSorting
 import org.camunda.bpm.extension.rest.variables.toDto
 import kotlin.reflect.KMutableProperty1
@@ -61,36 +63,33 @@ class DelegatingHistoricProcessInstanceQuery(private val historicProcessInstance
     val queryPropertiesByName = HistoricProcessInstanceQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
-        "superProcessInstance" -> this@DelegatingHistoricProcessInstanceQuery.superProcessInstanceId
-        "subProcessInstance" -> this@DelegatingHistoricProcessInstanceQuery.subProcessInstanceId
-        "superCaseInstance" -> this@DelegatingHistoricProcessInstanceQuery.superCaseInstanceId
-        "subCaseInstance" -> this@DelegatingHistoricProcessInstanceQuery.subCaseInstanceId
-        "active" -> this@DelegatingHistoricProcessInstanceQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
-        "suspended" -> this@DelegatingHistoricProcessInstanceQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
-        "processInstanceIds" -> {
-          val ids = this@DelegatingHistoricProcessInstanceQuery.processInstanceIds?.toMutableSet() ?: mutableSetOf()
-          if (this@DelegatingHistoricProcessInstanceQuery.processInstanceId != null) {
-            ids.plus(this@DelegatingHistoricProcessInstanceQuery.processInstanceId)
-          }
-          if (ids.isEmpty()) null else ids.toList()
-        }
-        "tenantIdIn" -> this@DelegatingHistoricProcessInstanceQuery.tenantIds?.toList()
-        "withoutTenantId" -> this@DelegatingHistoricProcessInstanceQuery.isTenantIdSet && (this@DelegatingHistoricProcessInstanceQuery.tenantIds == null)
-        "processDefinitionWithoutTenantId" -> this@DelegatingHistoricProcessInstanceQuery.isProcessDefinitionWithoutTenantId
+        "processInstanceIds" -> this@DelegatingHistoricProcessInstanceQuery.processInstanceIds?.toList()
         "processDefinitionKeyIn" -> this@DelegatingHistoricProcessInstanceQuery.processDefinitionKeys?.toList()
-        "processDefinitionKeyNotIn" -> this@DelegatingHistoricProcessInstanceQuery.processDefinitionKeyNotIn?.toList()
-        "activityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.activityIds?.toList()
+        "processDefinitionKeyNotIn" -> this@DelegatingHistoricProcessInstanceQuery.processKeyNotIn?.toList()
+        "processInstanceBusinessKey" -> this@DelegatingHistoricProcessInstanceQuery.businessKey
+        "processInstanceBusinessKeyLike" -> this@DelegatingHistoricProcessInstanceQuery.businessKeyLike
         "rootProcessInstances" -> this@DelegatingHistoricProcessInstanceQuery.isRootProcessInstances
-        "leafProcessInstances" -> this@DelegatingHistoricProcessInstanceQuery.isLeafProcessInstances
+        "incidentStatus" -> this@DelegatingHistoricProcessInstanceQuery.incidentStatus?.let { HistoricProcessInstanceQueryDto.IncidentStatusEnum.fromValue(it) }
+        "tenantIdIn" -> this@DelegatingHistoricProcessInstanceQuery.tenantIds?.toList()
+        "withoutTenantId" -> this@DelegatingHistoricProcessInstanceQuery.isTenantIdSet && this@DelegatingHistoricProcessInstanceQuery.tenantIds == null
+        "executedActivityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.executedActivityIds?.toList()
+        "activeActivityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.activeActivityIds?.toList()
+        "active" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_ACTIVE
+        "suspended" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_SUSPENDED
+        "completed" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_COMPLETED
+        "externallyTerminated" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_EXTERNALLY_TERMINATED
+        "internallyTerminated" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_INTERNALLY_TERMINATED
         "variables" -> this@DelegatingHistoricProcessInstanceQuery.queryVariableValues?.toDto()
         "orQueries" -> if (this@DelegatingHistoricProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        "sorting" -> this@DelegatingHistoricProcessInstanceQuery.orderingProperties.mapNotNull { it.toProcessInstanceSorting() }.filter { it.sortBy != null }
+        "sorting" -> this@DelegatingHistoricProcessInstanceQuery.orderingProperties.mapNotNull { it.toHistoricProcessInstanceSorting() }.filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {
             throw IllegalArgumentException("no property found for ${it.key}")
           } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
-            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
+            logger.warn { "${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}" }
+            null
+//            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
           } else {
             queryProperty.isAccessible = true
             queryProperty.get(this@DelegatingHistoricProcessInstanceQuery)
