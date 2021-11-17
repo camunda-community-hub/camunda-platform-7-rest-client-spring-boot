@@ -1,5 +1,0 @@
-changelog:
-  includeMinorVersions: true
-  includeReleaseNotes: true
-  allVersions:
-    url: "#{'changelog'|baseUrl}"

@@ -270,6 +270,7 @@ abstract class AbstractTaskServiceAdapter : TaskService {
     TODO("Not yet implemented")
   }
 
+  @Suppress("DEPRECATION")
   override fun getTaskEvents(taskId: String): MutableList<Event> {
     TODO("Not yet implemented")
   }

@@ -41,7 +41,6 @@
       <artifactId>camunda-rest-client-spring-boot-itest</artifactId>
       <version>${project.version}</version>
     </dependency>
-
   </dependencies>
 
   <build>
