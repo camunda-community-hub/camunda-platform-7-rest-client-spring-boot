@@ -22,7 +22,6 @@
  */
 package org.camunda.bpm.extension.rest
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import feign.codec.Encoder
 import feign.form.ContentType
 import feign.form.MultipartFormContentProcessor
@@ -31,6 +30,7 @@ import feign.form.spring.SpringFormEncoder
 import feign.form.spring.SpringManyMultipartFilesWriter
 import feign.form.spring.SpringSingleMultipartFileWriter
 import org.camunda.bpm.extension.rest.config.CamundaRestClientProperties
+import org.camunda.bpm.extension.rest.config.FeignErrorDecoderConfiguration
 import org.camunda.bpm.extension.rest.impl.RemoteExternalTaskService
 import org.camunda.bpm.extension.rest.impl.RemoteRepositoryService
 import org.camunda.bpm.extension.rest.impl.RemoteRuntimeService
@@ -49,7 +49,13 @@ import org.springframework.context.annotation.Import
  * Basic configuration of the extension.
  */
 @Configuration
-@Import(RemoteExternalTaskService::class, RemoteRepositoryService::class, RemoteRuntimeService::class, RemoteTaskService::class)
+@Import(
+  RemoteExternalTaskService::class,
+  RemoteRepositoryService::class,
+  RemoteRuntimeService::class,
+  RemoteTaskService::class,
+  FeignErrorDecoderConfiguration::class
+)
 @EnableFeignClients
 @EnableConfigurationProperties(CamundaRestClientProperties::class)
 class CamundaRestClientSpringBootExtension {
