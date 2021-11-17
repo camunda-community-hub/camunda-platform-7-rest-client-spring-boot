@@ -178,6 +178,27 @@
               </replacements>
             </configuration>
           </execution>
+          <execution>
+            <id>changeWrongResponseForIncidentCount</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <basedir>${project.basedir}</basedir>
+              <includes>
+                <include>target/generated-sources/openapi/**/IncidentApi.java</include>
+              </includes>
+              <regex>false</regex>
+              <replacements>
+                <!-- RequestPart is needed to activate correct encoding, further array is needed to allow multiple files -->
+                <replacement>
+                  <token>ResponseEntity&lt;List&lt;CountResultDto&gt;&gt;</token>
+                  <value>ResponseEntity&lt;CountResultDto&gt;</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>

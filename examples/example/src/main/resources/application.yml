@@ -26,6 +26,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       externalTask:
         url: "http://localhost:8083/engine-rest/"
+      incident:
+        url: "http://localhost:8083/engine-rest/"
 
 
 logging:
