@@ -1,8 +1,0 @@
-User-agent: *
-
-Disallow: /
-
-
-
-Sitemap: https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/sitemap.xml
-
