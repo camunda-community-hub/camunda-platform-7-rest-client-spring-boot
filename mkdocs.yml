@@ -1,0 +1,103 @@
+# ###############################
+# Main config file for MkDocs.
+# ###############################
+#
+# To run: mkdocs serve
+# ###############################
+
+site_name: Camunda REST Client Spring Boot
+site_url: https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/
+site_author: Camunda OSS Developers
+site_description: >-
+  Axon Avro Serializer is an extension to Axon Framework allowing
+  to use schema-first approach for creation of events based on Apache Avro
+  format, which is used for serialization.
+
+copyright: Copyright &copy; 2021, Camunda Service GmbH
+
+use_directory_urls: false
+
+# Repository
+repo_name: camunda-community-hub/camunda-rest-client-spring-boot
+repo_url: https://github.com/camunda-community-hub/camunda-rest-client-spring-boot/
+edit_uri: edit/develop/docs/
+
+markdown_extensions:
+    - attr_list
+    - toc:
+        permalink: "#"
+    - pymdownx.highlight
+    - pymdownx.superfences
+    - pymdownx.details
+    - admonition
+
+theme:
+  name: material
+  features:
+    - navigation.instant # When instant loading is enabled, clicks on all internal links will be intercepted and dispatched via XHR without fully reloading the page
+    - navigation.tabs # add top level nav items into a horizontal menu
+    - navigation.tabs.sticky # make horizontal menu sticky (insider feature)
+    - navigation.sections
+    - navigation.top # add "navigate to top" page icon on bottom left
+    - toc.integrate # integrate site TOC into the menu on the left
+  logo: assets/img/camunda-logo.png
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+extra_css: [ assets/css/extra.css ]
+
+extra:
+#  social:
+#    - icon: fontawesome/brands/twitter
+#      name: Holisticon on Twitter
+#      link: https://twitter.com/holisticon
+#    - icon: fontawesome/brands/medium
+#      name: Holisticon Event Sourcerers on Medium
+#      link: https://medium.com/holisticon-consultants/tagged/mpb
+  version:
+    provider: mike
+
+plugins:
+  - search
+  - mike:                             # these fields are all optional; the defaults are as below...
+      version_selector: true          # set to false to leave out the version selector
+      css_dir: css                    # the directory to put the version selector's CSS
+      javascript_dir: js              # the directory to put the version selector's JS
+      canonical_version: null         # the version for <link rel="canonical">; `null`
+                                      # uses the version specified via `mike deploy`
+  - git-revision-date-localized:
+      type: date
+      fallback_to_build_date: true
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Introduction:
+    - Start here: introduction/index.md
+    - Motivation: introduction/motivation.md
+    - Features: introduction/features.md
+    - Solution: introduction/solution.md
+    - Further Outlook: introduction/further-outlook.md
+  - User Guide:
+    - Overview: user-guide/index.md
+    - Support Martix: user-guide/support-matrix.md
+    - Examples: user-guide/examples.md
+    - Logging: user-guide/logging.md
+    - Error-Decoding: user-guide/error-decoding.md
+  - Developer Guide:
+      - Contributing: developer-guide/contribution.md
+      - Project Setup: developer-guide/project-setup.md

@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Camunda REST Client Spring-Boot</description>
-  <url>https://github.com/camunda/camunda-rest-client-spring-boot/</url>
+  <url>https://github.com/camunda-community-hub/camunda-rest-client-spring-boot/</url>
 
   <!-- License Stuff -->
   <inceptionYear>2019</inceptionYear>
@@ -304,8 +304,6 @@
               <exclude>${pattern.class.itest}</exclude>
               <exclude>${pattern.package.itest}</exclude>
             </excludes>
-            <!-- Sets the VM argument line used when unit tests are run. -->
-            <!-- prevent the annoying ForkedBooter process from stealing window focus on Mac OS -->
             <argLine>-Djava.awt.headless=true ${argLine} -XX:+StartAttachListener</argLine>
           </configuration>
         </plugin>
@@ -327,8 +325,6 @@
               <include>${pattern.class.itest}</include>
               <include>${pattern.package.itest}</include>
             </includes>
-            <!-- Sets the VM argument line used when unit tests are run. -->
-            <!-- prevent the annoying ForkedBooter process from stealing window focus on Mac OS -->
             <argLine>-Djava.awt.headless=true ${argLine} -XX:+StartAttachListener</argLine>
             <runOrder>random</runOrder>
           </configuration>
@@ -457,7 +453,11 @@
             </gpgArguments>
           </configuration>
         </plugin>
-
+        <plugin>
+          <groupId>com.google.code.maven-replacer-plugin</groupId>
+          <artifactId>maven-replacer-plugin</artifactId>
+          <version>1.4.1</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -534,7 +534,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <build>
-        <defaultGoal>integration-test failsafe:verify</defaultGoal>
+        <defaultGoal>verify failsafe:verify</defaultGoal>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -546,13 +546,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>docs</id>
-      <modules>
-        <module>docs</module>
-      </modules>
     </profile>
 
     <!--
@@ -601,9 +594,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</connection>
-    <url>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</url>
-    <developerConnection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</connection>
+    <url>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</url>
+    <developerConnection>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -623,24 +616,13 @@
     </snapshotRepository>
   </distributionManagement>
 
-
-  <pluginRepositories>
-    <!-- required for Dokka (Kotlin javadoc) -->
-    <pluginRepository>
-      <id>jcenter</id>
-      <name>JCenter</name>
-      <url>https://jcenter.bintray.com/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <developers>
     <developer>
+      <id>zambrovski</id>
       <name>Simon Zambrovski</name>
       <organization>Holisticon AG</organization>
       <roles>
+        <role>Product Owner</role>
         <role>Maintainer</role>
       </roles>
       <organizationUrl>https://holisticon.de</organizationUrl>
