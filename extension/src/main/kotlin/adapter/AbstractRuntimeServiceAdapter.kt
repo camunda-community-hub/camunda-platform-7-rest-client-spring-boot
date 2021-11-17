@@ -163,7 +163,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
   override fun getActivityInstance(processInstanceId: String?): ActivityInstance {
     TODO("not implemented")
@@ -175,7 +175,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun resolveIncident(incidentId: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun getActiveActivityIds(executionId: String?): MutableList<String> {
@@ -234,11 +234,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun createIncident(incidentType: String?, executionId: String?, configuration: String?): Incident {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createIncident(incidentType: String?, executionId: String?, configuration: String?, message: String?): Incident {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createMigrationPlan(sourceProcessDefinitionId: String?, targetProcessDefinitionId: String?): MigrationPlanBuilder {
@@ -280,7 +280,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
@@ -292,11 +292,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun activateProcessInstanceById(processInstanceId: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createProcessInstanceModification(processInstanceId: String?): ProcessInstanceModificationBuilder {
@@ -304,7 +304,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createNativeProcessInstanceQuery(): NativeProcessInstanceQuery {
@@ -312,7 +312,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun suspendProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createProcessInstanceQuery(): ProcessInstanceQuery {
@@ -320,7 +320,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstancesIfExists(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
@@ -372,7 +372,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun createIncidentQuery(): IncidentQuery {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun startProcessInstanceById(processDefinitionId: String): ProcessInstance {
@@ -475,10 +475,10 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
    * @since 7.15
    */
   override fun setAnnotationForIncidentById(incidentId: String, annotation: String) {
-    TODO("Not yet implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun clearAnnotationForIncidentById(incidentId: String) {
-    TODO("Not yet implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 }

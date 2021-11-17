@@ -32,7 +32,7 @@ import org.camunda.bpm.extension.rest.client.api.DeploymentApiClient
 import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.camunda.bpm.extension.rest.client.model.HistoryTimeToLiveDto
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingDeploymentBuilder
-import org.camunda.bpm.extension.rest.impl.builder.DelegatingUpdateProcessDefinitionSuspensionStateSelectBuilder
+import org.camunda.bpm.extension.rest.impl.builder.RemoteUpdateProcessDefinitionSuspensionStateSelectBuilder
 import org.camunda.bpm.extension.rest.impl.query.DelegatingDeploymentQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.springframework.beans.factory.annotation.Qualifier
@@ -82,7 +82,7 @@ class RemoteRepositoryService(
     processDefinitionApiClient.updateHistoryTimeToLiveByProcessDefinitionId(processDefinitionId, HistoryTimeToLiveDto().historyTimeToLive(historyTimeToLive))
   }
 
-  override fun updateProcessDefinitionSuspensionState() = DelegatingUpdateProcessDefinitionSuspensionStateSelectBuilder(processDefinitionApiClient)
+  override fun updateProcessDefinitionSuspensionState() = RemoteUpdateProcessDefinitionSuspensionStateSelectBuilder(processDefinitionApiClient)
 
   override fun deleteProcessDefinition(processDefinitionId: String?) =
     deleteProcessDefinition(processDefinitionId, cascade = false, skipCustomListeners = false, skipIoMappings = false)
