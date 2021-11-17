@@ -43,6 +43,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       externalTask:
         url: "http://localhost:${server.port}/engine-rest/"
+      incident:
+        url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:

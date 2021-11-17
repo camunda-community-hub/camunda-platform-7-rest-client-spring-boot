@@ -24,20 +24,16 @@ package org.camunda.bpm.extension.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
-import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder
-import org.camunda.bpm.engine.runtime.UpdateProcessInstanceSuspensionStateSelectBuilder
+import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
-import org.camunda.bpm.extension.rest.adapter.AbstractRuntimeServiceAdapter
-import org.camunda.bpm.extension.rest.adapter.InstanceBean
-import org.camunda.bpm.extension.rest.adapter.ProcessInstanceAdapter
+import org.camunda.bpm.extension.rest.adapter.*
 import org.camunda.bpm.extension.rest.client.api.*
 import org.camunda.bpm.extension.rest.client.model.*
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.bpm.extension.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
+import org.camunda.bpm.extension.rest.impl.query.DelegatingIncidentQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -55,6 +51,7 @@ class RemoteRuntimeService(
   private val messageApiClient: MessageApiClient,
   private val signalApiClient: SignalApiClient,
   private val executionApiClient: ExecutionApiClient,
+  private val incidentApiClient: IncidentApiClient,
   processEngine: ProcessEngine,
   objectMapper: ObjectMapper
 ) : AbstractRuntimeServiceAdapter() {
@@ -439,6 +436,30 @@ class RemoteRuntimeService(
 
   override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder =
     RemoteUpdateProcessInstanceSuspensionStateSelectBuilder(processInstanceApiClient)
+
+  override fun resolveIncident(incidentId: String?) {
+    incidentApiClient.resolveIncident(incidentId)
+  }
+
+  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?): Incident =
+    IncidentAdapter(IncidentBean.fromDto(
+      executionApiClient.createIncident(executionId, CreateIncidentDto().incidentType(incidentType)._configuration(configuration)).body!!
+    ))
+
+  override fun createIncident(incidentType: String?, executionId: String?, configuration: String?, message: String?): Incident =
+    IncidentAdapter(IncidentBean.fromDto(
+      executionApiClient.createIncident(executionId, CreateIncidentDto().incidentType(incidentType)._configuration(configuration).message(message)).body!!
+    ))
+
+  override fun createIncidentQuery() = DelegatingIncidentQuery(incidentApiClient)
+
+  override fun setAnnotationForIncidentById(incidentId: String, annotation: String) {
+    incidentApiClient.setIncidentAnnotation(incidentId, AnnotationDto().annotation(annotation))
+  }
+
+  override fun clearAnnotationForIncidentById(incidentId: String) {
+    incidentApiClient.clearIncidentAnnotation(incidentId)
+  }
 
 }
 
