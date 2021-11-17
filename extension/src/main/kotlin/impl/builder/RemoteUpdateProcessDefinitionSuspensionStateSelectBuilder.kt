@@ -7,19 +7,19 @@ import org.camunda.bpm.extension.rest.client.api.ProcessDefinitionApiClient
 import org.camunda.bpm.extension.rest.client.model.ProcessDefinitionSuspensionStateDto
 import java.util.*
 
-class DelegatingUpdateProcessDefinitionSuspensionStateSelectBuilder(
+class RemoteUpdateProcessDefinitionSuspensionStateSelectBuilder(
   private val processDefinitionApiClient: ProcessDefinitionApiClient
 ) : UpdateProcessDefinitionSuspensionStateSelectBuilder {
 
   override fun byProcessDefinitionId(processDefinitionId: String?) =
-    DelegatingUpdateProcessDefinitionSuspensionStateBuilder(processDefinitionApiClient, processDefinitionId)
+    RemoteUpdateProcessDefinitionSuspensionStateBuilder(processDefinitionApiClient, processDefinitionId)
 
   override fun byProcessDefinitionKey(processDefinitionKey: String?) =
-    DelegatingUpdateProcessDefinitionSuspensionStateTenantBuilder(processDefinitionApiClient, processDefinitionKey)
+    RemoteUpdateProcessDefinitionSuspensionStateTenantBuilder(processDefinitionApiClient, processDefinitionKey)
 
 }
 
-abstract class BaseDelegatingUpdateProcessDefinitionSuspensionStateBuilder : UpdateProcessDefinitionSuspensionStateBuilder {
+abstract class BaseRemoteUpdateProcessDefinitionSuspensionStateBuilder : UpdateProcessDefinitionSuspensionStateBuilder {
 
   protected var includeProcessInstances: Boolean? = null
   protected var executionDate: Date? = null
@@ -40,10 +40,10 @@ abstract class BaseDelegatingUpdateProcessDefinitionSuspensionStateBuilder : Upd
 
 }
 
-class DelegatingUpdateProcessDefinitionSuspensionStateBuilder(
+class RemoteUpdateProcessDefinitionSuspensionStateBuilder(
   private val processDefinitionApiClient: ProcessDefinitionApiClient,
   private val processDefinitionId: String?
-) : BaseDelegatingUpdateProcessDefinitionSuspensionStateBuilder() {
+) : BaseRemoteUpdateProcessDefinitionSuspensionStateBuilder() {
 
   override fun doUpdate(active: Boolean) {
     processDefinitionApiClient.updateProcessDefinitionSuspensionStateById(processDefinitionId,
@@ -56,10 +56,10 @@ class DelegatingUpdateProcessDefinitionSuspensionStateBuilder(
 
 }
 
-class DelegatingUpdateProcessDefinitionSuspensionStateTenantBuilder(
+class RemoteUpdateProcessDefinitionSuspensionStateTenantBuilder(
   private val processDefinitionApiClient: ProcessDefinitionApiClient,
   private val processDefinitionKey: String?
-) : BaseDelegatingUpdateProcessDefinitionSuspensionStateBuilder(), UpdateProcessDefinitionSuspensionStateTenantBuilder {
+) : BaseRemoteUpdateProcessDefinitionSuspensionStateBuilder(), UpdateProcessDefinitionSuspensionStateTenantBuilder {
 
   private var withoutTenant: Boolean? = null
   private var tenantId: String? = null

@@ -29,6 +29,7 @@ import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.HistoryService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.repository.ProcessDefinition
@@ -258,6 +259,11 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: RuntimeService
 
+  @Autowired
+  @Qualifier("remote")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var historyService: HistoryService
+
   @ProvidedScenarioState
   var processInstance: ProcessInstance? = null
 
@@ -294,6 +300,22 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
         .eventName(messageName)
         .singleResult()
     ).isNotNull
+  }
+
+  fun process_instance_is_suspended() = step {
+    remoteService.suspendProcessInstanceById(processInstance!!.id)
+  }
+
+  fun process_instance_is_suspended_by_process_definition_key(processDefinitionKey: String) = step {
+    remoteService.suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey)
+  }
+
+  fun process_instance_is_activated() = step {
+    remoteService.activateProcessInstanceById(processInstance!!.id)
+  }
+
+  fun process_instance_is_activated_by_process_definition_key(processDefinitionKey: String) = step {
+    remoteService.activateProcessInstanceByProcessDefinitionKey(processDefinitionKey)
   }
 
   fun process_instance_query_succeeds(

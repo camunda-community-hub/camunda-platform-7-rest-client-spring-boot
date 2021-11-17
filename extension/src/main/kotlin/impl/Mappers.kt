@@ -55,6 +55,25 @@ fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSor
         }
     })
 
+fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessInstanceQueryDtoSorting = HistoricProcessInstanceQueryDtoSorting()
+  .sortOrder(if (this.direction == Direction.DESCENDING) HistoricProcessInstanceQueryDtoSorting.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSorting.SortOrderEnum.ASC)
+  .sortBy(when (this@toHistoricProcessInstanceSorting.queryProperty) {
+    HistoricProcessInstanceQueryProperty.PROCESS_INSTANCE_ID_ -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.INSTANCEID
+    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONID
+    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONKEY
+    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_NAME -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONNAME
+    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_VERSION -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.DEFINITIONVERSION
+    HistoricProcessInstanceQueryProperty.TENANT_ID -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.TENANTID
+    HistoricProcessInstanceQueryProperty.BUSINESS_KEY -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.BUSINESSKEY
+    HistoricProcessInstanceQueryProperty.START_TIME -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.STARTTIME
+    HistoricProcessInstanceQueryProperty.END_TIME -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.ENDTIME
+    HistoricProcessInstanceQueryProperty.DURATION -> HistoricProcessInstanceQueryDtoSorting.SortByEnum.DURATION
+    else -> {
+      logger.warn { "query property ${this@toHistoricProcessInstanceSorting.queryProperty} is not supported for sorting" }
+      null
+    }
+  })
+
 
 fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSorting? {
   val dtoSorting = TaskQueryDtoSorting()

@@ -32,6 +32,7 @@ import org.camunda.bpm.extension.rest.client.api.*
 import org.camunda.bpm.extension.rest.client.model.*
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
+import org.camunda.bpm.extension.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
 import org.camunda.bpm.extension.rest.impl.query.DelegatingIncidentQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
@@ -408,6 +409,33 @@ class RemoteRuntimeService(
   override fun createProcessInstanceQuery(): ProcessInstanceQuery {
     return DelegatingProcessInstanceQuery(processInstanceApiClient)
   }
+
+  override fun activateProcessInstanceById(processInstanceId: String?) {
+    processInstanceApiClient.updateSuspensionStateById(processInstanceId, SuspensionStateDto().suspended(false))
+  }
+
+  override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false));
+  }
+
+  override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false));
+  }
+
+  override fun suspendProcessInstanceById(processInstanceId: String?) {
+    processInstanceApiClient.updateSuspensionStateById(processInstanceId, SuspensionStateDto().suspended(true))
+  }
+
+  override fun suspendProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true));
+  }
+
+  override fun suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true));
+  }
+
+  override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder =
+    RemoteUpdateProcessInstanceSuspensionStateSelectBuilder(processInstanceApiClient)
 
   override fun resolveIncident(incidentId: String?) {
     incidentApiClient.resolveIncident(incidentId)
