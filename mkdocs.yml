@@ -9,9 +9,9 @@ site_name: Camunda REST Client Spring Boot
 site_url: https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/
 site_author: Camunda OSS Developers
 site_description: >-
-  Axon Avro Serializer is an extension to Axon Framework allowing
-  to use schema-first approach for creation of events based on Apache Avro
-  format, which is used for serialization.
+  Camunda REST Client Spring Boot provides a REST client for Camunda REST API for SpringBoot. 
+  In doing so it offers "remote" implementations of Camunda Engine Java API. By doing so we bridge 
+  the gap between using Camunda Java API for the local or remote engine.  
 
 copyright: Copyright &copy; 2021, Camunda Service GmbH
 
