@@ -65,6 +65,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       incident:
         url: "http://localhost:8083/engine-rest/"
+      historicProcessInstance:
+        url: "http://localhost:8083/engine-rest/"
 ```
 
 To run this example, you will need the server part from the next example. To activate the server part only, please
@@ -145,6 +147,8 @@ feign:
       externalTask:
         url: "http://localhost:8083/engine-rest/"
       incident:
+        url: "http://localhost:8083/engine-rest/"
+      historicProcessInstance:
         url: "http://localhost:8083/engine-rest/"
 ```
 
