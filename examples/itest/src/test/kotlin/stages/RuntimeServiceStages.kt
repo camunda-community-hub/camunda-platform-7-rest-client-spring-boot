@@ -32,6 +32,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.HistoryService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.engine.runtime.*
@@ -67,6 +68,9 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var execution: Execution
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  lateinit var batch: Batch
 
   fun no_deployment_exists() = step {
     repositoryService.createDeploymentQuery().list().map {
@@ -244,6 +248,18 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
     remoteService.clearAnnotationForIncidentById(incident.id)
   }
 
+  fun process_instance_is_deleted(processInstanceId: String) {
+    remoteService.deleteProcessInstance(processInstanceId, "because")
+  }
+
+  fun process_instance_is_deleted_if_exists(processInstanceId: String) {
+    remoteService.deleteProcessInstanceIfExists(processInstanceId, "because", false, false, false, false)
+  }
+
+  fun process_instance_is_deleted_async(processInstanceId: String) {
+    batch = remoteService.deleteProcessInstancesAsync(listOf(processInstanceId), "because")
+  }
+
 }
 
 @JGivenStage
@@ -266,6 +282,9 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
 
   @ProvidedScenarioState
   var processInstance: ProcessInstance? = null
+
+  @ProvidedScenarioState
+  var batch: Batch? = null
 
   fun process_instance_exists(
     processDefinitionKey: String? = null,
@@ -330,6 +349,10 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   ) = step {
     val query = remoteService.createIncidentQuery()
     incidentQueryAssertions(query, this)
+  }
+
+  fun batch_has_jobs(jobCount: Int) = step {
+    assertThat(batch!!.totalJobs).isEqualTo(jobCount)
   }
 
 }
