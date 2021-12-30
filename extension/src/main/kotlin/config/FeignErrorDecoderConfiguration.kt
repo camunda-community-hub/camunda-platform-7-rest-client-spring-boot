@@ -86,6 +86,7 @@ internal data class CamundaFeignExceptionDecoder(val response: Response) {
         ?: fromMessage(response.message)?.let {
           constructExceptionInstance(it)
         }
+        ?: RemoteProcessEngineException("REST-CLIENT-002 Error during remote Camunda engine invocation with ${response.clazz}: ${response.message}")
     } catch (e: IOException) {
       null
     }
