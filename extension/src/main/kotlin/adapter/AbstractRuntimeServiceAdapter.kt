@@ -423,36 +423,36 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun startProcessInstanceByMessage(messageName: String?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessage(messageName: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessage(messageName: String, businessKey: String): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun startProcessInstanceByMessage(messageName: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessage(messageName: String, processVariables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun startProcessInstanceByMessage(messageName: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>): ProcessInstance {
+    implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String, processDefinitionId: String): ProcessInstance {
+    TODO("Not yet implemented")
   }
 
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String, processDefinitionId: String, businessKey: String?): ProcessInstance {
+    TODO("Not yet implemented")
   }
 
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String, processDefinitionId: String, processVariables: MutableMap<String, Any>?): ProcessInstance {
+    TODO("Not yet implemented")
   }
 
-  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String?, processDefinitionId: String?, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
-    TODO("not implemented")
+  override fun startProcessInstanceByMessageAndProcessDefinitionId(messageName: String, processDefinitionId: String, businessKey: String?, processVariables: MutableMap<String, Any>?): ProcessInstance {
+    TODO("Not yet implemented")
   }
 
   /**
