@@ -34,10 +34,10 @@
     <camunda.version.base>7.15</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.1-ee</camunda.version.ee>
-    <spin.version>1.13.0</spin.version>
+    <spin.version>1.14.0</spin.version>
 
-    <spring-boot.version>2.6.3</spring-boot.version>
-    <spring-cloud.version>2021.0.0</spring-cloud.version>
+    <spring-boot.version>2.6.4</spring-boot.version>
+    <spring-cloud.version>2021.0.1</spring-cloud.version>
 
     <kotlin.version>1.6.10</kotlin.version>
     <kotlin-logging.version>2.1.21</kotlin-logging.version>
@@ -185,7 +185,7 @@
           <!-- java compiler -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.9.0</version>
+          <version>3.10.1</version>
           <configuration>
             <encoding>${project.build.sourceEncoding}</encoding>
             <source>${maven.compiler.source}</source>
