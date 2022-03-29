@@ -15,7 +15,7 @@
   <properties>
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
-    <openapi-generator-version>5.3.1</openapi-generator-version>
+    <openapi-generator-version>5.4.0</openapi-generator-version>
     <camunda.openapi.package>org.camunda.bpm.extension.rest.client</camunda.openapi.package>
   </properties>
 
@@ -66,9 +66,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>io.swagger</groupId>
+      <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
-      <version>1.6.5</version>
+      <version>2.1.12</version>
     </dependency>
 
     <dependency>
