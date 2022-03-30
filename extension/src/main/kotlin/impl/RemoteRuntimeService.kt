@@ -461,6 +461,35 @@ class RemoteRuntimeService(
     incidentApiClient.clearIncidentAnnotation(incidentId)
   }
 
+  override fun startProcessInstanceByMessage(messageName: String): ProcessInstance =
+    doStartProcessInstanceByMessage(messageName = messageName)
+
+  override fun startProcessInstanceByMessage(messageName: String, businessKey: String): ProcessInstance =
+    doStartProcessInstanceByMessage(messageName = messageName, businessKey = businessKey)
+
+  override fun startProcessInstanceByMessage(messageName: String, processVariables: MutableMap<String, Any>): ProcessInstance =
+    doStartProcessInstanceByMessage(messageName = messageName, variables = processVariables)
+
+  override fun startProcessInstanceByMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>): ProcessInstance =
+    doStartProcessInstanceByMessage(messageName = messageName, businessKey = businessKey, variables = processVariables)
+
+  /**
+   * Null-safe version of starter function.
+   */
+  private fun doStartProcessInstanceByMessage(
+    messageName: String,
+    businessKey: String? = null,
+    variables: MutableMap<String, Any>? = null
+  ): ProcessInstance =
+    createMessageCorrelation(messageName).apply {
+      if (businessKey != null) {
+        this.processInstanceBusinessKey(businessKey)
+      }
+      if (variables != null) {
+        this.setVariables(variables)
+      }
+    }.correlateStartMessage()
+
 }
 
 
