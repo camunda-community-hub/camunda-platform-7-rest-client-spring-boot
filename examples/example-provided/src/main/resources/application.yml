@@ -45,6 +45,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       incident:
         url: "http://localhost:${server.port}/engine-rest/"
+      historicProcessInstance:
+        url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:

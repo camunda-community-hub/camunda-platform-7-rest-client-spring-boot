@@ -19,8 +19,8 @@
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
     <!-- USe Camunda BPM JGiven -->
-    <camunda-jgiven.version>0.0.8</camunda-jgiven.version>
-    <jgiven.version>1.1.0</jgiven.version>
+    <camunda-jgiven.version>0.2.0</camunda-jgiven.version>
+    <jgiven.version>1.2.0</jgiven.version>
   </properties>
 
   <dependencies>
@@ -116,7 +116,7 @@
       <plugin>
         <groupId>com.tngtech.jgiven</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <executions>
           <execution>
             <goals>

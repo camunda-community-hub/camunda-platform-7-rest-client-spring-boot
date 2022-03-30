@@ -34,17 +34,17 @@
     <camunda.version.base>7.15</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.1-ee</camunda.version.ee>
-    <spin.version>1.13.0</spin.version>
+    <spin.version>1.14.0</spin.version>
 
-    <spring-boot.version>2.6.1</spring-boot.version>
-    <spring-cloud.version>2021.0.0</spring-cloud.version>
+    <spring-boot.version>2.6.5</spring-boot.version>
+    <spring-cloud.version>2021.0.1</spring-cloud.version>
 
     <kotlin.version>1.6.10</kotlin.version>
-    <kotlin-logging.version>2.1.20</kotlin-logging.version>
+    <kotlin-logging.version>2.1.21</kotlin-logging.version>
 
     <!-- test tools -->
-    <assertj.version>3.21.0</assertj.version>
-    <mockito.version>4.2.0</mockito.version>
+    <assertj.version>3.22.0</assertj.version>
+    <mockito.version>4.4.0</mockito.version>
     <mockito-kotlin.version>4.0.0</mockito-kotlin.version>
 
     <pattern.class.itest>**/*ITest.*</pattern.class.itest>
@@ -185,7 +185,7 @@
           <!-- java compiler -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
+          <version>3.10.1</version>
           <configuration>
             <encoding>${project.build.sourceEncoding}</encoding>
             <source>${maven.compiler.source}</source>
@@ -347,7 +347,7 @@
         <plugin>
           <groupId>org.jetbrains.dokka</groupId>
           <artifactId>dokka-maven-plugin</artifactId>
-          <version>1.6.0</version>
+          <version>1.6.10</version>
           <executions>
             <execution>
               <phase>package</phase>
@@ -363,7 +363,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.0</version>
           <executions>
             <execution>
               <phase>generate-sources</phase>
@@ -523,7 +523,7 @@
         <repository>
           <id>camunda-bpm-ee</id>
           <name>camunda-bpm-ee</name>
-          <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
+          <url>https://artifacts.camunda.com/artifactory/camunda-bpm-ee/</url>
         </repository>
       </repositories>
     </profile>
@@ -605,12 +605,12 @@
     <repository>
       <id>camunda-nexus</id>
       <name>Camunda BPM Community extensions</name>
-      <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
+      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions/</url>
     </repository>
     <snapshotRepository>
       <id>camunda-nexus</id>
       <name>Camunda BPM Community extensions snapshots</name>
-      <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
+      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions-snapshots/</url>
       <!-- for maven 2 compatibility -->
       <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
