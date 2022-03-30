@@ -796,13 +796,29 @@ The values specify the location of the remote process engine:</p>
 <div class="highlight"><pre><span></span><code>feign:
   client:
     config:
-      remoteRuntimeService:
+      processInstance:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteRepositoryService:
+      processDefinition:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteExternalTaskService:
+      message:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteTaskService:
+      signal:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      execution:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      task:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskVariable:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskLocalVariable:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskIdentityLink:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      externalTask:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      incident:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      historicProcessInstance:
         url: &quot;http://localhost:8083/engine-rest/&quot;
 </code></pre></div>
 <p>To run this example, you will need the server part from the next example. To activate the server part only, please
@@ -869,13 +885,29 @@ annotation. This annotation indicates that the remote version of the Camunda API
 <div class="highlight"><pre><span></span><code>feign:
   client:
     config:
-      remoteRuntimeService:
+      processInstance:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteRepositoryService:
+      processDefinition:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteExternalTaskService:
+      message:
         url: &quot;http://localhost:8083/engine-rest/&quot;
-      remoteTaskService:
+      signal:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      execution:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      task:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskVariable:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskLocalVariable:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      taskIdentityLink:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      externalTask:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      incident:
+        url: &quot;http://localhost:8083/engine-rest/&quot;
+      historicProcessInstance:
         url: &quot;http://localhost:8083/engine-rest/&quot;
 </code></pre></div>
 

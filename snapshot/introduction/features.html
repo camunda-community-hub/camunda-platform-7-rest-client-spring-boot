@@ -479,6 +479,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#historyservice" class="md-nav__link">
+    HistoryService
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -711,11 +718,11 @@
 <p>The library supports the following features:</p>
 <h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">#</a></h2>
 <ul>
-<li>Usage of Open Feign library to allow for high-customizable REST client</li>
+<li>Usage of Open Feign library to allow for high-customizable REST client (generated from camunda openapi definition) </li>
 <li>Provides a SpringBoot starter for usage in standalone client mode</li>
 <li>Provides a SpringBoot starter for usage inside a process application</li>
 <li>Decode HTTP error response and simulate exceptions, as if they are thrown locally by the service.</li>
-<li>Implemented Services: <code>RuntimeService</code>, <code>RepositoryService</code>, <code>TaskService</code>, <code>ExternalTaskService</code></li>
+<li>Implemented Services: <code>RuntimeService</code>, <code>RepositoryService</code>, <code>TaskService</code>, <code>ExternalTaskService</code>, <code>HistoryService</code></li>
 </ul>
 <h2 id="runtimeservice">RuntimeService<a class="headerlink" href="#runtimeservice" title="Permanent link">#</a></h2>
 <ul>
@@ -731,10 +738,23 @@
 <li>Delete variables: <code>#removeVariable()</code>,<code>#removeVariables()</code></li>
 <li>Write local variables: <code>#setVariableLocal()</code>,<code>#setVariablesLocal()</code>, <code>#setVariableLocalTyped()</code>, <code>#setVariablesLocalTyped()</code></li>
 <li>Delete local variables: <code>#removeVariableLocal()</code>,<code>#removeVariablesLocal()</code></li>
+<li>Incident query: <code>#createIncidentQuery()</code></li>
+<li>Create/Resolve incidents: <code>#createIncident()</code>, <code>#resolveIncident()</code></li>
+<li>Annotations for incidents: <code>#setAnnotationForIncidentById()</code>, <code>#clearAnnotationForIncidentById()</code></li>
+<li>Activate/Suspend process instances by definition key: <code>#suspendProcessInstanceByProcessDefinitionKey()</code>, <code>#activateProcessInstanceByProcessDefinitionKey()</code></li>
+<li>Activate/Suspend process instances by definition id: <code>#suspendProcessInstanceByProcessDefinitionId()</code>, <code>#activateProcessInstanceByProcessDefinitionId()</code></li>
+<li>Activate/Suspend process instances: <code>#suspendProcessInstanceById()</code>, <code>#activateProcessInstanceById()</code></li>
+<li>Update process instance suspension state: <code>#updateProcessInstanceSuspensionState()</code></li>
 </ul>
 <h2 id="repositoryservice">RepositoryService<a class="headerlink" href="#repositoryservice" title="Permanent link">#</a></h2>
 <ul>
 <li>Query for process definitions: <code>#createProcessDefinitionQuery()</code></li>
+<li>History time to live: <code>#updateDecisionDefinitionHistoryTimeToLive()</code>, <code>#updateProcessDefinitionHistoryTimeToLive()</code></li>
+<li>Create deployment: <code>#createDeployment()</code></li>
+<li>Delete deployment: <code>#deleteDeployment()</code>, <code>#deleteDeploymentCascade()</code></li>
+<li>Deployment query: <code>#createDeploymentQuery()</code></li>
+<li>Delete process definition: <code>#deleteProcessDefinition()</code></li>
+<li>Update process definition suspension state: <code>#updateProcessDefinitionSuspensionState()</code></li>
 </ul>
 <h2 id="taskservice">TaskService<a class="headerlink" href="#taskservice" title="Permanent link">#</a></h2>
 <ul>
@@ -759,6 +779,10 @@ but still provide an alternative implementation for some methods.</p>
 <li>Complete a task by id: <code>#complete()</code></li>
 <li>Handle BPMN Errors: <code>#handleBpmnError()</code></li>
 <li>Handle failures: <code>#handleFailure()</code></li>
+</ul>
+<h2 id="historyservice">HistoryService<a class="headerlink" href="#historyservice" title="Permanent link">#</a></h2>
+<ul>
+<li>Historic process instance query: <code>#createHistoricProcessInstanceQuery()</code></li>
 </ul>
 
   <hr>
