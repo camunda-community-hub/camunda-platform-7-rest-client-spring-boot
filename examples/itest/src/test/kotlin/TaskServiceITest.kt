@@ -84,6 +84,11 @@ class TaskServiceITest
             .count()
         ).isEqualTo(1)
       }
+      .AND
+      .task_query_succeeds { query, stage ->
+        assertThat(query.taskId(stage.tasksIds[0]).count()).isEqualTo(1)
+        assertThat(query.taskId(stage.tasksIds[1]).count()).isEqualTo(1)
+      }
   }
 
   @Test
