@@ -29,6 +29,7 @@ import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.kotlin.await
 import org.camunda.bpm.engine.*
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.repository.ProcessDefinition
@@ -36,7 +37,7 @@ import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import java.lang.Thread.sleep
+import java.time.Duration
 
 @JGivenStage
 class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, RuntimeService>() {
@@ -216,11 +217,11 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
   }
 
   fun execution_is_waiting_in_user_task(): RuntimeServiceActionStage = step {
-    while (taskService
+    await.atMost(Duration.ofSeconds(5)).until {
+      taskService
         .createTaskQuery()
         .processInstanceId(processInstance.id)
-        .count() == 0L) {
-      sleep(1000)
+        .count() != 0L
     }
   }
 
@@ -312,7 +313,7 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   var processInstance: ProcessInstance? = null
 
   @ProvidedScenarioState
-  var batch: Batch? = null
+  lateinit var batch: Batch
 
   fun process_instance_exists(
     processDefinitionKey: String? = null,
@@ -380,12 +381,12 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   }
 
   fun batch_has_jobs(jobCount: Int) = step {
-    assertThat(batch!!.totalJobs).isEqualTo(jobCount)
+    assertThat(batch.totalJobs).isEqualTo(jobCount)
   }
 
   fun wait_for_batch() = step {
-    while (managementService.createBatchQuery().batchId(batch!!.id).singleResult() != null) {
-      sleep(1000)
+    await.atMost(Duration.ofSeconds(5)).until {
+      managementService.createBatchQuery().batchId(batch.id).singleResult() == null
     }
   }
 
