@@ -29,6 +29,7 @@ The library supports the following features:
 * Activate/Suspend process instances by definition id: `#suspendProcessInstanceByProcessDefinitionId()`, `#activateProcessInstanceByProcessDefinitionId()`
 * Activate/Suspend process instances: `#suspendProcessInstanceById()`, `#activateProcessInstanceById()`
 * Update process instance suspension state: `#updateProcessInstanceSuspensionState()`
+* Delete process instances: `#deleteProcessInstance()`, `#deleteProcessInstanceIfExists()`, `#deleteProcessInstances()`, `#deleteProcessInstancesIfExists()`, `#deleteProcessInstancesAsync()`
 
 ## RepositoryService
 

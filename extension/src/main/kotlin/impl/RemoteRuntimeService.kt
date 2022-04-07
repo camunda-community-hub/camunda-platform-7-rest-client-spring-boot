@@ -24,6 +24,8 @@ package org.camunda.bpm.extension.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
+import org.camunda.bpm.engine.batch.Batch
+import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
@@ -33,6 +35,7 @@ import org.camunda.bpm.extension.rest.client.model.*
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.bpm.extension.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.bpm.extension.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
+import org.camunda.bpm.extension.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingIncidentQuery
 import org.camunda.bpm.extension.rest.impl.query.DelegatingProcessInstanceQuery
 import org.camunda.bpm.extension.rest.variables.ValueMapper
@@ -415,11 +418,11 @@ class RemoteRuntimeService(
   }
 
   override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false));
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false))
   }
 
   override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false));
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false))
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
@@ -427,11 +430,11 @@ class RemoteRuntimeService(
   }
 
   override fun suspendProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true));
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true))
   }
 
   override fun suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true));
+    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true))
   }
 
   override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder =
@@ -489,6 +492,87 @@ class RemoteRuntimeService(
         this.setVariables(variables)
       }
     }.correlateStartMessage()
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch =
+    BatchAdapter(BatchBean.fromDto(processInstanceApiClient.deleteProcessInstancesAsyncOperation(
+      DeleteProcessInstancesDto()
+        .processInstanceIds(processInstanceIds)
+        .processInstanceQuery(processInstanceQuery?.toDto())
+        .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
+        .deleteReason(deleteReason)
+        .skipSubprocesses(skipSubprocesses)
+        .skipCustomListeners(skipCustomListeners)
+    ).body!!))
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?) =
+    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean) =
+    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = false)
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean) =
+    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses)
+
+  override fun deleteProcessInstancesAsync(processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?) =
+    deleteProcessInstancesAsync(processInstanceIds = null, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, deleteReason: String?) =
+    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = null, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+
+  override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
+    processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipSubprocesses, false)
+  }
+
+  override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
+    processInstanceIds?.forEach {
+      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, externallyTerminated = externallyTerminated)
+    }
+  }
+
+  override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
+    processInstanceIds?.forEach {
+      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false)
+    }
+  }
+
+  override fun deleteProcessInstancesIfExists(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
+    processInstanceIds?.forEach {
+      deleteProcessInstanceIfExists(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false)
+    }
+  }
+
+  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?) {
+    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = false)
+  }
+
+  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean) {
+    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, externallyTerminated = false)
+  }
+
+  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
+    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+      externallyTerminated = externallyTerminated, skipIoMappings = false)
+  }
+
+  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean) {
+    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+      externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings, skipSubprocesses = false)
+  }
+
+  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
+    processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipCustomListeners, true)
+  }
+
+  private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
+
+  private fun HistoricProcessInstanceQuery.toDto() = if (this is DelegatingHistoricProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 
 }
 

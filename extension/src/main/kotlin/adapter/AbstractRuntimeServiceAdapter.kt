@@ -245,38 +245,38 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>,
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?,
                                            processInstanceQuery: ProcessInstanceQuery?,
                                            historicProcessInstanceQuery: HistoricProcessInstanceQuery?,
                                            deleteReason: String?,
                                            skipCustomListeners: Boolean,
                                            skipSubprocesses: Boolean): Batch {
-    TODO("Not yet implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean): Batch {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstancesAsync(processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?): Batch {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, deleteReason: String?): Batch {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
@@ -284,11 +284,11 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun activateProcessInstanceById(processInstanceId: String?) {
@@ -324,7 +324,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun deleteProcessInstancesIfExists(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createProcessInstanceById(processDefinitionId: String?): ProcessInstantiationBuilder {
@@ -336,23 +336,23 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun restartProcessInstances(processDefinitionId: String?): RestartProcessInstanceBuilder {
