@@ -32,6 +32,7 @@ import org.camunda.bpm.extension.rest.adapter.TaskAdapter
 import org.camunda.bpm.extension.rest.adapter.TaskBean
 import org.camunda.bpm.extension.rest.client.api.TaskApiClient
 import org.camunda.bpm.extension.rest.client.model.TaskQueryDto
+import org.camunda.bpm.extension.rest.impl.model.PatchedTaskQueryDto
 import org.camunda.bpm.extension.rest.impl.toTaskSorting
 import org.camunda.bpm.extension.rest.variables.toDto
 import java.time.format.DateTimeFormatter
@@ -67,12 +68,14 @@ class DelegatingTaskQuery(
     }
   }
 
-  private fun fillQueryDto() = TaskQueryDto().apply {
+  private fun fillQueryDto() = PatchedTaskQueryDto().apply {
     checkQueryOk()
-    val dtoPropertiesByName = TaskQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
+    val dtoPropertiesByName = TaskQueryDto::class.memberProperties.plus(PatchedTaskQueryDto::class.memberProperties)
+      .filterIsInstance<KMutableProperty1<PatchedTaskQueryDto, Any?>>().associateBy { it.name }
     val queryPropertiesByName = TaskQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
+        "taskIdIn" -> this@DelegatingTaskQuery.taskIdIn?.toList()
         "processInstanceBusinessKeyExpression" -> this@DelegatingTaskQuery.expressions["processInstanceBusinessKey"]
         "processInstanceBusinessKeyIn" -> this@DelegatingTaskQuery.processInstanceBusinessKeys?.toList()
         "processInstanceBusinessKeyLikeExpression" -> this@DelegatingTaskQuery.expressions["processInstanceBusinessKeyLike"]
