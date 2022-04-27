@@ -82,6 +82,11 @@ Here are currently implemented methods. The version behind the service name deno
 * `# suspendProcessInstanceById`
 * `# activateProcessInstanceById`
 * `# updateProcessInstanceSuspensionState`
+* `# deleteProcessInstance`
+* `# deleteProcessInstanceIfExists`
+* `# deleteProcessInstances`
+* `# deleteProcessInstancesIfExists`
+* `# deleteProcessInstancesAsync`
 
 ## RepositoryService @ 0.0.7
 
