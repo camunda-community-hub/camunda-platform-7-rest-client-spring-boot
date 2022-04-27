@@ -42,7 +42,7 @@ class ExternalTaskServiceErrorITest :
   @Test
   fun `should fail completing non-existing external task`() {
     EXPECT.process_engine_exception_is_thrown_caused_by(
-      reason = "REST-CLIENT-001 Error during remote Camunda engine invocation of ExternalTaskApiClient#completeExternalTaskResource(String,CompleteExternalTaskDto): "
+      reason = "REST-CLIENT-002 Error during remote Camunda engine invocation with RestException: External task with id not-existing does not exist"
     ) {
       WHEN
         .remoteService.complete("not-existing", "worker-id")

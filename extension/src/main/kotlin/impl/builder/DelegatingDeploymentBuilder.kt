@@ -171,7 +171,7 @@ class DelegatingDeploymentBuilder(
 
   override fun deployWithResult() =
     DeploymentAdapter(DeploymentBean.fromDto(
-      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName, resources.toTypedArray()).body!!
+      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName, null, resources.toTypedArray()).body!!
     ))
 
   override fun getResourceNames(): MutableCollection<String> = this.resources.map { it.name }.toMutableList()

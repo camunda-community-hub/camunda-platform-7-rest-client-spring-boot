@@ -23,6 +23,7 @@
 
 package org.camunda.bpm.extension.rest.adapter
 
+import org.camunda.bpm.engine.form.CamundaFormRef
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.extension.rest.client.model.TaskDto
@@ -122,6 +123,9 @@ class TaskAdapter(private val taskBean: TaskBean) : Task {
   override fun setTenantId(tenantId: String?) {
     taskBean.tenantId = tenantId
   }
+
+  override fun getCamundaFormRef(): CamundaFormRef? = TODO("Not yet implemented")
+
 }
 
 /**

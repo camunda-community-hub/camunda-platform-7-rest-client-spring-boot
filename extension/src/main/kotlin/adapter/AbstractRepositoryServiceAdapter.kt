@@ -254,4 +254,11 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
+  /**
+   * @since 7.16
+   */
+  override fun getStaticCalledProcessDefinitions(processDefinitionId: String?): MutableCollection<CalledProcessDefinition> {
+    TODO("Not yet implemented")
+  }
+
 }

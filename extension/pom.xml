@@ -138,26 +138,6 @@
         <artifactId>replacer</artifactId>
         <executions>
           <execution>
-            <id>removeUnusedAnnotationImports</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>replace</goal>
-            </goals>
-            <configuration>
-              <basedir>${project.basedir}</basedir>
-              <includes>
-                <include>target/generated-sources/openapi/**/*.java</include>
-              </includes>
-              <regex>false</regex>
-              <replacements>
-                <replacement>
-                  <token>import springfox.documentation.annotations.ApiIgnore;</token>
-                  <value />
-                </replacement>
-              </replacements>
-            </configuration>
-          </execution>
-          <execution>
             <id>changeDeploymentMultipartToArray</id>
             <phase>process-resources</phase>
             <goals>
@@ -174,27 +154,6 @@
                 <replacement>
                   <token>@RequestParam("data") MultipartFile data</token>
                   <value>@RequestPart("data") MultipartFile[] data</value>
-                </replacement>
-              </replacements>
-            </configuration>
-          </execution>
-          <execution>
-            <id>changeWrongResponseForIncidentCount</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>replace</goal>
-            </goals>
-            <configuration>
-              <basedir>${project.basedir}</basedir>
-              <includes>
-                <include>target/generated-sources/openapi/**/IncidentApi.java</include>
-              </includes>
-              <regex>false</regex>
-              <replacements>
-                <!-- RequestPart is needed to activate correct encoding, further array is needed to allow multiple files -->
-                <replacement>
-                  <token>ResponseEntity&lt;List&lt;CountResultDto&gt;&gt;</token>
-                  <value>ResponseEntity&lt;CountResultDto&gt;</value>
                 </replacement>
               </replacements>
             </configuration>

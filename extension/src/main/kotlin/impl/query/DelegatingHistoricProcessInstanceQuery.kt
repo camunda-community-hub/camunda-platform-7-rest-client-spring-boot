@@ -67,6 +67,7 @@ class DelegatingHistoricProcessInstanceQuery(private val historicProcessInstance
         "processDefinitionKeyIn" -> this@DelegatingHistoricProcessInstanceQuery.processDefinitionKeys?.toList()
         "processDefinitionKeyNotIn" -> this@DelegatingHistoricProcessInstanceQuery.processKeyNotIn?.toList()
         "processInstanceBusinessKey" -> this@DelegatingHistoricProcessInstanceQuery.businessKey
+        "processInstanceBusinessKeyIn" -> this@DelegatingHistoricProcessInstanceQuery.businessKeyIn?.toList()
         "processInstanceBusinessKeyLike" -> this@DelegatingHistoricProcessInstanceQuery.businessKeyLike
         "rootProcessInstances" -> this@DelegatingHistoricProcessInstanceQuery.isRootProcessInstances
         "incidentStatus" -> this@DelegatingHistoricProcessInstanceQuery.incidentStatus?.let { HistoricProcessInstanceQueryDto.IncidentStatusEnum.fromValue(it) }

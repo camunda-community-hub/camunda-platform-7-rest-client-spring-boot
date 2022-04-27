@@ -84,6 +84,7 @@ class DelegatingTaskQuery(
         "assigneeExpression" -> this@DelegatingTaskQuery.expressions["taskAssignee"]
         "assigneeLikeExpression" -> this@DelegatingTaskQuery.expressions["taskAssigneeLike"]
         "assigneeIn" -> this@DelegatingTaskQuery.assigneeIn?.toList()
+        "assigneeNotIn" -> this@DelegatingTaskQuery.assigneeNotIn?.toList()
         "ownerExpression" -> this@DelegatingTaskQuery.expressions["taskOwner"]
         "candidateGroupExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroup"]
         "candidateUserExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateUser"]
