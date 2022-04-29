@@ -481,4 +481,12 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   override fun clearAnnotationForIncidentById(incidentId: String) {
     implementedBy(RemoteRuntimeService::class)
   }
+
+  /**
+   * @since 7.16
+   */
+  override fun createMessageCorrelationAsync(messageName: String?): MessageCorrelationAsyncBuilder {
+    TODO("Not yet implemented")
+  }
+
 }

@@ -21,6 +21,7 @@
     <!-- USe Camunda BPM JGiven -->
     <camunda-jgiven.version>0.2.0</camunda-jgiven.version>
     <jgiven.version>1.2.0</jgiven.version>
+    <byte-buddy.version>1.12.9</byte-buddy.version>
   </properties>
 
   <dependencies>
@@ -110,6 +111,12 @@
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility-kotlin</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>${byte-buddy.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
