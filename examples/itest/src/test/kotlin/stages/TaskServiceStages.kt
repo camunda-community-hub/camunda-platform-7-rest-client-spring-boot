@@ -67,6 +67,9 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var task: Task
 
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  val tasksIds = mutableListOf<String>()
+
   fun no_deployment_exists() = step {
     repositoryService.createDeploymentQuery().list().map {
       repositoryService.deleteDeployment(it.id, true)
@@ -122,6 +125,12 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
         .processInstanceId(processInstance.id)
         .singleResult()
     ).isNotNull
+
+    val taskId = localService.createTaskQuery()
+      .processInstanceId(processInstance.id)
+      .singleResult().id
+
+    tasksIds.add(taskId)
   }
 
   fun process_waits_in_task(
@@ -159,11 +168,14 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
   @ProvidedScenarioState
   var task: Task? = null
 
+  @ExpectedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  val tasksIds = mutableListOf<String>()
+
   fun task_exists(
     taskDefinitionKey: String? = null,
     taskId: String? = null,
     containingSimpleProcessVariables: Map<String, Any>? = null,
-    taskAssertions: (Task, AssertStage<*, TaskService>) -> Unit = { _, _ -> }
+    taskAssertions: (Task, TaskServiceAssertStage) -> Unit = { _, _ -> }
   ) = step {
 
     val query = localService.createTaskQuery().apply {
@@ -188,7 +200,7 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
    * Task query assertion as a step function.
    */
   fun task_query_succeeds(
-    @Hidden taskQueryAssertions: (TaskQuery, AssertStage<*, TaskService>) -> Unit = { _, _ -> }
+    @Hidden taskQueryAssertions: (TaskQuery, TaskServiceAssertStage) -> Unit = { _, _ -> }
   ) = step {
     val query = remoteService.createTaskQuery()
     taskQueryAssertions(query, this)
