@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/getting-started.html">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.11">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.13">
     
     
       
@@ -23,10 +23,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.8c5ef100.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.e411adfe.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.9647289d.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.cc9b2e1e.min.css">
         
       
     
@@ -737,11 +737,11 @@
 </div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h2>
 <p>In your client code, activate the usage of REST client by adding the following annotation to your configuration:</p>
-<div class="highlight"><pre><span></span><code><span class="nd">@Configuration</span>
-<span class="nd">@EnableCamundaRestClient</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClientConfiguration</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@Configuration</span><span class="w"></span>
+<span class="nd">@EnableCamundaRestClient</span><span class="w"></span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyClientConfiguration</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-<span class="p">}</span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p>In order to configure the Feign client, make sure to provide usual feign client configuration
 (e.g. using <code>application.yml</code>). To set up the engine base URL, please set up the properties:</p>
@@ -775,27 +775,27 @@
 </code></pre></div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <p>To access the remote API, inject the remote API implementation:</p>
-<div class="highlight"><pre><span></span><code><span class="nd">@Component</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClient</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nd">@Component</span><span class="w"></span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyClient</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 
-  <span class="kd">private</span> <span class="n">RuntimeService</span> <span class="n">runtimeService</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">RuntimeService</span><span class="w"> </span><span class="n">runtimeService</span><span class="p">;</span><span class="w"></span>
 
-  <span class="kd">public</span> <span class="nf">MyClient</span><span class="p">(</span><span class="nd">@Qualifier</span><span class="p">(</span><span class="s">&quot;remote&quot;</span><span class="p">)</span> <span class="n">RuntimeService</span> <span class="n">runtimeService</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span> <span class="o">=</span> <span class="n">runtimeService</span><span class="p">;</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">MyClient</span><span class="p">(</span><span class="nd">@Qualifier</span><span class="p">(</span><span class="s">&quot;remote&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">RuntimeService</span><span class="w"> </span><span class="n">runtimeService</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">runtimeService</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span>
-      <span class="p">.</span><span class="na">startProcessInstanceByKey</span><span class="p">(</span><span class="s">&quot;my_process_key&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">start</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="na">startProcessInstanceByKey</span><span class="p">(</span><span class="s">&quot;my_process_key&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
 
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">correlate</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span>
-      <span class="p">.</span><span class="na">createMessageCorrelation</span><span class="p">(</span><span class="s">&quot;message_received&quot;</span><span class="p">)</span>
-      <span class="p">.</span><span class="na">processInstanceBusinessKey</span><span class="p">(</span><span class="s">&quot;WAIT_FOR_MESSAGE&quot;</span><span class="p">)</span>
-      <span class="p">.</span><span class="na">correlateAllWithResult</span><span class="p">();</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">correlate</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">runtimeService</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="na">createMessageCorrelation</span><span class="p">(</span><span class="s">&quot;message_received&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="na">processInstanceBusinessKey</span><span class="p">(</span><span class="s">&quot;WAIT_FOR_MESSAGE&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="na">correlateAllWithResult</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
   <hr>
@@ -803,7 +803,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 29, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">May 2, 2022</span>
       
     
   </small>
@@ -885,7 +885,7 @@
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "toc.integrate"], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.748e2769.min.js"></script>
+      <script src="assets/javascripts/bundle.ed9748b7.min.js"></script>
       
     
   </body>
