@@ -17,7 +17,7 @@
     <!-- Extension -->
     <dependency>
       <groupId>org.camunda.community.rest</groupId>
-      <artifactId>camunda-rest-client-spring-boot</artifactId>
+      <artifactId>camunda-platform-7-rest-client-spring-boot</artifactId>
       <version>${project.version}</version>
     </dependency>
 

@@ -6,20 +6,20 @@
 # ###############################
 
 site_name: Camunda REST Client Spring Boot
-site_url: https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/
+site_url: https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/
 site_author: Camunda OSS Developers
 site_description: >-
-  Camunda REST Client Spring Boot provides a REST client for Camunda REST API for SpringBoot. 
-  In doing so it offers "remote" implementations of Camunda Engine Java API. By doing so we bridge 
-  the gap between using Camunda Java API for the local or remote engine.  
+  Camunda REST Client Spring Boot provides a REST client for Camunda REST API for SpringBoot.
+  In doing so it offers "remote" implementations of Camunda Engine Java API. By doing so we bridge
+  the gap between using Camunda Java API for the local or remote engine.
 
 copyright: Copyright &copy; 2021, Camunda Service GmbH
 
 use_directory_urls: false
 
 # Repository
-repo_name: camunda-community-hub/camunda-rest-client-spring-boot
-repo_url: https://github.com/camunda-community-hub/camunda-rest-client-spring-boot/
+repo_name: camunda-community-hub/camunda-platform-7-rest-client-spring-boot
+repo_url: https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/
 edit_uri: edit/develop/docs/
 
 markdown_extensions:

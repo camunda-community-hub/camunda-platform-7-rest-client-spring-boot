@@ -1,6 +1,6 @@
-The `camunda-rest-client-spring-boot` uses HTTP to access a remote Camunda REST API. If any errors occur on
+The `camunda-platform-7-rest-client-spring-boot` uses HTTP to access a remote Camunda REST API. If any errors occur on
 this access, Camunda REST API will send with corresponding HTTP error code and embed information about the error
-into http response. `camunda-rest-client-spring-boot` tries to parse this response and throw an exception on the client
+into http response. `camunda-platform-7-rest-client-spring-boot` tries to parse this response and throw an exception on the client
 side similar to the original exception thrown on the remote Camunda Engine.
 
 By default, the library tries to decode HTTP codes and will throw a `RemoteProcessEngineException`. If the response decoding

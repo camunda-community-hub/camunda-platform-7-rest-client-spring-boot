@@ -5,8 +5,8 @@ If you are interested in developing and building the project please read the fol
 To get sources of the project, please execute:
 
 ```sh
-git clone https://github.com/camunda-communit-hub/camunda-rest-client-spring-boot.git
-cd camunda-rest-client-spring-boot
+git clone https://github.com/camunda-communit-hub/camunda-platform-7-rest-client-spring-boot.git
+cd camunda-platform-7-rest-client-spring-boot
 ```
 
 We are using gitflow in our git SCM for naming b## Support Matrixranches. That means that you should start from `develop` branch,
@@ -64,8 +64,8 @@ By default, the sources and javadoc API documentation are not generated from the
 To start applications, either use your IDE and create
 run configuration for the class:
 
-* `org.camunda.bpm.extension.rest.example.standalone.CamundaRestClientExampleApplication`
-* `org.camunda.bpm.extension.rest.example.processapplication.CamundaRestClientExampleApplicationWithEngineProvided`
+* `org.camunda.community.rest.example.standalone.CamundaRestClientExampleApplication`
+* `org.camunda.community.rest.example.processapplication.CamundaRestClientExampleApplicationWithEngineProvided`
 
 Alternatively, you can run them from the command line:
 

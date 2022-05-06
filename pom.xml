@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
   <description>Camunda Platform 7 REST Client Spring-Boot</description>
-  <url>https://github.com/camunda-community-hub/camunda-rest-client-spring-boot/</url>
+  <url>https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/</url>
 
   <!-- License Stuff -->
   <inceptionYear>2019</inceptionYear>
@@ -594,9 +594,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</connection>
-    <url>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</url>
-    <developerConnection>scm:git:git@github.com:camunda-community-hub/camunda-rest-client-spring-boot.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-client-spring-boot.git</connection>
+    <url>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-rest-client-spring-boot.git</url>
+    <developerConnection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-rest-client-spring-boot.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

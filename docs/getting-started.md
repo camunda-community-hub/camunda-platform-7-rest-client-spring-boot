@@ -10,7 +10,7 @@ First install the extension dependency and configure Feign and Feign client:
 ```xml
 
 <properties>
-  <camunda-rest-client-spring-boot.version>0.0.3</camunda-rest-client-spring-boot.version>
+  <camunda-platform-7-rest-client-spring-boot.version>0.0.3</camunda-platform-7-rest-client-spring-boot.version>
   <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
 </properties>
 
@@ -27,9 +27,9 @@ First install the extension dependency and configure Feign and Feign client:
 </dependencyManagement>
 <dependencies>
 <dependency>
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
-  <version>${camunda-rest-client-spring-boot.version}</version>
+  <groupId>org.camunda.community</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
+  <version>${camunda-platform-7-rest-client-spring-boot.version}</version>
 </dependency>
 <dependency>
   <groupId>org.springframework.cloud</groupId>

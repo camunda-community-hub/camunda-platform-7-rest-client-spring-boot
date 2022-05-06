@@ -50,7 +50,7 @@ feign:
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.api: DEBUG
+    org.camunda.community.rest.client.api: DEBUG
     # To log REST controllers
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
     # To log web access
