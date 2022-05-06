@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.rest</groupId>
-    <artifactId>camunda-rest-client-spring-boot-examples-root</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <groupId>org.camunda.community.rest</groupId>
+    <artifactId>camunda-platform-7-rest-client-spring-boot-examples-root</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-rest-client-spring-boot-example-provided</artifactId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-example-provided</artifactId>
   <name>${project.artifactId}</name>
   <description>This example demonstrates how communication with local and remote engine in the
     same application may look like.
@@ -24,8 +24,8 @@
 
     <!-- Include extension starter -->
     <dependency>
-      <groupId>org.camunda.bpm.extension.rest</groupId>
-      <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
+      <groupId>org.camunda.community.rest</groupId>
+      <artifactId>camunda-platform-7-rest-client-spring-boot-starter-provided</artifactId>
       <version>${project.version}</version>
     </dependency>
 

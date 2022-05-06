@@ -2,18 +2,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda</groupId>
-    <artifactId>camunda-release-parent</artifactId>
-    <version>3.9.1</version>
+    <groupId>org.camunda.community</groupId>
+    <artifactId>community-hub-release-parent</artifactId>
+    <version>1.2.2</version>
     <relativePath />
   </parent>
 
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
-  <version>0.0.7-SNAPSHOT</version>
+  <groupId>org.camunda.community.rest</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.artifactId}</name>
-  <description>Camunda REST Client Spring-Boot</description>
+  <description>Camunda Platform 7 REST Client Spring-Boot</description>
   <url>https://github.com/camunda-community-hub/camunda-rest-client-spring-boot/</url>
 
   <!-- License Stuff -->
