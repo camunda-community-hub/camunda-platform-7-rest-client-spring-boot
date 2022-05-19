@@ -34,5 +34,5 @@ feign:
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.api: DEBUG
+    org.camunda.community.rest.client.api: DEBUG
 

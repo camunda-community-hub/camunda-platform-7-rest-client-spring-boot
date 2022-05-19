@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.camunda.bpm.extension.rest.starter.ProcessEngineClientStubAutoConfiguration
+  org.camunda.community.rest.starter.ProcessEngineClientStubAutoConfiguration

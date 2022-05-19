@@ -1,12 +1,12 @@
-OpenFeign library used in the `camunda-rest-client-spring-boot` has a high-configurable logging facility.
+OpenFeign library used in the `camunda-platform-7-rest-client-spring-boot` has a high-configurable logging facility.
 In order to configure it, a block of properties e.g. in `application.yml` is required:
 
 ```yml
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
-    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
-    org.camunda.bpm.extension.rest.client.ExternalTaskServiceClient: DEBUG
+    org.camunda.community.rest.client.RuntimeServiceClient: DEBUG
+    org.camunda.community.rest.client.RepositoryServiceClient: DEBUG
+    org.camunda.community.rest.client.ExternalTaskServiceClient: DEBUG
 ```
 
 In order to enable Request/Response logging, you need to configure additional Feign logging

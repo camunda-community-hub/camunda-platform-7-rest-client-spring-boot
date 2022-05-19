@@ -23,8 +23,8 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 ```xml
 <dependency>
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot-starter</artifactId>
+  <groupId>org.community.extension</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
   <version>${project.version}</version>
 </dependency>
 ```
@@ -105,8 +105,8 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 ```xml
 <dependency>
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
+  <groupId>org.camunda.community</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-starter-provided</artifactId>
   <version>${project.version}</version>
 </dependency>
 ```

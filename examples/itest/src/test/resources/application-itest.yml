@@ -50,4 +50,4 @@ feign:
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.api: INFO
+    org.camunda.community.rest.client.api: INFO

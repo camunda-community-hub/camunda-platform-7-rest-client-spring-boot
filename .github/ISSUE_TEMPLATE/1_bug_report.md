@@ -1,6 +1,6 @@
 ---
 name: 'Bug report'
-about: 'Report a bug in camunda-rest-client-spring-boot'
+about: 'Report a bug in camunda-platform-7-rest-client-spring-boot'
 title:
 labels: 'Type: bug'
 assignees: 
@@ -9,7 +9,7 @@ assignees:
 
 ### Steps to reproduce
 
-* camunda-rest-client-spring-boot version:
+* camunda-platform-7-rest-client-spring-boot version:
 * Camunda BPM version:
 * JDK version:  
 * Operating system:
