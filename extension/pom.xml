@@ -152,8 +152,8 @@
               <replacements>
                 <!-- RequestPart is needed to activate correct encoding, further array is needed to allow multiple files -->
                 <replacement>
-                  <token>@RequestParam("data") MultipartFile data</token>
-                  <value>@RequestPart("data") MultipartFile[] data</value>
+                  <token>@RequestPart(value = "data", required = false) MultipartFile data</token>
+                  <value>@RequestPart(value = "data", required = false) MultipartFile[] data</value>
                 </replacement>
               </replacements>
             </configuration>
