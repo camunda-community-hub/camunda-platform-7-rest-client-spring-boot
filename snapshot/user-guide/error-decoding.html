@@ -680,13 +680,13 @@
 
   <h1>Error-Decoding</h1>
 
-<p>The <code>camunda-platform-7-rest-client-spring-boot</code> uses HTTP to access a remote Camunda REST API. If any errors occur on
-this access, Camunda REST API will send with corresponding HTTP error code and embed information about the error
+<p>The <code>camunda-platform-7-rest-client-spring-boot</code> uses HTTP to access a remote Camunda Platform 7 REST API. If any errors occur on
+this access, Camunda Platform 7 REST API will send with corresponding HTTP error code and embed information about the error
 into http response. <code>camunda-platform-7-rest-client-spring-boot</code> tries to parse this response and throw an exception on the client
-side similar to the original exception thrown on the remote Camunda Engine.</p>
+side similar to the original exception thrown on the remote Camunda Platform 7 Engine.</p>
 <p>By default, the library tries to decode HTTP codes and will throw a <code>RemoteProcessEngineException</code>. If the response decoding
 was successful, the <em>cause</em> of the thrown <code>RemoteProcessEngineException</code> will be the instance of the exception class thrown
-on remote Camunda engine and the <em>reason</em> of the latter exception will be the original reason from the server.</p>
+on remote Camunda Platform 7 engine and the <em>reason</em> of the latter exception will be the original reason from the server.</p>
 <p>If anything goes wrong on HTTP error decoding, the <code>RemoteProcessEngineException</code> will contain a generic message extracted from
 the REST call. If the error decoding is deactivated, <code>FeignException</code> is wrapping any exception occurring during the remote access.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h2>

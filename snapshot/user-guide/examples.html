@@ -780,7 +780,7 @@ application. The client executes the following steps:</p>
 <h4 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">#</a></h4>
 <p>The application uses the library by adding it to the classpath via Apache Maven dependency. That is:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.community.extension<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.camunda.community.rest<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>camunda-platform-7-rest-client-spring-boot-starter<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
@@ -828,7 +828,7 @@ mvn -f examples/example -Prun
 mvn -f examples/example-provided -Prun-server-only
 </code></pre></div>
 <h3 id="usage-inside-a-process-application">Usage inside a process application<a class="headerlink" href="#usage-inside-a-process-application" title="Permanent link">#</a></h3>
-<p>The example demonstrates the usage of the library for accessing a process engine via REST from a Camunda process application.
+<p>The example demonstrates the usage of the library for accessing a process engine via REST from a Camunda Platform 7 process application.
 The key difference to the previous example is that the required Camunda classes are already present on the classpath and
 an engine is initialized and is running.</p>
 <p>Imagine the process engine has the following process deployed:</p>
@@ -869,7 +869,7 @@ an engine is initialized and is running.</p>
 <h4 id="how-does-it-work_1">How does it work<a class="headerlink" href="#how-does-it-work_1" title="Permanent link">#</a></h4>
 <p>The application uses the library by adding it to the classpath via Apache Maven dependency. That is:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.camunda.community<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.camunda.community.rest<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>camunda-platform-7-rest-client-spring-boot-starter-provided<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
