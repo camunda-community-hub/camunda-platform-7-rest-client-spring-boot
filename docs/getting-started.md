@@ -27,7 +27,7 @@ First install the extension dependency and configure Feign and Feign client:
 </dependencyManagement>
 <dependencies>
 <dependency>
-  <groupId>org.camunda.community</groupId>
+  <groupId>org.camunda.community.rest</groupId>
   <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
   <version>${camunda-platform-7-rest-client-spring-boot.version}</version>
 </dependency>

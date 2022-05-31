@@ -23,7 +23,7 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 ```xml
 <dependency>
-  <groupId>org.community.extension</groupId>
+  <groupId>org.camunda.community.rest</groupId>
   <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
   <version>${project.version}</version>
 </dependency>
@@ -80,7 +80,7 @@ mvn -f examples/example-provided -Prun-server-only
 
 ### Usage inside a process application
 
-The example demonstrates the usage of the library for accessing a process engine via REST from a Camunda process application.
+The example demonstrates the usage of the library for accessing a process engine via REST from a Camunda Platform 7 process application.
 The key difference to the previous example is that the required Camunda classes are already present on the classpath and
 an engine is initialized and is running.
 
@@ -105,7 +105,7 @@ The application uses the library by adding it to the classpath via Apache Maven 
 
 ```xml
 <dependency>
-  <groupId>org.camunda.community</groupId>
+  <groupId>org.camunda.community.rest</groupId>
   <artifactId>camunda-platform-7-rest-client-spring-boot-starter-provided</artifactId>
   <version>${project.version}</version>
 </dependency>
