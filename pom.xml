@@ -43,7 +43,7 @@
     <kotlin-logging.version>2.1.23</kotlin-logging.version>
 
     <!-- test tools -->
-    <assertj.version>3.23.0</assertj.version>
+    <assertj.version>3.23.1</assertj.version>
     <mockito.version>4.6.0</mockito.version>
     <mockito-kotlin.version>4.0.0</mockito-kotlin.version>
 
