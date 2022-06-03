@@ -20,7 +20,7 @@
     <jacoco.skip>false</jacoco.skip>
     <!-- USe Camunda BPM JGiven -->
     <camunda-jgiven.version>0.2.0</camunda-jgiven.version>
-    <jgiven.version>1.2.1</jgiven.version>
+    <jgiven.version>1.2.2</jgiven.version>
     <byte-buddy.version>1.12.10</byte-buddy.version>
   </properties>
 
