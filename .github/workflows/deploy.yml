@@ -62,10 +62,6 @@ jobs:
         asset_name: ${{ steps.release.outputs.artifacts_archive_path }}
         asset_content_type: application/zip
 
-    - name: Publish docs (Release only)
-      if: github.event.release
-      run: mvn -f docs -Pdeploy-docs -DgithubToken="${{ secrets.GITHUB_TOKEN }}"
-
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.0.2
       with:
