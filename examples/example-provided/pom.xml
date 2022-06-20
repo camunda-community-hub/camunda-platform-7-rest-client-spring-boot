@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-example-provided</artifactId>
-  <name>${project.artifactId}</name>
+  <name>camunda-platform-7-rest-client-spring-boot/examples/engine</name>
   <description>This example demonstrates how communication with local and remote engine in the
     same application may look like.
   </description>

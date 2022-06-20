@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-examples-root</artifactId>
-  <name>${project.artifactId}</name>
+  <name>camunda-platform-7-rest-client-spring-boot/examples/parent</name>
   <packaging>pom</packaging>
 
   <properties>

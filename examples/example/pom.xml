@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-example</artifactId>
-  <name>${project.artifactId}</name>
+  <name>camunda-platform-7-rest-client-spring-boot/examples/client</name>
   <description>This example demonstrates how communication remote engine in the
     application may look like, if Camunda is not already used in the application.
   </description>

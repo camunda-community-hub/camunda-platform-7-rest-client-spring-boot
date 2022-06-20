@@ -12,7 +12,7 @@
   <artifactId>camunda-platform-7-rest-client-spring-boot-parent</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
+  <name>camunda-platform-7-rest-client-spring-boot/parent</name>
   <description>Camunda Platform 7 REST Client Spring-Boot</description>
   <url>https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/</url>
 
@@ -57,9 +57,9 @@
 
 
   <modules>
-    <module>extension</module>
-    <module>starter</module>
-    <module>starter-provided</module>
+    <module>extension/core</module>
+    <module>extension/starter</module>
+    <module>extension/starter-provided</module>
   </modules>
 
   <dependencyManagement>

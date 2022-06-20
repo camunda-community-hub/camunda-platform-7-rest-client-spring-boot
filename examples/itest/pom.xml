@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-itest</artifactId>
-  <name>${project.artifactId}</name>
+  <name>camunda-platform-7-rest-client-spring-boot/examples/itest</name>
   <description>Integration tests of the client.</description>
   <packaging>jar</packaging>
 
