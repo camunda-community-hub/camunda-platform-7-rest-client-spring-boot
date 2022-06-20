@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda.bpm.extension.rest</groupId>
-    <artifactId>camunda-rest-client-spring-boot-examples-root</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <groupId>org.camunda.community.rest</groupId>
+    <artifactId>camunda-platform-7-rest-client-spring-boot-examples-root</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-rest-client-spring-boot-example-provided</artifactId>
-  <name>${project.artifactId}</name>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-example-provided</artifactId>
+  <name>camunda-platform-7-rest-client-spring-boot/examples/engine</name>
   <description>This example demonstrates how communication with local and remote engine in the
     same application may look like.
   </description>
@@ -24,11 +24,16 @@
 
     <!-- Include extension starter -->
     <dependency>
-      <groupId>org.camunda.bpm.extension.rest</groupId>
-      <artifactId>camunda-rest-client-spring-boot-starter-provided</artifactId>
+      <groupId>org.camunda.community.rest</groupId>
+      <artifactId>camunda-platform-7-rest-client-spring-boot-starter-provided</artifactId>
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.camunda.bpm.springboot</groupId>
+      <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+      <version>${camunda.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
@@ -67,13 +72,6 @@
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
     </dependency>
-
-
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${groovy.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -103,6 +101,7 @@
         <dependency>
           <groupId>org.camunda.bpm.springboot</groupId>
           <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+          <version>${camunda.version.ce}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -117,6 +116,7 @@
         <dependency>
           <groupId>org.camunda.bpm.springboot</groupId>
           <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
+          <version>${camunda.version.ee}</version>
         </dependency>
       </dependencies>
     </profile>

@@ -6,14 +6,33 @@ server:
 feign:
   client:
     config:
-      remoteRuntimeService:
+      processInstance:
         url: "http://localhost:8083/engine-rest/"
-      remoteRepositoryService:
+      processDefinition:
         url: "http://localhost:8083/engine-rest/"
-      remoteExternalTaskService:
+      message:
         url: "http://localhost:8083/engine-rest/"
+      signal:
+        url: "http://localhost:8083/engine-rest/"
+      execution:
+        url: "http://localhost:8083/engine-rest/"
+      task:
+        url: "http://localhost:8083/engine-rest/"
+      taskVariable:
+        url: "http://localhost:8083/engine-rest/"
+      taskLocalVariable:
+        url: "http://localhost:8083/engine-rest/"
+      taskIdentityLink:
+        url: "http://localhost:8083/engine-rest/"
+      externalTask:
+        url: "http://localhost:8083/engine-rest/"
+      incident:
+        url: "http://localhost:8083/engine-rest/"
+      historicProcessInstance:
+        url: "http://localhost:8083/engine-rest/"
+
 
 logging:
   level:
-    org.camunda.bpm.extension.rest.client.RuntimeServiceClient: DEBUG
-    org.camunda.bpm.extension.rest.client.RepositoryServiceClient: DEBUG
+    org.camunda.community.rest.client.api: DEBUG
+

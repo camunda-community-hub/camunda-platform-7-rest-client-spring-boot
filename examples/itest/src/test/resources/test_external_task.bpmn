@@ -1,53 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_079e7zg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.3.4">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_079e7zg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
   <bpmn:process id="test_external_task" name="Test External Task" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
+    <bpmn:startEvent id="started" name="started">
       <bpmn:outgoing>SequenceFlow_06np618</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_06np618" sourceRef="StartEvent_1" targetRef="Task_0jkjti1" />
-    <bpmn:endEvent id="EndEvent_12fzlxj">
+    <bpmn:sequenceFlow id="SequenceFlow_06np618" sourceRef="started" targetRef="external_task" />
+    <bpmn:endEvent id="finished" name="finished">
       <bpmn:incoming>SequenceFlow_0a69pwc</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1fe8jql" sourceRef="Task_0jkjti1" targetRef="IntermediateThrowEvent_0tqszx5" />
-    <bpmn:serviceTask id="Task_0jkjti1" name="External Task" camunda:type="external" camunda:topic="topic">
+    <bpmn:sequenceFlow id="SequenceFlow_1fe8jql" sourceRef="external_task" targetRef="never_happens_signal" />
+    <bpmn:serviceTask id="external_task" name="External Task" camunda:type="external" camunda:topic="topic">
       <bpmn:incoming>SequenceFlow_06np618</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1fe8jql</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0a69pwc" sourceRef="IntermediateThrowEvent_0tqszx5" targetRef="EndEvent_12fzlxj" />
-    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_0tqszx5" name="Signal arrived">
+    <bpmn:sequenceFlow id="SequenceFlow_0a69pwc" sourceRef="never_happens_signal" targetRef="finished" />
+    <bpmn:intermediateCatchEvent id="never_happens_signal" name="Signal arrived">
       <bpmn:incoming>SequenceFlow_1fe8jql</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0a69pwc</bpmn:outgoing>
       <bpmn:signalEventDefinition signalRef="Signal_0issd3t" />
     </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1ong8dl" sourceRef="boundary_failed" targetRef="never_happens_after_error" />
+    <bpmn:endEvent id="failed" name="failed">
+      <bpmn:incoming>Flow_045imt7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_045imt7" sourceRef="never_happens_after_error" targetRef="failed" />
+    <bpmn:intermediateCatchEvent id="never_happens_after_error" name="Signal after Error arrived">
+      <bpmn:incoming>Flow_1ong8dl</bpmn:incoming>
+      <bpmn:outgoing>Flow_045imt7</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_04421as" signalRef="Signal_0lrvx3k" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:boundaryEvent id="boundary_failed" name="failed" attachedToRef="external_task">
+      <bpmn:outgoing>Flow_1ong8dl</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1bqeg6a" errorRef="Error_0nwkfhu" />
+    </bpmn:boundaryEvent>
   </bpmn:process>
   <bpmn:signal id="Signal_0issd3t" name="never_happens" />
+  <bpmn:signal id="Signal_0lrvx3k" name="never_happens_after_error" />
+  <bpmn:error id="Error_0nwkfhu" name="error" errorCode="error-code" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test_external_task">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_06np618_di" bpmnElement="SequenceFlow_06np618">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="280" y="117" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_12fzlxj_di" bpmnElement="EndEvent_12fzlxj">
-        <dc:Bounds x="522" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1fe8jql_di" bpmnElement="SequenceFlow_1fe8jql">
-        <di:waypoint x="380" y="117" />
-        <di:waypoint x="432" y="117" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="ServiceTask_1moj2eu_di" bpmnElement="Task_0jkjti1">
-        <dc:Bounds x="280" y="77" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0a69pwc_di" bpmnElement="SequenceFlow_0a69pwc">
         <di:waypoint x="468" y="117" />
         <di:waypoint x="522" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="IntermediateCatchEvent_06ur7on_di" bpmnElement="IntermediateThrowEvent_0tqszx5">
+      <bpmndi:BPMNEdge id="SequenceFlow_1fe8jql_di" bpmnElement="SequenceFlow_1fe8jql">
+        <di:waypoint x="380" y="117" />
+        <di:waypoint x="432" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_06np618_di" bpmnElement="SequenceFlow_06np618">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="280" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ong8dl_di" bpmnElement="Flow_1ong8dl">
+        <di:waypoint x="350" y="175" />
+        <di:waypoint x="350" y="230" />
+        <di:waypoint x="432" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_045imt7_di" bpmnElement="Flow_045imt7">
+        <di:waypoint x="468" y="230" />
+        <di:waypoint x="522" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="started">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="180" y="142" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_12fzlxj_di" bpmnElement="finished">
+        <dc:Bounds x="522" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="521" y="142" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1moj2eu_di" bpmnElement="external_task">
+        <dc:Bounds x="280" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_06ur7on_di" bpmnElement="never_happens_signal">
         <dc:Bounds x="432" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="417" y="142" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ikua4i_di" bpmnElement="failed">
+        <dc:Bounds x="522" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="527" y="255" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1mu0r7l_di" bpmnElement="never_happens_after_error">
+        <dc:Bounds x="432" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="409" y="255" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_07ciqe2_di" bpmnElement="boundary_failed">
+        <dc:Bounds x="332" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="316" y="182" width="27" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

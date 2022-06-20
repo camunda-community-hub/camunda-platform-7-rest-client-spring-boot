@@ -1,21 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.camunda</groupId>
-    <artifactId>camunda-release-parent</artifactId>
-    <version>3.7</version>
-    <relativePath/>
+    <groupId>org.camunda.community</groupId>
+    <artifactId>community-hub-release-parent</artifactId>
+    <version>1.2.2</version>
+    <relativePath />
   </parent>
 
-  <groupId>org.camunda.bpm.extension.rest</groupId>
-  <artifactId>camunda-rest-client-spring-boot-parent</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <groupId>org.camunda.community.rest</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
-  <description>Camunda REST Client Spring-Boot</description>
-  <url>https://github.com/camunda/camunda-rest-client-spring-boot/</url>
+  <name>camunda-platform-7-rest-client-spring-boot/parent</name>
+  <description>Camunda Platform 7 REST Client Spring-Boot</description>
+  <url>https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/</url>
 
   <!-- License Stuff -->
   <inceptionYear>2019</inceptionYear>
@@ -27,47 +26,51 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <version.java>${java.version}</version.java>
 
-    <camunda.version.ce>7.13.0</camunda.version.ce>
-    <camunda.version.ee>7.13.0-ee</camunda.version.ee>
+    <camunda.version.base>7.17</camunda.version.base>
+    <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
+    <camunda.version.ee>${camunda.version.base}.1-ee</camunda.version.ee>
+    <spin.version>1.16.0</spin.version>
 
-    <spring-boot.version>2.2.8.RELEASE</spring-boot.version>
-    <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
-    <camunda-external-client.version>1.2.2</camunda-external-client.version>
+    <spring-boot.version>2.7.0</spring-boot.version>
+    <spring-cloud.version>2021.0.3</spring-cloud.version>
 
-    <groovy.version>2.4.5</groovy.version>
-    <spin.version>1.9.0</spin.version>
-
-    <kotlin.version>1.3.72</kotlin.version>
-    <kotlin-logging.version>1.8.3</kotlin-logging.version>
+    <kotlin.version>1.7.0</kotlin.version>
+    <kotlin-logging.version>2.1.23</kotlin-logging.version>
 
     <!-- test tools -->
-    <assertj.version>3.11.1</assertj.version>
-    <mockito.version>2.21.0</mockito.version>
+    <assertj.version>3.23.1</assertj.version>
+    <mockito.version>4.6.1</mockito.version>
+    <mockito-kotlin.version>4.0.0</mockito-kotlin.version>
 
     <pattern.class.itest>**/*ITest.*</pattern.class.itest>
     <pattern.package.itest>**/itest/**/*.*</pattern.package.itest>
 
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-    <!-- disable javadoc linter for JDK8 to not fail on incomplete javadoc -->
-    <additionalparam>-Xdoclint:none</additionalparam>
-    <!-- Skip instrumentaliuation by default -->
+    <!-- Skip instrumentalization by default -->
     <jacoco.skip>true</jacoco.skip>
   </properties>
 
 
   <modules>
-    <module>extension</module>
-    <module>starter</module>
-    <module>starter-provided</module>
+    <module>extension/core</module>
+    <module>extension/starter</module>
+    <module>extension/starter-provided</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
@@ -85,16 +88,21 @@
       <dependency>
         <groupId>org.camunda.bpm</groupId>
         <artifactId>camunda-bom</artifactId>
-        <version>${camunda.version.ce}</version>
+        <version>${camunda.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-engine-rest-openapi</artifactId>
+        <version>${camunda.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.camunda.spin</groupId>
         <artifactId>camunda-spin-bom</artifactId>
-        <scope>import</scope>
-        <type>pom</type>
         <version>${spin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -103,40 +111,16 @@
     <!-- Kotlin -->
     <dependency>
       <groupId>io.github.microutils</groupId>
-      <artifactId>kotlin-logging</artifactId>
+      <artifactId>kotlin-logging-jvm</artifactId>
       <version>${kotlin-logging.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
-      <version>${kotlin.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk8</artifactId>
-      <version>${kotlin.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib-jdk7</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk7</artifactId>
-      <version>${kotlin.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
-      <version>${kotlin.version}</version>
     </dependency>
 
     <!-- Testing -->
@@ -144,6 +128,13 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito.kotlin</groupId>
+      <artifactId>mockito-kotlin</artifactId>
+      <version>${mockito-kotlin.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -173,7 +164,7 @@
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
-          <version>0.8.5</version>
+          <version>0.8.8</version>
           <executions>
             <execution>
               <id>pre-unit-test</id>
@@ -194,6 +185,7 @@
           <!-- java compiler -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.10.1</version>
           <configuration>
             <encoding>${project.build.sourceEncoding}</encoding>
             <source>${maven.compiler.source}</source>
@@ -236,7 +228,6 @@
             <jvmTarget>${java.version}</jvmTarget>
             <compilerPlugins>
               <plugin>spring</plugin>
-              <plugin>jpa</plugin>
               <plugin>no-arg</plugin>
               <plugin>all-open</plugin>
             </compilerPlugins>
@@ -271,6 +262,7 @@
               <configuration>
                 <sourceDirs>
                   <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                  <sourceDir>${project.basedir}/target/generated-sources/openapi/src/main/java</sourceDir>
                 </sourceDirs>
               </configuration>
             </execution>
@@ -304,7 +296,7 @@
         <!-- Unit Tests -->
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
+          <version>2.22.2</version>
           <configuration>
             <useSystemClassLoader>false</useSystemClassLoader>
             <runOrder>random</runOrder>
@@ -312,8 +304,6 @@
               <exclude>${pattern.class.itest}</exclude>
               <exclude>${pattern.package.itest}</exclude>
             </excludes>
-            <!-- Sets the VM argument line used when unit tests are run. -->
-            <!-- prevent the annoying ForkedBooter process from stealing window focus on Mac OS -->
             <argLine>-Djava.awt.headless=true ${argLine} -XX:+StartAttachListener</argLine>
           </configuration>
         </plugin>
@@ -322,7 +312,22 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.18.1</version>
+          <version>2.22.2</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <includes>
+              <include>${pattern.class.itest}</include>
+              <include>${pattern.package.itest}</include>
+            </includes>
+            <argLine>-Djava.awt.headless=true ${argLine} -XX:+StartAttachListener</argLine>
+            <runOrder>random</runOrder>
+          </configuration>
         </plugin>
 
         <plugin>
@@ -342,7 +347,7 @@
         <plugin>
           <groupId>org.jetbrains.dokka</groupId>
           <artifactId>dokka-maven-plugin</artifactId>
-          <version>0.10.1</version>
+          <version>1.7.0</version>
           <executions>
             <execution>
               <phase>package</phase>
@@ -358,7 +363,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.3.0</version>
           <executions>
             <execution>
               <phase>generate-sources</phase>
@@ -378,7 +383,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.2.1</version>
           <executions>
             <execution>
               <id>attach-sources</id>
@@ -423,6 +428,35 @@
               <phase>process-sources</phase>
             </execution>
           </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>3.0.1</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <!-- Prevent gpg from using pin entry programs -->
+            <gpgArguments>
+              <arg>--batch</arg>
+              <arg>--yes</arg>
+              <arg>--pinentry-mode</arg>
+              <arg>loopback</arg>
+            </gpgArguments>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.google.code.maven-replacer-plugin</groupId>
+          <artifactId>maven-replacer-plugin</artifactId>
+          <version>1.4.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -472,17 +506,7 @@
       </activation>
       <properties>
         <camunda.version>${camunda.version.ce}</camunda.version>
-        <camunda-spring-boot.version>${camunda.version.ce}</camunda-spring-boot.version>
       </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.camunda.bpm.springboot</groupId>
-            <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-            <version>${camunda-spring-boot.version}</version>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
     </profile>
 
     <profile>
@@ -494,24 +518,14 @@
       </activation>
       <properties>
         <camunda.version>${camunda.version.ee}</camunda.version>
-        <camunda-spring-boot.version>${camunda.version.ee}</camunda-spring-boot.version>
       </properties>
       <repositories>
         <repository>
           <id>camunda-bpm-ee</id>
           <name>camunda-bpm-ee</name>
-          <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-ee</url>
+          <url>https://artifacts.camunda.com/artifactory/camunda-bpm-ee/</url>
         </repository>
       </repositories>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.camunda.bpm.springboot</groupId>
-            <artifactId>camunda-bpm-spring-boot-starter-webapp-ee</artifactId>
-            <version>${camunda-spring-boot.version}</version>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
     </profile>
 
     <profile>
@@ -525,41 +539,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <!-- Skip Unit test execution on ITest profile run -->
-              <skipTests>true</skipTests>
-            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <includes>
-                <include>${pattern.class.itest}</include>
-                <include>${pattern.package.itest}</include>
-              </includes>
-              <!-- Sets the VM argument line used when unit tests are run. -->
-              <!-- prevent the annoying ForkedBooter process from stealing window focus on Mac OS -->
-              <argLine>-Djava.awt.headless=true ${argLine} -XX:+StartAttachListener</argLine>
-              <runOrder>random</runOrder>
-            </configuration>
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>docs</id>
-      <modules>
-        <module>docs</module>
-      </modules>
     </profile>
 
     <!--
@@ -587,20 +573,30 @@
         </plugins>
       </build>
     </profile>
-
+    <profile>
+      <id>community-action-maven-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</connection>
-    <url>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</url>
-    <developerConnection>scm:git:git@github.com:camunda/camunda-rest-client-spring-boot.git</developerConnection>
+    <connection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-client-spring-boot.git</connection>
+    <url>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-rest-client-spring-boot.git</url>
+    <developerConnection>scm:git:git@github.com:camunda-community-hub/camunda-platform-7-rest-client-spring-boot.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -609,35 +605,24 @@
     <repository>
       <id>camunda-nexus</id>
       <name>Camunda BPM Community extensions</name>
-      <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions</url>
+      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions/</url>
     </repository>
     <snapshotRepository>
       <id>camunda-nexus</id>
       <name>Camunda BPM Community extensions snapshots</name>
-      <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-community-extensions-snapshots</url>
+      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions-snapshots/</url>
       <!-- for maven 2 compatibility -->
       <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
 
-
-  <pluginRepositories>
-    <!-- required for Dokka (Kotlin javadoc) -->
-    <pluginRepository>
-      <id>jcenter</id>
-      <name>JCenter</name>
-      <url>https://jcenter.bintray.com/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <developers>
     <developer>
+      <id>zambrovski</id>
       <name>Simon Zambrovski</name>
       <organization>Holisticon AG</organization>
       <roles>
+        <role>Product Owner</role>
         <role>Maintainer</role>
       </roles>
       <organizationUrl>https://holisticon.de</organizationUrl>

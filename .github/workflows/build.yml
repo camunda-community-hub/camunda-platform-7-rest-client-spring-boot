@@ -4,26 +4,46 @@ name: Build project with Maven
 on:
   pull_request:
   push:
-    branches-ignore: [master,develop]
+    branches-ignore: [ master, develop ]
   schedule:
-  - cron: '2 2 * * 1-5' # run nightly develop builds on weekdays
+  - cron: '2 2 * * 1-5' # run nightly develop builds everyday
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@f1d3225b5376a0791fdee5a0e8eac5289355e43a # pin@v2
+
     - name: Java setup
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@e54a62b3df9364d4b4c1c29c7225e57fe605d7dd # pin@v1
       with:
-        java-version: 1.8
+        java-version: 11
+
     - name: Cache
-      uses: actions/cache@v1
+      uses: actions/cache@99d99cd262b87f5f8671407a1e5c1ddfa36ad5ba # pin@v1
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+
     - name: Run Maven
       run: mvn -B clean install com.mycila:license-maven-plugin:check
+
+    - name: Run I-Tests and generate coverage reports
+      run: mvn -B -Pitest verify
+
+    - name: Upload coverage to Codecov
+      if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+
+    - name: Upload coverage to Codacy
+      if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: examples/coverage-report/target/site/jacoco-aggregate/jacoco.xml

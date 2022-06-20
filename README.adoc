@@ -1,19 +1,21 @@
-[cols="a,a,a,a,a,a,a,a"]
+image::https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700[caption="Comuinity Extension", link=https://github.com/camunda-community-hub/community]
+image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable", link=https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-]
+
+
+[cols="a,a,a,a,a,a,a"]
 |===
-| // travis
-image::https://travis-ci.org/camunda/camunda-rest-client-spring-boot.svg?branch=develop[caption="Build Status", link=https://travis-ci.org/camunda/camunda-rest-client-spring-boot]
 | // maven central
-image::https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.rest/camunda-rest-client-spring-boot]
+image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community/camunda-platform-7-rest-client-spring-boot]
 | // codecov
-image::https://codecov.io/gh/camunda/camunda-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda/camunda-rest-client-spring-boot]
+image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-rest-platform-7-client-spring-boot]
 | // codacy
-image::https://api.codacy.com/project/badge/Grade/653136bd5cad48c8a9f2621ee304ff26[caption="Codacy Badge", link=https://app.codacy.com/app/zambrovski/camunda-rest-client-spring-boot?utm_source=github.com&utm_medium=referral&utm_content=holunda-io/camunda-rest-client-spring-boot&utm_campaign=Badge_Grade_Dashboard]
+image::https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy Badge", link=https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&amp;utm_campaign=Badge_Grade]
 | // license
-image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-rest-client-spring-boot/license"]
+image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-platform-7-rest-client-spring-boot/license"]
 | // changelog
-image::https://img.shields.io/badge/CHANGES-blue.svg[caption="Change log", link="https://camunda.github.io/camunda-rest-client-spring-boot/changelog"]
+image::https://img.shields.io/badge/CHANGES-blue.svg[caption="Change log", link="https://camunda.github.io/camunda-platform-7-rest-client-spring-boot/changelog"]
 | // openhub
-image::https://www.openhub.net/p/camunda-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-rest-client-spring-boot"]
+image::https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot"]
 | // sponsored
 image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="sponsored", link="https://holisticon.de/"]
 |===
@@ -21,35 +23,35 @@ image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="spon
 == Introduction
 
 This library aims to provide a REST client for Camunda REST API for SpringBoot. In doing so it offers "remote" implementations of Camunda
-Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide/support-matrix[support matrix]
+Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/support-matrix.html[support matrix]
 to find out if the functionality you require is already supported by the library.
-
 
 
 == Quick Start
 
-If you just want to start using the library, please consult our link:https://camunda.github.io/camunda-rest-client-spring-boot/quick-start[Quick Start]
+If you just want to start using the library, please consult our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/getting-started.html[Quick Start]
 guide.
 
 == Working Example
 
-We provides a working example demonstrating some of the features of the library. See our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide/examples[Examples] section for usage and configuration.
+We provide a working example demonstrating some features of the library. See our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/examples.html#standalone-usage[Examples] section for usage and configuration.
 
 
 == User Guide
 
 If you have any questions regarding configuration of Camunda BPM Feign please
-have a look at our link:https://camunda.github.io/camunda-rest-client-spring-boot/wiki/user-guide[User Guide].
+have a look at our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/index.html[User Guide].
 
 
 == License
 
-This library is developed under link:https://camunda.github.io/camunda-rest-client-spring-boot/license[Apache License 2].
+This library is developed under Apache License 2.
 
 == Contribution
 
-If you want to contribute to this project, feel free to do so. Start with link:http://camunda.github.io/camunda-rest-client-spring-boot/wiki/developer-guide/contribution[Contributing guide].
+If you want to contribute to this project, feel free to do so. Start with link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/developer-guide/contribution.html[Contributing guide].
 
 == Maintainer
 
-* link:https://gihub.com/zambrovski[Simon Zambrovski, Holisticon AG]
+* link:https://github.com/zambrovski[Simon Zambrovski, Holisticon AG]
+* link:https://github.com/rohwerj[Jan Rohwer, Holisticon AG]
