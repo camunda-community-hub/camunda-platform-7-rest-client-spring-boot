@@ -57,6 +57,7 @@
 
 
   <modules>
+    <module>extension/client</module>
     <module>extension/core</module>
     <module>extension/starter</module>
     <module>extension/starter-provided</module>
@@ -103,6 +104,11 @@
         <version>${spin.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>2.2.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

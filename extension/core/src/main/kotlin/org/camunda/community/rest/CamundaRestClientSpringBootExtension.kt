@@ -22,23 +22,9 @@
  */
 package org.camunda.community.rest
 
-import feign.codec.Encoder
-import feign.form.ContentType
-import feign.form.MultipartFormContentProcessor
-import feign.form.multipart.Output
-import feign.form.spring.SpringFormEncoder
-import feign.form.spring.SpringManyMultipartFilesWriter
-import feign.form.spring.SpringSingleMultipartFileWriter
-import org.camunda.community.rest.config.CamundaRestClientProperties
+import org.camunda.community.rest.client.FeignClientConfiguration
 import org.camunda.community.rest.config.FeignErrorDecoderConfiguration
 import org.camunda.community.rest.impl.*
-import org.springframework.beans.factory.ObjectFactory
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.cloud.openfeign.EnableFeignClients
-import org.springframework.cloud.openfeign.support.SpringEncoder
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
@@ -53,45 +39,14 @@ import org.springframework.context.annotation.Import
   RemoteRepositoryService::class,
   RemoteRuntimeService::class,
   RemoteTaskService::class,
+  FeignClientConfiguration::class,
   FeignErrorDecoderConfiguration::class
 )
-@EnableFeignClients
-@EnableConfigurationProperties(CamundaRestClientProperties::class)
-class CamundaRestClientSpringBootExtension {
-
-  @Bean
-  fun feignEncoder(messageConverters: ObjectFactory<HttpMessageConverters>): Encoder {
-    return SpringEncoder(MultipartFormEncoder(), messageConverters)
-  }
-
-  class MultipartFormEncoder : SpringFormEncoder() {
-    init {
-      val processor = getContentProcessor(ContentType.MULTIPART) as MultipartFormContentProcessor
-      processor.addFirstWriter(KeyChangingSpringManyMultipartFilesWriter(SpringSingleMultipartFileWriter()))
-    }
-  }
-
-  class KeyChangingSpringManyMultipartFilesWriter(
-    private val fileWriter: SpringSingleMultipartFileWriter
-  ) : SpringManyMultipartFilesWriter() {
-
-    override fun write(output: Output?, boundary: String?, key: String?, value: Any?) {
-      // Camunda needs a different key for each file sent over the API -> enhance key with index
-      when (value) {
-        is Array<*> -> value.forEachIndexed { index, file -> fileWriter.write(output, boundary, "$key$index", file) }
-        is Iterable<*> -> value.forEachIndexed { index, file -> fileWriter.write(output, boundary, "$key$index", file) }
-        else -> {
-          throw IllegalArgumentException()
-        }
-      }
-    }
-  }
-
-}
+class CamundaRestClientSpringBootExtension
 
 
 /**
  * Enables the registration of REST client beans.
  */
-@Import(CamundaRestClientSpringBootExtension::class)
+@Import(FeignClientConfiguration::class)
 annotation class EnableCamundaRestClient
