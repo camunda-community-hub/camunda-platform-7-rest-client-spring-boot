@@ -36,7 +36,7 @@ jobs:
       run: mvn -B clean install com.mycila:license-maven-plugin:check
 
     - name: Run I-Tests and generate coverage reports
-      run: mvn -B -Pitest verify
+      run: mvn -B -Pitest verify failsafe:verify
 
     - name: Deploy SNAPSHOT / Release
       uses: camunda-community-hub/community-action-maven-release@v1.0.9

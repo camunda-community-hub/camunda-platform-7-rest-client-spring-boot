@@ -23,8 +23,10 @@
 package org.camunda.community.rest
 
 import org.camunda.community.rest.client.FeignClientConfiguration
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.config.FeignErrorDecoderConfiguration
 import org.camunda.community.rest.impl.*
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
@@ -33,6 +35,7 @@ import org.springframework.context.annotation.Import
  * Basic configuration of the extension.
  */
 @Configuration
+@EnableConfigurationProperties(CamundaRestClientProperties::class)
 @Import(
   RemoteExternalTaskService::class,
   RemoteHistoryService::class,
@@ -48,5 +51,5 @@ class CamundaRestClientSpringBootExtension
 /**
  * Enables the registration of REST client beans.
  */
-@Import(FeignClientConfiguration::class)
+@Import(CamundaRestClientSpringBootExtension::class)
 annotation class EnableCamundaRestClient

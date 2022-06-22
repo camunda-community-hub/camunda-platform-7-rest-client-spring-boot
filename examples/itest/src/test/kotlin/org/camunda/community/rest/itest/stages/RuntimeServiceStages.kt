@@ -23,7 +23,6 @@
 package org.camunda.community.rest.itest.stages
 
 import com.tngtech.jgiven.annotation.Hidden
-import com.tngtech.jgiven.annotation.IsTag
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
@@ -391,8 +390,4 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
   }
 
 }
-
-@IsTag(name = "RuntimeService")
-annotation class RuntimeServiceCategory
-
 

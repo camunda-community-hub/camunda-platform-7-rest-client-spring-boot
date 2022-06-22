@@ -24,10 +24,10 @@
 package org.camunda.community.rest.itest
 
 import com.tngtech.jgiven.annotation.As
-import io.toolisticon.testing.jgiven.GIVEN
-import io.toolisticon.testing.jgiven.WHEN
-import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.AND
+import io.toolisticon.testing.jgiven.GIVEN
+import io.toolisticon.testing.jgiven.THEN
+import io.toolisticon.testing.jgiven.WHEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
@@ -36,10 +36,8 @@ import org.camunda.bpm.engine.variable.value.StringValue
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
-@RuntimeServiceCategory
 @As("Variables")
 class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
 
@@ -53,7 +51,8 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
     GIVEN
       .process_with_intermediate_signal_catch_event_is_deployed(processDefinitionKey, userTaskId, signalName)
       .AND
-      .process_is_started_by_key(processDefinitionKey, "my-business-key1", "caseInstanceId1",
+      .process_is_started_by_key(
+        processDefinitionKey, "my-business-key1", "caseInstanceId1",
         createVariables()
           .putValue("VAR1", "VAL1")
           .putValue("VAR2", "VAL2")
@@ -61,7 +60,8 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
           .putValue("TO_REMOVE2", "TO_REMOVE")
           .putValueTyped("VAR3", stringValue("VAL3"))
           .putValueTyped("VAR4", stringValue("My object value"))
-          .putValueTyped("VAR7",
+          .putValueTyped(
+            "VAR7",
             objectValue(structure)
               .serializationDataFormat("application/json")
               .create()

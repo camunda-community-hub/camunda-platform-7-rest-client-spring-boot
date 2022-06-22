@@ -32,10 +32,8 @@ import org.camunda.bpm.engine.RuntimeService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
-@RuntimeServiceCategory
 @As("Incident")
 class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {
 
@@ -101,7 +99,7 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_is_started_by_key(processDefinitionKey, businessKey)
 
     WHEN
-      .incident_is_created_locally("incidentType","configuration")
+      .incident_is_created_locally("incidentType", "configuration")
       .AND
       .incident_is_created_locally("incidentType2", "configuration2", "with_message")
 
@@ -125,7 +123,7 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_is_started_by_key(processDefinitionKey, businessKey)
 
     WHEN
-      .incident_is_created_locally("incidentType","ZZZ")
+      .incident_is_created_locally("incidentType", "ZZZ")
       .AND
       .incident_is_created_locally("incidentType2", "AAA", "with_message")
 
