@@ -22,7 +22,6 @@
  */
 package org.camunda.community.rest.itest.stages
 
-import com.tngtech.jgiven.annotation.IsTag
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
@@ -77,8 +76,10 @@ class HistoryServiceActionStage : ActionStage<HistoryServiceActionStage, History
     }
   }
 
-  fun process_is_deployed(processDefinitionKey: String, versionTag: String? = null,
-                          deploymentName: String = "deployment" + UUID.randomUUID().toString().replace("-", "")) = step {
+  fun process_is_deployed(
+    processDefinitionKey: String, versionTag: String? = null,
+    deploymentName: String = "deployment" + UUID.randomUUID().toString().replace("-", "")
+  ) = step {
 
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -146,7 +147,5 @@ class HistoryServiceAssertStage : AssertStage<HistoryServiceAssertStage, History
 
 }
 
-@IsTag(name = "HistoryService")
-annotation class HistoryServiceCategory
 
 

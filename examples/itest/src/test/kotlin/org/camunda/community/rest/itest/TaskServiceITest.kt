@@ -15,13 +15,11 @@ import org.camunda.bpm.engine.variable.value.StringValue
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.TaskServiceActionStage
 import org.camunda.community.rest.itest.stages.TaskServiceAssertStage
-import org.camunda.community.rest.itest.stages.TaskServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 import java.time.Instant.now
 import java.util.*
 
-@TaskServiceCategory
 @As("Operations on tasks and task queries")
 @DirtiesContext
 class TaskServiceITest

@@ -34,10 +34,9 @@ import org.camunda.bpm.engine.variable.value.StringValue
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
-@RuntimeServiceCategory
+
 @As("Variables")
 class RuntimeServiceVariablesLocalITest :
   CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {

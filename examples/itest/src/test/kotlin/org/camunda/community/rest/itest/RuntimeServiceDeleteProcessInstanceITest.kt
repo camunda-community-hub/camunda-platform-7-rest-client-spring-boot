@@ -32,11 +32,9 @@ import org.camunda.bpm.engine.RuntimeService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
-@RuntimeServiceCategory
 @As("Delete process instance")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class RuntimeServiceDeleteProcessInstanceITest :

@@ -32,11 +32,9 @@ import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
-@RuntimeServiceCategory
 @As("Creates process instance query")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class RuntimeServiceProcessInstanceQueryITest :

@@ -33,7 +33,7 @@ jobs:
       run: mvn -B clean install com.mycila:license-maven-plugin:check
 
     - name: Run I-Tests and generate coverage reports
-      run: mvn -B -Pitest verify
+      run: mvn -B -Pitest verify failsafe:verify
 
     - name: Upload coverage to Codecov
       if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
