@@ -45,6 +45,8 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_with_user_task_is_deployed(processDefinitionKey)
       .AND
       .process_is_started_by_key(processDefinitionKey, businessKey)
+      .AND
+      .execution_is_waiting_in_user_task()
 
     WHEN
       .incident_is_created("incidentType", "configuration", "message")
@@ -73,6 +75,8 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .AND
       .process_is_started_by_key(processDefinitionKey, businessKey)
       .AND
+      .execution_is_waiting_in_user_task()
+      .AND
       .incident_is_created_locally("incidentType", "configuration")
 
     WHEN
@@ -97,6 +101,8 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_with_user_task_is_deployed(processDefinitionKey)
       .AND
       .process_is_started_by_key(processDefinitionKey, businessKey)
+      .AND
+      .execution_is_waiting_in_user_task()
 
     WHEN
       .incident_is_created_locally("incidentType", "configuration")
@@ -121,6 +127,8 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_with_user_task_is_deployed(processDefinitionKey)
       .AND
       .process_is_started_by_key(processDefinitionKey, businessKey)
+      .AND
+      .execution_is_waiting_in_user_task()
 
     WHEN
       .incident_is_created_locally("incidentType", "ZZZ")
@@ -147,6 +155,8 @@ class RuntimeServiceIncidentITest : CamundaRestClientITestBase<RuntimeService, R
       .process_with_user_task_is_deployed(processDefinitionKey)
       .AND
       .process_is_started_by_key(processDefinitionKey, businessKey)
+      .AND
+      .execution_is_waiting_in_user_task()
       .AND
       .incident_is_created_locally("incidentType", "configuration", "message")
 
