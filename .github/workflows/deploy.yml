@@ -39,7 +39,7 @@ jobs:
       run: mvn -B -Pitest verify failsafe:verify
 
     - name: Deploy SNAPSHOT / Release
-      uses: camunda-community-hub/community-action-maven-release@v1.2.2
+      uses: camunda-community-hub/community-action-maven-release@v1.0.13
       with:
         release-version: ${{ github.event.release.tag_name }}
         maven-release-options: -DskipExamples # don't try to release examples
