@@ -9,7 +9,7 @@ git clone https://github.com/camunda-communit-hub/camunda-platform-7-rest-client
 cd camunda-platform-7-rest-client-spring-boot
 ```
 
-We are using gitflow in our git SCM for naming b## Support Matrixranches. That means that you should start from `develop` branch,
+We are using gitflow in our git SCM for naming b ranches. That means that you should start from `master` branch,
 create a `feature/<name>` out of it and once it is completed create a pull request containing
 it. Please squash your commits before submitting and use semantic commit messages, if possible.
 
@@ -28,7 +28,7 @@ By default, the build command will ignore the run of `failsafe` Maven plugin exe
 call from your command line:
 
 ```sh
-./mvnw -Pitest
+./mvnw -Pitest failsafe:verify
 ```
 
 ## Project build modes and profiles
@@ -56,7 +56,7 @@ For creation of documentation, please run:
 By default, the sources and javadoc API documentation are not generated from the source code. To enable this:
 
 ```sh
-./mvnw clean install -Prelease -Dgpg.skip=true
+./mvnw clean install -Pcommunity-action-maven-release -Dgpg.skip=true
 ```
 
 #### Starting example applications
@@ -76,12 +76,18 @@ Alternatively, you can run them from the command line:
 
 ### Continuous Integration
 
-Github Actions are building all branches on commit hook (for codecov).
-In addition, a Github Actions are used to build PRs and all branches.
+GitHub Actions are building all branches on commit hook (for codecov).
+In addition, a GitHub Actions are used to build PRs and all branches.
 
 ### Release Management
 
-The release is produced by using the github feature to "Publish a Release".
+The release is produced by using the GitHub feature to "Publish a Release". To do so, please
+"close a milestone" and a special action will generate automatically collected issues and
+PRs to generate the Release notes. It will create a tag, which will be built if this
+release get published. Now "Publish release" and the GH action will create a new
+release and publish it into Camunda Artifactory and Maven Central Staging. To 
+release it to the public, please create an issue and assign it to someone of
+Camunda [@camunda-community-hub/devrel](https://github.com/orgs/camunda-community-hub/teams/devrel)
 
 #### What modules get deployed to repository
 

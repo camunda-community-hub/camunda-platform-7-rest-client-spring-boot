@@ -10,7 +10,7 @@
 
   <groupId>org.camunda.community.rest</groupId>
   <artifactId>camunda-platform-7-rest-client-spring-boot-parent</artifactId>
-  <version>7.17.2-SNAPSHOT</version>
+  <version>7.17.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>camunda-platform-7-rest-client-spring-boot/parent</name>
   <description>Camunda Platform 7 REST Client Spring-Boot</description>
@@ -405,12 +405,6 @@
           </executions>
         </plugin>
 
-        <!-- Deploy -->
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-
         <!-- License -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -436,29 +430,6 @@
           </executions>
         </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>3.0.1</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <!-- Prevent gpg from using pin entry programs -->
-            <gpgArguments>
-              <arg>--batch</arg>
-              <arg>--yes</arg>
-              <arg>--pinentry-mode</arg>
-              <arg>loopback</arg>
-            </gpgArguments>
-          </configuration>
-        </plugin>
         <plugin>
           <groupId>com.google.code.maven-replacer-plugin</groupId>
           <artifactId>maven-replacer-plugin</artifactId>
@@ -556,6 +527,7 @@
 
     <!--
       Profile creating all artifacts: JARs, POMs, Sources, JavaDoc and all signatures.
+      The parent pom already will call maven-source-plugin, maven-javadoc-plugin and maven-gpg-plugin.
     -->
     <profile>
       <id>community-action-maven-release</id>
@@ -568,37 +540,6 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>oss-maven-central</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jetbrains.dokka</groupId>
-            <artifactId>dokka-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
@@ -620,26 +561,20 @@
     <tag>HEAD</tag>
   </scm>
 
-  <!-- repositories used for distribution of releases and snapshots, DO NOT CHANGE -->
-  <distributionManagement>
-    <repository>
-      <id>camunda-nexus</id>
-      <name>Camunda BPM Community extensions</name>
-      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions/</url>
-    </repository>
-    <snapshotRepository>
-      <id>camunda-nexus</id>
-      <name>Camunda BPM Community extensions snapshots</name>
-      <url>https://artifacts.camunda.com/artifactory/camunda-bpm-community-extensions-snapshots/</url>
-      <!-- for maven 2 compatibility -->
-      <uniqueVersion>true</uniqueVersion>
-    </snapshotRepository>
-  </distributionManagement>
-
   <developers>
     <developer>
       <id>zambrovski</id>
       <name>Simon Zambrovski</name>
+      <organization>Holisticon AG</organization>
+      <roles>
+        <role>Product Owner</role>
+        <role>Maintainer</role>
+      </roles>
+      <organizationUrl>https://holisticon.de</organizationUrl>
+    </developer>
+    <developer>
+      <id>rohwerj</id>
+      <name>Jan Rohwer</name>
       <organization>Holisticon AG</organization>
       <roles>
         <role>Product Owner</role>

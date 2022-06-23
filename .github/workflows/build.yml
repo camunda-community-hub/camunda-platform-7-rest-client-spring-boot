@@ -1,12 +1,12 @@
-# This workflow is triggered by pushing commits to branches and/or Pull Requests.
-# It will not trigger for pushes to master or develop, but run on develop every night to provide a nightly build status.
+# This workflow is triggered by pushing commits on branches and/or Pull Requests.
+# It will not trigger for pushes to master but run every night to provide a nightly build status.
 name: Build project with Maven
 on:
   pull_request:
   push:
-    branches-ignore: [ master, develop ]
+    branches-ignore: [ master ]
   schedule:
-  - cron: '2 2 * * 1-5' # run nightly develop builds everyday
+  - cron: '2 2 * * 1-5' # run nightly builds everyday
 
 jobs:
   build:
