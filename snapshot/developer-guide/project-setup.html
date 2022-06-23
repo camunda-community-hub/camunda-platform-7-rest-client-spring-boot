@@ -775,7 +775,7 @@
 <div class="highlight"><pre><span></span><code>git clone https://github.com/camunda-communit-hub/camunda-platform-7-rest-client-spring-boot.git
 <span class="nb">cd</span> camunda-platform-7-rest-client-spring-boot
 </code></pre></div>
-<p>We are using gitflow in our git SCM for naming b## Support Matrixranches. That means that you should start from <code>develop</code> branch,
+<p>We are using gitflow in our git SCM for naming b ranches. That means that you should start from <code>master</code> branch,
 create a <code>feature/&lt;name&gt;</code> out of it and once it is completed create a pull request containing
 it. Please squash your commits before submitting and use semantic commit messages, if possible.</p>
 <h2 id="project-build">Project Build<a class="headerlink" href="#project-build" title="Permanent link">#</a></h2>
@@ -786,7 +786,7 @@ it. Please squash your commits before submitting and use semantic commit message
 <p>By default, the build command will ignore the run of <code>failsafe</code> Maven plugin executing the integration tests
 (usual JUnit tests with class names ending with ITest). In order to run integration tests, please
 call from your command line:</p>
-<div class="highlight"><pre><span></span><code>./mvnw -Pitest
+<div class="highlight"><pre><span></span><code>./mvnw -Pitest failsafe:verify
 </code></pre></div>
 <h2 id="project-build-modes-and-profiles">Project build modes and profiles<a class="headerlink" href="#project-build-modes-and-profiles" title="Permanent link">#</a></h2>
 <h3 id="camunda-version">Camunda Version<a class="headerlink" href="#camunda-version" title="Permanent link">#</a></h3>
@@ -804,7 +804,7 @@ the http://localhost:8000/ from your browser.</p>
 <p>For creation of documentation, please run:</p>
 <h4 id="generation-of-javadoc-and-sources">Generation of JavaDoc and Sources<a class="headerlink" href="#generation-of-javadoc-and-sources" title="Permanent link">#</a></h4>
 <p>By default, the sources and javadoc API documentation are not generated from the source code. To enable this:</p>
-<div class="highlight"><pre><span></span><code>./mvnw clean install -Prelease -Dgpg.skip<span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre><span></span><code>./mvnw clean install -Pcommunity-action-maven-release -Dgpg.skip<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <h4 id="starting-example-applications">Starting example applications<a class="headerlink" href="#starting-example-applications" title="Permanent link">#</a></h4>
 <p>To start applications, either use your IDE and create
@@ -818,10 +818,16 @@ run configuration for the class:</p>
 ./mvn spring-boot:run -f examples/example-provided
 </code></pre></div>
 <h3 id="continuous-integration">Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permanent link">#</a></h3>
-<p>Github Actions are building all branches on commit hook (for codecov).
-In addition, a Github Actions are used to build PRs and all branches.</p>
+<p>GitHub Actions are building all branches on commit hook (for codecov).
+In addition, a GitHub Actions are used to build PRs and all branches.</p>
 <h3 id="release-management">Release Management<a class="headerlink" href="#release-management" title="Permanent link">#</a></h3>
-<p>The release is produced by using the github feature to "Publish a Release".</p>
+<p>The release is produced by using the GitHub feature to "Publish a Release". To do so, please
+"close a milestone" and a special action will generate automatically collected issues and
+PRs to generate the Release notes. It will create a tag, which will be built if this
+release get published. Now "Publish release" and the GH action will create a new
+release and publish it into Camunda Artifactory and Maven Central Staging. To 
+release it to the public, please create an issue and assign it to someone of
+Camunda <a href="https://github.com/orgs/camunda-community-hub/teams/devrel">@camunda-community-hub/devrel</a></p>
 <h4 id="what-modules-get-deployed-to-repository">What modules get deployed to repository<a class="headerlink" href="#what-modules-get-deployed-to-repository" title="Permanent link">#</a></h4>
 <p>Every Maven module is enabled by default. If you want to change this, please provide the property</p>
 <div class="highlight"><pre><span></span><code><span class="nt">&lt;maven.deploy.skip&gt;</span>true<span class="nt">&lt;/maven.deploy.skip&gt;</span>
@@ -833,7 +839,7 @@ In addition, a Github Actions are used to build PRs and all branches.</p>
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 22, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 23, 2022</span>
       
     
   </small>
