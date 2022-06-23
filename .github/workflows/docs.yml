@@ -3,9 +3,11 @@ name: Build the docs
 on:
   push:
     branches:
-      - develop
+      - master
     tags:
       - '*'
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -67,7 +69,22 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         run: mike set-default stable --push --rebase
 
-      # This is for develop
+      # This is for master branch
       - name: Deploy latest develop snapshot docs to GH pages.
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/master'
         run: mike deploy snapshot --push --rebase
+
+      # This is for release close
+      - name: Get the release version
+        if: github.event.release
+        run: |
+          VERSION=$(echo ${{ github.event.release.name }} | cut -d' ' -f2)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Create a new version of documentation and push to GH pages.
+        if: github.event.release
+        run: mike deploy ${{ env.VERSION }} stable --push --rebase
+
+      - name: Make stable to default.
+        if: github.event.release
+        run: mike set-default stable --push --rebase

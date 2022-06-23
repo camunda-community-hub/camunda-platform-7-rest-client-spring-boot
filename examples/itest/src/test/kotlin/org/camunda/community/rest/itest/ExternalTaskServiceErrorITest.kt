@@ -25,11 +25,13 @@ package org.camunda.community.rest.itest
 import com.tngtech.jgiven.annotation.As
 import io.toolisticon.testing.jgiven.WHEN
 import org.camunda.bpm.engine.ExternalTaskService
-import org.camunda.community.rest.itest.stages.*
+import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
+import org.camunda.community.rest.itest.stages.EXPECT
+import org.camunda.community.rest.itest.stages.ExternalTaskServiceActionStage
+import org.camunda.community.rest.itest.stages.ExternalTaskServiceAssertStage
 import org.junit.Test
 import org.springframework.test.context.TestPropertySource
 
-@RuntimeServiceCategory
 @As("External Task")
 @TestPropertySource(
   properties = [

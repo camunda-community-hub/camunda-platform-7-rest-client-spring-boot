@@ -31,11 +31,9 @@ import org.camunda.bpm.engine.RepositoryService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RepositoryServiceActionStage
 import org.camunda.community.rest.itest.stages.RepositoryServiceAssertStage
-import org.camunda.community.rest.itest.stages.RepositoryServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
-@RepositoryServiceCategory
 @As("Creates process definition query")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class RepositoryServiceDeploymentITest :
@@ -46,7 +44,7 @@ class RepositoryServiceDeploymentITest :
     GIVEN
       .no_deployment_exists()
     WHEN
-      .process_definitions_are_deployed("testdeployment","test")
+      .process_definitions_are_deployed("testdeployment", "test")
     THEN
       .process_definition_query_succeeds { query, _ ->
         assertThat(

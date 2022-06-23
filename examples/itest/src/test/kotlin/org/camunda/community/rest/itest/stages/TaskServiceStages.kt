@@ -22,7 +22,10 @@
  */
 package org.camunda.community.rest.itest.stages
 
-import com.tngtech.jgiven.annotation.*
+import com.tngtech.jgiven.annotation.ExpectedScenarioState
+import com.tngtech.jgiven.annotation.Hidden
+import com.tngtech.jgiven.annotation.ProvidedScenarioState
+import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
@@ -217,7 +220,5 @@ class TaskServiceAssertStage : AssertStage<TaskServiceAssertStage, TaskService>(
 
 }
 
-@IsTag(name = "TaskService")
-annotation class TaskServiceCategory
 
 

@@ -5,7 +5,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.camunda.bpm.engine" level="INFO"/>
+  <logger name="org.camunda.bpm.engine" level="WARN"/>
   <logger name="org.camunda.bpm.engine.persistence" level="WARN"/>
 
   <root level="INFO">

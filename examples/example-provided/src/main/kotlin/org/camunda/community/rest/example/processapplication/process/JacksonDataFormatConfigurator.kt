@@ -43,7 +43,7 @@ class JacksonDataFormatConfigurator : DataFormatConfigurator<JacksonJsonDataForm
      * Factory configuring object mapper.
      */
     fun configureObjectMapper(objectMapper: ObjectMapper) = objectMapper.apply {
-      registerModule(KotlinModule())
+      registerModule(KotlinModule.Builder().build())
       registerModule(Jdk8Module())
       registerModule(JavaTimeModule())
       dateFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:MM:ss.SSSz")

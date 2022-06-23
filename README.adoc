@@ -23,24 +23,24 @@ image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="spon
 == Introduction
 
 This library aims to provide a REST client for Camunda REST API for SpringBoot. In doing so it offers "remote" implementations of Camunda
-Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/support-matrix.html[support matrix]
+Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/support-matrix.html[support matrix]
 to find out if the functionality you require is already supported by the library.
 
 
 == Quick Start
 
-If you just want to start using the library, please consult our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/getting-started.html[Quick Start]
+If you just want to start using the library, please consult our link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/getting-started.html[Quick Start]
 guide.
 
 == Working Example
 
-We provide a working example demonstrating some features of the library. See our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/examples.html#standalone-usage[Examples] section for usage and configuration.
+We provide a working example demonstrating some features of the library. See our link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/examples.html#standalone-usage[Examples] section for usage and configuration.
 
 
 == User Guide
 
 If you have any questions regarding configuration of Camunda BPM Feign please
-have a look at our link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/user-guide/index.html[User Guide].
+have a look at our link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/index.html[User Guide].
 
 
 == License
@@ -49,7 +49,7 @@ This library is developed under Apache License 2.
 
 == Contribution
 
-If you want to contribute to this project, feel free to do so. Start with link:https://camunda-community-hub.github.io/camunda-rest-client-spring-boot/snapshot/developer-guide/contribution.html[Contributing guide].
+If you want to contribute to this project, feel free to do so. Start with link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/developer-guide/contribution.html[Contributing guide].
 
 == Maintainer
 

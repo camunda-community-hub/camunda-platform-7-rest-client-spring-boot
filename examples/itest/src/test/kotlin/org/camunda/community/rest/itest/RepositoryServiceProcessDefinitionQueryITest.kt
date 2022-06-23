@@ -32,11 +32,9 @@ import org.camunda.bpm.engine.RepositoryService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RepositoryServiceActionStage
 import org.camunda.community.rest.itest.stages.RepositoryServiceAssertStage
-import org.camunda.community.rest.itest.stages.RepositoryServiceCategory
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 
-@RepositoryServiceCategory
 @As("Creates process definition query")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class RepositoryServiceProcessDefinitionQueryITest :

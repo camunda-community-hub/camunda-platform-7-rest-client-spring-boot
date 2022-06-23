@@ -32,10 +32,8 @@ import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceActionStage
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceAssertStage
-import org.camunda.community.rest.itest.stages.RuntimeServiceCategory
 import org.junit.Test
 
-@RuntimeServiceCategory
 @As("External Task")
 class ExternalTaskServiceITest :
   CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
