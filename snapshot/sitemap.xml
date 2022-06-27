@@ -2,72 +2,72 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/index.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/getting-started.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/developer-guide/contribution.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/developer-guide/project-setup.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/index.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/features.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/further-outlook.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/motivation.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/solution.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/index.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/error-decoding.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/examples.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/logging.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/support-matrix.html</loc>
-         <lastmod>2022-06-24</lastmod>
+         <lastmod>2022-06-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
