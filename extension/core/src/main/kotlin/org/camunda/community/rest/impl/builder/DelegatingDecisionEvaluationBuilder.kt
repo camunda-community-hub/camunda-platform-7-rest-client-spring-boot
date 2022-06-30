@@ -11,6 +11,7 @@ import org.camunda.bpm.engine.BadUserRequestException
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.dmn.DecisionEvaluationBuilder
 import org.camunda.bpm.engine.dmn.DecisionsEvaluationBuilder
+import org.camunda.bpm.engine.exception.NotFoundException
 import org.camunda.bpm.engine.exception.NotValidException
 import org.camunda.bpm.engine.impl.util.EnsureUtil
 import org.camunda.bpm.engine.variable.value.TypedValue
@@ -70,13 +71,19 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
     val evaluateDecisionDto = EvaluateDecisionDto().variables(valueMapper.mapValues(this.variables))
     val result = if (decisionDefinitionKey != null) {
       if (version != null) {
-        TODO("Not yet implemented")
-      } else if (tenantIdSet) {
-        if (tenantId == null) {
-          TODO("Not yet implemented")
-        } else {
-          decisionDefinitionApiClient.evaluateDecisionByKeyAndTenant(decisionDefinitionKey, tenantId, evaluateDecisionDto)
+        val decisionDefinitions = decisionDefinitionApiClient.getDecisionDefinitions(
+          null, null, null, null, null,
+          null, null, null, null, null, null, decisionDefinitionKey, null,
+          null, null, version, null, null, null, null,
+          null, null, null, null,
+          null, null, null
+        )
+        if (decisionDefinitions.body?.size != 1) {
+          throw NotFoundException("No decision for key $decisionDefinitionKey and version $version found")
         }
+        decisionDefinitionApiClient.evaluateDecisionById(decisionDefinitions.body!![0].id, evaluateDecisionDto)
+      } else if (tenantId != null) {
+        decisionDefinitionApiClient.evaluateDecisionByKeyAndTenant(decisionDefinitionKey, tenantId, evaluateDecisionDto)
       } else {
         decisionDefinitionApiClient.evaluateDecisionByKey(decisionDefinitionKey, evaluateDecisionDto)
       }

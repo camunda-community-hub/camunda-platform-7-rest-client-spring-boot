@@ -33,6 +33,7 @@ import io.holunda.decision.model.FeelConditions.feelEqual
 import io.holunda.decision.model.FeelConditions.resultValue
 import io.holunda.decision.model.api.CamundaDecisionModelApi.InputDefinitions.stringInput
 import io.holunda.decision.model.api.CamundaDecisionModelApi.OutputDefinitions.stringOutput
+import io.holunda.decision.model.builder.DmnDiagramBuilder
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.dmn.engine.DmnDecisionResult
@@ -40,6 +41,7 @@ import org.camunda.bpm.dmn.engine.DmnDecisionTableResult
 import org.camunda.bpm.engine.DecisionService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.DecisionDefinition
+import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.model.dmn.Dmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -77,10 +79,45 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
     }
   }
 
+  fun drd_is_deployed(): DecisionServiceActionStage {
+
+    val output1 = stringOutput("output1", "Output 1")
+
+    val diagramBuilder = diagram("Test")
+      .id("test")
+      .addDecisionTable(
+        table("table1")
+          .name("A generated table")
+          .versionTag("1")
+          .addRule(rule()
+            .condition(stringInput("input1", "Input 1").feelEqual("Rule1"))
+            .description("test")
+            .result(output1.resultValue("Rule1Output")))
+      )
+      .addDecisionTable(
+        table("table2")
+          .requiredDecision("table1")
+          .name("A generated table")
+          .versionTag("1")
+          .addRule(rule()
+            .condition(output1.toInputDefinition().feelEqual("Rule1Output"))
+            .description("test")
+            .result(stringOutput("output2", "Output 2").resultValue("Rule1Output2"))
+          )
+      )
+
+    deploy(diagramBuilder, "drd.dmn")
+
+    return self()
+  }
+
   fun decision_table_is_deployed(
     decisionDefinitionKey: String = "decision_table",
+    version: String? = null,
     tenantId: String? = null
   ): DecisionServiceActionStage {
+
+    val output = version?.let { "Rule1OutputV$version" } ?: "Rule1Output"
 
     val diagramBuilder = diagram("Test")
       .id("test")
@@ -91,20 +128,11 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
           .addRule(rule()
             .condition(stringInput("input1", "Input 1").feelEqual("Rule1"))
             .description("test")
-            .result(stringOutput("output1", "Output 1").resultValue("Rule1Output"))
+            .result(stringOutput("output1", "Output 1").resultValue(output))
           )
       )
 
-    val diagram = diagramBuilder.build()
-
-    val modelInstance = Dmn.readModelFromStream(CamundaDecisionModel.createXml(diagram).byteInputStream())
-
-    val deployment = repositoryService
-      .createDeployment()
-      .addModelInstance("$decisionDefinitionKey.dmn", modelInstance)
-      .name("decision_table")
-      .tenantId(tenantId)
-      .deploy()
+    val deployment = deploy(diagramBuilder, "$decisionDefinitionKey.dmn", tenantId)
 
     decisionDefinition = repositoryService
       .createDecisionDefinitionQuery()
@@ -112,6 +140,20 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
       .singleResult()
 
     return self()
+  }
+
+  private fun deploy(diagramBuilder: DmnDiagramBuilder, resourceName: String, tenantId: String? = null): Deployment {
+    val diagram = diagramBuilder.build()
+
+    val modelInstance = Dmn.readModelFromStream(CamundaDecisionModel.createXml(diagram).byteInputStream())
+
+    return repositoryService
+      .createDeployment()
+      .addModelInstance(resourceName, modelInstance)
+      .name("decision_deployment")
+      .tenantId(tenantId)
+      .deploy()
+
   }
 
   fun decision_is_evaluated_by_id(variables: MutableMap<String, Any>): DecisionServiceActionStage {
@@ -131,6 +173,11 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
 
   fun decision_table_is_evaluated_by_key(decisionDefinitionKey: String = "decision_table", variables: MutableMap<String, Any>): DecisionServiceActionStage {
     decisionTableResult = remoteService.evaluateDecisionTableByKey(decisionDefinitionKey, variables)
+    return self()
+  }
+
+  fun decision_table_is_evaluated_by_key_and_version(decisionDefinitionKey: String = "decision_table", version: Int, variables: MutableMap<String, Any>): DecisionServiceActionStage {
+    decisionTableResult = remoteService.evaluateDecisionTableByKeyAndVersion(decisionDefinitionKey, version, variables)
     return self()
   }
 

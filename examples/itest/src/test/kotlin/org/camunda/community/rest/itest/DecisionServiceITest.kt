@@ -39,6 +39,7 @@ class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, Decisio
   fun `should evaluate decision by id`() {
     GIVEN
       .no_deployment_exists()
+      .and()
       .decision_table_is_deployed()
     WHEN
       .decision_is_evaluated_by_id(mutableMapOf(Pair("input1", "Rule1")))
@@ -50,6 +51,7 @@ class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, Decisio
   fun `should evaluate decision by key`() {
     GIVEN
       .no_deployment_exists()
+      .and()
       .decision_table_is_deployed()
     WHEN
       .decision_is_evaluated_by_key(variables = mutableMapOf(Pair("input1", "Rule1")))
@@ -61,6 +63,7 @@ class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, Decisio
   fun `should evaluate decision table by id`() {
     GIVEN
       .no_deployment_exists()
+      .and()
       .decision_table_is_deployed()
     WHEN
       .decision_table_is_evaluated_by_id(mutableMapOf(Pair("input1", "Rule1")))
@@ -72,6 +75,7 @@ class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, Decisio
   fun `should evaluate decision table by key`() {
     GIVEN
       .no_deployment_exists()
+      .and()
       .decision_table_is_deployed()
     WHEN
       .decision_table_is_evaluated_by_key(variables = mutableMapOf(Pair("input1", "Rule1")))
@@ -80,14 +84,45 @@ class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, Decisio
   }
 
   @Test
+  fun `should evaluate decision table by key and version`() {
+    GIVEN
+      .no_deployment_exists()
+      .and()
+      .decision_table_is_deployed()
+      .and()
+      .decision_table_is_deployed(version = "2")
+    WHEN
+      .decision_table_is_evaluated_by_key_and_version(version = 1, variables = mutableMapOf(Pair("input1", "Rule1")))
+    THEN
+      .decision_table_result_is_correct(mutableMapOf(Pair("output1", "Rule1Output")))
+    WHEN
+      .decision_table_is_evaluated_by_key_and_version(version = 2, variables = mutableMapOf(Pair("input1", "Rule1")))
+    THEN
+      .decision_table_result_is_correct(mutableMapOf(Pair("output1", "Rule1OutputV2")))
+  }
+
+  @Test
   fun `should evaluate decision table by key with tenant`() {
     GIVEN
       .no_deployment_exists()
+      .and()
       .decision_table_is_deployed(tenantId = "tenantId")
     WHEN
       .decision_table_is_evaluated_by_key_and_tenant(tenantId = "tenantId", variables = mutableMapOf(Pair("input1", "Rule1")))
     THEN
       .decision_table_result_is_correct(mutableMapOf(Pair("output1", "Rule1Output")))
+  }
+
+  @Test
+  fun `should evaluate decision table by key in drd`() {
+    GIVEN
+      .no_deployment_exists()
+      .and()
+      .drd_is_deployed()
+    WHEN
+      .decision_table_is_evaluated_by_key(decisionDefinitionKey = "table2", variables = mutableMapOf(Pair("input1", "Rule1")))
+    THEN
+      .decision_table_result_is_correct(mutableMapOf(Pair("output2", "Rule1Output2")))
   }
 
 }

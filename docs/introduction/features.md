@@ -69,3 +69,8 @@ but still provide an alternative implementation for some methods.
 ## HistoryService
 
 * Historic process instance query: `#createHistoricProcessInstanceQuery()`
+
+## DecisionService
+
+* Evaluate decision: `#evaluateDecisionById()`,`#evaluateDecisionByKey()`
+* Evaluate decision table: `#evaluateDecisionTableById()`,`#evaluateDecisionTableByKey()`.`#evaluateDecisionTableByKeyAndVersion()`
