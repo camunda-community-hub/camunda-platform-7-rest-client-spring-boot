@@ -5,7 +5,7 @@ image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable
 [cols="a,a,a,a,a,a,a"]
 |===
 | // maven central
-image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community/camunda-platform-7-rest-client-spring-boot]
+image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
 | // codecov
 image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-rest-platform-7-client-spring-boot]
 | // codacy
