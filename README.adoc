@@ -7,13 +7,13 @@ image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
 | // codecov
-image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-rest-platform-7-client-spring-boot]
+image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot]
 | // codacy
 image::https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy Badge", link=https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&amp;utm_campaign=Badge_Grade]
 | // license
-image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://camunda.github.io/camunda-platform-7-rest-client-spring-boot/license"]
+image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/blob/master/LICENSE"]
 | // changelog
-image::https://img.shields.io/badge/CHANGES-blue.svg[caption="Change log", link="https://camunda.github.io/camunda-platform-7-rest-client-spring-boot/changelog"]
+image::https://img.shields.io/badge/CHANGES-blue.svg[caption="Change log", link="https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/releases/latest"]
 | // openhub
 image::https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot"]
 | // sponsored
