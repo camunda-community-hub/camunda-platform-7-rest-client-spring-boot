@@ -36,13 +36,13 @@ jobs:
       run: mvn -B -Pitest verify failsafe:verify
 
     - name: Upload coverage to Codecov
-      if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+      if: (github.event_name == 'push' || github.event_name == 'schedule') && github.actor != 'dependabot[bot]'
       uses: codecov/codecov-action@v1.0.2
       with:
         token: ${{secrets.CODECOV_TOKEN}}
 
     - name: Upload coverage to Codacy
-      if: github.event_name == 'push' && github.actor != 'dependabot[bot]'
+      if: (github.event_name == 'push' || github.event_name == 'schedule') && github.actor != 'dependabot[bot]'
       uses: codacy/codacy-coverage-reporter-action@v1
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
