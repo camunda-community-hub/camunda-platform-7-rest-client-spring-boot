@@ -198,4 +198,34 @@ class RuntimeServiceProcessInstanceQueryITest :
   }
 
 
+  @Test
+  fun `find process by single process instance id`() {
+    val processDefinitionKey = "processDefinitionKey"
+    val key1 = "businessKey1"
+    val key2 = "businessKey2"
+    val key3 = "businessKey3"
+
+    GIVEN.no_deployment_exists()
+
+    GIVEN
+      .process_with_user_task_is_deployed(processDefinitionKey)
+
+    WHEN
+      .apply {
+        localService.startProcessInstanceByKey(processDefinitionKey, key1)
+        localService.startProcessInstanceByKey(processDefinitionKey, key2)
+        processInstance = localService.startProcessInstanceByKey(processDefinitionKey, key3)
+      }
+
+    THEN
+      .process_instance_query_succeeds { query, _ ->
+        val result = query
+          .processInstanceId(GIVEN.processInstance.id)
+          .count()
+        assertThat(
+          result
+        ).isEqualTo(1)
+      }
+  }
+
 }
