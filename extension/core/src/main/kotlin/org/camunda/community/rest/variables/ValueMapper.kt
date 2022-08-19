@@ -40,40 +40,56 @@ import org.camunda.bpm.engine.variable.type.*
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
+import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableQueryParameterDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import java.io.ObjectInputStream
 import java.util.*
 
+interface CustomValueMapper {
+
+  fun mapValue(variableValue: Any): TypedValue
+
+  fun canHandle(variableValue: Any): Boolean
+
+  fun serializeValue(variableValue: SerializableValue): SerializableValue
+
+  fun deserializeValue(variableValue: SerializableValue): TypedValue
+
+}
 
 /**
  * Class responsible for mapping variables from and to DTO representations.
  */
 class ValueMapper(
   private val processEngine: ProcessEngine = ProcessEngines.getDefaultProcessEngine(),
-  private val objectMapper: ObjectMapper = jacksonObjectMapper()
+  private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+  private val customValueMapper: List<CustomValueMapper> = emptyList()
 ) {
   /**
    * Creates a variable value DTO out of variable value.
    */
   fun mapValue(variableValue: Any?, isTransient: Boolean = false): VariableValueDto {
-    return if (variableValue == null) {
-      mapValue(untypedNullValue(isTransient))
-    } else {
-      mapValue(untypedValue(variableValue, isTransient))
-    }
+    return mapValue(
+      when (variableValue) {
+        null -> untypedNullValue(isTransient)
+        else -> untypedValue(variableValue, isTransient)
+      }
+    )
   }
 
   /**
    * Create a variable value DTO out of typed variable value.
    */
-  fun mapValue(variableValue: TypedValue): VariableValueDto {
+  private fun mapValue(variableValue: TypedValue): VariableValueDto {
+    val variable = customValueMapper.firstOrNull { it.canHandle(variableValue.value) }?.mapValue(variableValue.value) ?: variableValue
     /*
      * preferSerializedValue MUST be set to true, in order to be able to serialize ObjectValues
      */
-    if (variableValue is SerializableValue) {
-      serializeValue(variableValue)
+    if (variable is SerializableValue) {
+      serializeValue(variable)
     }
-    return variableValue.toDto()
+    return variable.toDto()
   }
 
   private fun TypedValue.toDto() = VariableValueDto().apply {
@@ -139,10 +155,25 @@ class ValueMapper(
     } as T
   }
 
+  /**
+   * Maps DTO to its value.
+   */
+  @Suppress("UNCHECKED_CAST")
+  fun <T> mapDto(dto: VariableInstanceDto, deserializeValues: Boolean = true): T? {
+    val valueDto = VariableValueDto().type(dto.type).value(dto.value).valueInfo(dto.valueInfo)
+    return if (deserializeValues) {
+      deserializeObjectValue(restoreObjectJsonIfNeeded(valueDto).toTypedValue(processEngine, objectMapper))
+    } else {
+      valueDto.toTypedValue(processEngine, objectMapper)
+    } as T
+  }
+
   private fun VariableValueDto.toTypedValue(processEngine: ProcessEngine, objectMapper: ObjectMapper): TypedValue {
     val valueTypeResolver = processEngine.processEngineConfiguration.valueTypeResolver
     return if (type == null) {
-      if (valueInfo != null && valueInfo["transient"] is Boolean) untypedValue(value, valueInfo["transient"] as Boolean) else untypedValue(value)
+      if (valueInfo != null && valueInfo["transient"] is Boolean) untypedValue(value, valueInfo["transient"] as Boolean) else untypedValue(
+        value
+      )
     } else {
       when (val valueType = valueTypeResolver.typeForName(fromRestApiTypeName(type))) {
         is PrimitiveValueType -> {
@@ -157,6 +188,7 @@ class ValueMapper(
           }
           valueType.createValue(mappedValue, valueInfo)
         }
+
         is SerializableValueType -> {
           if (value != null && value !is String) {
             throw IllegalArgumentException("Must provide 'null' or String value for value of SerializableValue type '$type'.")
@@ -164,13 +196,18 @@ class ValueMapper(
             valueType.createValueFromSerialized(value as String, valueInfo)
           }
         }
+
         is FileValueType -> {
           if (value is String) {
             value = Base64.decodeBase64(value as String)
           }
           valueType.createValue(value, valueInfo)
         }
-        else -> if (valueType == null) throw IllegalArgumentException("Unsupported value type '$type'") else valueType.createValue(value, valueInfo)
+
+        else -> if (valueType == null) throw IllegalArgumentException("Unsupported value type '$type'") else valueType.createValue(
+          value,
+          valueInfo
+        )
       }
     }
 
@@ -218,27 +255,30 @@ class ValueMapper(
    */
   private fun serializeValue(variableValue: SerializableValue) {
     if (variableValue.valueSerialized == null) {
-      // try it for application/json or unspecified
-      if (variableValue.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
-        || variableValue.serializationDataFormat == null) {
-        if (variableValue is ObjectValueImpl) {
-          try {
-            val serializedValue = objectMapper.writeValueAsString(variableValue.value)
-            variableValue.setSerializedValue(serializedValue)
-            // fix format if missing
-            if (variableValue.serializationDataFormat == null) {
-              variableValue.serializationDataFormat = Variables.SerializationDataFormats.JSON.getName()
+      customValueMapper.firstOrNull { it.canHandle(variableValue) }?.serializeValue(variableValue) ?: run {
+        if (variableValue.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
+          // try it for application/json or unspecified
+          || variableValue.serializationDataFormat == null
+        ) {
+          if (variableValue is ObjectValueImpl) {
+            try {
+              val serializedValue = objectMapper.writeValueAsString(variableValue.value)
+              variableValue.setSerializedValue(serializedValue)
+              // fix format if missing
+              if (variableValue.serializationDataFormat == null) {
+                variableValue.serializationDataFormat = Variables.SerializationDataFormats.JSON.getName()
+              }
+              // this allows to detect native types hidden in objectValue
+              variableValue.objectTypeName = getTypeName(variableValue.value)
+            } catch (e: JsonProcessingException) {
+              throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}'", e)
             }
-            // this allows to detect native types hidden in objectValue
-            variableValue.objectTypeName = getTypeName(variableValue.value)
-          } catch (e: JsonProcessingException) {
-            throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}'", e)
+          } else {
+            throw UnsupportedOperationException("Serialization not supported for $variableValue")
           }
         } else {
-          throw UnsupportedOperationException("Only serialization of object values is supported. Please provide serialized value for $variableValue")
+          throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}' and no serialized value has been provided for $variableValue")
         }
-      } else {
-        throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}' and no serialized value has been provided for $variableValue")
       }
     }
   }
@@ -250,27 +290,41 @@ class ValueMapper(
    */
   private fun deserializeObjectValue(value: TypedValue): TypedValue {
     return if (value is SerializableValue && !value.isDeserialized) {
-      if (value.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
-        || value.serializationDataFormat == null) {
-        if (value is ObjectValueImpl) {
-          val deserializedValue: Any = try {
-            val clazz = Class.forName(value.objectTypeName)
-            objectMapper.readValue(value.valueSerialized, clazz)
-          } catch (e: Exception) {
-            throw IllegalStateException("Error deserializing value $value", e)
+      return customValueMapper.firstOrNull { it.canHandle(value) }?.deserializeValue(value)
+        ?: if (value.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
+          || value.serializationDataFormat == null
+        ) {
+          return when (value) {
+            is ObjectValueImpl -> {
+              val deserializedValue: Any = try {
+                val clazz = Class.forName(value.objectTypeName)
+                objectMapper.readValue(value.valueSerialized, clazz)
+              } catch (e: Exception) {
+                throw IllegalStateException("Error deserializing value $value", e)
+              }
+              ObjectValueImpl(deserializedValue, value.valueSerialized, value.serializationDataFormat, value.objectTypeName, true)
+            }
+
+            else -> throw IllegalStateException("Could not deserialize value $value")
           }
-          return ObjectValueImpl(deserializedValue, value.valueSerialized, value.serializationDataFormat, value.objectTypeName, true)
+        } else if (value.serializationDataFormat == Variables.SerializationDataFormats.JAVA.getName()) {
+          if (value is ObjectValueImpl) {
+            val deserializedValue: Any = try {
+              ObjectInputStream(Base64.decodeBase64(value.valueSerialized).inputStream()).use { it.readObject() }
+            } catch (e: Exception) {
+              throw IllegalStateException("Error deserializing value $value", e)
+            }
+            return ObjectValueImpl(deserializedValue, value.valueSerialized, value.serializationDataFormat, value.objectTypeName, true)
+          } else {
+            throw IllegalStateException("Could not deserialize value $value")
+          }
         } else {
-          throw IllegalStateException("Could not deserialize value $value")
+          throw IllegalStateException("Could not deserialize value $value, ${value.serializationDataFormat} is not supported.")
         }
-      } else {
-        throw IllegalStateException("Could not deserialize value $value, only application/json de-serialization is supported.")
-      }
     } else {
       value
     }
   }
-
 }
 
 fun QueryOperator.toRestOperator() = when (this) {

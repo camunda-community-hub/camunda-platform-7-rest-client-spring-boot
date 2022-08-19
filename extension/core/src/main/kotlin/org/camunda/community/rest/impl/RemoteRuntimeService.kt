@@ -38,9 +38,11 @@ import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspen
 import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.camunda.community.rest.impl.query.DelegatingIncidentQuery
 import org.camunda.community.rest.impl.query.DelegatingProcessInstanceQuery
+import org.camunda.community.rest.variables.CustomValueMapper
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * Remote implementation of Camunda Core RuntimeService API, delegating
@@ -55,11 +57,13 @@ class RemoteRuntimeService(
   private val signalApiClient: SignalApiClient,
   private val executionApiClient: ExecutionApiClient,
   private val incidentApiClient: IncidentApiClient,
+  private val variableInstanceApiClient: VariableInstanceApiClient,
+  customValueMapper: List<CustomValueMapper>,
   processEngine: ProcessEngine,
   objectMapper: ObjectMapper
 ) : AbstractRuntimeServiceAdapter() {
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
+  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper, customValueMapper)
 
   override fun correlateMessage(messageName: String) =
     doCorrelateMessage(messageName = messageName)
@@ -279,28 +283,28 @@ class RemoteRuntimeService(
   }
 
   override fun getVariablesLocal(executionId: String): MutableMap<String, Any?> {
-    return executionApiClient.getLocalExecutionVariables(executionId, true).body!!
-      .mapValues { it.value.value }
+    return executionApiClient.getLocalExecutionVariables(executionId, false).body!!
+      .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
   override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
-    return executionApiClient.getLocalExecutionVariables(executionId, true).body!!
+    return executionApiClient.getLocalExecutionVariables(executionId, false).body!!
       .filter { variableNames.contains(it.key) }
-      .mapValues { it.value.value }
+      .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
   override fun getVariableLocal(executionId: String, variableName: String): Any? {
-    val dto = executionApiClient.getLocalExecutionVariable(executionId, variableName, true).body!!
-    return dto.value
+    val dto = executionApiClient.getLocalExecutionVariable(executionId, variableName, false).body!!
+    return valueMapper.mapDto<TypedValue>(dto, true)?.value
   }
 
   override fun getVariablesLocalTyped(executionId: String): VariableMap =
     getVariablesLocalTyped(executionId, true)
 
   override fun getVariablesLocalTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = executionApiClient.getLocalExecutionVariables(executionId, deserializeValues).body!!
+    val variables = executionApiClient.getLocalExecutionVariables(executionId, false).body!!
     return valueMapper.mapDtos(variables, deserializeValues)
   }
 
@@ -310,7 +314,7 @@ class RemoteRuntimeService(
     deserializeValues: Boolean
   ): VariableMap {
     val variables = executionApiClient
-      .getLocalExecutionVariables(executionId, deserializeValues).body!!
+      .getLocalExecutionVariables(executionId, false).body!!
       .filter { variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
@@ -320,7 +324,7 @@ class RemoteRuntimeService(
 
   override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
     val dto = executionApiClient
-      .getLocalExecutionVariable(executionId, variableName, deserializeValue).body!!
+      .getLocalExecutionVariable(executionId, variableName, false).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -347,17 +351,25 @@ class RemoteRuntimeService(
   }
 
   override fun getVariables(executionId: String): MutableMap<String, Any?> {
-    return processInstanceApiClient
-      .getProcessInstanceVariables(executionId, true).body!!
-      .mapValues { it.value.value }
+    return variableInstanceApiClient
+      .queryVariableInstances(null, null, false,
+        VariableInstanceQueryDto().executionIdIn(listOf(executionId))
+      )
+      .body!!
+      .associateBy { it.name }
+      .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
   override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
-    return processInstanceApiClient
-      .getProcessInstanceVariables(executionId, true).body!!
-      .filter { variableNames.contains(it.key) }
-      .mapValues { it.value.value }
+    return variableInstanceApiClient
+      .queryVariableInstances(null, null, false,
+        VariableInstanceQueryDto().executionIdIn(listOf(executionId))
+      )
+      .body!!
+      .filter { variableNames.contains(it.name) }
+      .associateBy { it.name }
+      .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
@@ -366,27 +378,48 @@ class RemoteRuntimeService(
   }
 
   override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = processInstanceApiClient.getProcessInstanceVariable(executionId, variableName, deserializeValue).body!!
-    return valueMapper.mapDto(dto, deserializeValue)
+    val dto = variableInstanceApiClient.queryVariableInstances(null, null, false,
+      VariableInstanceQueryDto().variableName(variableName).executionIdIn(listOf(executionId))
+    ).body
+    return if (dto.isNullOrEmpty()) null else valueMapper.mapDto(dto[0], deserializeValue)
   }
 
-  override fun getVariablesTyped(executionId: String): VariableMap {
-    val variables = processInstanceApiClient.getProcessInstanceVariables(executionId, true).body!!
-    return valueMapper.mapDtos(variables)
-  }
+  override fun getVariablesTyped(executionId: String): VariableMap =
+    getVariablesTyped(executionId = executionId, deserializeValues = true)
 
   override fun getVariablesTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = processInstanceApiClient.getProcessInstanceVariables(executionId, deserializeValues).body!!
-    return valueMapper.mapDtos(variables, deserializeValues)
+    val variables = variableInstanceApiClient.queryVariableInstances(null, null, false,
+      VariableInstanceQueryDto().executionIdIn(listOf(executionId))
+    ).body!!
+    return valueMapper.mapDtos(
+      variables
+        .associateBy { it.name }
+        .mapValues { VariableValueDto().type(it.value.type).value(it.value.value).valueInfo(it.value.valueInfo) },
+      deserializeValues = deserializeValues
+    )
   }
 
   override fun getVariablesTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = processInstanceApiClient.getProcessInstanceVariables(executionId, deserializeValues).body!!.filter { variableNames.contains(it.key) }
-    return valueMapper.mapDtos(variables)
+    val variables = variableInstanceApiClient.queryVariableInstances(null, null, false,
+      VariableInstanceQueryDto().executionIdIn(listOf(executionId))
+    ).body!!
+    return valueMapper.mapDtos(
+      variables
+        .filter { variableNames.contains(it.name) }
+        .associateBy { it.name }
+        .mapValues { VariableValueDto().type(it.value.type).value(it.value.value).valueInfo(it.value.valueInfo) },
+      deserializeValues = deserializeValues
+    )
   }
 
-  override fun getVariable(executionId: String, variableName: String): Any {
-    return processInstanceApiClient.getProcessInstanceVariable(executionId, variableName, true).body!!.value
+  override fun getVariable(executionId: String, variableName: String): Any? {
+    return variableInstanceApiClient
+      .queryVariableInstances(null, null, false,
+        VariableInstanceQueryDto().executionIdIn(listOf(executionId)).variableName(variableName)
+      )
+      .body!!
+      .map { valueMapper.mapDto<TypedValue>(it, true)?.value }
+      .firstOrNull()
   }
 
   override fun removeVariables(executionId: String, variableNames: MutableCollection<String>) {

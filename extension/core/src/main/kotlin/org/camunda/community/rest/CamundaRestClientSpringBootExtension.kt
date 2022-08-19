@@ -26,6 +26,7 @@ import org.camunda.community.rest.client.FeignClientConfiguration
 import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.config.FeignErrorDecoderConfiguration
 import org.camunda.community.rest.impl.*
+import org.camunda.community.rest.variables.SpinValueMapper
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -43,7 +44,8 @@ import org.springframework.context.annotation.Import
   RemoteRuntimeService::class,
   RemoteTaskService::class,
   FeignClientConfiguration::class,
-  FeignErrorDecoderConfiguration::class
+  FeignErrorDecoderConfiguration::class,
+  SpinValueMapper::class
 )
 class CamundaRestClientSpringBootExtension
 
