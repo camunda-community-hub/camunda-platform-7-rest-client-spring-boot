@@ -70,9 +70,10 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
         "processInstanceIds" -> {
           val ids = this@DelegatingProcessInstanceQuery.processInstanceIds?.toMutableSet() ?: mutableSetOf()
           if (this@DelegatingProcessInstanceQuery.processInstanceId != null) {
-            ids.plus(this@DelegatingProcessInstanceQuery.processInstanceId)
+            ids.plus(this@DelegatingProcessInstanceQuery.processInstanceId).toList()
+          } else {
+            if (ids.isEmpty()) null else ids.toList()
           }
-          if (ids.isEmpty()) null else ids.toList()
         }
         "tenantIdIn" -> this@DelegatingProcessInstanceQuery.tenantIds?.toList()
         "withoutTenantId" -> this@DelegatingProcessInstanceQuery.isTenantIdSet && (this@DelegatingProcessInstanceQuery.tenantIds == null)
