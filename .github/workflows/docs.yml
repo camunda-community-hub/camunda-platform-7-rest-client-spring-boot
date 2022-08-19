@@ -83,7 +83,7 @@ jobs:
 
       - name: Create a new version of documentation and push to GH pages.
         if: github.event.release
-        run: mike deploy ${{ env.VERSION }} stable --push --rebase
+        run: mike deploy ${{ env.VERSION }} stable -u --push --rebase
 
       - name: Make stable to default.
         if: github.event.release
