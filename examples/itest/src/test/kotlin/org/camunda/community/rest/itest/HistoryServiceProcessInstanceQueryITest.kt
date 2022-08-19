@@ -55,7 +55,32 @@ class HistoryServiceProcessInstanceQueryITest :
         assertThat(
           query.processDefinitionKey(processDefinitionKey).count()
         ).isEqualTo(1)
+        assertThat(
+          query.processDefinitionKey(processDefinitionKey).singleResult()?.processDefinitionKey
+        ).isEqualTo(processDefinitionKey)
       }
+  }
+
+  @Test
+  fun `should find historic process instance by process definition key if process still active`() {
+    val processDefinitionKey = processDefinitionKey()
+    GIVEN
+      .no_deployment_exists()
+      .AND
+      .process_is_deployed(processDefinitionKey)
+      .AND
+      .process_is_started_by_key(processDefinitionKey)
+    THEN
+      .historic_process_instance_query_succeeds { query, _ ->
+        assertThat(
+          query.processDefinitionKey(processDefinitionKey).count()
+        ).isEqualTo(1)
+        assertThat(
+          query.processDefinitionKey(processDefinitionKey).singleResult()?.processDefinitionKey
+        ).isEqualTo(processDefinitionKey)
+      }
+      .AND
+      .runtimeService.deleteProcessInstance(GIVEN.processInstance.id, "itest")
   }
 
   @Test
@@ -74,12 +99,24 @@ class HistoryServiceProcessInstanceQueryITest :
         assertThat(
           query.processInstanceId(GIVEN.processInstance.id).completed().count()
         ).isEqualTo(1)
+      }
+      .AND
+      .historic_process_instance_query_succeeds { query, _ ->
         assertThat(
           query.processInstanceId(GIVEN.processInstance.id).finished().count()
         ).isEqualTo(1)
+      }
+      .AND
+      .historic_process_instance_query_succeeds { query, _ ->
         assertThat(
           query.processInstanceId(GIVEN.processInstance.id).unfinished().count()
         ).isEqualTo(0)
+      }
+      .AND
+      .historic_process_instance_query_succeeds { query, _ ->
+        assertThat(
+          query.processInstanceId(GIVEN.processInstance.id).completed().singleResult()?.processDefinitionKey
+        ).isEqualTo(processDefinitionKey)
       }
   }
 
@@ -99,6 +136,9 @@ class HistoryServiceProcessInstanceQueryITest :
         assertThat(
           query.executedActivityIdIn("task").count()
         ).isEqualTo(1)
+        assertThat(
+          query.executedActivityIdIn("task").singleResult()?.processDefinitionKey
+        ).isEqualTo(processDefinitionKey)
       }
   }
 
@@ -116,6 +156,9 @@ class HistoryServiceProcessInstanceQueryITest :
         assertThat(
           query.activeActivityIdIn("task").count()
         ).isEqualTo(1)
+        assertThat(
+          query.activeActivityIdIn("task").singleResult()?.processDefinitionKey
+        ).isEqualTo(processDefinitionKey)
       }
   }
 

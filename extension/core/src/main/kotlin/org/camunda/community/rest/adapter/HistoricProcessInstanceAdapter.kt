@@ -32,25 +32,26 @@ import java.util.*
 class HistoricProcessInstanceAdapter(private val historicInstanceBean: HistoricInstanceBean) : HistoricProcessInstance {
 
   override fun getBusinessKey(): String? = historicInstanceBean.businessKey
-  override fun getProcessDefinitionKey(): String = historicInstanceBean.processDefinitionKey
+  override fun getProcessDefinitionKey(): String? = historicInstanceBean.processDefinitionKey
   override fun getRootProcessInstanceId(): String? = historicInstanceBean.rootProcessInstanceId
   override fun getSuperCaseInstanceId(): String? = historicInstanceBean.superCaseInstanceId
   override fun getProcessDefinitionId(): String = historicInstanceBean.processDefinitionId
-  override fun getProcessDefinitionName(): String = historicInstanceBean.processDefinitionName
+  override fun getProcessDefinitionName(): String? = historicInstanceBean.processDefinitionName
   override fun getProcessDefinitionVersion(): Int = historicInstanceBean.processDefinitionVersion
   override fun getStartTime(): Date = historicInstanceBean.startTime
-  override fun getEndTime(): Date = historicInstanceBean.endTime
+  override fun getEndTime(): Date? = historicInstanceBean.endTime
   override fun getRemovalTime(): Date? = historicInstanceBean.removalTime
-  override fun getDurationInMillis(): Long = historicInstanceBean.durationInMillis
+  override fun getDurationInMillis(): Long? = historicInstanceBean.durationInMillis
+  @Deprecated("Deprecated in Java")
   override fun getEndActivityId(): String? = historicInstanceBean.endActivityId
-  override fun getStartUserId(): String = historicInstanceBean.startUserId
-  override fun getStartActivityId(): String = historicInstanceBean.startActivityId
+  override fun getStartUserId(): String? = historicInstanceBean.startUserId
+  override fun getStartActivityId(): String? = historicInstanceBean.startActivityId
   override fun getDeleteReason(): String? = historicInstanceBean.deleteReason
   override fun getSuperProcessInstanceId(): String? = historicInstanceBean.superProcessInstanceId
   override fun getCaseInstanceId(): String? = historicInstanceBean.caseInstanceId
   override fun getId(): String = historicInstanceBean.id
   override fun getTenantId(): String? = historicInstanceBean.tenantId
-  override fun getState(): String = historicInstanceBean.state
+  override fun getState(): String? = historicInstanceBean.state
 }
 
 /**
@@ -59,24 +60,24 @@ class HistoricProcessInstanceAdapter(private val historicInstanceBean: HistoricI
 data class HistoricInstanceBean(
   val id: String,
   val businessKey: String?,
-  val processDefinitionKey: String,
+  val processDefinitionKey: String?,
   val processDefinitionId: String,
-  val processDefinitionName: String,
+  val processDefinitionName: String?,
   val processDefinitionVersion: Int,
   val startTime: Date,
-  val endTime: Date,
+  val endTime: Date?,
   val removalTime: Date?,
-  val durationInMillis: Long,
+  val durationInMillis: Long?,
   val endActivityId: String?,
-  val startUserId: String,
-  val startActivityId: String,
+  val startUserId: String?,
+  val startActivityId: String?,
   val deleteReason: String?,
   val superProcessInstanceId: String?,
   val rootProcessInstanceId: String?,
   val superCaseInstanceId: String?,
   val caseInstanceId: String?,
   val tenantId: String?,
-  val state: String
+  val state: String?
 ) {
   companion object {
     /**

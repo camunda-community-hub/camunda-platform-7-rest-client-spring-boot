@@ -74,6 +74,9 @@ class HistoryServiceActionStage : ActionStage<HistoryServiceActionStage, History
     repositoryService.createDeploymentQuery().list().map {
       repositoryService.deleteDeployment(it.id)
     }
+    localService.createHistoricProcessInstanceQuery().list().forEach {
+      localService.deleteHistoricProcessInstance(it.id)
+    }
   }
 
   fun process_is_deployed(
@@ -124,6 +127,10 @@ class HistoryServiceActionStage : ActionStage<HistoryServiceActionStage, History
 
 @JGivenStage
 class HistoryServiceAssertStage : AssertStage<HistoryServiceAssertStage, HistoryService>() {
+
+  @Autowired
+  @ProvidedScenarioState
+  lateinit var runtimeService: RuntimeService
 
   @Autowired
   @Qualifier("remote")
