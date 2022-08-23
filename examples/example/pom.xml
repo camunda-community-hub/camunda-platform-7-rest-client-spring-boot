@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.camunda.community.rest</groupId>
     <artifactId>camunda-platform-7-rest-client-spring-boot-examples-root</artifactId>
-    <version>7.17.2</version>
+    <version>7.17.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-example</artifactId>
