@@ -10,8 +10,8 @@ First install the extension dependency and configure Feign and Feign client:
 ```xml
 
 <properties>
-  <camunda-platform-7-rest-client-spring-boot.version>0.0.3</camunda-platform-7-rest-client-spring-boot.version>
-  <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+  <camunda-platform-7-rest-client-spring-boot.version>{{ POM_VERSION }}</camunda-platform-7-rest-client-spring-boot.version>
+  <spring-cloud.version>{{ POM_SPRING_CLOUD_VERSION }}</spring-cloud.version>
 </properties>
 
 <dependencyManagement>
