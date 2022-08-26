@@ -30,6 +30,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       historicProcessInstance:
         url: "http://localhost:8083/engine-rest/"
+      variableInstance:
+        url: "http://localhost:8083/engine-rest/"
 
 
 logging:

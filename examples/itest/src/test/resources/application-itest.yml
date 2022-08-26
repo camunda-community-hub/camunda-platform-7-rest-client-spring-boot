@@ -45,6 +45,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       historicProcessInstance:
         url: "http://localhost:${server.port}/engine-rest/"
+      variableInstance:
+        url: "http://localhost:${server.port}/engine-rest/"
       default:
         loggerLevel: basic
 

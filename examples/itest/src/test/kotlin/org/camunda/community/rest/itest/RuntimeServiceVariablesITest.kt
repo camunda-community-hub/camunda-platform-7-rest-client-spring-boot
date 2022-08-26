@@ -97,6 +97,7 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
         assertThat(stage.remoteService.getVariables(instance.id)).containsKeys("VAR1", "VAR3", "VAR4", "VAR5", "VAR6")
         assertThat(stage.remoteService.getVariables(instance.id, listOf("VAR1", "VAR2", "VAR6"))).containsKeys("VAR1", "VAR6")
         assertThat(stage.remoteService.getVariable(instance.id, "VAR1")).isEqualTo("NEW VALUE")
+        assertThat(stage.remoteService.getVariable(instance.id, "VAR7")).isEqualTo(structure)
 
         assertThat(stage.remoteService.getVariableTyped<ObjectValue>(instance.id, "VAR7").value).isEqualTo(structure)
         assertThat(stage.remoteService.getVariableTyped<StringValue>(instance.id, "VAR4").value).isEqualTo("My object value")
@@ -114,6 +115,14 @@ class RuntimeServiceVariablesITest : CamundaRestClientITestBase<RuntimeService, 
         assertThat(stage.localService.getVariable(instance.id, "VAR4")).isEqualTo("My object value")
         assertThat(stage.localService.getVariable(instance.id, "VAR5")).isEqualTo("untyped")
         assertThat(stage.localService.getVariableTyped<StringValue>(instance.id, "VAR6")).isEqualTo(stringValue("typed"))
+
+        assertThat(stage.remoteService.getVariable(instance.id, "VAR1")).isEqualTo(
+          stage.localService.getVariable(instance.id, "VAR1")
+        )
+        assertThat(stage.remoteService.getVariable(instance.id, "VAR7")).isEqualTo(
+          stage.localService.getVariable(instance.id, "VAR7")
+        )
+
       }
   }
 }
