@@ -6,7 +6,7 @@ side similar to the original exception thrown on the remote Camunda Platform 7 E
 By default, the library tries to decode HTTP codes and will throw a `RemoteProcessEngineException`. If the response decoding
 was successful, the _cause_ of the thrown `RemoteProcessEngineException` will be the instance of the exception class thrown
 on remote Camunda Platform 7 engine and the _reason_ of the latter exception will be the original reason from the server.
-This behavior can be changed by configuration, so that the remotely thrown exception will be thrown locally, if the decoding was successful. For this the property `camunda.rest.client.error-decoding.wrap-exception` has to be set to false.
+This behavior can be changed by configuration, so that the remotely thrown exception will be thrown locally, if the decoding was successful. For this the property `camunda.rest.client.error-decoding.wrap-exceptions` has to be set to false.
 
 If anything goes wrong on HTTP error decoding, the `RemoteProcessEngineException` will contain a generic message extracted from
 the REST call. If the error decoding is deactivated, `FeignException` is wrapping any exception occurring during the remote access.
@@ -25,7 +25,7 @@ camunda:
       error-decoding:
         enabled: true
         http-codes: 400, 500
-        wrap-exception: true
+        wrap-exceptions: true
 ```
 
 !!! info
