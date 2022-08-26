@@ -89,6 +89,8 @@ feign:
         url: "http://your-process-engine-host/engine-rest/"
       historicProcessInstance:
         url: "http://your-process-engine-host/engine-rest/"
+      variableInstance:
+        url: "http://your-process-engine-host/engine-rest/"
         
 ```
 
