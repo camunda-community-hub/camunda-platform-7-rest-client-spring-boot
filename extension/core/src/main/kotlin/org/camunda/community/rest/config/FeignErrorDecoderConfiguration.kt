@@ -36,7 +36,8 @@ import org.springframework.context.annotation.Configuration
  * @param camundaRestClientProperties properties for configuration.
  */
 @Configuration
-@ConditionalOnProperty("camunda.rest.client.error-decoding.enabled", matchIfMissing = true)
+// camunda.rest.client.error-encoding.enabled is still listed due to backwards compatibility
+@ConditionalOnProperty("camunda.rest.client.error-encoding.enabled", "camunda.rest.client.error-decoding.enabled", matchIfMissing = true)
 class FeignErrorDecoderConfiguration(
   val camundaRestClientProperties: CamundaRestClientProperties
 ) {
