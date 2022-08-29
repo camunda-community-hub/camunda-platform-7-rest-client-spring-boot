@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Import
   RemoteRepositoryService::class,
   RemoteRuntimeService::class,
   RemoteTaskService::class,
+  RemoteDecisionService::class,
   FeignClientConfiguration::class,
   FeignErrorDecoderConfiguration::class,
   SpinValueMapper::class

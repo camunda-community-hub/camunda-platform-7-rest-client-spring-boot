@@ -49,6 +49,8 @@ feign:
         url: "http://localhost:${server.port}/engine-rest/"
       variableInstance:
         url: "http://localhost:${server.port}/engine-rest/"
+      decisionDefinition:
+        url: "http://localhost:${server.port}/engine-rest/"
 
 logging:
   level:

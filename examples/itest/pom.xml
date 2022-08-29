@@ -82,6 +82,12 @@
     <!-- Testing -->
     <!-- add junit 4 to enable its usage until Camunda switched to JUnit 5 -->
     <dependency>
+      <groupId>io.holunda.decision</groupId>
+      <artifactId>camunda-decision-model</artifactId>
+      <version>0.0.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>

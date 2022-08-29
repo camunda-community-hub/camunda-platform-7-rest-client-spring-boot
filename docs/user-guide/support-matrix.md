@@ -109,3 +109,11 @@ Here are currently implemented methods. The version behind the service name deno
 ## HistoryService @ 0.0.7
 
 * `# createHistoricProcessInstanceQuery`
+
+## DecisionService @ 7.17.3
+
+* `# evaluateDecisionById`
+* `# evaluateDecisionByKey`
+* `# evaluateDecisionTableById`
+* `# evaluateDecisionTableByKey`
+* `# evaluateDecisionTableByKeyAndVersion`
