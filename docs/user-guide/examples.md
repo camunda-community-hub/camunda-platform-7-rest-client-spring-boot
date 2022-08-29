@@ -69,6 +69,8 @@ feign:
         url: "http://localhost:8083/engine-rest/"
       variableInstance:
         url: "http://localhost:8083/engine-rest/"
+      decisionDefinition:
+        url: "http://localhost:8083/engine-rest/"
 ```
 
 To run this example, you will need the server part from the next example. To activate the server part only, please
@@ -153,6 +155,8 @@ feign:
       historicProcessInstance:
         url: "http://localhost:8083/engine-rest/"
       variableInstance:
+        url: "http://localhost:8083/engine-rest/"
+      decisionDefinition:
         url: "http://localhost:8083/engine-rest/"
 ```
 
