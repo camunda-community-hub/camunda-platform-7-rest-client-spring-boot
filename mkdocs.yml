@@ -82,6 +82,10 @@ plugins:
   - git-revision-date-localized:
       type: date
       fallback_to_build_date: true
+  - mkdocs-pom-parser-plugin:
+      path: pom.xml
+      additional:
+        SPRING_CLOUD_VERSION: ./properties/spring-cloud.version
 
 nav:
   - Home: index.md
