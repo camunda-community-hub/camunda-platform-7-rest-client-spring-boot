@@ -11,5 +11,9 @@ data class ErrorDecoding(
   /**
    * List of HTTP codes to decode. Defaults to HTTP status 400 and 500.
    */
-  val httpCodes: List<Int> = listOf(400, 500)
+  val httpCodes: List<Int> = listOf(400, 500),
+  /**
+   * Wrap exceptions in RemoteProcessException even when specific camunda exceptions is decoded.
+   */
+  val wrapExceptions: Boolean = true
 )

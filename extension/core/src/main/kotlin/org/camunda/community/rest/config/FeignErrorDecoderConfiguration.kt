@@ -50,13 +50,19 @@ class FeignErrorDecoderConfiguration(
   fun errorDecoder(): ErrorDecoder {
 
     val default = ErrorDecoder.Default()
+    val errorDecoding = camundaRestClientProperties.errorDecoding
 
     return ErrorDecoder { methodKey, response ->
       when {
-        camundaRestClientProperties.errorDecoding.httpCodes.contains(response.status()) -> CamundaFeignExceptionDecoder(response).decodeException()
-          ?: RemoteProcessEngineException(
-            message = "REST-CLIENT-001 Error during remote Camunda engine invocation of $methodKey: ${response.reason()}"
-          )
+        errorDecoding.httpCodes.contains(response.status()) -> {
+          CamundaFeignExceptionDecoder(response).decodeException()?.let {
+            if (errorDecoding.wrapExceptions && it !is RemoteProcessEngineException) {
+              RemoteProcessEngineException("REST-CLIENT-002 Error during remote Camunda engine invocation", it)
+            } else {
+              it
+            }
+          } ?: RemoteProcessEngineException(message = "REST-CLIENT-001 Error during remote Camunda engine invocation of $methodKey: ${response.reason()}")
+        }
         else -> default.decode(methodKey, response)
       }
     }

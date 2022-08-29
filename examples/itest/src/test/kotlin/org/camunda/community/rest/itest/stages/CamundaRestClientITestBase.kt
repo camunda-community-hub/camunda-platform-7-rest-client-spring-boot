@@ -97,6 +97,18 @@ abstract class AssertStage<SELF : AssertStage<SELF, SERVICE>, SERVICE : Any> : S
       }
     }
   }
+
+  fun exception_is_thrown(clazz: Class<out Throwable>? = null, reason: String? = null, callable: () -> Unit) {
+    try {
+      callable.invoke()
+      fail { "Expecting exception caused by $clazz" }
+    } catch (e: Exception) {
+      assertThat(e).isInstanceOf(clazz)
+      if (reason != null) {
+        assertThat(e.message).isEqualTo(reason)
+      }
+    }
+  }
 }
 
 

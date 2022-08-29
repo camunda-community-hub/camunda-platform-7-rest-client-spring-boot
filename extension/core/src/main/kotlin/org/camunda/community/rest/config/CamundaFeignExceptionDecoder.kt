@@ -39,10 +39,7 @@ internal data class CamundaFeignExceptionDecoder(val response: Response) {
       val exceptionClass = Class.forName(reason.clazz)
       if (Throwable::class.java.isAssignableFrom(exceptionClass)) {
         val constructor = exceptionClass.getConstructor(String::class.java)
-          RemoteProcessEngineException(
-              "REST-CLIENT-002 Error during remote Camunda engine invocation",
-              constructor.newInstance(reason.message) as Exception
-          )
+        constructor.newInstance(reason.message) as Exception
       } else {
         null
       }
