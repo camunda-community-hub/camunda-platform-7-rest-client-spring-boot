@@ -160,3 +160,34 @@ feign:
         url: "http://localhost:8083/engine-rest/"
 ```
 
+### Usage of feign clients
+
+The example demonstrates the usage of the library for accessing the REST from a Camunda Platform 7 process application using the generated feign clients.
+The difference to the previous examples is that no Camunda dependency is required on the classpath, as the feign clients are used directly.
+
+#### How does it work
+
+The application uses the library by adding it to the classpath via Apache Maven dependency. That is:
+
+```xml
+<dependency>
+  <groupId>org.camunda.community.rest</groupId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-openapi</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+In order to activate the library, the `@EnableCamundaFeignClients` has to be put
+on the configuration class of the application. The interesting part is now the `ProcessClient` component.
+This Spring Component has several methods marked with `@Scheduled` annotation to demonstrate the time-based execution
+of desired functionality. To do so, the component has injected the needed feign clients as resources.
+
+In order to configure the library, the same block of properties e.g. in `application.yml` as before is required:
+
+```yml
+feign:
+  client:
+    config:
+      ...
+```
+
