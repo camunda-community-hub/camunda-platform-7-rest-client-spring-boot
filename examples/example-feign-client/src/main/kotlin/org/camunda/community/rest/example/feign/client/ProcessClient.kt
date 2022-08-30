@@ -152,7 +152,10 @@ class ProcessClient
   private fun dateValue(value: Date): VariableValueDto = VariableValueDto().value(value).type("Date")
 
   private fun objectValue(value: Any): VariableValueDto {
-    val valueInfo = mapOf<String, Any>(Pair("objectTypeName", value.javaClass.name), Pair("serializationDataFormat", Variables.SerializationDataFormats.JSON))
+    val valueInfo = mapOf<String, Any>(
+      Pair("objectTypeName", value.javaClass.name),
+      Pair("serializationDataFormat", Variables.SerializationDataFormats.JSON)
+    )
     return VariableValueDto().value(objectMapper.writeValueAsString(value)).type("Object").valueInfo(valueInfo)
   }
 
