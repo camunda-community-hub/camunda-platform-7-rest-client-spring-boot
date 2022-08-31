@@ -65,33 +65,23 @@ In order to configure the Feign client, make sure to provide usual feign client 
 feign:
   client:
     config:
+      default:
+        url: "http://your-process-engine-host/engine-rest/"
+```
+
+There is also the possibility to configure a different URL for each feign client (even though this is a very uncommon setup):
+
+```yml
+feign:
+  client:
+    config:
       processInstance:
         url: "http://your-process-engine-host/engine-rest/"
       processDefinition:
         url: "http://your-process-engine-host/engine-rest/"
       message:
         url: "http://your-process-engine-host/engine-rest/"
-      signal:
-        url: "http://your-process-engine-host/engine-rest/"
-      execution:
-        url: "http://your-process-engine-host/engine-rest/"
-      task:
-        url: "http://your-process-engine-host/engine-rest/"
-      taskVariable:
-        url: "http://your-process-engine-host/engine-rest/"
-      taskLocalVariable:
-        url: "http://your-process-engine-host/engine-rest/"
-      taskIdentityLink:
-        url: "http://your-process-engine-host/engine-rest/"
-      externalTask:
-        url: "http://your-process-engine-host/engine-rest/"
-      incident:
-        url: "http://your-process-engine-host/engine-rest/"
-      historicProcessInstance:
-        url: "http://your-process-engine-host/engine-rest/"
-      variableInstance:
-        url: "http://your-process-engine-host/engine-rest/"
-        
+      ...
 ```
 
 ## Usage
