@@ -747,32 +747,20 @@
 <div class="highlight"><pre><span></span><code>feign:
   client:
     config:
+      default:
+        url: &quot;http://your-process-engine-host/engine-rest/&quot;
+</code></pre></div>
+<p>There is also the possibility to configure a different URL for each feign client (even though this is a very uncommon setup):</p>
+<div class="highlight"><pre><span></span><code>feign:
+  client:
+    config:
       processInstance:
         url: &quot;http://your-process-engine-host/engine-rest/&quot;
       processDefinition:
         url: &quot;http://your-process-engine-host/engine-rest/&quot;
       message:
         url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      signal:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      execution:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      task:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      taskVariable:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      taskLocalVariable:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      taskIdentityLink:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      externalTask:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      incident:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      historicProcessInstance:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
-      variableInstance:
-        url: &quot;http://your-process-engine-host/engine-rest/&quot;
+      ...
 </code></pre></div>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h2>
 <p>To access the remote API, inject the remote API implementation:</p>
