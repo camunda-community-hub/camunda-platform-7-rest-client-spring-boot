@@ -19,37 +19,8 @@ server:
 feign:
   client:
     config:
-      processInstance:
-        url: "http://localhost:${server.port}/engine-rest/"
-      processDefinition:
-        url: "http://localhost:${server.port}/engine-rest/"
-      message:
-        url: "http://localhost:${server.port}/engine-rest/"
-      signal:
-        url: "http://localhost:${server.port}/engine-rest/"
-      execution:
-        url: "http://localhost:${server.port}/engine-rest/"
-      task:
-        url: "http://localhost:${server.port}/engine-rest/"
-      taskVariable:
-        url: "http://localhost:${server.port}/engine-rest/"
-      taskLocalVariable:
-        url: "http://localhost:${server.port}/engine-rest/"
-      taskIdentityLink:
-        url: "http://localhost:${server.port}/engine-rest/"
-      externalTask:
-        url: "http://localhost:${server.port}/engine-rest/"
-      deployment:
-        url: "http://localhost:${server.port}/engine-rest/"
-      incident:
-        url: "http://localhost:${server.port}/engine-rest/"
-      historicProcessInstance:
-        url: "http://localhost:${server.port}/engine-rest/"
-      variableInstance:
-        url: "http://localhost:${server.port}/engine-rest/"
-      decisionDefinition:
-        url: "http://localhost:${server.port}/engine-rest/"
       default:
+        url: "http://localhost:${server.port}/engine-rest/"
         loggerLevel: basic
 
 logging:

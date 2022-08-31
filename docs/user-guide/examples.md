@@ -43,33 +43,7 @@ The values specify the location of the remote process engine:
 feign:
   client:
     config:
-      processInstance:
-        url: "http://localhost:8083/engine-rest/"
-      processDefinition:
-        url: "http://localhost:8083/engine-rest/"
-      message:
-        url: "http://localhost:8083/engine-rest/"
-      signal:
-        url: "http://localhost:8083/engine-rest/"
-      execution:
-        url: "http://localhost:8083/engine-rest/"
-      task:
-        url: "http://localhost:8083/engine-rest/"
-      taskVariable:
-        url: "http://localhost:8083/engine-rest/"
-      taskLocalVariable:
-        url: "http://localhost:8083/engine-rest/"
-      taskIdentityLink:
-        url: "http://localhost:8083/engine-rest/"
-      externalTask:
-        url: "http://localhost:8083/engine-rest/"
-      incident:
-        url: "http://localhost:8083/engine-rest/"
-      historicProcessInstance:
-        url: "http://localhost:8083/engine-rest/"
-      variableInstance:
-        url: "http://localhost:8083/engine-rest/"
-      decisionDefinition:
+      default:
         url: "http://localhost:8083/engine-rest/"
 ```
 
@@ -130,33 +104,7 @@ In order to configure the library, a block of properties e.g. in `application.ym
 feign:
   client:
     config:
-      processInstance:
-        url: "http://localhost:8083/engine-rest/"
-      processDefinition:
-        url: "http://localhost:8083/engine-rest/"
-      message:
-        url: "http://localhost:8083/engine-rest/"
-      signal:
-        url: "http://localhost:8083/engine-rest/"
-      execution:
-        url: "http://localhost:8083/engine-rest/"
-      task:
-        url: "http://localhost:8083/engine-rest/"
-      taskVariable:
-        url: "http://localhost:8083/engine-rest/"
-      taskLocalVariable:
-        url: "http://localhost:8083/engine-rest/"
-      taskIdentityLink:
-        url: "http://localhost:8083/engine-rest/"
-      externalTask:
-        url: "http://localhost:8083/engine-rest/"
-      incident:
-        url: "http://localhost:8083/engine-rest/"
-      historicProcessInstance:
-        url: "http://localhost:8083/engine-rest/"
-      variableInstance:
-        url: "http://localhost:8083/engine-rest/"
-      decisionDefinition:
+      default:
         url: "http://localhost:8083/engine-rest/"
 ```
 
