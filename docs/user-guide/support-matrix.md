@@ -117,3 +117,7 @@ Here are currently implemented methods. The version behind the service name deno
 * `# evaluateDecisionTableById`
 * `# evaluateDecisionTableByKey`
 * `# evaluateDecisionTableByKeyAndVersion`
+
+## RuntimeService @ 7.17.3
+
+* `# createEventSubscriptionQuery`
