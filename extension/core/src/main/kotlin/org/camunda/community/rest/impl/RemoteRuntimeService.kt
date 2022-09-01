@@ -35,6 +35,7 @@ import org.camunda.community.rest.client.model.*
 import org.camunda.community.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.community.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
+import org.camunda.community.rest.impl.query.DelegatingExecutionQuery
 import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.camunda.community.rest.impl.query.DelegatingIncidentQuery
 import org.camunda.community.rest.impl.query.DelegatingProcessInstanceQuery
@@ -602,6 +603,8 @@ class RemoteRuntimeService(
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
     processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipCustomListeners, true)
   }
+
+  override fun createExecutionQuery() = DelegatingExecutionQuery(executionApiClient)
 
   private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 
