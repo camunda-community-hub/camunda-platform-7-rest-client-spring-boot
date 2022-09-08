@@ -152,6 +152,27 @@
               </replacements>
             </configuration>
           </execution>
+          <execution>
+            <id>changeEmptyRequestParamValue</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <basedir>${project.basedir}</basedir>
+              <includes>
+                <include>target/generated-sources/openapi/**/HistoricVariableInstanceApi.java</include>
+              </includes>
+              <regex>false</regex>
+              <replacements>
+                <!-- RequestParam in HistoricVariableInstanceApi is generated with value = "" for variableValue as this is specified with type object in openapi.json -->
+                <replacement>
+                  <token>@RequestParam(value = "",</token>
+                  <value>@RequestParam(value = "variableValue",</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
