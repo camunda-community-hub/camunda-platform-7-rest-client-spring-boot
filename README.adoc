@@ -43,6 +43,10 @@ We provide a working example demonstrating some features of the library. See our
 If you have any questions regarding configuration of Camunda BPM Feign please
 have a look at our link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/index.html[User Guide].
 
+== Direct usage of feign clients
+
+You can also just use the generated feign clients directly and not via the Camunda services.
+If you're interested have a look at the link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/examples.html#usage-of-feign-clients[Examples] section for usage and configuration.
 
 == License
 

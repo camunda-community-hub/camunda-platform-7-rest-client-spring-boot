@@ -1,7 +1,12 @@
 !!! note
 
     If you are using the extension from an application containing Camunda BPM Engine classes on the classpath, please check the
-    [Working Example](./examples/sage_inside_a_process_application) section of our user guide.
+    [Working Example](./examples/Usage_inside_a_process_application) section of our user guide.
+
+!!! note
+
+    You can also use the generated feign clients directly without using the Camunda Services.
+    Please check out the [Feign Example](./examples/Usage_of_feign_clients) section of our user guide.
 
 ## Install Dependency
 

@@ -1,0 +1,56 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: RestExampleFeignClients
+  jpa:
+    open-in-view: true
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      email: adminus@adminius.io
+      first-name: Adminus
+      last-name: Administratius
+    filter:
+      create: true
+feign:
+  client:
+    config:
+      processInstance:
+        url: "http://localhost:${server.port}/engine-rest/"
+      processDefinition:
+        url: "http://localhost:${server.port}/engine-rest/"
+      message:
+        url: "http://localhost:${server.port}/engine-rest/"
+      signal:
+        url: "http://localhost:${server.port}/engine-rest/"
+      execution:
+        url: "http://localhost:${server.port}/engine-rest/"
+      task:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskLocalVariable:
+        url: "http://localhost:${server.port}/engine-rest/"
+      taskIdentityLink:
+        url: "http://localhost:${server.port}/engine-rest/"
+      externalTask:
+        url: "http://localhost:${server.port}/engine-rest/"
+      incident:
+        url: "http://localhost:${server.port}/engine-rest/"
+      historicProcessInstance:
+        url: "http://localhost:${server.port}/engine-rest/"
+      variableInstance:
+        url: "http://localhost:${server.port}/engine-rest/"
+      decisionDefinition:
+        url: "http://localhost:${server.port}/engine-rest/"
+
+logging:
+  level:
+    org.camunda.community.rest.client.api: DEBUG
+    # To log REST controllers
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    # To log web access
+    org.springframework.web: TRACE
