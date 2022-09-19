@@ -120,4 +120,5 @@ Here are currently implemented methods. The version behind the service name deno
 
 ## RuntimeService @ 7.17.3
 
+* `# createEventSubscriptionQuery`
 * `# createExecutionQuery`

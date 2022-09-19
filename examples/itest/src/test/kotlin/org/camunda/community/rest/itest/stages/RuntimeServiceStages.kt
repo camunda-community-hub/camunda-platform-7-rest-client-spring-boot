@@ -280,7 +280,10 @@ class RuntimeServiceActionStage : ActionStage<RuntimeServiceActionStage, Runtime
   }
 
   fun process_instances_are_deleted_async_by_process_definition_key(processDefinitionKey: String) = step {
-    batch = remoteService.deleteProcessInstancesAsync(remoteService.createProcessInstanceQuery().processDefinitionKey(processDefinitionKey), "because")
+    batch = remoteService.deleteProcessInstancesAsync(
+      remoteService.createProcessInstanceQuery().processDefinitionKey(processDefinitionKey),
+      "because"
+    )
   }
 
 }
@@ -379,6 +382,13 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     incidentQueryAssertions(query, this)
   }
 
+  fun event_subscription_query_succeeds(
+    @Hidden eventSubscriptionQueryAssertions: (EventSubscriptionQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
+  ) = step {
+    val query = remoteService.createEventSubscriptionQuery()
+    eventSubscriptionQueryAssertions(query, this)
+  }
+
   fun execution_query_succeeds(
     @Hidden executionQueryAssertions: (ExecutionQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
   ) = step {
@@ -395,6 +405,5 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
       managementService.createBatchQuery().batchId(batch.id).singleResult() == null
     }
   }
-
 }
 

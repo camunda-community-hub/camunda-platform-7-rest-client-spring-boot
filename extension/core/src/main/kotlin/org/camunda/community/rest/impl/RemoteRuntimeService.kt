@@ -35,6 +35,7 @@ import org.camunda.community.rest.client.model.*
 import org.camunda.community.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.community.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
+import org.camunda.community.rest.impl.query.DelegatingEventSubscriptionQuery
 import org.camunda.community.rest.impl.query.DelegatingExecutionQuery
 import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.camunda.community.rest.impl.query.DelegatingIncidentQuery
@@ -43,7 +44,6 @@ import org.camunda.community.rest.variables.CustomValueMapper
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
  * Remote implementation of Camunda Core RuntimeService API, delegating
@@ -59,6 +59,7 @@ class RemoteRuntimeService(
   private val executionApiClient: ExecutionApiClient,
   private val incidentApiClient: IncidentApiClient,
   private val variableInstanceApiClient: VariableInstanceApiClient,
+  private val eventSubscriptionApiClient: EventSubscriptionApiClient,
   customValueMapper: List<CustomValueMapper>,
   processEngine: ProcessEngine,
   objectMapper: ObjectMapper
@@ -603,6 +604,9 @@ class RemoteRuntimeService(
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
     processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipCustomListeners, true)
   }
+
+
+  override fun createEventSubscriptionQuery() = DelegatingEventSubscriptionQuery(eventSubscriptionApiClient)
 
   override fun createExecutionQuery() = DelegatingExecutionQuery(executionApiClient)
 
