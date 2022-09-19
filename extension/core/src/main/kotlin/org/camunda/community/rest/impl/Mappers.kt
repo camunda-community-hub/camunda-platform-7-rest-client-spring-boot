@@ -74,6 +74,19 @@ fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessIns
     }
   })
 
+fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = ExecutionQueryDtoSortingInner()
+  .sortOrder(if (this.direction == Direction.DESCENDING) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
+  .sortBy(when (this@toExecutionSorting.queryProperty) {
+    ExecutionQueryProperty.PROCESS_INSTANCE_ID -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCEID
+    ExecutionQueryProperty.PROCESS_DEFINITION_ID -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONID
+    ExecutionQueryProperty.PROCESS_DEFINITION_KEY -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
+    ExecutionQueryProperty.TENANT_ID -> ExecutionQueryDtoSortingInner.SortByEnum.TENANTID
+    else -> {
+      logger.warn { "query property ${this@toExecutionSorting.queryProperty} is not supported for sorting" }
+      null
+    }
+  })
+
 
 fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSortingInner? {
   val dtoSorting = TaskQueryDtoSortingInner()

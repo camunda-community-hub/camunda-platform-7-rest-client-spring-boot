@@ -379,6 +379,13 @@ class RuntimeServiceAssertStage : AssertStage<RuntimeServiceAssertStage, Runtime
     incidentQueryAssertions(query, this)
   }
 
+  fun execution_query_succeeds(
+    @Hidden executionQueryAssertions: (ExecutionQuery, AssertStage<*, RuntimeService>) -> Unit = { _, _ -> }
+  ) = step {
+    val query = remoteService.createExecutionQuery()
+    executionQueryAssertions(query, this)
+  }
+
   fun batch_has_jobs(jobCount: Int) = step {
     assertThat(batch.totalJobs).isEqualTo(jobCount)
   }
