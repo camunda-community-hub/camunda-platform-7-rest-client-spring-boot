@@ -611,6 +611,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#usage-of-feign-clients" class="md-nav__link">
+    Usage of feign clients
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage of feign clients">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-does-it-work_2" class="md-nav__link">
+    How does it work
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -868,6 +888,27 @@ annotation. This annotation indicates that the remote version of the Camunda API
     config:
       default:
         url: &quot;http://localhost:8083/engine-rest/&quot;
+</code></pre></div>
+<h3 id="usage-of-feign-clients">Usage of feign clients<a class="headerlink" href="#usage-of-feign-clients" title="Permanent link">#</a></h3>
+<p>The example demonstrates the usage of the library for accessing the REST from a Camunda Platform 7 process application using the generated feign clients.
+The difference to the previous examples is that no Camunda dependency is required on the classpath, as the feign clients are used directly.</p>
+<h4 id="how-does-it-work_2">How does it work<a class="headerlink" href="#how-does-it-work_2" title="Permanent link">#</a></h4>
+<p>The application uses the library by adding it to the classpath via Apache Maven dependency. That is:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.camunda.community.rest<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>camunda-platform-7-rest-client-spring-boot-openapi<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>${project.version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>
+<p>In order to activate the library, the <code>@EnableCamundaFeignClients</code> has to be put
+on the configuration class of the application. The interesting part is now the <code>ProcessClient</code> component.
+This Spring Component has several methods marked with <code>@Scheduled</code> annotation to demonstrate the time-based execution
+of desired functionality. To do so, the component has injected the needed feign clients as resources.</p>
+<p>In order to configure the library, the same block of properties e.g. in <code>application.yml</code> as before is required:</p>
+<div class="highlight"><pre><span></span><code>feign:
+  client:
+    config:
+      ...
 </code></pre></div>
 
   <hr>
