@@ -31,6 +31,7 @@ The library supports the following features:
 * Update process instance suspension state: `#updateProcessInstanceSuspensionState()`
 * Delete process instances: `#deleteProcessInstance()`, `#deleteProcessInstanceIfExists()`, `#deleteProcessInstances()`, `#deleteProcessInstancesIfExists()`, `#deleteProcessInstancesAsync()`
 * Create event subscription query: `#createEventSubscriptionQuery()`
+* Create execution query: `#createExecutionQuery()`
 
 ## RepositoryService
 

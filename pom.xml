@@ -37,14 +37,14 @@
     <spin.version>1.18.0</spin.version>
 
     <spring-boot.version>2.7.3</spring-boot.version>
-    <spring-cloud.version>2021.0.3</spring-cloud.version>
+    <spring-cloud.version>2021.0.4</spring-cloud.version>
 
     <kotlin.version>1.7.10</kotlin.version>
-    <kotlin-logging.version>2.1.23</kotlin-logging.version>
+    <kotlin-logging.version>3.0.0</kotlin-logging.version>
 
     <!-- test tools -->
     <assertj.version>3.23.1</assertj.version>
-    <mockito.version>4.7.0</mockito.version>
+    <mockito.version>4.8.0</mockito.version>
     <mockito-kotlin.version>4.0.0</mockito-kotlin.version>
 
     <pattern.class.itest>**/*ITest.*</pattern.class.itest>

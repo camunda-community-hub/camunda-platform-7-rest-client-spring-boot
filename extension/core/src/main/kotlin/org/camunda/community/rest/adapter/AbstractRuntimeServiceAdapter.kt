@@ -364,7 +364,7 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
   }
 
   override fun createExecutionQuery(): ExecutionQuery {
-    TODO("not implemented")
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createEventSubscriptionQuery(): EventSubscriptionQuery {
