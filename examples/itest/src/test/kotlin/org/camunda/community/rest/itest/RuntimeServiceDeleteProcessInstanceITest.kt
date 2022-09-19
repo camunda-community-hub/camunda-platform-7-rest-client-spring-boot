@@ -214,9 +214,7 @@ class RuntimeServiceDeleteProcessInstanceITest :
             .processDefinitionKey(processDefinitionKey)
             .count()
         ).isEqualTo(0)
-
       }
   }
-
 
 }
