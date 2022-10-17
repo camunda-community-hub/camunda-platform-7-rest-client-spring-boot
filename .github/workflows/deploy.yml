@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Checks out code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Cache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -26,8 +26,9 @@ jobs:
           ${{ runner.os }}-maven-
 
     - name: Set up Java environment
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
+        distribution: 'temurin'
         java-version: 11
         gpg-private-key: ${{ secrets.MAVEN_CENTRAL_GPG_SIGNING_KEY_SEC }}
         gpg-passphrase: MAVEN_CENTRAL_GPG_PASSPHRASE
