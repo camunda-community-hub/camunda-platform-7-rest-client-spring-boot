@@ -126,6 +126,8 @@ class TaskAdapter(private val taskBean: TaskBean) : Task {
 
   override fun getCamundaFormRef(): CamundaFormRef? = TODO("Not yet implemented")
 
+  override fun getLastUpdated() = taskBean.lastUpdated
+
 }
 
 /**
@@ -153,6 +155,7 @@ data class TaskBean(
   var followUp: Date?,
   var tenantId: String?,
   var delegationState: DelegationState?,
+  val lastUpdated: Date?
 ) {
   companion object {
     /**
@@ -180,7 +183,8 @@ data class TaskBean(
       priority = dto.priority,
       parentTaskId = dto.parentTaskId,
       owner = dto.owner,
-      taskDefinitionKey = dto.taskDefinitionKey
+      taskDefinitionKey = dto.taskDefinitionKey,
+      lastUpdated = dto.lastUpdated
     )
   }
 }

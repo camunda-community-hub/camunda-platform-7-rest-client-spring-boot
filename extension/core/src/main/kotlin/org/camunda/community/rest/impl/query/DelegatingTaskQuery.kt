@@ -32,7 +32,6 @@ import org.camunda.community.rest.adapter.TaskAdapter
 import org.camunda.community.rest.adapter.TaskBean
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.client.model.TaskQueryDto
-import org.camunda.community.rest.impl.model.PatchedTaskQueryDto
 import org.camunda.community.rest.impl.toTaskSorting
 import org.camunda.community.rest.variables.toDto
 import java.time.format.DateTimeFormatter
@@ -68,10 +67,10 @@ class DelegatingTaskQuery(
     }
   }
 
-  private fun fillQueryDto() = PatchedTaskQueryDto().apply {
+  private fun fillQueryDto() = TaskQueryDto().apply {
     checkQueryOk()
-    val dtoPropertiesByName = TaskQueryDto::class.memberProperties.plus(PatchedTaskQueryDto::class.memberProperties)
-      .filterIsInstance<KMutableProperty1<PatchedTaskQueryDto, Any?>>().associateBy { it.name }
+    val dtoPropertiesByName = TaskQueryDto::class.memberProperties.plus(TaskQueryDto::class.memberProperties)
+      .filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
     val queryPropertiesByName = TaskQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
