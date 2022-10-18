@@ -110,6 +110,8 @@ class DelegatingTaskQuery(
         "createdAfterExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedAfter"]
         "createdBefore" -> this@DelegatingTaskQuery.createTimeBefore
         "createdBeforeExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedBefore"]
+        "updatedAfter" -> this@DelegatingTaskQuery.updatedAfter
+        "updatedAfterExpression" -> this@DelegatingTaskQuery.expressions["taskUpdatedAfter"]
         "candidateGroupsExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroupIn"]
         "active" -> this@DelegatingTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
         "suspended" -> this@DelegatingTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
