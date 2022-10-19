@@ -2,6 +2,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.community.rest.client.model.BatchDto
+import java.util.*
 
 class BatchAdapter(private val batchBean: BatchBean) : Batch {
 
@@ -17,6 +18,8 @@ class BatchAdapter(private val batchBean: BatchBean) : Batch {
   override fun getTenantId() = batchBean.tenantId
   override fun getCreateUserId() = batchBean.createUserId
   override fun isSuspended() = batchBean.suspended
+  override fun getStartTime() = batchBean.startTime
+  override fun getExecutionStartTime() = batchBean.executionStartTime
 
 }
 
@@ -35,7 +38,9 @@ data class BatchBean(
   val batchJobDefinitionId: String?,
   val tenantId: String?,
   val createUserId: String?,
-  val suspended: Boolean
+  val suspended: Boolean,
+  val startTime: Date?,
+  val executionStartTime: Date?
 ) {
   companion object {
     /**
@@ -54,7 +59,9 @@ data class BatchBean(
       batchJobDefinitionId = dto.batchJobDefinitionId,
       tenantId = dto.tenantId,
       createUserId = dto.createUserId,
-      suspended = dto.suspended
+      suspended = dto.suspended,
+      startTime = dto.startTime,
+      executionStartTime = dto.executionStartTime
     )
   }
 }
