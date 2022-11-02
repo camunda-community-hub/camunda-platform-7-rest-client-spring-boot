@@ -122,6 +122,7 @@
                 <modelPackage>${camunda.openapi.package}.model</modelPackage>
                 <useBeanValidation>false</useBeanValidation>
                 <openApiNullable>false</openApiNullable>
+                <useFeignClient>true</useFeignClient>
               </configOptions>
             </configuration>
           </execution>
