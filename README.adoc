@@ -3,7 +3,7 @@ image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable
 image::https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c[caption="compatible with Camunda Platform 7"]
 
 
-[cols="a,a,a,a,a,a,a"]
+[cols="a,a,a,a,a,a,a,a"]
 |===
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
