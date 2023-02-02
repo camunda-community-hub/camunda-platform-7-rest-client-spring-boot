@@ -16,7 +16,7 @@
   <properties>
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
-    <openapi-generator-version>6.0.1</openapi-generator-version>
+    <openapi-generator-version>6.3.0</openapi-generator-version>
     <camunda.openapi.package>org.camunda.community.rest.client</camunda.openapi.package>
   </properties>
 
@@ -62,6 +62,10 @@
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
     </dependency>
 
     <!-- Camunda Open API -->
@@ -148,6 +152,30 @@
                 <replacement>
                   <token>@RequestPart(value = "data", required = false) MultipartFile data</token>
                   <value>@RequestPart(value = "data", required = false) MultipartFile[] data</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "tenant-id"</token>
+                  <value>@RequestPart(value = "tenant-id"</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "deployment-source"</token>
+                  <value>@RequestPart(value = "deployment-source"</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "deploy-changed-only"</token>
+                  <value>@RequestPart(value = "deploy-changed-only"</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "enable-duplicate-filtering"</token>
+                  <value>@RequestPart(value = "enable-duplicate-filtering"</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "deployment-name"</token>
+                  <value>@RequestPart(value = "deployment-name"</value>
+                </replacement>
+                <replacement>
+                  <token>@RequestParam(value = "deployment-activation-time"</token>
+                  <value>@RequestPart(value = "deployment-activation-time"</value>
                 </replacement>
               </replacements>
             </configuration>

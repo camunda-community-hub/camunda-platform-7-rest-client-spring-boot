@@ -77,7 +77,7 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   }
 
   fun process_definitions_are_deployed(
-    deploymentName: String, processDefinitionKey: String, versionTag: String? = null,
+    deploymentName: String, processDefinitionKey: String, versionTag: String? = null, enableDuplicateFiltering: Boolean = false
   ) = step {
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -86,11 +86,17 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
       .endEvent("end")
       .done()
 
-    remoteService.createDeployment()
+    val deployment = remoteService.createDeployment()
       .addModelInstance("$processDefinitionKey.bpmn", instance)
       .addClasspathResource("messages.bpmn")
+      .source("itest")
       .name(deploymentName)
-      .deploy()
+
+    if (enableDuplicateFiltering) {
+      deployment.enableDuplicateFiltering(true)
+    }
+
+    deployment.deploy()
   }
 
   fun process_definition_is_suspended(processDefinitionKey: String) {
