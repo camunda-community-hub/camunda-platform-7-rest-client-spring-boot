@@ -299,8 +299,8 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     implementedBy(RemoteRuntimeService::class)
   }
 
-  override fun createProcessInstanceModification(processInstanceId: String?): ProcessInstanceModificationBuilder {
-    TODO("not implemented")
+  override fun createProcessInstanceModification(processInstanceId: String): ProcessInstanceModificationBuilder {
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
@@ -359,8 +359,8 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
     TODO("not implemented")
   }
 
-  override fun createModification(processDefinitionId: String?): ModificationBuilder {
-    TODO("not implemented")
+  override fun createModification(processDefinitionId: String): ModificationBuilder {
+    implementedBy(RemoteRuntimeService::class)
   }
 
   override fun createExecutionQuery(): ExecutionQuery {

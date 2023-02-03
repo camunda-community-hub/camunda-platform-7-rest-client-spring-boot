@@ -23,15 +23,19 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
 
   companion object : KLogging()
 
-  override fun list(): List<ProcessInstance> =
-    processInstanceApiClient.queryProcessInstances(this.firstResult, this.maxResults, fillQueryDto()).body!!.map {
+  override fun list(): List<ProcessInstance> {
+    checkQueryOk()
+    return processInstanceApiClient.queryProcessInstances(this.firstResult, this.maxResults, toDto()).body!!.map {
       ProcessInstanceAdapter(InstanceBean.fromProcessInstanceDto(it))
     }
+  }
 
-  override fun listPage(firstResult: Int, maxResults: Int): List<ProcessInstance> =
-    processInstanceApiClient.queryProcessInstances(firstResult, maxResults, fillQueryDto()).body!!.map {
+  override fun listPage(firstResult: Int, maxResults: Int): List<ProcessInstance> {
+    checkQueryOk()
+    return processInstanceApiClient.queryProcessInstances(firstResult, maxResults, toDto()).body!!.map {
       ProcessInstanceAdapter(InstanceBean.fromProcessInstanceDto(it))
     }
+  }
 
   override fun listIds(): List<String> {
     return list().map { it.processInstanceId }
@@ -42,7 +46,10 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
     return list()
   }
 
-  override fun count() = processInstanceApiClient.queryProcessInstancesCount(fillQueryDto()).body!!.count
+  override fun count(): Long {
+    checkQueryOk()
+    return processInstanceApiClient.queryProcessInstancesCount(toDto()).body!!.count
+  }
 
   override fun singleResult(): ProcessInstance? {
     val results = list()
@@ -55,37 +62,42 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
 
   override fun ensureVariablesInitialized() = Unit
 
-  fun fillQueryDto() = ProcessInstanceQueryDto().apply {
-    checkQueryOk()
-    val dtoPropertiesByName = ProcessInstanceQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ProcessInstanceQueryDto, Any?>>().associateBy { it.name }
+}
+
+fun ProcessInstanceQueryImpl.toDto() =
+  ProcessInstanceQueryDto().apply {
+    val dtoPropertiesByName =
+      ProcessInstanceQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ProcessInstanceQueryDto, Any?>>()
+        .associateBy { it.name }
     val queryPropertiesByName = ProcessInstanceQueryImpl::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
-        "superProcessInstance" -> this@DelegatingProcessInstanceQuery.superProcessInstanceId
-        "subProcessInstance" -> this@DelegatingProcessInstanceQuery.subProcessInstanceId
-        "superCaseInstance" -> this@DelegatingProcessInstanceQuery.superCaseInstanceId
-        "subCaseInstance" -> this@DelegatingProcessInstanceQuery.subCaseInstanceId
-        "active" -> this@DelegatingProcessInstanceQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
-        "suspended" -> this@DelegatingProcessInstanceQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
+        "superProcessInstance" -> this@toDto.superProcessInstanceId
+        "subProcessInstance" -> this@toDto.subProcessInstanceId
+        "superCaseInstance" -> this@toDto.superCaseInstanceId
+        "subCaseInstance" -> this@toDto.subCaseInstanceId
+        "active" -> this@toDto.suspensionState?.let { it == SuspensionState.ACTIVE }
+        "suspended" -> this@toDto.suspensionState?.let { it == SuspensionState.SUSPENDED }
         "processInstanceIds" -> {
-          val ids = this@DelegatingProcessInstanceQuery.processInstanceIds?.toMutableSet() ?: mutableSetOf()
-          if (this@DelegatingProcessInstanceQuery.processInstanceId != null) {
-            ids.plus(this@DelegatingProcessInstanceQuery.processInstanceId).toList()
+          val ids = this@toDto.processInstanceIds?.toMutableSet() ?: mutableSetOf()
+          if (this@toDto.processInstanceId != null) {
+            ids.plus(this@toDto.processInstanceId).toList()
           } else {
             if (ids.isEmpty()) null else ids.toList()
           }
         }
-        "tenantIdIn" -> this@DelegatingProcessInstanceQuery.tenantIds?.toList()
-        "withoutTenantId" -> this@DelegatingProcessInstanceQuery.isTenantIdSet && (this@DelegatingProcessInstanceQuery.tenantIds == null)
-        "processDefinitionWithoutTenantId" -> this@DelegatingProcessInstanceQuery.isProcessDefinitionWithoutTenantId
-        "processDefinitionKeyIn" -> this@DelegatingProcessInstanceQuery.processDefinitionKeys?.toList()
-        "processDefinitionKeyNotIn" -> this@DelegatingProcessInstanceQuery.processDefinitionKeyNotIn?.toList()
-        "activityIdIn" -> this@DelegatingProcessInstanceQuery.activityIds?.toList()
-        "rootProcessInstances" -> this@DelegatingProcessInstanceQuery.isRootProcessInstances
-        "leafProcessInstances" -> this@DelegatingProcessInstanceQuery.isLeafProcessInstances
-        "variables" -> this@DelegatingProcessInstanceQuery.queryVariableValues?.toDto()
-        "orQueries" -> if (this@DelegatingProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
-        "sorting" -> this@DelegatingProcessInstanceQuery.orderingProperties.mapNotNull { it.toProcessInstanceSorting() }.filter { it.sortBy != null }
+
+        "tenantIdIn" -> this@toDto.tenantIds?.toList()
+        "withoutTenantId" -> this@toDto.isTenantIdSet && (this@toDto.tenantIds == null)
+        "processDefinitionWithoutTenantId" -> this@toDto.isProcessDefinitionWithoutTenantId
+        "processDefinitionKeyIn" -> this@toDto.processDefinitionKeys?.toList()
+        "processDefinitionKeyNotIn" -> this@toDto.processDefinitionKeyNotIn?.toList()
+        "activityIdIn" -> this@toDto.activityIds?.toList()
+        "rootProcessInstances" -> this@toDto.isRootProcessInstances
+        "leafProcessInstances" -> this@toDto.isLeafProcessInstances
+        "variables" -> this@toDto.queryVariableValues?.toDto()
+        "orQueries" -> if (this@toDto.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
+        "sorting" -> this@toDto.orderingProperties.mapNotNull { it.toProcessInstanceSorting() }.filter { it.sortBy != null }
         else -> {
           val queryProperty = queryPropertiesByName[it.key]
           if (queryProperty == null) {
@@ -94,7 +106,7 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
             throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
           } else {
             queryProperty.isAccessible = true
-            queryProperty.get(this@DelegatingProcessInstanceQuery)
+            queryProperty.get(this@toDto)
           }
         }
       }
@@ -102,6 +114,3 @@ class DelegatingProcessInstanceQuery(private val processInstanceApiClient: Proce
       it.value.set(this, valueToSet)
     }
   }
-
-}
-

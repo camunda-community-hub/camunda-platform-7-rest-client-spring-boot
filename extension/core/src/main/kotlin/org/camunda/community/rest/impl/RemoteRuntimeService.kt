@@ -26,20 +26,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
+import org.camunda.bpm.engine.impl.ProcessInstanceQueryImpl
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.*
 import org.camunda.community.rest.client.model.*
-import org.camunda.community.rest.impl.builder.DelegatingMessageCorrelationBuilder
-import org.camunda.community.rest.impl.builder.DelegatingSignalEventReceivedBuilder
-import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
-import org.camunda.community.rest.impl.query.DelegatingEventSubscriptionQuery
-import org.camunda.community.rest.impl.query.DelegatingExecutionQuery
-import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
-import org.camunda.community.rest.impl.query.DelegatingIncidentQuery
-import org.camunda.community.rest.impl.query.DelegatingProcessInstanceQuery
+import org.camunda.community.rest.impl.builder.*
+import org.camunda.community.rest.impl.query.*
 import org.camunda.community.rest.variables.CustomValueMapper
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -60,6 +55,7 @@ class RemoteRuntimeService(
   private val incidentApiClient: IncidentApiClient,
   private val variableInstanceApiClient: VariableInstanceApiClient,
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
+  private val modificationApiClient: ModificationApiClient,
   customValueMapper: List<CustomValueMapper>,
   processEngine: ProcessEngine,
   objectMapper: ObjectMapper
@@ -532,7 +528,7 @@ class RemoteRuntimeService(
     BatchAdapter(BatchBean.fromDto(processInstanceApiClient.deleteProcessInstancesAsyncOperation(
       DeleteProcessInstancesDto()
         .processInstanceIds(processInstanceIds)
-        .processInstanceQuery(processInstanceQuery?.toDto())
+        .processInstanceQuery(if (processInstanceQuery is ProcessInstanceQueryImpl) processInstanceQuery.toDto() else throw IllegalArgumentException())
         .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
         .deleteReason(deleteReason)
         .skipSubprocesses(skipSubprocesses)
@@ -610,7 +606,9 @@ class RemoteRuntimeService(
 
   override fun createExecutionQuery() = DelegatingExecutionQuery(executionApiClient)
 
-  private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
+  override fun createModification(processDefinitionId: String) = DelegatingModificationBuilder(processDefinitionId, modificationApiClient)
+
+  override fun createProcessInstanceModification(processInstanceId: String) = DelegatingProcessInstanceModificationBuilder(processInstanceId, processInstanceApiClient)
 
   private fun HistoricProcessInstanceQuery.toDto() = if (this is DelegatingHistoricProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 
