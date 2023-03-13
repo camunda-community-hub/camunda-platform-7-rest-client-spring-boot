@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.camunda.community.rest</groupId>
     <artifactId>camunda-platform-7-rest-client-spring-boot-examples-root</artifactId>
-    <version>7.18.0-SNAPSHOT</version>
+    <version>7.18.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>camunda-platform-7-rest-client-spring-boot-itest</artifactId>
@@ -19,9 +19,9 @@
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
     <!-- USe Camunda BPM JGiven -->
-    <camunda-jgiven.version>0.2.0</camunda-jgiven.version>
-    <jgiven.version>1.2.4</jgiven.version>
-    <byte-buddy.version>1.12.18</byte-buddy.version>
+    <camunda-jgiven.version>0.4.0</camunda-jgiven.version>
+    <jgiven.version>1.2.5</jgiven.version>
+    <byte-buddy.version>1.14.1</byte-buddy.version>
   </properties>
 
   <dependencies>
@@ -134,7 +134,7 @@
       <plugin>
         <groupId>com.tngtech.jgiven</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.5</version>
         <executions>
           <execution>
             <goals>

@@ -23,6 +23,7 @@
 package org.camunda.community.rest.itest
 
 import com.tngtech.jgiven.annotation.As
+import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
@@ -113,6 +114,31 @@ class RepositoryServiceDeploymentITest :
         assertThat(
           query.singleResult().isSuspended
         ).isTrue()
+      }
+  }
+
+  @Test
+  fun `should deploy only once if enableDuplicateFiltering is enabled`() {
+    GIVEN
+      .no_deployment_exists()
+    WHEN
+      .process_definitions_are_deployed("testdeployment", "test")
+      .AND
+      .process_definitions_are_deployed("testdeployment", "test", enableDuplicateFiltering = true)
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .latestVersion()
+            .count()
+        ).isEqualTo(2)
+        assertThat(
+          query.latestVersion().list().map { it.key }
+        ).containsAll(listOf("test", "process_messaging"))
+        assertThat(
+          // process from classpath is not duplicated, but the one that is generated via API as IDs are random
+          query.latestVersion().list().map { it.version }
+        ).containsExactly(1, 2)
       }
   }
 
