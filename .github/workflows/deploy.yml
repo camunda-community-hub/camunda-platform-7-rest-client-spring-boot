@@ -53,6 +53,7 @@ jobs:
         maven-psw: ${{ secrets.MAVEN_CENTRAL_DEPLOYMENT_PSW }}
         maven-url: oss.sonatype.org
         maven-gpg-passphrase: ${{ secrets.MAVEN_CENTRAL_GPG_SIGNING_KEY_PASSPHRASE }}
+        maven-auto-release-after-close: true
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Attach artifacts to GitHub Release (Release only)
