@@ -18,6 +18,8 @@ import org.camunda.community.rest.itest.stages.TaskServiceAssertStage
 import org.junit.Test
 import org.springframework.test.annotation.DirtiesContext
 import java.time.Instant.now
+import java.time.Instant.parse
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 @As("Operations on tasks and task queries")
@@ -195,7 +197,7 @@ class TaskServiceITest
 
 
   @Test
-  fun `set owner, priority, assignee, description`() {
+  fun `set owner, priority, assignee`() {
     val taskDefinitionKey = taskDefinitionKey()
     val processDefinitionKey = processDefinitionKey()
     val key1 = "businessKey1"
@@ -226,6 +228,45 @@ class TaskServiceITest
           this.extracting { task -> task.assignee }.isEqualTo("assignee")
           this.extracting { task -> task.priority }.isEqualTo(77)
           this.extracting { task -> task.owner }.isEqualTo("owner")
+        }
+      }
+  }
+
+  @Test
+  fun `update task attributes`() {
+    val taskDefinitionKey = taskDefinitionKey()
+    val processDefinitionKey = processDefinitionKey()
+    val key1 = "businessKey1"
+    val vars1 = createVariables().putValue("VAR1", "value1")
+    val followUpDate = Date.from(parse("2023-04-30T10:01:02Z").truncatedTo(ChronoUnit.DAYS))
+    val dueDate = Date.from(parse("2023-05-15T10:01:02Z").truncatedTo(ChronoUnit.DAYS))
+
+    GIVEN
+      .process_with_user_task_is_deployed(processDefinitionKey, taskDefinitionKey)
+      .AND
+      .process_is_started_by_key(processDefinitionKey, key1, vars1)
+      .AND
+      .process_waits_in_task(processDefinitionKey, taskDefinitionKey)
+
+    WHEN
+      .remoteService.apply {
+        saveTask(GIVEN.task.apply {
+          this.followUpDate = followUpDate
+          this.dueDate = dueDate
+          this.description = "New description"
+        })
+      }
+
+    THEN
+      .task_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .processDefinitionKey(processDefinitionKey)
+            .singleResult()
+        ).apply {
+          this.extracting { task -> task.description }.isEqualTo("New description")
+          this.extracting { task -> task.dueDate }.isEqualTo(dueDate)
+          this.extracting { task -> task.followUpDate }.isEqualTo(followUpDate)
         }
       }
   }

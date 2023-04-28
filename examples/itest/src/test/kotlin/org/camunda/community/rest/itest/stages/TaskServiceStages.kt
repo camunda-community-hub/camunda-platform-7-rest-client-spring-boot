@@ -143,6 +143,7 @@ class TaskServiceActionStage : ActionStage<TaskServiceActionStage, TaskService>(
     val tasks = localService.createTaskQuery()
       .processDefinitionKey(processDefinitionKey)
       .taskDefinitionKey(taskDefinitionKey)
+      .initializeFormKeys()
       .list()
     assertThat(tasks.size).`as`("expect to find exactly 1 task", taskDefinitionKey).isEqualTo(1)
     task = tasks[0]
