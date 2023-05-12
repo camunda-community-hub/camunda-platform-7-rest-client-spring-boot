@@ -16,7 +16,7 @@
   <properties>
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
-    <openapi-generator-version>6.3.0</openapi-generator-version>
+    <openapi-generator-version>6.6.0</openapi-generator-version>
     <camunda.openapi.package>org.camunda.community.rest.client</camunda.openapi.package>
   </properties>
 
