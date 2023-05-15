@@ -31,8 +31,11 @@ import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.model.bpmn.Bpmn
+import org.camunda.community.rest.client.api.DeploymentApiClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.web.multipart.MultipartFile
+import java.io.*
 import java.util.*
 
 @JGivenStage
@@ -47,6 +50,10 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   @Qualifier("repositoryService")
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: RepositoryService
+
+  @Autowired
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var deploymentApi: DeploymentApiClient
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var deployment: Deployment
@@ -77,7 +84,7 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   }
 
   fun process_definitions_are_deployed(
-    deploymentName: String, processDefinitionKey: String, versionTag: String? = null, enableDuplicateFiltering: Boolean = false
+    deploymentName: String, processDefinitionKey: String, tenantId: String? = null, versionTag: String? = null, enableDuplicateFiltering: Boolean = false
   ) = step {
     val instance = Bpmn
       .createExecutableProcess(processDefinitionKey)
@@ -91,6 +98,7 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
       .addClasspathResource("messages.bpmn")
       .source("itest")
       .name(deploymentName)
+      .tenantId(tenantId)
 
     if (enableDuplicateFiltering) {
       deployment.enableDuplicateFiltering(true)
@@ -98,6 +106,51 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
 
     deployment.deploy()
   }
+
+  fun process_definitions_are_deployed_via_rest(
+    deploymentName: String, processDefinitionKey: String, versionTag: String? = null, tenantId: String? = null, enableDuplicateFiltering: Boolean = false
+  ) = step {
+    val instance = Bpmn
+      .createExecutableProcess(processDefinitionKey)
+      .camundaVersionTag(versionTag)
+      .startEvent("start")
+      .endEvent("end")
+      .done()
+
+    val out = ByteArrayOutputStream()
+    Bpmn.writeModelToStream(out, instance)
+    val inputStream = ByteArrayInputStream(out.toByteArray())
+
+    val file = object : MultipartFile {
+      override fun getInputStream(): InputStream = inputStream
+      override fun getName(): String = "$deploymentName.bpmn"
+      override fun getOriginalFilename(): String = "$deploymentName.bpmn"
+      override fun getContentType(): String? = null
+      override fun isEmpty(): Boolean = inputStream.available() != 0
+      override fun getSize(): Long = inputStream.available().toLong()
+      override fun getBytes(): ByteArray = inputStream.readBytes()
+      override fun transferTo(file: File) {
+        var outputStream: OutputStream? = null
+        try {
+          outputStream = FileOutputStream(file)
+          outputStream.write(bytes)
+        } finally {
+          outputStream?.close()
+        }
+      }
+    }
+
+    deploymentApi.createDeployment(
+      tenantId,
+      "itest",
+      enableDuplicateFiltering,
+      enableDuplicateFiltering,
+      deploymentName,
+      null,
+      arrayOf(file)
+    )
+  }
+
 
   fun process_definition_is_suspended(processDefinitionKey: String) {
     remoteService.updateProcessDefinitionSuspensionState().byProcessDefinitionKey(processDefinitionKey).suspend()

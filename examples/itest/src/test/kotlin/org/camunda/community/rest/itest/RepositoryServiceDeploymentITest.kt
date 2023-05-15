@@ -58,6 +58,46 @@ class RepositoryServiceDeploymentITest :
       }
   }
 
+  @Test
+  fun `should deploy processes successfully with tenant`() {
+    GIVEN
+      .no_deployment_exists()
+    WHEN
+      .process_definitions_are_deployed("testdeployment", "test", tenantId = "TENANT")
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .count()
+        ).isEqualTo(2)
+        assertThat(
+          query.list().map { it.key }
+        ).containsAll(listOf("test", "process_messaging"))
+      }
+  }
+
+  @Test
+  fun `should deploy processes successfully via rest`() {
+    GIVEN
+      .no_deployment_exists()
+    WHEN
+      .process_definitions_are_deployed_via_rest("testdeployment", "test", tenantId = "TENANT")
+    THEN
+      .process_definition_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .count()
+        ).isEqualTo(1)
+        assertThat(
+          query.list().map { it.key }
+        ).containsAll(listOf("test"))
+        assertThat(
+          query.list().map { it.tenantId }
+        ).containsAll(listOf("TENANT"))
+      }
+  }
+
+
 
   @Test
   fun `should find deployments with query`() {
