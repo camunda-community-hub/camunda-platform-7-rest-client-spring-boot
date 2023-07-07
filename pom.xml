@@ -26,7 +26,7 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <version.java>${java.version}</version.java>
@@ -36,8 +36,8 @@
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
     <spin.version>1.22.0</spin.version>
 
-    <spring-boot.version>2.7.5</spring-boot.version>
-    <spring-cloud.version>2021.0.5</spring-cloud.version>
+    <spring-boot.version>3.1.1</spring-boot.version>
+    <spring-cloud.version>2022.0.3</spring-cloud.version>
 
     <kotlin.version>1.9.10</kotlin.version>
     <kotlin-logging.version>3.0.5</kotlin-logging.version>
