@@ -19,6 +19,7 @@ import org.camunda.community.rest.impl.query.DelegatingTaskQuery
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
+import java.util.*
 
 /**
  * Remote implementation of Camunda Core TaskService API, delegating
@@ -337,5 +338,21 @@ class RemoteTaskService(
       this.escalationCode = escalationCode
       this.variables = valueMapper.mapValues(variables)
     })
+  }
+
+  override fun setName(taskId: String?, name: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setDescription(taskId: String?, description: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setDueDate(taskId: String?, dueDate: Date?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setFollowUpDate(taskId: String?, followUpDate: Date?) {
+    TODO("Not yet implemented")
   }
 }

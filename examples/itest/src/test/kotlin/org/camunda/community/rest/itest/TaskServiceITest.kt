@@ -5,6 +5,7 @@ import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
+import jakarta.xml.bind.annotation.XmlElement
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.TaskService
 import org.camunda.bpm.engine.task.DelegationState
@@ -507,4 +508,3 @@ class TaskServiceITest
 
 
 }
-
