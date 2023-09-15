@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.camunda.community.rest</groupId>
     <artifactId>camunda-platform-7-rest-client-spring-boot-parent</artifactId>
-    <version>7.19.2-SNAPSHOT</version>
+    <version>7.20.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
