@@ -482,7 +482,7 @@
         </property>
       </activation>
       <properties>
-        <camunda.version>7.19.0</camunda.version>
+        <camunda.version>7.20.0</camunda.version>
       </properties>
     </profile>
 
