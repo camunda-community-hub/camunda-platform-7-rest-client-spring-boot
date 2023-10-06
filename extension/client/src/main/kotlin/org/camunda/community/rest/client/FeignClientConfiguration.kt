@@ -22,6 +22,7 @@
  */
 package org.camunda.community.rest.client
 
+import feign.Retryer
 import feign.codec.Encoder
 import org.camunda.community.rest.client.KeyChangingSpringManyMultipartFilesWriter.Companion.camundaMultipartFormEncoder
 import org.springframework.beans.factory.ObjectFactory
@@ -50,5 +51,9 @@ class FeignClientConfiguration {
   ): Encoder {
     return SpringEncoder(camundaMultipartFormEncoder(), messageConverters, feignEncoderProperties, customizers)
   }
+
+  @Bean
+  fun retryer() = Retryer.Default()
+
 }
 

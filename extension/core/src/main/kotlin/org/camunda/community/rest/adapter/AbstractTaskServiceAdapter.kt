@@ -29,6 +29,7 @@ import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.impl.RemoteTaskService
 import org.camunda.community.rest.impl.implementedBy
 import java.io.InputStream
+import java.util.*
 
 /**
  * Adapter for implementing task service.
@@ -364,4 +365,23 @@ abstract class AbstractTaskServiceAdapter : TaskService {
   override fun handleEscalation(taskId: String, escalationCode: String, variables: MutableMap<String, Any>) {
     implementedBy(RemoteTaskService::class)
   }
+
+  // 7.20
+
+  override fun setName(p0: String?, p1: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setDescription(p0: String?, p1: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setDueDate(p0: String?, p1: Date?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun setFollowUpDate(p0: String?, p1: Date?) {
+    TODO("Not yet implemented")
+  }
+
 }

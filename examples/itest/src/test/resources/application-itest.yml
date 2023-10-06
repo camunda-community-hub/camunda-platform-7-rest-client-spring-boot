@@ -13,6 +13,9 @@ camunda:
       last-name: Administratius
     filter:
       create: true
+    generic-properties:
+      properties:
+        historyTimeToLive: P1D
 server:
   port: 8085
 

@@ -23,7 +23,6 @@
 package org.camunda.community.rest.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.NestedConfigurationProperty
 
 /**
@@ -32,7 +31,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty
  * @param errorDecoding configuration of error decoding of HTTP response codes.
  */
 @ConfigurationProperties("camunda.rest.client")
-@ConstructorBinding
 data class CamundaRestClientProperties(
   /**
    * Controls error decoding from HTTP response codes.
