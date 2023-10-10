@@ -25,15 +25,6 @@ package org.camunda.community.rest.itest.stages
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
-import io.holunda.decision.model.CamundaDecisionGenerator.diagram
-import io.holunda.decision.model.CamundaDecisionGenerator.rule
-import io.holunda.decision.model.CamundaDecisionGenerator.table
-import io.holunda.decision.model.CamundaDecisionModel
-import io.holunda.decision.model.FeelConditions.feelEqual
-import io.holunda.decision.model.FeelConditions.resultValue
-import io.holunda.decision.model.api.CamundaDecisionModelApi.InputDefinitions.stringInput
-import io.holunda.decision.model.api.CamundaDecisionModelApi.OutputDefinitions.stringOutput
-import io.holunda.decision.model.builder.DmnDiagramBuilder
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.dmn.engine.DmnDecisionResult
@@ -45,6 +36,7 @@ import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.model.dmn.Dmn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import java.io.InputStream
 
 
 @JGivenStage
@@ -81,58 +73,25 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
 
   fun drd_is_deployed(): DecisionServiceActionStage {
 
-    val output1 = stringOutput("output1", "Output 1")
+    val fileName = "drd.dmn"
 
-    val diagramBuilder = diagram("Test")
-      .id("test")
-      .addDecisionTable(
-        table("table1")
-          .name("A generated table")
-          .versionTag("1")
-          .addRule(rule()
-            .condition(stringInput("input1", "Input 1").feelEqual("Rule1"))
-            .description("test")
-            .result(output1.resultValue("Rule1Output")))
-      )
-      .addDecisionTable(
-        table("table2")
-          .requiredDecision("table1")
-          .name("A generated table")
-          .versionTag("1")
-          .addRule(rule()
-            .condition(output1.toInputDefinition().feelEqual("Rule1Output"))
-            .description("test")
-            .result(stringOutput("output2", "Output 2").resultValue("Rule1Output2"))
-          )
-      )
-
-    deploy(diagramBuilder, "drd.dmn")
+    this.javaClass.classLoader.getResourceAsStream("$fileName.tpl")?.let {
+      deploy(it, fileName)
+    } ?: throw IllegalStateException("$fileName.tpl not found")
 
     return self()
   }
 
   fun decision_table_is_deployed(
-    decisionDefinitionKey: String = "decision_table",
     version: String? = null,
     tenantId: String? = null
   ): DecisionServiceActionStage {
 
-    val output = version?.let { "Rule1OutputV$version" } ?: "Rule1Output"
+    val fileName = "decision_table_v${version ?: "1"}.dmn"
 
-    val diagramBuilder = diagram("Test")
-      .id("test")
-      .addDecisionTable(
-        table(decisionDefinitionKey)
-          .name("A generated table")
-          .versionTag("1")
-          .addRule(rule()
-            .condition(stringInput("input1", "Input 1").feelEqual("Rule1"))
-            .description("test")
-            .result(stringOutput("output1", "Output 1").resultValue(output))
-          )
-      )
-
-    val deployment = deploy(diagramBuilder, "$decisionDefinitionKey.dmn", tenantId)
+    val deployment = this.javaClass.classLoader.getResourceAsStream("$fileName.tpl")?.let {
+      deploy(it, fileName, tenantId)
+    } ?: throw IllegalStateException("$fileName.tpl not found")
 
     decisionDefinition = repositoryService
       .createDecisionDefinitionQuery()
@@ -142,10 +101,9 @@ class DecisionServiceActionStage : ActionStage<DecisionServiceActionStage, Decis
     return self()
   }
 
-  private fun deploy(diagramBuilder: DmnDiagramBuilder, resourceName: String, tenantId: String? = null): Deployment {
-    val diagram = diagramBuilder.build()
+  private fun deploy(inputStream: InputStream, resourceName: String, tenantId: String? = null): Deployment {
 
-    val modelInstance = Dmn.readModelFromStream(CamundaDecisionModel.createXml(diagram).byteInputStream())
+    val modelInstance = Dmn.readModelFromStream(inputStream)
 
     return repositoryService
       .createDeployment()

@@ -30,7 +30,7 @@ import org.camunda.bpm.engine.DecisionService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.DecisionServiceActionStage
 import org.camunda.community.rest.itest.stages.DecisionServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 @As("Incident")
 class DecisionServiceITest : CamundaRestClientITestBase<DecisionService, DecisionServiceActionStage, DecisionServiceAssertStage>() {

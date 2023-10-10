@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.camunda.community.rest.starter.ProcessEngineClientStubAutoConfiguration

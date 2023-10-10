@@ -37,7 +37,7 @@ import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
 import org.camunda.spin.Spin.JSON
 import org.camunda.spin.plugin.variable.SpinValues.jsonValue
 import org.camunda.spin.plugin.variable.value.JsonValue
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 @As("Variables")
 class RuntimeServiceVariablesSpinITest : CamundaRestClientITestBase<RuntimeService, RuntimeServiceActionStage, RuntimeServiceAssertStage>() {

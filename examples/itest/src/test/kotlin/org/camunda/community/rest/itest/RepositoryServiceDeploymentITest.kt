@@ -32,7 +32,7 @@ import org.camunda.bpm.engine.RepositoryService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RepositoryServiceActionStage
 import org.camunda.community.rest.itest.stages.RepositoryServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @As("Creates process definition query")

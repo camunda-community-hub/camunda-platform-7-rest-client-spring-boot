@@ -29,7 +29,7 @@ import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.EXPECT
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceActionStage
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.test.context.TestPropertySource
 
 @As("External Task")
