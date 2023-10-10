@@ -27,8 +27,8 @@
     </dependency>
     <!-- Camunda -->
     <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine</artifactId>
+      <groupId>io.holunda.camunda-api</groupId>
+      <artifactId>camunda-bpm-engine-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

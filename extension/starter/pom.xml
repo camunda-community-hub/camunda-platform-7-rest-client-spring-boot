@@ -13,10 +13,6 @@
   <name>camunda-platform-7-rest-client-spring-boot/starter</name>
   <packaging>jar</packaging>
 
-  <properties>
-    <jsr311-api.version>1.1.1</jsr311-api.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.camunda.community.rest</groupId>
@@ -24,18 +20,13 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine</artifactId>
+      <groupId>io.holunda.camunda-api</groupId>
+      <artifactId>camunda-bpm-engine-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-rest-core</artifactId>
       <version>${camunda.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-      <version>${jsr311-api.version}</version>
     </dependency>
   </dependencies>
 </project>

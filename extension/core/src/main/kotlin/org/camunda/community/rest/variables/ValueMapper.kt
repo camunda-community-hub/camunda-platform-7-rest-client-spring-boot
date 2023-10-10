@@ -30,7 +30,6 @@ import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.ProcessEngines
 import org.camunda.bpm.engine.impl.QueryOperator
 import org.camunda.bpm.engine.impl.QueryVariableValue
-import org.camunda.bpm.engine.impl.digest._apacheCommonsCodec.Base64
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedNullValue
@@ -199,7 +198,7 @@ class ValueMapper(
 
         is FileValueType -> {
           if (value is String) {
-            value = Base64.decodeBase64(value as String)
+            value = Base64.getDecoder().decode(value as String)
           }
           valueType.createValue(value, valueInfo)
         }
@@ -310,7 +309,7 @@ class ValueMapper(
         } else if (value.serializationDataFormat == Variables.SerializationDataFormats.JAVA.getName()) {
           if (value is ObjectValueImpl) {
             val deserializedValue: Any = try {
-              ObjectInputStream(Base64.decodeBase64(value.valueSerialized).inputStream()).use { it.readObject() }
+              ObjectInputStream(Base64.getDecoder().decode(value.valueSerialized).inputStream()).use { it.readObject() }
             } catch (e: Exception) {
               throw IllegalStateException("Error deserializing value $value", e)
             }
