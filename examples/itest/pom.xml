@@ -21,7 +21,7 @@
     <!-- USe Camunda BPM JGiven -->
     <camunda-jgiven.version>0.4.1</camunda-jgiven.version>
     <jgiven.version>1.3.0</jgiven.version>
-    <byte-buddy.version>1.14.8</byte-buddy.version>
+    <byte-buddy.version>1.14.9</byte-buddy.version>
   </properties>
 
   <dependencies>
