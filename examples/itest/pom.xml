@@ -19,7 +19,7 @@
     <!-- Do meter coverage -->
     <jacoco.skip>false</jacoco.skip>
     <!-- USe Camunda BPM JGiven -->
-    <camunda-jgiven.version>0.4.1</camunda-jgiven.version>
+    <camunda-jgiven.version>1.20.0</camunda-jgiven.version>
     <jgiven.version>1.3.0</jgiven.version>
     <byte-buddy.version>1.14.8</byte-buddy.version>
   </properties>
