@@ -33,7 +33,7 @@ import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 
 @As("Trigger Signal")

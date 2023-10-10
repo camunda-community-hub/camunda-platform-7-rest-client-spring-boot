@@ -32,7 +32,7 @@ import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceActionStage
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 @As("External Task")
 class ExternalTaskServiceITest :

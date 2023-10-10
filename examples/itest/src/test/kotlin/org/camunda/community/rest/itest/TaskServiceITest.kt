@@ -15,7 +15,7 @@ import org.camunda.bpm.engine.variable.value.StringValue
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.TaskServiceActionStage
 import org.camunda.community.rest.itest.stages.TaskServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.test.annotation.DirtiesContext
 import java.time.Instant.now
 import java.util.*

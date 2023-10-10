@@ -31,7 +31,7 @@ import org.camunda.bpm.engine.HistoryService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.HistoryServiceActionStage
 import org.camunda.community.rest.itest.stages.HistoryServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.springframework.test.annotation.DirtiesContext
 
 @As("Creates historic process instance query")

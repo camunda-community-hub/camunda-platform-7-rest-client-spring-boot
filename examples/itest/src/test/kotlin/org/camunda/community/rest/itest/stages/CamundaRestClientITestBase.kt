@@ -25,22 +25,20 @@ package org.camunda.community.rest.itest.stages
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.tngtech.jgiven.Stage
 import com.tngtech.jgiven.integration.spring.EnableJGiven
-import com.tngtech.jgiven.integration.spring.SpringScenarioTest
+import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest
 import io.toolisticon.testing.jgiven.THEN
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.community.rest.EnableCamundaRestClient
 import org.camunda.community.rest.exception.RemoteProcessEngineException
+import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.fail
-import org.junit.runner.RunWith
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
-@RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = [TestApplication::class])
 @ActiveProfiles("itest")
 @DirtiesContext
