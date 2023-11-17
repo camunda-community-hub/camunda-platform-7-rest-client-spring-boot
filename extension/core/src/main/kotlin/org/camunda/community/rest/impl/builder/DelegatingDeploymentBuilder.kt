@@ -2,24 +2,17 @@ package org.camunda.community.rest.impl.builder
 
 import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
-import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer
-import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer
-import org.camunda.bpm.engine.impl.dmn.deployer.DecisionDefinitionDeployer
-import org.camunda.bpm.engine.impl.util.EnsureUtil
-import org.camunda.bpm.engine.impl.util.ReflectUtil
-import org.camunda.bpm.engine.impl.util.StringUtil
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentBuilder
-import org.camunda.bpm.engine.repository.DeploymentWithDefinitions
-import org.camunda.community.rest.adapter.DeploymentAdapter
-import org.camunda.community.rest.adapter.DeploymentBean
-import org.camunda.community.rest.client.api.DeploymentApiClient
 import org.camunda.bpm.model.bpmn.Bpmn
 import org.camunda.bpm.model.bpmn.BpmnModelInstance
 import org.camunda.bpm.model.cmmn.Cmmn
 import org.camunda.bpm.model.cmmn.CmmnModelInstance
 import org.camunda.bpm.model.dmn.Dmn
 import org.camunda.bpm.model.dmn.DmnModelInstance
+import org.camunda.community.rest.adapter.DeploymentAdapter
+import org.camunda.community.rest.adapter.DeploymentBean
+import org.camunda.community.rest.client.api.DeploymentApiClient
 import org.springframework.web.multipart.MultipartFile
 import java.io.*
 import java.util.*
@@ -32,7 +25,11 @@ class DelegatingDeploymentBuilder(
   private val deploymentApiClient: DeploymentApiClient
 ) : DeploymentBuilder {
 
-  companion object : KLogging()
+  companion object : KLogging() {
+    val BPMN_RESOURCE_SUFFIXES = arrayOf("bpmn20.xml", "bpmn")
+    val DMN_RESOURCE_SUFFIXES = arrayOf("dmn11.xml", "dmn")
+    val CMMN_RESOURCE_SUFFIXES = arrayOf("cmmn11.xml", "cmmn10.xml", "cmmn")
+  }
 
   var tenantId: String? = null
   var deploymentSource: String? = null
@@ -66,36 +63,33 @@ class DelegatingDeploymentBuilder(
   }
 
   override fun addClasspathResource(resource: String): DeploymentBuilder {
-    val inputStream = ReflectUtil.getResourceAsStream(resource)
-    EnsureUtil.ensureNotNull("resource '$resource' not found", "inputStream", inputStream)
+    val inputStream = javaClass.getResourceAsStream(resource)
+    requireNotNull(inputStream)  { "resource '$resource' not found" }
     return addInputStream(resource, inputStream)
   }
 
   override fun addString(resourceName: String, text: String?): DeploymentBuilder {
-    EnsureUtil.ensureNotNull("text", text)
-    val bytes = text!!.toByteArray()
+    requireNotNull(text)
+    val bytes = text.toByteArray()
     return addInputStream(resourceName, ByteArrayInputStream(bytes))
   }
 
   override fun addModelInstance(resourceName: String, modelInstance: BpmnModelInstance): DeploymentBuilder {
-    EnsureUtil.ensureNotNull("modelInstance", modelInstance)
-    validateResouceName(resourceName, BpmnDeployer.BPMN_RESOURCE_SUFFIXES)
+    validateResourceName(resourceName, BPMN_RESOURCE_SUFFIXES)
     val outputStream = ByteArrayOutputStream()
     Bpmn.writeModelToStream(outputStream, modelInstance)
     return addInputStream(resourceName, ByteArrayInputStream(outputStream.toByteArray()))
   }
 
   override fun addModelInstance(resourceName: String, modelInstance: DmnModelInstance): DeploymentBuilder {
-    EnsureUtil.ensureNotNull("modelInstance", modelInstance)
-    validateResouceName(resourceName, DecisionDefinitionDeployer.DMN_RESOURCE_SUFFIXES)
+    validateResourceName(resourceName, DMN_RESOURCE_SUFFIXES)
     val outputStream = ByteArrayOutputStream()
     Dmn.writeModelToStream(outputStream, modelInstance)
     return addInputStream(resourceName, ByteArrayInputStream(outputStream.toByteArray()))
   }
 
   override fun addModelInstance(resourceName: String, modelInstance: CmmnModelInstance): DeploymentBuilder {
-    EnsureUtil.ensureNotNull("modelInstance", modelInstance)
-    validateResouceName(resourceName, CmmnDeployer.CMMN_RESOURCE_SUFFIXES)
+    validateResourceName(resourceName, CMMN_RESOURCE_SUFFIXES)
     val outputStream = ByteArrayOutputStream()
     Cmmn.writeModelToStream(outputStream, modelInstance)
     return addInputStream(resourceName, ByteArrayInputStream(outputStream.toByteArray()))
@@ -156,6 +150,7 @@ class DelegatingDeploymentBuilder(
 
   override fun nameFromDeployment(deploymentId: String) = this.apply { this.deploymentName = deploymentApiClient.getDeployment(deploymentId).body!!.name }
 
+  @Deprecated("Deprecated in Java")
   override fun enableDuplicateFiltering() = this.apply { this.enableDuplicateFiltering = true }
 
   override fun enableDuplicateFiltering(deployChangedOnly: Boolean) = this.apply {
@@ -178,8 +173,8 @@ class DelegatingDeploymentBuilder(
 
   override fun tenantId(tenantId: String?): DeploymentBuilder = this.apply { this.tenantId = tenantId }
 
-  private fun validateResouceName(resourceName: String, resourceSuffixes: Array<String>) {
-    if (!StringUtil.hasAnySuffix(resourceName, resourceSuffixes)) {
+  private fun validateResourceName(resourceName: String, resourceSuffixes: Array<String>) {
+    if (resourceSuffixes.none { resourceName.endsWith(it) }) {
       logger.warn { "Deployment resource '$resourceName' will be ignored as its name must have one of suffixes $resourceSuffixes." }
     }
   }

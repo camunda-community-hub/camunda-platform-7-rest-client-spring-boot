@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.ProcessInstanceQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.community.rest.adapter.InstanceBean
 import org.camunda.community.rest.adapter.ProcessInstanceAdapter
 import org.camunda.community.rest.client.api.ProcessInstanceApiClient
@@ -19,41 +20,18 @@ import kotlin.reflect.jvm.isAccessible
 /**
  * Implementation of the process instance query.
  */
-class DelegatingProcessInstanceQuery(private val processInstanceApiClient: ProcessInstanceApiClient) : ProcessInstanceQueryImpl() {
+class DelegatingProcessInstanceQuery(
+  private val processInstanceApiClient: ProcessInstanceApiClient
+) : BaseVariableQuery<ProcessInstanceQuery, ProcessInstance>(), ProcessInstanceQuery {
 
   companion object : KLogging()
-
-  override fun list(): List<ProcessInstance> =
-    processInstanceApiClient.queryProcessInstances(this.firstResult, this.maxResults, fillQueryDto()).body!!.map {
-      ProcessInstanceAdapter(InstanceBean.fromProcessInstanceDto(it))
-    }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<ProcessInstance> =
     processInstanceApiClient.queryProcessInstances(firstResult, maxResults, fillQueryDto()).body!!.map {
       ProcessInstanceAdapter(InstanceBean.fromProcessInstanceDto(it))
     }
 
-  override fun listIds(): List<String> {
-    return list().map { it.processInstanceId }
-  }
-
-  override fun unlimitedList(): List<ProcessInstance> {
-    // FIXME: best approximation so far.
-    return list()
-  }
-
   override fun count() = processInstanceApiClient.queryProcessInstancesCount(fillQueryDto()).body!!.count
-
-  override fun singleResult(): ProcessInstance? {
-    val results = list()
-    return when {
-      results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of max 1")
-      else -> null
-    }
-  }
-
-  override fun ensureVariablesInitialized() = Unit
 
   fun fillQueryDto() = ProcessInstanceQueryDto().apply {
     checkQueryOk()

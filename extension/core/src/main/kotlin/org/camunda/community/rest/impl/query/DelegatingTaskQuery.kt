@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.impl.TaskQueryImpl
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
+import org.camunda.bpm.engine.task.TaskQuery
 import org.camunda.community.rest.adapter.TaskAdapter
 import org.camunda.community.rest.adapter.TaskBean
 import org.camunda.community.rest.client.api.TaskApiClient
@@ -45,12 +46,9 @@ import kotlin.reflect.jvm.isAccessible
  */
 class DelegatingTaskQuery(
   private val taskApiClient: TaskApiClient
-) : TaskQueryImpl() {
+) : BaseVariableQuery<TaskQuery, Task>(), TaskQuery {
 
   companion object : KLogging()
-
-  override fun list(): List<Task> =
-    taskApiClient.queryTasks(this.firstResult, this.maxResults, fillQueryDto()).body!!.map { TaskAdapter(TaskBean.fromDto(it)) }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<Task> =
     taskApiClient.queryTasks(firstResult, maxResults, fillQueryDto()).body!!.map { TaskAdapter(TaskBean.fromDto(it)) }
@@ -58,20 +56,11 @@ class DelegatingTaskQuery(
   override fun count(): Long =
     taskApiClient.queryTasksCount(fillQueryDto()).body!!.count
 
-  override fun singleResult(): Task? {
-    val results = list()
-    return when {
-      results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of expected maximum 1")
-      else -> null
-    }
-  }
-
   private fun fillQueryDto() = TaskQueryDto().apply {
     checkQueryOk()
     val dtoPropertiesByName = TaskQueryDto::class.memberProperties.plus(TaskQueryDto::class.memberProperties)
       .filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
-    val queryPropertiesByName = TaskQueryImpl::class.memberProperties.associateBy { it.name }
+    val queryPropertiesByName = DelegatingTaskQuery::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "taskIdIn" -> this@DelegatingTaskQuery.taskIdIn?.toList()

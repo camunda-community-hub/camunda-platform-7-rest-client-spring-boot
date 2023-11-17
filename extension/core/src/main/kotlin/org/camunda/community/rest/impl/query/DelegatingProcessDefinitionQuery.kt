@@ -29,6 +29,7 @@ import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryProperty
 import org.camunda.bpm.engine.impl.persistence.entity.SuspensionState
 import org.camunda.bpm.engine.repository.ProcessDefinition
+import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.community.rest.adapter.ProcessDefinitionAdapter
 import org.camunda.community.rest.adapter.ProcessDefinitionBean
 import org.camunda.community.rest.client.api.ProcessDefinitionApiClient
@@ -43,13 +44,12 @@ import kotlin.reflect.jvm.isAccessible
  */
 class DelegatingProcessDefinitionQuery(
   private val processDefinitionApiClient: ProcessDefinitionApiClient
-) : ProcessDefinitionQueryImpl() {
+) : BaseQuery<ProcessDefinitionQuery, ProcessDefinition>(), ProcessDefinitionQuery {
 
   companion object : KLogging()
 
-  override fun list(): List<ProcessDefinition> = listPage(this.firstResult, this.maxResults)
-
   override fun listPage(firstResult: Int, maxResults: Int): List<ProcessDefinition> {
+    checkQueryOk()
     with(ProcessDefinitionApiClient::getProcessDefinitions) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -70,6 +70,7 @@ class DelegatingProcessDefinitionQuery(
   }
 
   override fun count(): Long {
+    checkQueryOk()
     with (ProcessDefinitionApiClient::getProcessDefinitionsCount) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -81,17 +82,7 @@ class DelegatingProcessDefinitionQuery(
     }
   }
 
-  override fun singleResult(): ProcessDefinition? {
-    val results = list()
-    return when {
-      results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of expected maximum 1")
-      else -> null
-    }
-  }
-
   private fun getQueryParam(parameter: KParameter): Any? {
-    checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
     val propertiesByName = ProcessDefinitionQueryImpl::class.declaredMemberProperties.associateBy { it.name }
     if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }

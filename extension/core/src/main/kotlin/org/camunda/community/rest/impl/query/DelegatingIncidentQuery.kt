@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.impl.Direction
 import org.camunda.bpm.engine.impl.IncidentQueryImpl
 import org.camunda.bpm.engine.impl.IncidentQueryProperty
 import org.camunda.bpm.engine.runtime.Incident
+import org.camunda.bpm.engine.runtime.IncidentQuery
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.IncidentApiClient
 import org.springframework.web.bind.annotation.RequestParam
@@ -16,11 +17,9 @@ import kotlin.reflect.jvm.isAccessible
 
 class DelegatingIncidentQuery(
   private val incidentApiClient: IncidentApiClient
-) : IncidentQueryImpl() {
+) : BaseQuery<IncidentQuery, Incident>(), IncidentQuery {
 
   companion object : KLogging()
-
-  override fun list(): List<Incident> = listPage(this.firstResult, this.maxResults)
 
   override fun listPage(firstResult: Int, maxResults: Int): List<Incident> {
     with(IncidentApiClient::getIncidents) {
@@ -42,15 +41,6 @@ class DelegatingIncidentQuery(
     }
   }
 
-  override fun listIds(): List<String> {
-    return list().map { it.id }
-  }
-
-  override fun unlimitedList(): List<Incident> {
-    // FIXME: best approximation so far.
-    return list()
-  }
-
   override fun count(): Long {
     with (IncidentApiClient::getIncidentsCount) {
       val result = callBy(parameters.associateWith { parameter ->
@@ -60,15 +50,6 @@ class DelegatingIncidentQuery(
         }
       })
       return result.body!!.count
-    }
-  }
-
-  override fun singleResult(): Incident? {
-    val results = list()
-    return when {
-      results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of expected maximum 1")
-      else -> null
     }
   }
 

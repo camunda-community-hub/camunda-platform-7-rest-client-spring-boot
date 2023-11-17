@@ -27,9 +27,6 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.ProcessEngines
-import org.camunda.bpm.engine.impl.QueryOperator
-import org.camunda.bpm.engine.impl.QueryVariableValue
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedNullValue
@@ -42,6 +39,8 @@ import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableQueryParameterDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.impl.query.QueryOperator
+import org.camunda.community.rest.impl.query.QueryVariableValue
 import java.io.ObjectInputStream
 import java.util.*
 

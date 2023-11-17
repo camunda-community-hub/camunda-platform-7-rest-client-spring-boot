@@ -6,6 +6,8 @@ import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.adapter.IdentityLinkAdapter
 import org.camunda.community.rest.client.model.*
+import org.camunda.community.rest.impl.query.QueryOrderingProperty
+import org.camunda.community.rest.impl.query.SortDirection
 
 private val logger = KotlinLogging.logger {}
 
@@ -42,8 +44,8 @@ fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto()
   .type(this.type)
 
 fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSortingInner = ProcessInstanceQueryDtoSortingInner()
-    .sortOrder(if (this.direction == Direction.DESCENDING) ProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else ProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
-    .sortBy(when (this@toProcessInstanceSorting.queryProperty) {
+    .sortOrder(if (this.direction == SortDirection.DESC) ProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else ProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
+    .sortBy(when (this@toProcessInstanceSorting.property) {
         ProcessInstanceQueryProperty.PROCESS_INSTANCE_ID -> ProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
         ProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
         ProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
@@ -56,8 +58,8 @@ fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSor
     })
 
 fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessInstanceQueryDtoSortingInner = HistoricProcessInstanceQueryDtoSortingInner()
-  .sortOrder(if (this.direction == Direction.DESCENDING) HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
-  .sortBy(when (this@toHistoricProcessInstanceSorting.queryProperty) {
+  .sortOrder(if (this.direction == SortDirection.DESC) HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
+  .sortBy(when (this@toHistoricProcessInstanceSorting.property) {
     HistoricProcessInstanceQueryProperty.PROCESS_INSTANCE_ID_ -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
     HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
     HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
@@ -75,8 +77,8 @@ fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessIns
   })
 
 fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = ExecutionQueryDtoSortingInner()
-  .sortOrder(if (this.direction == Direction.DESCENDING) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
-  .sortBy(when (this@toExecutionSorting.queryProperty) {
+  .sortOrder(if (this.direction == SortDirection.DESC) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
+  .sortBy(when (this@toExecutionSorting.property) {
     ExecutionQueryProperty.PROCESS_INSTANCE_ID -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCEID
     ExecutionQueryProperty.PROCESS_DEFINITION_ID -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONID
     ExecutionQueryProperty.PROCESS_DEFINITION_KEY -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
@@ -90,7 +92,7 @@ fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = 
 
 fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSortingInner? {
   val dtoSorting = TaskQueryDtoSortingInner()
-    .sortOrder(if (this.direction == Direction.DESCENDING) TaskQueryDtoSortingInner.SortOrderEnum.DESC else TaskQueryDtoSortingInner.SortOrderEnum.ASC)
+    .sortOrder(if (this.direction == SortDirection.DESC) TaskQueryDtoSortingInner.SortOrderEnum.DESC else TaskQueryDtoSortingInner.SortOrderEnum.ASC)
   return when (this.relation) {
     QueryOrderingProperty.RELATION_VARIABLE -> {
       dtoSorting.apply {
