@@ -8,6 +8,7 @@ import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.engine.task.TaskQuery
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables.createVariables
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.TaskApiClient
@@ -31,13 +32,13 @@ class RemoteTaskService(
   private val taskVariableApiClient: TaskVariableApiClient,
   private val taskLocalVariableApiClient: TaskLocalVariableApiClient,
   private val identityLinkApiClient: TaskIdentityLinkApiClient,
-  processEngine: ProcessEngine,
-  objectMapper: ObjectMapper
+  objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver
 ) : AbstractTaskServiceAdapter() {
 
   companion object : KLogging()
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
+  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
   override fun createTaskQuery(): TaskQuery {
     return DelegatingTaskQuery(taskApiClient)

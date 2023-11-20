@@ -63,7 +63,7 @@ class DelegatingDeploymentBuilder(
   }
 
   override fun addClasspathResource(resource: String): DeploymentBuilder {
-    val inputStream = javaClass.getResourceAsStream(resource)
+    val inputStream = javaClass.classLoader.getResourceAsStream(resource)
     requireNotNull(inputStream)  { "resource '$resource' not found" }
     return addInputStream(resource, inputStream)
   }

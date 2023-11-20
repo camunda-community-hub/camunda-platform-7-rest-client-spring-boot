@@ -9,6 +9,7 @@ import org.camunda.bpm.engine.dmn.DecisionEvaluationBuilder
 import org.camunda.bpm.engine.dmn.DecisionsEvaluationBuilder
 import org.camunda.bpm.engine.exception.NotFoundException
 import org.camunda.bpm.engine.exception.NotValidException
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.EvaluateDecisionDto
@@ -23,15 +24,15 @@ import org.camunda.community.rest.variables.ValueMapper
  */
 abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationBuilder<T>>(
   private val decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   private val decisionDefinitionId: String? = null,
   private val decisionDefinitionKey: String? = null
 ) {
 
   companion object : KLogging()
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
+  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
   var tenantIdSet: Boolean = false
   var tenantId: String? = null
@@ -95,14 +96,14 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
 
 class DelegatingDecisionEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionEvaluationBuilder>(
   decisionDefinitionApiClient,
-  processEngine,
   objectMapper,
+  valueTypeResolver,
   decisionDefinitionId,
   decisionDefinitionKey
 ) {
@@ -118,14 +119,14 @@ class DelegatingDecisionEvaluationBuilder(
 
 class DelegatingDecisionsEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionsEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionsEvaluationBuilder>(
   decisionDefinitionApiClient,
-  processEngine,
   objectMapper,
+  valueTypeResolver,
   decisionDefinitionId,
   decisionDefinitionKey
 ) {

@@ -1,25 +1,103 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngineException
-import org.camunda.bpm.engine.impl.Direction
-import org.camunda.bpm.engine.impl.IncidentQueryImpl
-import org.camunda.bpm.engine.impl.IncidentQueryProperty
 import org.camunda.bpm.engine.runtime.Incident
 import org.camunda.bpm.engine.runtime.IncidentQuery
-import org.camunda.community.rest.adapter.*
+import org.camunda.community.rest.adapter.IncidentAdapter
+import org.camunda.community.rest.adapter.IncidentBean
 import org.camunda.community.rest.client.api.IncidentApiClient
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.*
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.jvm.isAccessible
 
 class DelegatingIncidentQuery(
-  private val incidentApiClient: IncidentApiClient
+  private val incidentApiClient: IncidentApiClient,
+  var id: String? = null,
+  var incidentType: String? = null,
+  var incidentMessage: String? = null,
+  var incidentMessageLike: String? = null,
+  var executionId: String? = null,
+  var incidentTimestampBefore: Date? = null,
+  var incidentTimestampAfter: Date? = null,
+  var activityId: String? = null,
+  var failedActivityId: String? = null,
+  var processInstanceId: String? = null,
+  var processDefinitionId: String? = null,
+  var processDefinitionKeys: Array<out String>? = null,
+  var causeIncidentId: String? = null,
+  var rootCauseIncidentId: String? = null,
+  var configuration: String? = null,
+  var jobDefinitionIds: Array<out String>? = null
 ) : BaseQuery<IncidentQuery, Incident>(), IncidentQuery {
 
   companion object : KLogging()
+
+  override fun incidentId(incidentId: String?) = this.apply { this.id = requireNotNull(incidentId) }
+
+  override fun incidentType(incidentType: String?) = this.apply { this.incidentType = requireNotNull(incidentType) }
+
+  override fun incidentMessage(incidentMessage: String?) = this.apply { this.incidentMessage = requireNotNull(incidentMessage) }
+
+  override fun incidentMessageLike(incidentMessageLike: String?) = this.apply { this.incidentMessageLike = requireNotNull(incidentMessageLike) }
+
+  override fun processDefinitionId(processDefinitionId: String?) = this.apply { this.processDefinitionId = requireNotNull(processDefinitionId) }
+
+  override fun processDefinitionKeyIn(vararg processDefinitionKeyIn: String) = this.apply { this.processDefinitionKeys = processDefinitionKeyIn }
+
+  override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
+
+  override fun executionId(executionId: String?) = this.apply { this.executionId = executionId }
+
+  override fun incidentTimestampBefore(incidentTimestampBefore: Date?) = this.apply { this.incidentTimestampBefore = incidentTimestampBefore }
+
+  override fun incidentTimestampAfter(incidentTimestampAfter: Date?) = this.apply { this.incidentTimestampAfter = incidentTimestampAfter }
+
+  override fun activityId(activityId: String?) = this.apply { this.activityId = activityId }
+
+  override fun failedActivityId(failedActivityId: String?) = this.apply { this.failedActivityId = failedActivityId }
+
+  override fun causeIncidentId(causeIncidentId: String?) = this.apply { this.causeIncidentId = causeIncidentId }
+
+  override fun rootCauseIncidentId(rootCauseIncidentId: String?) = this.apply { this.rootCauseIncidentId = rootCauseIncidentId }
+
+  override fun configuration(configuration: String?) = this.apply { this.configuration = configuration }
+
+  override fun jobDefinitionIdIn(vararg jobDefinitionIdIn: String) = this.apply { this.jobDefinitionIds = jobDefinitionIdIn }
+
+  override fun orderByIncidentId() = this.apply { orderBy("incidentId") }
+
+  override fun orderByIncidentTimestamp() = this.apply { orderBy("incidentTimestamp") }
+
+
+  override fun orderByIncidentMessage() = this.apply { orderBy("incidentMessage") }
+
+
+  override fun orderByIncidentType() = this.apply { orderBy("incidentType") }
+
+
+  override fun orderByExecutionId() = this.apply { orderBy("executionId") }
+
+
+  override fun orderByActivityId() = this.apply { orderBy("activityId") }
+
+
+  override fun orderByProcessInstanceId() = this.apply { orderBy("processInstanceId") }
+
+
+  override fun orderByProcessDefinitionId() = this.apply { orderBy("processDefinitionId") }
+
+
+  override fun orderByCauseIncidentId() = this.apply { orderBy("causeIncidentId") }
+
+
+  override fun orderByRootCauseIncidentId() = this.apply { orderBy("rootCauseIncidentId") }
+
+
+  override fun orderByConfiguration() = this.apply { orderBy("configuration") }
+
 
   override fun listPage(firstResult: Int, maxResults: Int): List<Incident> {
     with(IncidentApiClient::getIncidents) {
@@ -56,7 +134,7 @@ class DelegatingIncidentQuery(
   private fun getQueryParam(parameter: KParameter): Any? {
     checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
-    val propertiesByName = IncidentQueryImpl::class.declaredMemberProperties.associateBy { it.name }
+    val propertiesByName = DelegatingIncidentQuery::class.declaredMemberProperties.associateBy { it.name }
     if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
     val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
@@ -64,25 +142,8 @@ class DelegatingIncidentQuery(
       "processDefinitionKeyIn" -> this@DelegatingIncidentQuery.processDefinitionKeys?.joinToString(",")
       "tenantIdIn" -> this@DelegatingIncidentQuery.tenantIds?.joinToString(",")
       "jobDefinitionIdIn" -> this@DelegatingIncidentQuery.jobDefinitionIds?.joinToString(",")
-      "sortBy" -> when (sortProperty?.queryProperty) {
-        IncidentQueryProperty.INCIDENT_ID -> "incidentId"
-        IncidentQueryProperty.INCIDENT_MESSAGE -> "incidentMessage"
-        IncidentQueryProperty.INCIDENT_TIMESTAMP -> "incidentTimestamp"
-        IncidentQueryProperty.INCIDENT_TYPE -> "incidentType"
-        IncidentQueryProperty.EXECUTION_ID -> "executionId"
-        IncidentQueryProperty.ACTIVITY_ID -> "activityId"
-        IncidentQueryProperty.PROCESS_INSTANCE_ID -> "processInstanceId"
-        IncidentQueryProperty.PROCESS_DEFINITION_ID -> "processDefinitionId"
-        IncidentQueryProperty.CAUSE_INCIDENT_ID -> "causeIncidentId"
-        IncidentQueryProperty.ROOT_CAUSE_INCIDENT_ID -> "rootCauseIncidentId"
-        IncidentQueryProperty.CONFIGURATION -> "configuration"
-        IncidentQueryProperty.TENANT_ID -> "tenantId"
-        null -> null
-        else -> {
-          logger.warn { "unknown query property ${sortProperty.queryProperty}, ignoring it" }
-        }
-      }
-      "sortOrder" -> sortProperty?.direction?.let { if (it == Direction.DESCENDING) "desc" else "asc" }
+      "sortBy" -> sortProperty?.property
+      "sortOrder" -> sortProperty?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
       else -> {
         val property = propertiesByName[value]
         if (property == null) {

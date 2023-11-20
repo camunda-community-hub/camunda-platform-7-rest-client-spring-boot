@@ -47,11 +47,11 @@ class DelegatingExecutionQuery(
   override fun activityId(activityId: String?) = this.apply { this.activityId = requireNotNull(activityId) }
 
   override fun processVariableValueEquals(name: String, value: Any?) = this.apply {
-    queryVariableValues.add(createQueryVariableValue(name, value, QueryOperator.EQUALS, false))
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.EQUALS, processVariable = true))
   }
 
   override fun processVariableValueNotEquals(name: String, value: Any?) = this.apply {
-    queryVariableValues.add(createQueryVariableValue(name, value, QueryOperator.EQUALS, false))
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.NOT_EQUALS, processVariable = true))
   }
 
   @Deprecated("Deprecated in Java")
@@ -120,8 +120,8 @@ class DelegatingExecutionQuery(
         "suspended" -> if (this@DelegatingExecutionQuery.suspensionState == SuspensionState.SUSPENDED) true else null
         "tenantIdIn" -> this@DelegatingExecutionQuery.tenantIds?.toList()
         "withoutTenantId" -> this@DelegatingExecutionQuery.tenantIdsSet && (this@DelegatingExecutionQuery.tenantIds == null)
-        "processVariables" -> this@DelegatingExecutionQuery.queryVariableValues.filter { !it.local }.toDto()
-        "variables" -> this@DelegatingExecutionQuery.queryVariableValues.filter { it.local }.toDto()
+        "processVariables" -> this@DelegatingExecutionQuery.queryVariableValues.filter { it.processVariable }.toDto()
+        "variables" -> this@DelegatingExecutionQuery.queryVariableValues.filter { !it.processVariable }.toDto()
         "variableNamesIgnoreCase" -> this@DelegatingExecutionQuery.variableNamesIgnoreCase
         "variableValuesIgnoreCase" -> this@DelegatingExecutionQuery.variableValuesIgnoreCase
         "sorting" -> this@DelegatingExecutionQuery.orderingProperties.map { it.toExecutionSorting() }.filter { it.sortBy != null }
@@ -144,11 +144,6 @@ class DelegatingExecutionQuery(
     }
   }
 
-}
-
-enum class SuspensionState {
-  ACTIVE,
-  SUSPENDED
 }
 
 data class EventSubscriptionQueryValue(val eventName: String?, val eventType: String)

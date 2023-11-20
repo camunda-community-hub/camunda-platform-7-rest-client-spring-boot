@@ -1,11 +1,15 @@
 package org.camunda.community.rest.variables
 
+import jakarta.annotation.PostConstruct
 import org.camunda.bpm.engine.variable.Variables.untypedValue
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.spin.Spin.JSON
 import org.camunda.spin.json.SpinJsonNode
 import org.camunda.spin.plugin.variable.SpinValues.jsonValue
+import org.camunda.spin.plugin.variable.type.impl.JsonValueTypeImpl
+import org.camunda.spin.plugin.variable.type.impl.XmlValueTypeImpl
 import org.camunda.spin.plugin.variable.value.JsonValue
 import org.camunda.spin.plugin.variable.value.SpinValue
 import org.camunda.spin.plugin.variable.value.impl.JsonValueImpl
@@ -15,7 +19,15 @@ import org.springframework.stereotype.Component
 
 @Component
 @ConditionalOnClass(SpinValue::class)
-class SpinValueMapper : CustomValueMapper {
+class SpinValueMapper(
+  private val valueTypeResolver: ValueTypeResolver
+) : CustomValueMapper {
+
+  @PostConstruct
+  fun addValueTypes() {
+    valueTypeResolver.addType(JsonValueTypeImpl())
+    valueTypeResolver.addType(XmlValueTypeImpl())
+  }
 
   override fun mapValue(variableValue: Any): TypedValue =
     if (variableValue is SpinJsonNode) {

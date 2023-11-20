@@ -2,6 +2,7 @@ package org.camunda.community.rest.impl.query
 
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.query.Query
+import org.camunda.bpm.engine.variable.type.ValueType
 
 
 @Suppress("FINITE_BOUNDS_VIOLATION_IN_JAVA")
@@ -43,7 +44,7 @@ abstract class BaseQuery<T : Query<*, *>, U>(
 
   override fun asc(): T = this.apply { direction(SortDirection.ASC) } as T
 
-  override fun desc():T = this.apply { direction(SortDirection.ASC) } as T
+  override fun desc():T = this.apply { direction(SortDirection.DESC) } as T
 
   fun direction(direction: SortDirection) {
     if (orderingProperties.last().direction != null) {
@@ -65,4 +66,17 @@ enum class SortDirection {
   DESC
 }
 
-data class QueryOrderingProperty(val property: String, var direction: SortDirection? = null)
+enum class Relation {
+  PROCESS_INSTANCE,
+  EXECUTION,
+  TASK,
+  CASE_INSTANCE,
+  CASE_EXECUTION
+}
+
+data class QueryOrderingProperty(val property: String, var direction: SortDirection? = null, val type: ValueType? = null, val relation: Relation? = null)
+
+enum class SuspensionState {
+  ACTIVE,
+  SUSPENDED
+}

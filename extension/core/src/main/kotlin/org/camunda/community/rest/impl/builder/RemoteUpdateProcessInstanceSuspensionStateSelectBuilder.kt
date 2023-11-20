@@ -2,7 +2,6 @@ package org.camunda.community.rest.impl.builder
 
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
-import org.camunda.bpm.engine.impl.ProcessEngineLogger
 import org.camunda.bpm.engine.impl.util.EnsureUtil
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.community.rest.adapter.BatchAdapter
@@ -88,7 +87,6 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
   override fun suspendAsync() = updateSuspensionStateAsync(true)
 
   private fun updateSuspensionState(suspended: Boolean) {
-    validateParameters()
     processInstanceApiClient.updateSuspensionState(
       ProcessInstanceSuspensionStateDto()
         .processDefinitionId(processDefinitionId)
@@ -103,7 +101,6 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
   }
 
   private fun updateSuspensionStateAsync(suspended: Boolean): Batch {
-    validateParameters()
     return BatchAdapter(BatchBean.fromDto(
       processInstanceApiClient.updateSuspensionStateAsyncOperation(
         ProcessInstanceSuspensionStateAsyncDto()
@@ -116,13 +113,13 @@ class RemoteUpdateProcessInstanceSuspensionStateBuilder(
   }
 
 
-  private fun validateParameters() {
-    EnsureUtil.ensureOnlyOneNotNull("Need to specify either a process instance id (or query), a process definition id or a process definition key.",
-      processInstanceIds ?: processInstanceQuery ?: historicProcessInstanceQuery, processDefinitionId, processDefinitionKey)
-    if ((withoutTenant != null || tenantId != null) && (processInstanceIds != null || processDefinitionId != null)) {
-      throw ProcessEngineLogger.CMD_LOGGER.exceptionUpdateSuspensionStateForTenantOnlyByProcessDefinitionKey()
-    }
-  }
+//  private fun validateParameters() {
+//    EnsureUtil.ensureOnlyOneNotNull("Need to specify either a process instance id (or query), a process definition id or a process definition key.",
+//      processInstanceIds ?: processInstanceQuery ?: historicProcessInstanceQuery, processDefinitionId, processDefinitionKey)
+//    if ((withoutTenant != null || tenantId != null) && (processInstanceIds != null || processDefinitionId != null)) {
+//      throw ProcessEngineLogger.CMD_LOGGER.exceptionUpdateSuspensionStateForTenantOnlyByProcessDefinitionKey()
+//    }
+//  }
 
   private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 

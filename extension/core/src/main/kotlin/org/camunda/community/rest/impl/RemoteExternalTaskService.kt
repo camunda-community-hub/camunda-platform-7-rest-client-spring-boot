@@ -1,7 +1,7 @@
 package org.camunda.community.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.community.rest.adapter.AbstractExternalTaskServiceAdapter
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.CompleteExternalTaskDto
@@ -20,11 +20,11 @@ import org.springframework.stereotype.Component
 @Qualifier("remote")
 class RemoteExternalTaskService(
   private val externalTaskApiClient: ExternalTaskApiClient,
-  processEngine: ProcessEngine,
+  valueTypeResolver: ValueTypeResolver,
   objectMapper: ObjectMapper
 ) : AbstractExternalTaskServiceAdapter() {
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
+  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
   override fun complete(externalTaskId: String, workerId: String) {
     this.complete(externalTaskId, workerId, mutableMapOf())
