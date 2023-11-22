@@ -4,6 +4,9 @@ import org.camunda.bpm.engine.variable.type.ValueType
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.springframework.stereotype.Component
 
+/**
+ * Implementation of the [ValueTypeResolver] that is taken from the Camunda engine.
+ */
 @Component
 class ValueTypeResolverImpl : ValueTypeResolver {
 

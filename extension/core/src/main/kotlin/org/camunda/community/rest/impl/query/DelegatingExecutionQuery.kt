@@ -133,4 +133,7 @@ class DelegatingExecutionQuery(
 
 }
 
+/**
+ * Data class to store information about event subscriptions to query for.
+ */
 data class EventSubscriptionQueryValue(val eventName: String?, val eventType: String)

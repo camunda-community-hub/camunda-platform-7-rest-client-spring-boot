@@ -17,12 +17,19 @@ import org.camunda.spin.plugin.variable.value.impl.SpinValueImpl
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.stereotype.Component
 
+/**
+ * Custom value mapper to map SPIN values.
+ * Will only be used, if the SPIN dependencies are on the classpath.
+ */
 @Component
 @ConditionalOnClass(SpinValue::class)
 class SpinValueMapper(
   private val valueTypeResolver: ValueTypeResolver
 ) : CustomValueMapper {
 
+  /**
+   * Adds the SPIN value types to the list of known types by the [ValueTypeResolver].
+   */
   @PostConstruct
   fun addValueTypes() {
     valueTypeResolver.addType(JsonValueTypeImpl())

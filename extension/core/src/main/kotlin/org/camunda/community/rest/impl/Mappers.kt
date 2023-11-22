@@ -44,6 +44,9 @@ fun Task.toDto(): TaskDto = TaskDto()
   .formKey(this.formKey)
   .tenantId(this.tenantId)
 
+/**
+ * Maps for the identity link adapter to the DTO used in the REST calls.
+ */
 fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto(this.type)
   .userId(this.userId)
   .groupId(this.groupId)
