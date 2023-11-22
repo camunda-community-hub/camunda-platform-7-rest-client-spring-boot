@@ -31,7 +31,7 @@ import org.camunda.bpm.engine.RuntimeService
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.RuntimeServiceActionStage
 import org.camunda.community.rest.itest.stages.RuntimeServiceAssertStage
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 @As("Start Process By Id")
 class RuntimeServiceStartProcessByMessageTest :

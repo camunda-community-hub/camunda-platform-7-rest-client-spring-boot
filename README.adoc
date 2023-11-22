@@ -7,10 +7,12 @@ image::https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d
 |===
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
+| // Camunda version
+image::https://img.shields.io/badge/Camunda%20Version-7.20-orange.svg[link="https://docs.camunda.org/manual/7.20/"]
 | // codecov
 image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/develop/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot]
 | // codacy code quality
-image:https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f["Codacy code quality", link="https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&utm_campaign=Badge_Grade"]
+image::https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy code quality", link="https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&utm_campaign=Badge_Grade"]
 | // codacy coverage
 image::https://app.codacy.com/project/badge/Coverage/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy Coverage Badge", link=https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&utm_campaign=Badge_Coverage]
 | // license

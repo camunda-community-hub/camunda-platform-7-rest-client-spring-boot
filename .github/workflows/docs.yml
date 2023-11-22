@@ -63,16 +63,16 @@ jobs:
       # This is for a tagged version
       - name: Create a new version of documentation and push to GH pages.
         if: startsWith(github.ref, 'refs/tags/')
-        run: mike deploy ${{ steps.get_tag_name.outputs.TAG_NAME }} stable -u --push --rebase
+        run: mike deploy ${{ steps.get_tag_name.outputs.TAG_NAME }} stable -u --push
 
       - name: Make stable to default.
         if: startsWith(github.ref, 'refs/tags/')
-        run: mike set-default stable --push --rebase
+        run: mike set-default stable --push
 
       # This is for master branch
       - name: Deploy latest develop snapshot docs to GH pages.
         if: github.ref == 'refs/heads/master'
-        run: mike deploy snapshot -u --push --rebase
+        run: mike deploy snapshot -u --push
 
       # This is for release close
       - name: Get the release version
@@ -83,8 +83,8 @@ jobs:
 
       - name: Create a new version of documentation and push to GH pages.
         if: github.event.release
-        run: mike deploy ${{ env.VERSION }} stable -u --push --rebase
+        run: mike deploy ${{ env.VERSION }} stable -u --push
 
       - name: Make stable to default.
         if: github.event.release
-        run: mike set-default stable --push --rebase
+        run: mike set-default stable --push
