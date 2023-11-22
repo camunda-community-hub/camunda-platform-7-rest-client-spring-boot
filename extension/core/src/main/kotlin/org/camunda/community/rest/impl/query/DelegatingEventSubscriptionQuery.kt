@@ -9,8 +9,6 @@ import org.camunda.community.rest.client.api.EventSubscriptionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.jvm.isAccessible
 
 class DelegatingEventSubscriptionQuery(
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
@@ -42,7 +40,7 @@ class DelegatingEventSubscriptionQuery(
   override fun orderByCreated() = this.apply { this.orderBy("created") }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<EventSubscription> {
-    checkQueryOk()
+    validate()
     with(EventSubscriptionApiClient::getEventSubscriptions) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -63,7 +61,7 @@ class DelegatingEventSubscriptionQuery(
   }
 
   override fun count(): Long {
-    checkQueryOk()
+    validate()
     with (EventSubscriptionApiClient::getEventSubscriptionsCount) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -76,29 +74,15 @@ class DelegatingEventSubscriptionQuery(
   }
 
   private fun getQueryParam(parameter: KParameter): Any? {
-    checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
-    val propertiesByName = DelegatingEventSubscriptionQuery::class.declaredMemberProperties.associateBy { it.name }
-    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
-    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "id" -> eventSubscriptionId
       "tenantIdIn" -> tenantIds?.toList()
       "withoutTenantId" -> tenantIdsSet && tenantIds == null
-      "sortBy" -> sortProperty?.property
-      "sortOrder" -> sortProperty?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
-      else -> {
-        val property = propertiesByName[value]
-        if (property == null) {
-          throw IllegalArgumentException("no property found for $value")
-        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
-          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
-        } else {
-          property.isAccessible = true
-          val propValue = property.get(this)
-          if (propValue is Collection<*>) propValue.joinToString(",") else propValue
-        }
-      }
+      "sortBy" -> sortProperty()?.property
+      "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
+      null -> throw IllegalArgumentException("value of RequestParam annotation is null")
+      else -> valueForProperty(value, this, parameter.type)
     }
   }
 

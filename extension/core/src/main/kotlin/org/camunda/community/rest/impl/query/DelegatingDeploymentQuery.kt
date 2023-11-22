@@ -1,7 +1,6 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.community.rest.adapter.DeploymentAdapter
@@ -10,10 +9,6 @@ import org.camunda.community.rest.client.api.DeploymentApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 
 class DelegatingDeploymentQuery(
   private val deploymentApiClient: DeploymentApiClient,
@@ -56,7 +51,7 @@ class DelegatingDeploymentQuery(
   override fun orderByDeploymentTime() = this.apply { orderBy("deploymentTime") }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<Deployment> {
-    checkQueryOk()
+    validate()
     with(DeploymentApiClient::getDeployments) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -77,7 +72,7 @@ class DelegatingDeploymentQuery(
   }
 
   override fun count(): Long {
-    checkQueryOk()
+    validate()
     with (DeploymentApiClient::getDeploymentsCount) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -91,9 +86,6 @@ class DelegatingDeploymentQuery(
 
   private fun getQueryParam(parameter: KParameter): Any? {
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
-    val propertiesByName = DelegatingDeploymentQuery::class.declaredMemberProperties.associateBy { it.name }
-    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
-    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "id" -> deploymentId
       "withoutSource" -> sourceQueryParamEnabled && source == null
@@ -101,20 +93,10 @@ class DelegatingDeploymentQuery(
       "withoutTenantId" -> tenantIdsSet && tenantIds == null
       "after" -> deploymentAfter
       "before" -> deploymentBefore
-      "sortBy" -> sortProperty?.property
-      "sortOrder" -> sortProperty?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
-      else -> {
-        val property = propertiesByName[value]
-        if (property == null) {
-          throw IllegalArgumentException("no property found for $value")
-        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
-          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
-        } else {
-          property.isAccessible = true
-          val propValue = property.get(this)
-          if (propValue is Collection<*>) propValue.joinToString(",") else propValue
-        }
-      }
+      "sortBy" -> sortProperty()?.property
+      "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
+      null -> throw IllegalArgumentException("value of RequestParam annotation is null")
+      else -> valueForProperty(value, this, parameter.type)
     }
   }
 

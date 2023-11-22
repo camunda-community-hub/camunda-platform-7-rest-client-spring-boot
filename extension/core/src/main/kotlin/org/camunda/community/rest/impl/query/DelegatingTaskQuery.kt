@@ -23,6 +23,7 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
+import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.engine.task.TaskQuery
@@ -36,7 +37,6 @@ import org.camunda.community.rest.variables.toDto
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
@@ -147,17 +147,29 @@ class DelegatingTaskQuery(
     this.expressions["taskAssignee"] = requireNotNull(taskAssigneeExpression)
   }
 
-  override fun taskAssigneeLike(taskAssigneeLike: String?) = this.apply { this.assigneeLike = requireNotNull(taskAssigneeLike) }
+  override fun taskAssigneeLike(taskAssigneeLike: String?) = this.apply {
+    this.assigneeLike = requireNotNull(taskAssigneeLike)
+    this.expressions.remove("taskAssigneeLike")
+  }
 
   override fun taskAssigneeLikeExpression(taskAssigneeLikeExpression: String?) = this.apply {
     this.expressions["taskAssigneeLike"] = requireNotNull(taskAssigneeLikeExpression)
   }
 
-  override fun taskAssigneeIn(vararg taskAssigneeIn: String) = this.apply { this.assigneeIn = taskAssigneeIn.toSet() }
+  override fun taskAssigneeIn(vararg taskAssigneeIn: String) = this.apply {
+    this.assigneeIn = taskAssigneeIn.toSet()
+    this.expressions.remove("taskAssigneeIn")
+  }
 
-  override fun taskAssigneeNotIn(vararg taskAssigneeNotIn: String) = this.apply { this.assingeeNotIn = taskAssigneeNotIn.toSet() }
+  override fun taskAssigneeNotIn(vararg taskAssigneeNotIn: String) = this.apply {
+    this.assingeeNotIn = taskAssigneeNotIn.toSet()
+    this.expressions.remove("taskAssigneeNotIn")
+  }
 
-  override fun taskOwner(taskOwner: String?) = this.apply { this.owner = requireNotNull(taskOwner) }
+  override fun taskOwner(taskOwner: String?) = this.apply {
+    this.owner = requireNotNull(taskOwner)
+    this.expressions.remove("taskOwner")
+  }
 
   override fun taskOwnerExpression(taskOwnerExpression: String?) = this.apply {
     this.expressions["taskOwner"] = requireNotNull(taskOwnerExpression)
@@ -177,13 +189,31 @@ class DelegatingTaskQuery(
       this.delegationState = taskDelegationState
   }
 
-  override fun taskCandidateUser(candidateUser: String?) = this.apply { this.candidateUser = requireNotNull(candidateUser) }
+  override fun taskCandidateUser(candidateUser: String?) = this.apply {
+    if (candidateGroup != null || expressions.containsKey("taskCandidateGroup")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateUser and candidateGroup")
+    }
+    if (candidateGroups != null || expressions.containsKey("taskCandidateGroupIn")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateUser and candidateGroupIn")
+    }
+    this.candidateUser = requireNotNull(candidateUser)
+    this.expressions.remove("taskCandidateUser")
+  }
 
   override fun taskCandidateUserExpression(taskCandidateUserExpression: String?) = this.apply {
+    if (candidateGroup != null || expressions.containsKey("taskCandidateGroup")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateUser and candidateGroup")
+    }
+    if (candidateGroups != null || expressions.containsKey("taskCandidateGroupIn")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateUser and candidateGroupIn")
+    }
     this.expressions["taskCandidateUser"] = requireNotNull(taskCandidateUserExpression)
   }
 
-  override fun taskInvolvedUser(involvedUser: String?) = this.apply { this.involvedUser = requireNotNull(involvedUser) }
+  override fun taskInvolvedUser(involvedUser: String?) = this.apply {
+    this.involvedUser = requireNotNull(involvedUser)
+    this.expressions.remove("taskInvolvedUser")
+  }
 
   override fun taskInvolvedUserExpression(taskInvolvedUserExpression: String?) = this.apply {
     this.expressions["taskInvolvedUser"] = requireNotNull(taskInvolvedUserExpression)
@@ -197,25 +227,55 @@ class DelegatingTaskQuery(
 
   override fun withoutCandidateUsers() = this.apply { this.withoutCandidateUsers = true }
 
-  override fun taskCandidateGroup(taskCandidateGroup: String?) = this.apply { this.candidateGroup = requireNotNull(taskCandidateGroup) }
+  override fun taskCandidateGroup(taskCandidateGroup: String?) = this.apply {
+    if (candidateUser != null || expressions.containsKey("taskCandidateUser")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateGroup and candidateUser")
+    }
+    this.candidateGroup = requireNotNull(taskCandidateGroup)
+    this.expressions.remove("taskCandidateGroup")
+  }
 
   override fun taskCandidateGroupExpression(taskCandidateGroupExpression: String?) = this.apply {
+    if (candidateUser != null || expressions.containsKey("taskCandidateUser")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateGroup and candidateUser")
+    }
     this.expressions["taskCandidateGroup"] = requireNotNull(taskCandidateGroupExpression)
   }
 
-  override fun taskCandidateGroupIn(taskCandidateGroupIn: List<String>) = this.apply { this.candidateGroups = taskCandidateGroupIn }
+  override fun taskCandidateGroupIn(taskCandidateGroupIn: List<String>) = this.apply {
+    if (candidateUser != null || expressions.containsKey("taskCandidateUser")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateGroupIn and candidateUser")
+    }
+    this.candidateGroups = taskCandidateGroupIn
+    this.expressions.remove("taskCandidateGroupIn")
+  }
 
   override fun taskCandidateGroupInExpression(taskCandidateGroupInExpression: String?) = this.apply {
+    if (candidateUser != null || expressions.containsKey("taskCandidateUser")) {
+      throw ProcessEngineException("Invalid query usage: cannot set both candidateGroupIn and candidateUser")
+    }
     this.expressions["taskCandidateGroupIn"] = requireNotNull(taskCandidateGroupInExpression)
   }
 
-  override fun includeAssignedTasks() = this.apply { this.includeAssignedTasks = true }
+  override fun includeAssignedTasks() = this.apply {
+    if (candidateUser == null && candidateGroup == null && candidateGroups == null && withCandidateGroups != true && withoutCandidateGroups != true
+      && withCandidateUsers != true && withoutCandidateUsers != true
+      && !expressions.containsKey("taskCandidateUser") && !expressions.containsKey("taskCandidateGroup")
+      && !expressions.containsKey("taskCandidateGroupIn")
+    ) {
+      throw ProcessEngineException("Invalid query usage: candidateUser, candidateGroup, candidateGroupIn, withCandidateGroups, withoutCandidateGroups, withCandidateUsers, withoutCandidateUsers has to be called before 'includeAssignedTasks'.")
+    }
+    this.includeAssignedTasks = true
+  }
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
 
   override fun processInstanceIdIn(vararg processInstanceIdIn: String) = this.apply { this.processInstanceIdIn = processInstanceIdIn }
 
-  override fun processInstanceBusinessKey(processInstanceBusinessKey: String?) = this.apply { this.processInstanceBusinessKey = requireNotNull(processInstanceBusinessKey) }
+  override fun processInstanceBusinessKey(processInstanceBusinessKey: String?) = this.apply {
+    this.processInstanceBusinessKey = requireNotNull(processInstanceBusinessKey)
+    this.expressions.remove("processInstanceBusinessKey")
+  }
 
   override fun processInstanceBusinessKeyExpression(processInstanceBusinessKeyExpression: String?) = this.apply {
     this.expressions["processInstanceBusinessKey"] = requireNotNull(processInstanceBusinessKeyExpression)
@@ -223,7 +283,10 @@ class DelegatingTaskQuery(
 
   override fun processInstanceBusinessKeyIn(vararg processInstanceBusinessKeyIn: String) = this.apply { this.processInstanceBusinessKeys = processInstanceBusinessKeyIn }
 
-  override fun processInstanceBusinessKeyLike(processInstanceBusinessKeyLike: String?) = this.apply { this.processInstanceBusinessKeyLike = requireNotNull(processInstanceBusinessKeyLike) }
+  override fun processInstanceBusinessKeyLike(processInstanceBusinessKeyLike: String?) = this.apply {
+    this.processInstanceBusinessKeyLike = requireNotNull(processInstanceBusinessKeyLike)
+    this.expressions.remove("processInstanceBusinessKeyLike")
+  }
 
   override fun processInstanceBusinessKeyLikeExpression(processInstanceBusinessKeyLikeExpression: String?) = this.apply {
     this.expressions["processInstanceBusinessKeyLike"] = requireNotNull(processInstanceBusinessKeyLikeExpression)
@@ -232,24 +295,36 @@ class DelegatingTaskQuery(
 
   override fun activityInstanceIdIn(vararg activityInstanceIdIn: String) = this.apply { this.activityInstanceIdIn = activityInstanceIdIn }
 
-  override fun taskCreatedOn(taskCreatedOn: Date?) = this.apply { this.createTime = requireNotNull(taskCreatedOn) }
+  override fun taskCreatedOn(taskCreatedOn: Date?) = this.apply {
+    this.createTime = requireNotNull(taskCreatedOn)
+    this.expressions.remove("taskCreatedOn")
+  }
 
   override fun taskCreatedOnExpression(taskCreatedOnExpression: String?) = this.apply {
     this.expressions["taskCreatedOn"] = requireNotNull(taskCreatedOnExpression)
   }
 
-  override fun taskCreatedBefore(taskCreatedBefore: Date?) = this.apply { this.createTimeBefore = requireNotNull(taskCreatedBefore) }
+  override fun taskCreatedBefore(taskCreatedBefore: Date?) = this.apply {
+    this.createTimeBefore = requireNotNull(taskCreatedBefore)
+    this.expressions.remove("taskCreatedBefore")
+  }
 
   override fun taskCreatedBeforeExpression(taskCreatedBeforeExpression: String?) = this.apply {
     this.expressions["taskCreatedBefore"] = requireNotNull(taskCreatedBeforeExpression)
   }
-  override fun taskCreatedAfter(taskCreatedAfter: Date?) = this.apply { this.createTimeAfter = requireNotNull(taskCreatedAfter) }
+  override fun taskCreatedAfter(taskCreatedAfter: Date?) = this.apply {
+    this.createTimeAfter = requireNotNull(taskCreatedAfter)
+    this.expressions.remove("taskCreatedAfter")
+  }
 
   override fun taskCreatedAfterExpression(taskCreatedAfterExpression: String?) = this.apply {
     this.expressions["taskCreatedAfter"] = requireNotNull(taskCreatedAfterExpression)
   }
 
-  override fun taskUpdatedAfter(taskUpdatedAfter: Date?) = this.apply { this.updatedAfter = requireNotNull(taskUpdatedAfter) }
+  override fun taskUpdatedAfter(taskUpdatedAfter: Date?) = this.apply {
+    this.updatedAfter = requireNotNull(taskUpdatedAfter)
+    this.expressions.remove("taskUpdatedAfter")
+  }
 
   override fun taskUpdatedAfterExpression(taskUpdatedAfterExpression: String?) = this.apply {
     this.expressions["taskUpdatedAfter"] = requireNotNull(taskUpdatedAfterExpression)
@@ -383,46 +458,86 @@ class DelegatingTaskQuery(
 
   override fun processDefinitionNameLike(processDefinitionNameLike: String?) = this.apply { this.processDefinitionNameLike = requireNotNull(processDefinitionNameLike) }
 
-  override fun dueDate(dueDate: Date?) = this.apply { this.dueDate = requireNotNull(dueDate) }
+  override fun dueDate(dueDate: Date?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueDate and withoutDueDate filters.")
+    }
+    this.dueDate = requireNotNull(dueDate)
+    this.expressions.remove("dueDate")
+  }
 
   override fun dueDateExpression(dueDateExpression: String?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueDateExpression and withoutDueDate filters.")
+    }
     this.expressions["dueDate"] = requireNotNull(dueDateExpression)
   }
 
-  override fun dueBefore(dueBefore: Date?) = this.apply { this.dueBefore = requireNotNull(dueBefore) }
+  override fun dueBefore(dueBefore: Date?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueBefore and withoutDueDate filters.")
+    }
+    this.dueBefore = requireNotNull(dueBefore)
+    this.expressions.remove("dueBefore")
+  }
 
   override fun dueBeforeExpression(dueBeforeExpression: String?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueBeforeExpression and withoutDueDate filters.")
+    }
     this.expressions["dueBefore"] = requireNotNull(dueBeforeExpression)
   }
 
-  override fun dueAfter(dueAfter: Date?) = this.apply { this.dueAfter = requireNotNull(dueAfter) }
+  override fun dueAfter(dueAfter: Date?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueAfter and withoutDueDate filters.")
+    }
+    this.dueAfter = requireNotNull(dueAfter)
+    this.expressions.remove("dueAfter")
+  }
 
   override fun dueAfterExpression(dueAfterExpression: String?) = this.apply {
+    if (isWithoutDueDate) {
+      throw ProcessEngineException("Invalid query usage: cannot set both dueAfterExpression and withoutDueDate filters.")
+    }
     this.expressions["dueAfter"] = requireNotNull(dueAfterExpression)
   }
 
-  override fun followUpDate(followUpDate: Date?) = this.apply { this.followUpDate = requireNotNull(followUpDate) }
+  override fun followUpDate(followUpDate: Date?) = this.apply {
+    this.followUpDate = requireNotNull(followUpDate)
+    expressions.remove("followUpDate")
+  }
 
   override fun followUpDateExpression(followUpDateExpression: String?) = this.apply {
     this.expressions["followUpDate"] = requireNotNull(followUpDateExpression)
   }
 
-  override fun followUpBefore(followUpBefore: Date?) = this.apply { this.followUpBefore = requireNotNull(followUpBefore) }
+  override fun followUpBefore(followUpBefore: Date?) = this.apply {
+    this.followUpNullAccepted = false
+    this.followUpBefore = requireNotNull(followUpBefore)
+    expressions.remove("followUpBefore")
+  }
 
   override fun followUpBeforeExpression(followUpBeforeExpression: String?) = this.apply {
+    this.followUpNullAccepted = false
     this.expressions["followUpBefore"] = requireNotNull(followUpBeforeExpression)
   }
 
   override fun followUpBeforeOrNotExistent(followUpBeforeOrNotExistent: Date?) = this.apply {
-    this.followUpBefore = followUpBeforeOrNotExistent
     this.followUpNullAccepted = true
+    this.followUpBefore = followUpBeforeOrNotExistent
+    this.expressions.remove("followUpBeforeOrNotExistent")
   }
 
   override fun followUpBeforeOrNotExistentExpression(followUpBeforeOrNotExistentExpression: String?) = this.apply {
+    this.followUpNullAccepted = true
     this.expressions["followUpBeforeOrNotExistent"] = requireNotNull(followUpBeforeOrNotExistentExpression)
   }
 
-  override fun followUpAfter(followUpAfter: Date?) = this.apply { this.followUpAfter = requireNotNull(followUpAfter) }
+  override fun followUpAfter(followUpAfter: Date?) = this.apply {
+    this.followUpAfter = requireNotNull(followUpAfter)
+    this.expressions.remove("followUpAfter")
+  }
 
   override fun followUpAfterExpression(followUpAfterExpression: String?) = this.apply {
     this.expressions["followUpAfter"] = requireNotNull(followUpAfterExpression)
@@ -494,10 +609,9 @@ class DelegatingTaskQuery(
     taskApiClient.queryTasksCount(fillQueryDto()).body!!.count
 
   private fun fillQueryDto() = TaskQueryDto().apply {
-    checkQueryOk()
+    validate()
     val dtoPropertiesByName = TaskQueryDto::class.memberProperties.plus(TaskQueryDto::class.memberProperties)
       .filterIsInstance<KMutableProperty1<TaskQueryDto, Any?>>().associateBy { it.name }
-    val queryPropertiesByName = DelegatingTaskQuery::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "taskIdIn" -> this@DelegatingTaskQuery.taskIdIn?.toList()
@@ -549,17 +663,7 @@ class DelegatingTaskQuery(
         }
         "orQueries" -> if (this@DelegatingTaskQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
         "sorting" -> this@DelegatingTaskQuery.orderingProperties.mapNotNull { it.toTaskSorting() }.filter { it.sortBy != null }
-        else -> {
-          val queryProperty = queryPropertiesByName[it.key]
-          if (queryProperty == null) {
-            throw IllegalArgumentException("no property found for ${it.key}")
-          } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
-            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
-          } else {
-            queryProperty.isAccessible = true
-            queryProperty.get(this@DelegatingTaskQuery)
-          }
-        }
+        else -> valueForProperty(it.key, this@DelegatingTaskQuery, it.value.returnType)
       }
       it.value.isAccessible = true
       it.value.set(this, valueToSet)

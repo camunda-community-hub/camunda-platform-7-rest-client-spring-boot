@@ -1,6 +1,7 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
+import org.camunda.bpm.engine.BadUserRequestException
 import org.camunda.bpm.engine.history.HistoricProcessInstance
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.community.rest.adapter.HistoricInstanceBean
@@ -11,7 +12,6 @@ import org.camunda.community.rest.impl.toHistoricProcessInstanceSorting
 import org.camunda.community.rest.variables.toDto
 import java.util.*
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
@@ -145,13 +145,31 @@ class DelegatingHistoricProcessInstanceQuery(
 
   override fun orderByProcessInstanceDuration()  = this.apply { this.orderBy("duration") }
 
-  override fun rootProcessInstances() = this.apply { this.isRootProcessInstances = true }
+  override fun rootProcessInstances() = this.apply {
+    if (superProcessInstanceId != null) {
+      throw BadUserRequestException("Invalid query usage: cannot set both rootProcessInstances and superProcessInstanceId")
+    }
+    if (superCaseInstanceId != null) {
+      throw BadUserRequestException("Invalid query usage: cannot set both rootProcessInstances and superCaseInstanceId")
+    }
+    this.isRootProcessInstances = true
+  }
 
-  override fun superProcessInstanceId(superProcessInstanceId: String?) = this.apply { this.superProcessInstanceId = requireNotNull(superProcessInstanceId) }
+  override fun superProcessInstanceId(superProcessInstanceId: String?) = this.apply {
+    if (isRootProcessInstances) {
+      throw BadUserRequestException("Invalid query usage: cannot set both rootProcessInstances and superProcessInstanceId")
+    }
+    this.superProcessInstanceId = requireNotNull(superProcessInstanceId)
+  }
 
   override fun subProcessInstanceId(subProcessInstanceId: String?) = this.apply { this.subProcessInstanceId = requireNotNull(subProcessInstanceId) }
 
-  override fun superCaseInstanceId(superCaseInstanceId: String?) = this.apply { this.superCaseInstanceId = requireNotNull(superCaseInstanceId) }
+  override fun superCaseInstanceId(superCaseInstanceId: String?) = this.apply {
+    if (isRootProcessInstances) {
+      throw BadUserRequestException("Invalid query usage: cannot set both rootProcessInstances and superCaseInstanceId")
+    }
+    this.superCaseInstanceId = requireNotNull(superCaseInstanceId)
+  }
 
   override fun subCaseInstanceId(subCaseInstanceId: String?) = this.apply { this.subCaseInstanceId = requireNotNull(subCaseInstanceId) }
 
@@ -210,9 +228,8 @@ class DelegatingHistoricProcessInstanceQuery(
   override fun count() = historicProcessInstanceApiClient.queryHistoricProcessInstancesCount(fillQueryDto()).body!!.count
 
   fun fillQueryDto() = HistoricProcessInstanceQueryDto().apply {
-    checkQueryOk()
+    validate()
     val dtoPropertiesByName = HistoricProcessInstanceQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<HistoricProcessInstanceQueryDto, Any?>>().associateBy { it.name }
-    val queryPropertiesByName = DelegatingHistoricProcessInstanceQuery::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "processInstanceIds" -> this@DelegatingHistoricProcessInstanceQuery.processInstanceIds?.toList()
@@ -235,19 +252,7 @@ class DelegatingHistoricProcessInstanceQuery(
         "variables" -> this@DelegatingHistoricProcessInstanceQuery.queryVariableValues.toDto()
         "orQueries" -> if (this@DelegatingHistoricProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
         "sorting" -> this@DelegatingHistoricProcessInstanceQuery.orderingProperties.map { it.toHistoricProcessInstanceSorting() }.filter { it.sortBy != null }
-        else -> {
-          val queryProperty = queryPropertiesByName[it.key]
-          if (queryProperty == null) {
-            throw IllegalArgumentException("no property found for ${it.key}")
-          } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
-            logger.warn { "${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}" }
-            null
-//            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
-          } else {
-            queryProperty.isAccessible = true
-            queryProperty.get(this@DelegatingHistoricProcessInstanceQuery)
-          }
-        }
+        else -> valueForProperty(it.key, this@DelegatingHistoricProcessInstanceQuery, it.value.returnType)
       }
       it.value.isAccessible = true
       it.value.set(this, valueToSet)

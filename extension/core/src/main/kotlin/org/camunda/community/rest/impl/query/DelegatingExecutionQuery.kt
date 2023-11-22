@@ -97,7 +97,7 @@ class DelegatingExecutionQuery(
   override fun count() = executionApiClient.queryExecutionsCount(fillQueryDto()).body!!.count!!
 
   fun fillQueryDto() = ExecutionQueryDto().apply {
-    checkQueryOk()
+    validate()
     this@DelegatingExecutionQuery.eventSubscriptions.let {
       if (it.filter { s -> s.eventType == "signal" }.size > 1) {
         throw NotValidException("Only one signal name for event subscriptions allowed")
@@ -107,14 +107,13 @@ class DelegatingExecutionQuery(
       }
     }
     val dtoPropertiesByName = ExecutionQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ExecutionQueryDto, Any?>>().associateBy { it.name }
-    val propertiesByName = DelegatingExecutionQuery::class.declaredMemberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "signalEventSubscriptionName" -> this@DelegatingExecutionQuery.eventSubscriptions.filter { it.eventType == "signal" }
-          ?.map { it.eventName }?.firstOrNull()
+            .map { it.eventName }.firstOrNull()
 
         "messageEventSubscriptionName" -> this@DelegatingExecutionQuery.eventSubscriptions.filter { it.eventType == "message" }
-          ?.map { it.eventName }?.firstOrNull()
+            .map { it.eventName }.firstOrNull()
 
         "active" -> if (this@DelegatingExecutionQuery.suspensionState == SuspensionState.ACTIVE) true else null
         "suspended" -> if (this@DelegatingExecutionQuery.suspensionState == SuspensionState.SUSPENDED) true else null
@@ -125,19 +124,7 @@ class DelegatingExecutionQuery(
         "variableNamesIgnoreCase" -> this@DelegatingExecutionQuery.variableNamesIgnoreCase
         "variableValuesIgnoreCase" -> this@DelegatingExecutionQuery.variableValuesIgnoreCase
         "sorting" -> this@DelegatingExecutionQuery.orderingProperties.map { it.toExecutionSorting() }.filter { it.sortBy != null }
-        else -> {
-          val queryProperty = propertiesByName[it.key]
-          if (queryProperty == null) {
-            throw IllegalArgumentException("no property found for ${it.key}")
-          } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
-            logger.warn { "${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}" }
-            null
-            //            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
-          } else {
-            queryProperty.isAccessible = true
-            queryProperty.get(this@DelegatingExecutionQuery)
-          }
-        }
+        else -> valueForProperty(it.key, this@DelegatingExecutionQuery, it.value.returnType)
       }
       it.value.isAccessible = true
       it.value.set(this, valueToSet)

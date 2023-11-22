@@ -23,6 +23,7 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
+import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
@@ -32,9 +33,6 @@ import org.camunda.community.rest.client.api.ProcessDefinitionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.jvm.isAccessible
 
 /**
  * Implementation of the process definition query.
@@ -170,7 +168,7 @@ class DelegatingProcessDefinitionQuery(
   override fun orderByVersionTag() = this.apply { orderBy("versionTag") }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<ProcessDefinition> {
-    checkQueryOk()
+    validate()
     with(ProcessDefinitionApiClient::getProcessDefinitions) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -191,7 +189,7 @@ class DelegatingProcessDefinitionQuery(
   }
 
   override fun count(): Long {
-    checkQueryOk()
+    validate()
     with (ProcessDefinitionApiClient::getProcessDefinitionsCount) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -203,11 +201,15 @@ class DelegatingProcessDefinitionQuery(
     }
   }
 
+  override fun validate() {
+    super.validate()
+    if (latest && (id != null || version != null || deploymentId != null)) {
+      throw ProcessEngineException("Calling latest() can only be used in combination with key(String) and keyLike(String) or name(String) and nameLike(String)")
+    }
+  }
+
   private fun getQueryParam(parameter: KParameter): Any? {
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
-    val propertiesByName = DelegatingProcessDefinitionQuery::class.declaredMemberProperties.associateBy { it.name }
-    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
-    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "processDefinitionId" -> this.id
       "processDefinitionIdIn" -> this.ids?.joinToString(",")
@@ -222,20 +224,10 @@ class DelegatingProcessDefinitionQuery(
       "includeProcessDefinitionsWithoutTenantId" -> includeDefinitionsWithoutTenantId
       "notStartableInTasklist" -> isNotStartableInTasklist
       "startableInTasklist" -> isStartableInTasklist
-      "sortBy" -> sortProperty?.property
-      "sortOrder" -> sortProperty?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
-      else -> {
-        val property = propertiesByName[value]
-        if (property == null) {
-          throw IllegalArgumentException("no property found for $value")
-        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
-          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
-        } else {
-          property.isAccessible = true
-          val propValue = property.get(this)
-          if (propValue is Collection<*>) propValue.joinToString(",") else propValue
-        }
-      }
+      "sortBy" -> sortProperty()?.property
+      "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
+      null -> throw IllegalArgumentException("value of RequestParam annotation is null")
+      else -> valueForProperty(value, this, parameter.type)
     }
   }
 

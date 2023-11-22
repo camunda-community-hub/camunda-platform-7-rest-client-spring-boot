@@ -1,6 +1,7 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
+import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.community.rest.adapter.InstanceBean
@@ -10,7 +11,6 @@ import org.camunda.community.rest.client.model.ProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toProcessInstanceSorting
 import org.camunda.community.rest.variables.toDto
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
@@ -54,7 +54,10 @@ class DelegatingProcessInstanceQuery(
 
   override fun processInstanceBusinessKey(processInstanceBusinessKey: String?) = this.apply { this.businessKey = requireNotNull(processInstanceBusinessKey) }
 
-  override fun processInstanceBusinessKey(p0: String?, p1: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
+  override fun processInstanceBusinessKey(businessKey: String?, processDefinitionKey: String?) = this.apply {
+    this.businessKey = requireNotNull(businessKey)
+    this.processDefinitionKey = requireNotNull(processDefinitionKey)
+  }
 
   override fun processInstanceBusinessKeyLike(processInstanceBusinessKeyLike: String?) = this.apply { this.businessKeyLike = requireNotNull(processInstanceBusinessKeyLike) }
 
@@ -70,7 +73,12 @@ class DelegatingProcessInstanceQuery(
 
   override fun superProcessInstanceId(superProcessInstanceId: String?) = this.apply { this.superProcessInstanceId = requireNotNull(superProcessInstanceId) }
 
-  override fun subProcessInstanceId(subProcessInstanceId: String?) = this.apply { this.subProcessInstanceId = requireNotNull(subProcessInstanceId) }
+  override fun subProcessInstanceId(subProcessInstanceId: String?) = this.apply {
+    if (isRootProcessInstances) {
+      throw ProcessEngineException("Invalid query usage: cannot set both rootProcessInstances and superProcessInstanceId")
+    }
+    this.subProcessInstanceId = requireNotNull(subProcessInstanceId)
+  }
 
   override fun caseInstanceId(caseInstanceId: String?) = this.apply { this.caseInstanceId = requireNotNull(caseInstanceId) }
 
@@ -94,7 +102,12 @@ class DelegatingProcessInstanceQuery(
 
   override fun activityIdIn(vararg activityIdIn: String) = this.apply { this.activityIds = activityIdIn }
 
-  override fun rootProcessInstances() = this.apply { this.isRootProcessInstances = true }
+  override fun rootProcessInstances() = this.apply {
+    if (superProcessInstanceId != null) {
+      throw ProcessEngineException("Invalid query usage: cannot set both rootProcessInstances and superProcessInstanceId")
+    }
+    this.isRootProcessInstances = true
+  }
 
   override fun leafProcessInstances() = this.apply { this.isLeafProcessInstances = true }
 
@@ -120,9 +133,8 @@ class DelegatingProcessInstanceQuery(
   override fun count() = processInstanceApiClient.queryProcessInstancesCount(fillQueryDto()).body!!.count
 
   fun fillQueryDto() = ProcessInstanceQueryDto().apply {
-    checkQueryOk()
+    validate()
     val dtoPropertiesByName = ProcessInstanceQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ProcessInstanceQueryDto, Any?>>().associateBy { it.name }
-    val queryPropertiesByName = DelegatingProcessInstanceQuery::class.memberProperties.associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "superProcessInstance" -> this@DelegatingProcessInstanceQuery.superProcessInstanceId
@@ -150,17 +162,7 @@ class DelegatingProcessInstanceQuery(
         "variables" -> this@DelegatingProcessInstanceQuery.queryVariableValues.toDto()
         "orQueries" -> if (this@DelegatingProcessInstanceQuery.isOrQueryActive) throw UnsupportedOperationException("or-Queries are not supported") else null
         "sorting" -> this@DelegatingProcessInstanceQuery.orderingProperties.map { it.toProcessInstanceSorting() }.filter { it.sortBy != null }
-        else -> {
-          val queryProperty = queryPropertiesByName[it.key]
-          if (queryProperty == null) {
-            throw IllegalArgumentException("no property found for ${it.key}")
-          } else if (!queryProperty.returnType.isSubtypeOf(it.value.returnType)) {
-            throw IllegalArgumentException("${queryProperty.returnType} is not assignable to ${it.value.returnType} for ${it.key}")
-          } else {
-            queryProperty.isAccessible = true
-            queryProperty.get(this@DelegatingProcessInstanceQuery)
-          }
-        }
+        else -> valueForProperty(it.key, this@DelegatingProcessInstanceQuery, it.value.returnType)
       }
       it.value.isAccessible = true
       it.value.set(this, valueToSet)
