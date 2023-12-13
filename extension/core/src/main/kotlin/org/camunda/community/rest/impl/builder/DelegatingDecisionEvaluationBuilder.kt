@@ -2,21 +2,21 @@ package org.camunda.community.rest.impl.builder
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
-import org.camunda.bpm.dmn.engine.DmnDecisionTableResult
-import org.camunda.bpm.dmn.engine.impl.DmnDecisionResultEntriesImpl
-import org.camunda.bpm.dmn.engine.impl.DmnDecisionResultImpl
-import org.camunda.bpm.dmn.engine.impl.DmnDecisionRuleResultImpl
-import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableResultImpl
+import org.camunda.bpm.dmn.engine.DmnDecisionResult
 import org.camunda.bpm.engine.BadUserRequestException
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.dmn.DecisionEvaluationBuilder
 import org.camunda.bpm.engine.dmn.DecisionsEvaluationBuilder
 import org.camunda.bpm.engine.exception.NotFoundException
 import org.camunda.bpm.engine.exception.NotValidException
-import org.camunda.bpm.engine.impl.util.EnsureUtil
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.EvaluateDecisionDto
+import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionResult
+import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionResultEntries
+import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionRuleResult
+import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionTableResult
 import org.camunda.community.rest.variables.ValueMapper
 
 /**
@@ -24,15 +24,15 @@ import org.camunda.community.rest.variables.ValueMapper
  */
 abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationBuilder<T>>(
   private val decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   private val decisionDefinitionId: String? = null,
   private val decisionDefinitionKey: String? = null
 ) {
 
   companion object : KLogging()
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper)
+  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
   var tenantIdSet: Boolean = false
   var tenantId: String? = null
@@ -58,12 +58,9 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
   fun variables(variables: MutableMap<String, Any>) = this.apply { this.variables = variables } as T
 
   fun evaluateDecision(): List<Map<String, TypedValue>>  {
-    EnsureUtil.ensureOnlyOneNotNull(
-      NotValidException::class.java,
-      "either decision definition id or key must be set",
-      decisionDefinitionId,
-      decisionDefinitionKey
-    )
+    if (!((decisionDefinitionId != null) xor (decisionDefinitionKey != null))) {
+      throw NotValidException("either decision definition id or key must be set")
+    }
     if (tenantIdSet && decisionDefinitionId != null) {
       throw BadUserRequestException("Cannot specify a tenant-id when evaluate a decision definition by decision definition id.")
     }
@@ -99,50 +96,45 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
 
 class DelegatingDecisionEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionEvaluationBuilder>(
   decisionDefinitionApiClient,
-  processEngine,
   objectMapper,
+  valueTypeResolver,
   decisionDefinitionId,
   decisionDefinitionKey
 ) {
 
-  override fun evaluate(): DmnDecisionTableResult {
-    return DmnDecisionTableResultImpl(
+  override fun evaluate() =
+    DelegatingDmnDecisionTableResult(
       evaluateDecision().map {
-        DmnDecisionRuleResultImpl().apply {
-          it.entries.forEach { entry -> putValue(entry.key, entry.value) }
-        }
+        DelegatingDmnDecisionRuleResult(it)
       }
     )
-  }
 
 }
 
 class DelegatingDecisionsEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  processEngine: ProcessEngine,
   objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionsEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionsEvaluationBuilder>(
   decisionDefinitionApiClient,
-  processEngine,
   objectMapper,
+  valueTypeResolver,
   decisionDefinitionId,
   decisionDefinitionKey
 ) {
 
-  override fun evaluate(): DmnDecisionResultImpl {
-    return DmnDecisionResultImpl(
+  override fun evaluate(): DmnDecisionResult {
+    return DelegatingDmnDecisionResult(
       evaluateDecision().map {
-        DmnDecisionResultEntriesImpl().apply {
-          it.entries.forEach { entry -> putValue(entry.key, entry.value) }
-        }
+        DelegatingDmnDecisionResultEntries(it)
       }
     )
   }

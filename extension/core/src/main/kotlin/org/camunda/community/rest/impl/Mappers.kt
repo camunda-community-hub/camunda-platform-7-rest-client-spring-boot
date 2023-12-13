@@ -1,11 +1,19 @@
 package org.camunda.community.rest.impl
 
 import mu.KotlinLogging
-import org.camunda.bpm.engine.impl.*
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.adapter.IdentityLinkAdapter
-import org.camunda.community.rest.client.model.*
+import org.camunda.community.rest.client.model.ExecutionQueryDtoSortingInner
+import org.camunda.community.rest.client.model.HistoricProcessInstanceQueryDtoSortingInner
+import org.camunda.community.rest.client.model.IdentityLinkDto
+import org.camunda.community.rest.client.model.ProcessInstanceQueryDtoSortingInner
+import org.camunda.community.rest.client.model.SortTaskQueryParametersDto
+import org.camunda.community.rest.client.model.TaskDto
+import org.camunda.community.rest.client.model.TaskQueryDtoSortingInner
+import org.camunda.community.rest.impl.query.QueryOrderingProperty
+import org.camunda.community.rest.impl.query.Relation
+import org.camunda.community.rest.impl.query.SortDirection
 
 private val logger = KotlinLogging.logger {}
 
@@ -36,53 +44,55 @@ fun Task.toDto(): TaskDto = TaskDto()
   .formKey(this.formKey)
   .tenantId(this.tenantId)
 
-fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto()
+/**
+ * Maps for the identity link adapter to the DTO used in the REST calls.
+ */
+fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto(this.type)
   .userId(this.userId)
   .groupId(this.groupId)
-  .type(this.type)
 
 fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSortingInner = ProcessInstanceQueryDtoSortingInner()
-    .sortOrder(if (this.direction == Direction.DESCENDING) ProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else ProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
-    .sortBy(when (this@toProcessInstanceSorting.queryProperty) {
-        ProcessInstanceQueryProperty.PROCESS_INSTANCE_ID -> ProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
-        ProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
-        ProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-        ProcessInstanceQueryProperty.TENANT_ID -> ProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
-        ProcessInstanceQueryProperty.BUSINESS_KEY -> ProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
+    .sortOrder(if (this.direction == SortDirection.DESC) ProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else ProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
+    .sortBy(when (this@toProcessInstanceSorting.property) {
+        "instanceId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
+        "definitionId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
+        "definitionKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
+        "tenantId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
+        "businessKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
         else -> {
-          logger.warn { "query property ${this@toProcessInstanceSorting.queryProperty} is not supported for sorting" }
+          logger.warn { "query property ${this@toProcessInstanceSorting.property} is not supported for sorting" }
           null
         }
     })
 
 fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessInstanceQueryDtoSortingInner = HistoricProcessInstanceQueryDtoSortingInner()
-  .sortOrder(if (this.direction == Direction.DESCENDING) HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
-  .sortBy(when (this@toHistoricProcessInstanceSorting.queryProperty) {
-    HistoricProcessInstanceQueryProperty.PROCESS_INSTANCE_ID_ -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
-    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_ID -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
-    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_NAME -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONNAME
-    HistoricProcessInstanceQueryProperty.PROCESS_DEFINITION_VERSION -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONVERSION
-    HistoricProcessInstanceQueryProperty.TENANT_ID -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
-    HistoricProcessInstanceQueryProperty.BUSINESS_KEY -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
-    HistoricProcessInstanceQueryProperty.START_TIME -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.STARTTIME
-    HistoricProcessInstanceQueryProperty.END_TIME -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.ENDTIME
-    HistoricProcessInstanceQueryProperty.DURATION -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DURATION
+  .sortOrder(if (this.direction == SortDirection.DESC) HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
+  .sortBy(when (this@toHistoricProcessInstanceSorting.property) {
+    "instanceId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
+    "definitionId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
+    "definitionKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
+    "definitionName" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONNAME
+    "definitionVersion" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONVERSION
+    "tenantId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
+    "businessKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
+    "startTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.STARTTIME
+    "endTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.ENDTIME
+    "duration" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DURATION
     else -> {
-      logger.warn { "query property ${this@toHistoricProcessInstanceSorting.queryProperty} is not supported for sorting" }
+      logger.warn { "query property ${this@toHistoricProcessInstanceSorting.property} is not supported for sorting" }
       null
     }
   })
 
 fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = ExecutionQueryDtoSortingInner()
-  .sortOrder(if (this.direction == Direction.DESCENDING) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
-  .sortBy(when (this@toExecutionSorting.queryProperty) {
-    ExecutionQueryProperty.PROCESS_INSTANCE_ID -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCEID
-    ExecutionQueryProperty.PROCESS_DEFINITION_ID -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONID
-    ExecutionQueryProperty.PROCESS_DEFINITION_KEY -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-    ExecutionQueryProperty.TENANT_ID -> ExecutionQueryDtoSortingInner.SortByEnum.TENANTID
+  .sortOrder(if (this.direction == SortDirection.DESC) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
+  .sortBy(when (this@toExecutionSorting.property) {
+    "instanceId" -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCEID
+    "definitionId" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONID
+    "definitionKey" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
+    "tenantId" -> ExecutionQueryDtoSortingInner.SortByEnum.TENANTID
     else -> {
-      logger.warn { "query property ${this@toExecutionSorting.queryProperty} is not supported for sorting" }
+      logger.warn { "query property ${this@toExecutionSorting.property} is not supported for sorting" }
       null
     }
   })
@@ -90,52 +100,20 @@ fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = 
 
 fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSortingInner? {
   val dtoSorting = TaskQueryDtoSortingInner()
-    .sortOrder(if (this.direction == Direction.DESCENDING) TaskQueryDtoSortingInner.SortOrderEnum.DESC else TaskQueryDtoSortingInner.SortOrderEnum.ASC)
-  return when (this.relation) {
-    QueryOrderingProperty.RELATION_VARIABLE -> {
-      dtoSorting.apply {
-        val variableName = this@toTaskSorting.relationConditions.find { it.property == VariableInstanceQueryProperty.VARIABLE_NAME } ?: throw IllegalStateException("variable name not found")
-        val variableType = this@toTaskSorting.relationConditions.find { it.property == VariableInstanceQueryProperty.VARIABLE_TYPE } ?: throw IllegalStateException("variable type not found")
-        this.parameters = SortTaskQueryParametersDto().variable(variableName.scalarValue as String).type(variableType.scalarValue as String)
-        val relation = this@toTaskSorting.relationConditions.find { it.isPropertyComparison } ?: throw IllegalStateException("no relation condition for property comparison")
-        this.sortBy =
-          if (relation.property == VariableInstanceQueryProperty.EXECUTION_ID && relation.comparisonProperty == TaskQueryProperty.PROCESS_INSTANCE_ID)
-            TaskQueryDtoSortingInner.SortByEnum.PROCESSVARIABLE
-          else if (relation.property == VariableInstanceQueryProperty.EXECUTION_ID && relation.comparisonProperty == TaskQueryProperty.EXECUTION_ID)
-            TaskQueryDtoSortingInner.SortByEnum.EXECUTIONVARIABLE
-          else if (relation.property == VariableInstanceQueryProperty.EXECUTION_ID && relation.comparisonProperty == TaskQueryProperty.EXECUTION_ID)
-            TaskQueryDtoSortingInner.SortByEnum.EXECUTIONVARIABLE
-          else if (relation.property == VariableInstanceQueryProperty.TASK_ID && relation.comparisonProperty == TaskQueryProperty.TASK_ID)
-            TaskQueryDtoSortingInner.SortByEnum.TASKVARIABLE
-          else if (relation.property == VariableInstanceQueryProperty.CASE_EXECUTION_ID && relation.comparisonProperty == TaskQueryProperty.CASE_INSTANCE_ID)
-            TaskQueryDtoSortingInner.SortByEnum.CASEINSTANCEVARIABLE
-          else if (relation.property == VariableInstanceQueryProperty.CASE_EXECUTION_ID && relation.comparisonProperty == TaskQueryProperty.CASE_EXECUTION_ID)
-            TaskQueryDtoSortingInner.SortByEnum.CASEEXECUTIONVARIABLE
-          else {
-            logger.warn { "relation not supported $relation for sorting" }
-            null
-          }
+    .sortOrder(if (this.direction == SortDirection.DESC) TaskQueryDtoSortingInner.SortOrderEnum.DESC else TaskQueryDtoSortingInner.SortOrderEnum.ASC)
+  return if (this.relation != null) {
+    dtoSorting.apply {
+      this.parameters = SortTaskQueryParametersDto().variable(this@toTaskSorting.property).type(this@toTaskSorting.type!!.name)
+      this.sortBy = when (this@toTaskSorting.relation) {
+        Relation.TASK -> TaskQueryDtoSortingInner.SortByEnum.TASKVARIABLE
+        Relation.CASE_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.CASEINSTANCEVARIABLE
+        Relation.CASE_EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.CASEEXECUTIONVARIABLE
+        Relation.EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.EXECUTIONVARIABLE
+        Relation.PROCESS_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.PROCESSVARIABLE
       }
     }
-    else -> dtoSorting.apply {
-      this.sortBy = when (this@toTaskSorting.queryProperty) {
-        TaskQueryProperty.ASSIGNEE -> TaskQueryDtoSortingInner.SortByEnum.ASSIGNEE
-        TaskQueryProperty.TASK_ID -> TaskQueryDtoSortingInner.SortByEnum.ID
-        TaskQueryProperty.NAME -> TaskQueryDtoSortingInner.SortByEnum.NAME
-        TaskQueryProperty.NAME_CASE_INSENSITIVE -> TaskQueryDtoSortingInner.SortByEnum.NAMECASEINSENSITIVE
-        TaskQueryProperty.CASE_EXECUTION_ID -> TaskQueryDtoSortingInner.SortByEnum.CASEEXECUTIONID
-        TaskQueryProperty.CASE_INSTANCE_ID -> TaskQueryDtoSortingInner.SortByEnum.CASEINSTANCEID
-        TaskQueryProperty.CREATE_TIME -> TaskQueryDtoSortingInner.SortByEnum.CREATED
-        TaskQueryProperty.DESCRIPTION -> TaskQueryDtoSortingInner.SortByEnum.DESCRIPTION
-        TaskQueryProperty.DUE_DATE -> TaskQueryDtoSortingInner.SortByEnum.DUEDATE
-        TaskQueryProperty.EXECUTION_ID -> TaskQueryDtoSortingInner.SortByEnum.EXECUTIONID
-        TaskQueryProperty.PRIORITY -> TaskQueryDtoSortingInner.SortByEnum.PRIORITY
-        TaskQueryProperty.PROCESS_INSTANCE_ID -> TaskQueryDtoSortingInner.SortByEnum.INSTANCEID
-        else -> {
-          logger.warn { "query property ${this@toTaskSorting.queryProperty} is not supported" }
-          null
-        }
-      }
-    }
+  }
+  else dtoSorting.apply {
+      this.sortBy = TaskQueryDtoSortingInner.SortByEnum.fromValue(this@toTaskSorting.property)
   }
 }

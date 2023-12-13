@@ -34,6 +34,7 @@
     <camunda.version.base>7.20</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
+    <camunda-bpm-api.version>7.20.0</camunda-bpm-api.version>
     <spin.version>1.22.0</spin.version>
 
     <spring-boot.version>3.1.5</spring-boot.version>
@@ -92,6 +93,11 @@
         <version>${camunda.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.holunda.camunda-api</groupId>
+        <artifactId>camunda-bpm-engine-api</artifactId>
+        <version>${camunda-bpm-api.version}</version>
       </dependency>
       <dependency>
         <groupId>org.camunda.bpm</groupId>

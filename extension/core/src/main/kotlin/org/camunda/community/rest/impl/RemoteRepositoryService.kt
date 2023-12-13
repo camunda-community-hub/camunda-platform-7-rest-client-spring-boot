@@ -70,7 +70,7 @@ class RemoteRepositoryService(
     deleteDeployment(deploymentId, cascade = cascade, skipCustomListeners = skipCustomListeners, skipIoMappings = false)
 
   override fun deleteDeployment(deploymentId: String?, cascade: Boolean, skipCustomListeners: Boolean, skipIoMappings: Boolean) {
-    EnsureUtil.ensureNotNull("deploymentId", deploymentId)
+    requireNotNull(deploymentId)
     deploymentApiClient.deleteDeployment(deploymentId, cascade, skipCustomListeners, skipIoMappings)
   }
 

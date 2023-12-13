@@ -1,61 +1,63 @@
 package org.camunda.community.rest.starter
 
 import org.camunda.bpm.engine.*
-import org.camunda.bpm.engine.impl.variable.ValueTypeResolverImpl
 
 /**
  * Configuration for building a process engine abstraction for the client
  * which is not using the process engine itself, but is used just to provide
- * the facade to encapsulate required facilities:
- * <ul>
- *   <li>ValueTypeResolver</li>
- * </ul>
+ * the remote services.
  */
-internal class ProcessEngineConfigurationClientStub : ProcessEngineConfiguration() {
+internal class ProcessEngineConfigurationClientStub(
+  private val decisionService: DecisionService,
+  private val externalTaskService: ExternalTaskService,
+  private val historyService: HistoryService,
+  private val repositoryService: RepositoryService,
+  private val runtimeService: RuntimeService,
+  private val taskService: TaskService,
+) : ProcessEngineConfiguration {
 
-  init {
-      this.valueTypeResolver = ValueTypeResolverImpl()
+  fun buildProcessEngine(): ProcessEngine {
+    return ProcessEngineClientStub(
+      this,
+      decisionService,
+      externalTaskService,
+      historyService,
+      repositoryService,
+      runtimeService,
+      taskService
+    )
   }
 
-  override fun buildProcessEngine(): ProcessEngine {
-    return ProcessEngineClientStub(this)
-  }
 }
 
 /**
  * Client process engine representation.
  */
 internal class ProcessEngineClientStub(
-  private val configuration: ProcessEngineConfiguration
-): ProcessEngine {
+  private val configuration: ProcessEngineConfiguration,
+  private val decisionService: DecisionService,
+  private val externalTaskService: ExternalTaskService,
+  private val historyService: HistoryService,
+  private val repositoryService: RepositoryService,
+  private val runtimeService: RuntimeService,
+  private val taskService: TaskService,
+) : ProcessEngine {
 
-  override fun getProcessEngineConfiguration(): ProcessEngineConfiguration {
-    return configuration
-  }
+  override fun getProcessEngineConfiguration() = configuration
 
-  override fun getRepositoryService(): RepositoryService {
-    TODO("not implemented")
-  }
+  override fun getRepositoryService() = repositoryService
 
-  override fun getTaskService(): TaskService {
-    TODO("not implemented")
-  }
+  override fun getTaskService() = taskService
 
-  override fun getName(): String {
-    return "rest-client-engine-stub"
-  }
+  override fun getName() = "rest-client-engine-stub"
 
   override fun getCaseService(): CaseService {
     TODO("not implemented")
   }
 
-  override fun getRuntimeService(): RuntimeService {
-    TODO("not implemented")
-  }
+  override fun getRuntimeService() = runtimeService
 
-  override fun getDecisionService(): DecisionService {
-    TODO("not implemented")
-  }
+  override fun getDecisionService() = decisionService
 
   override fun getFormService(): FormService {
     TODO("not implemented")
@@ -69,9 +71,7 @@ internal class ProcessEngineClientStub(
     TODO("not implemented")
   }
 
-  override fun getHistoryService(): HistoryService {
-    TODO("not implemented")
-  }
+  override fun getHistoryService() = historyService
 
   override fun getIdentityService(): IdentityService {
     TODO("not implemented")
@@ -81,9 +81,7 @@ internal class ProcessEngineClientStub(
     TODO("not implemented")
   }
 
-  override fun getExternalTaskService(): ExternalTaskService {
-    TODO("not implemented")
-  }
+  override fun getExternalTaskService() = externalTaskService
 
   override fun close() {
     // nothing to do here, but we need to implement this to comply with the contract.

@@ -1,29 +1,46 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngineException
-import org.camunda.bpm.engine.impl.Direction
-import org.camunda.bpm.engine.impl.EventSubscriptionQueryImpl
-import org.camunda.bpm.engine.impl.EventSubscriptionQueryProperty
 import org.camunda.bpm.engine.runtime.EventSubscription
+import org.camunda.bpm.engine.runtime.EventSubscriptionQuery
 import org.camunda.community.rest.adapter.EventSubscriptionAdapter
 import org.camunda.community.rest.adapter.EventSubscriptionBean
 import org.camunda.community.rest.client.api.EventSubscriptionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.jvm.isAccessible
 
 class DelegatingEventSubscriptionQuery(
-  private val eventSubscriptionApiClient: EventSubscriptionApiClient
-) : EventSubscriptionQueryImpl() {
+  private val eventSubscriptionApiClient: EventSubscriptionApiClient,
+  var eventSubscriptionId: String? = null,
+  var eventName: String? = null,
+  var eventType: String? = null,
+  var executionId: String? = null,
+  var processInstanceId: String? = null,
+  var activityId: String? = null,
+  var includeEventSubscriptionsWithoutTenantId: Boolean = false
+) : BaseQuery<EventSubscriptionQuery, EventSubscription>(), EventSubscriptionQuery {
 
   companion object : KLogging()
 
-  override fun list(): List<EventSubscription> = listPage(this.firstResult, this.maxResults)
+  override fun eventSubscriptionId(eventSubscriptionId: String?) = this.apply { this.eventSubscriptionId = requireNotNull(eventSubscriptionId) }
+
+  override fun eventName(eventName: String?) = this.apply { this.eventName = requireNotNull(eventName) }
+
+  override fun eventType(eventType: String?) = this.apply { this.eventType = requireNotNull(eventType) }
+
+  override fun executionId(executionId: String?) = this.apply { this.executionId = requireNotNull(executionId) }
+
+  override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
+
+  override fun activityId(activityId: String?) = this.apply { this.activityId = requireNotNull(activityId) }
+
+  override fun includeEventSubscriptionsWithoutTenantId() = this.apply { this.includeEventSubscriptionsWithoutTenantId = true }
+
+  override fun orderByCreated() = this.apply { this.orderBy("created") }
 
   override fun listPage(firstResult: Int, maxResults: Int): List<EventSubscription> {
+    validate()
     with(EventSubscriptionApiClient::getEventSubscriptions) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -43,16 +60,8 @@ class DelegatingEventSubscriptionQuery(
     }
   }
 
-  override fun listIds(): List<String> {
-    return list().map { it.id }
-  }
-
-  override fun unlimitedList(): List<EventSubscription> {
-    // FIXME: best approximation so far.
-    return list()
-  }
-
   override fun count(): Long {
+    validate()
     with (EventSubscriptionApiClient::getEventSubscriptionsCount) {
       val result = callBy(parameters.associateWith { parameter ->
         when (parameter.kind) {
@@ -64,46 +73,16 @@ class DelegatingEventSubscriptionQuery(
     }
   }
 
-  override fun singleResult(): EventSubscription? {
-    val results = list()
-    return when {
-      results.size == 1 -> results[0]
-      results.size > 1 -> throw ProcessEngineException("Query return " + results.size.toString() + " results instead of expected maximum 1")
-      else -> null
-    }
-  }
-
   private fun getQueryParam(parameter: KParameter): Any? {
-    checkQueryOk()
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
-    val propertiesByName = EventSubscriptionQueryImpl::class.declaredMemberProperties.associateBy { it.name }
-    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
-    val sortProperty = this.orderingProperties.firstOrNull()
     return when(value) {
       "id" -> eventSubscriptionId
       "tenantIdIn" -> tenantIds?.toList()
-      "withoutTenantId" -> isTenantIdSet && tenantIds == null
-      "sortBy" -> when (sortProperty?.queryProperty) {
-        EventSubscriptionQueryProperty.TENANT_ID -> "tenantId"
-        EventSubscriptionQueryProperty.CREATED -> "created"
-        null -> null
-        else -> {
-          logger.warn { "unknown query property ${sortProperty.queryProperty}, ignoring it" }
-        }
-      }
-      "sortOrder" -> sortProperty?.direction?.let { if (it == Direction.DESCENDING) "desc" else "asc" }
-      else -> {
-        val property = propertiesByName[value]
-        if (property == null) {
-          throw IllegalArgumentException("no property found for $value")
-        } else if (!property.returnType.isSubtypeOf(parameter.type)) {
-          throw IllegalArgumentException("${property.returnType} is not assignable to ${parameter.type} for $value")
-        } else {
-          property.isAccessible = true
-          val propValue = property.get(this)
-          if (propValue is Collection<*>) propValue.joinToString(",") else propValue
-        }
-      }
+      "withoutTenantId" -> tenantIdsSet && tenantIds == null
+      "sortBy" -> sortProperty()?.property
+      "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
+      null -> throw IllegalArgumentException("value of RequestParam annotation is null")
+      else -> valueForProperty(value, this, parameter.type)
     }
   }
 

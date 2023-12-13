@@ -28,6 +28,7 @@ import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.*
@@ -61,11 +62,11 @@ class RemoteRuntimeService(
   private val variableInstanceApiClient: VariableInstanceApiClient,
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
   customValueMapper: List<CustomValueMapper>,
-  processEngine: ProcessEngine,
-  objectMapper: ObjectMapper
+  objectMapper: ObjectMapper,
+  valueTypeResolver: ValueTypeResolver
 ) : AbstractRuntimeServiceAdapter() {
 
-  private val valueMapper: ValueMapper = ValueMapper(processEngine, objectMapper, customValueMapper)
+  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver, customValueMapper)
 
   override fun correlateMessage(messageName: String) =
     doCorrelateMessage(messageName = messageName)

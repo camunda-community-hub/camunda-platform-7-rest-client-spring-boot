@@ -26,23 +26,24 @@ package org.camunda.community.rest.variables
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
-import org.camunda.bpm.engine.ProcessEngines
-import org.camunda.bpm.engine.impl.QueryOperator
-import org.camunda.bpm.engine.impl.QueryVariableValue
-import org.camunda.bpm.engine.impl.digest._apacheCommonsCodec.Base64
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedNullValue
 import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.impl.value.ObjectValueImpl
-import org.camunda.bpm.engine.variable.type.*
+import org.camunda.bpm.engine.variable.type.FileValueType
+import org.camunda.bpm.engine.variable.type.PrimitiveValueType
+import org.camunda.bpm.engine.variable.type.SerializableValueType
+import org.camunda.bpm.engine.variable.type.ValueType
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableQueryParameterDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.impl.query.QueryOperator
+import org.camunda.community.rest.impl.query.QueryVariableValue
 import java.io.ObjectInputStream
 import java.util.*
 
@@ -62,8 +63,8 @@ interface CustomValueMapper {
  * Class responsible for mapping variables from and to DTO representations.
  */
 class ValueMapper(
-  private val processEngine: ProcessEngine = ProcessEngines.getDefaultProcessEngine(),
   private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+  private val valueTypeResolver: ValueTypeResolver,
   private val customValueMapper: List<CustomValueMapper> = emptyList()
 ) {
   /**
@@ -137,7 +138,7 @@ class ValueMapper(
         restoreObjectJsonIfNeeded(it.value)
       } else {
         it.value
-      }.toTypedValue(processEngine, objectMapper)
+      }.toTypedValue(objectMapper)
       result[it.key] = value
     }
     return result
@@ -149,9 +150,9 @@ class ValueMapper(
   @Suppress("UNCHECKED_CAST")
   fun <T> mapDto(dto: VariableValueDto, deserializeValues: Boolean = true): T? {
     return if (deserializeValues) {
-      deserializeObjectValue(restoreObjectJsonIfNeeded(dto).toTypedValue(processEngine, objectMapper))
+      deserializeObjectValue(restoreObjectJsonIfNeeded(dto).toTypedValue(objectMapper))
     } else {
-      dto.toTypedValue(processEngine, objectMapper)
+      dto.toTypedValue(objectMapper)
     } as T
   }
 
@@ -162,14 +163,13 @@ class ValueMapper(
   fun <T> mapDto(dto: VariableInstanceDto, deserializeValues: Boolean = true): T? {
     val valueDto = VariableValueDto().type(dto.type).value(dto.value).valueInfo(dto.valueInfo)
     return if (deserializeValues) {
-      deserializeObjectValue(restoreObjectJsonIfNeeded(valueDto).toTypedValue(processEngine, objectMapper))
+      deserializeObjectValue(restoreObjectJsonIfNeeded(valueDto).toTypedValue(objectMapper))
     } else {
-      valueDto.toTypedValue(processEngine, objectMapper)
+      valueDto.toTypedValue(objectMapper)
     } as T
   }
 
-  private fun VariableValueDto.toTypedValue(processEngine: ProcessEngine, objectMapper: ObjectMapper): TypedValue {
-    val valueTypeResolver = processEngine.processEngineConfiguration.valueTypeResolver
+  private fun VariableValueDto.toTypedValue(objectMapper: ObjectMapper): TypedValue {
     return if (type == null) {
       if (valueInfo != null && valueInfo["transient"] is Boolean) untypedValue(value, valueInfo["transient"] as Boolean) else untypedValue(
         value
@@ -199,7 +199,7 @@ class ValueMapper(
 
         is FileValueType -> {
           if (value is String) {
-            value = Base64.decodeBase64(value as String)
+            value = Base64.getDecoder().decode(value as String)
           }
           valueType.createValue(value, valueInfo)
         }
@@ -218,8 +218,7 @@ class ValueMapper(
    * We want to make use of type information provided by and therefor restore the original JSON.
    */
   private fun restoreObjectJsonIfNeeded(dto: VariableValueDto): VariableValueDto {
-    val valueTypeResolver: ValueTypeResolver = processEngine.processEngineConfiguration.valueTypeResolver
-    val valueType: ValueType = valueTypeResolver.typeForName(fromRestApiTypeName(dto.type))
+    val valueType: ValueType? = valueTypeResolver.typeForName(fromRestApiTypeName(dto.type))
 
     if (valueType is SerializableValueType) {
       if (dto.value != null && dto.value !is String && dto.value is Map<*, *>) {
@@ -310,7 +309,7 @@ class ValueMapper(
         } else if (value.serializationDataFormat == Variables.SerializationDataFormats.JAVA.getName()) {
           if (value is ObjectValueImpl) {
             val deserializedValue: Any = try {
-              ObjectInputStream(Base64.decodeBase64(value.valueSerialized).inputStream()).use { it.readObject() }
+              ObjectInputStream(Base64.getDecoder().decode(value.valueSerialized).inputStream()).use { it.readObject() }
             } catch (e: Exception) {
               throw IllegalStateException("Error deserializing value $value", e)
             }
@@ -336,7 +335,6 @@ fun QueryOperator.toRestOperator() = when (this) {
   QueryOperator.LIKE -> VariableQueryParameterDto.OperatorEnum.LIKE
   QueryOperator.NOT_EQUALS -> VariableQueryParameterDto.OperatorEnum.NEQ
   QueryOperator.NOT_LIKE -> throw IllegalArgumentException()
-  else -> throw IllegalArgumentException()
 }
 
 fun List<QueryVariableValue>.toDto() = if (this.isEmpty()) null else this.map { it.toDto() }

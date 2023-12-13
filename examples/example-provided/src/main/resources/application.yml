@@ -20,6 +20,9 @@ camunda:
       last-name: Administratius
     filter:
       create: true
+    generic-properties:
+      properties:
+        historyTimeToLive: P1D
 feign:
   client:
     config:
