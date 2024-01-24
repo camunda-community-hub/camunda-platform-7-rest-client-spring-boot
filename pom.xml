@@ -45,7 +45,7 @@
 
     <!-- test tools -->
     <assertj.version>3.25.1</assertj.version>
-    <mockito.version>5.8.0</mockito.version>
+    <mockito.version>5.9.0</mockito.version>
     <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
 
     <pattern.class.itest>**/*ITest.*</pattern.class.itest>
