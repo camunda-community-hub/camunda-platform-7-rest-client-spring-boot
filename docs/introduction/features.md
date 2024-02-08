@@ -42,6 +42,7 @@ The library supports the following features:
 * Deployment query: `#createDeploymentQuery()`
 * Delete process definition: `#deleteProcessDefinition()`
 * Update process definition suspension state: `#updateProcessDefinitionSuspensionState()`
+* Get bpmn model instance: `#getBpmnModelInstance()`
 
 ## TaskService 
 

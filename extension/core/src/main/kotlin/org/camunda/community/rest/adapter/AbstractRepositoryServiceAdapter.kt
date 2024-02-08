@@ -79,7 +79,7 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun getBpmnModelInstance(processDefinitionId: String?): BpmnModelInstance {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getDmnModelInstance(decisionDefinitionId: String?): DmnModelInstance {
