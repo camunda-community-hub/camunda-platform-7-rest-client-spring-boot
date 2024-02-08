@@ -44,7 +44,7 @@
     <kotlin-logging.version>3.0.5</kotlin-logging.version>
 
     <!-- test tools -->
-    <assertj.version>3.25.1</assertj.version>
+    <assertj.version>3.25.2</assertj.version>
     <mockito.version>5.10.0</mockito.version>
     <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
 
