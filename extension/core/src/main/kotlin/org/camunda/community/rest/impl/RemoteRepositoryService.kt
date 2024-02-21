@@ -23,9 +23,10 @@
 
 package org.camunda.community.rest.impl
 
-import org.camunda.bpm.engine.impl.util.EnsureUtil
 import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
+import org.camunda.bpm.model.bpmn.Bpmn
+import org.camunda.bpm.model.bpmn.BpmnModelInstance
 import org.camunda.community.rest.adapter.AbstractRepositoryServiceAdapter
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.api.DeploymentApiClient
@@ -37,6 +38,8 @@ import org.camunda.community.rest.impl.query.DelegatingDeploymentQuery
 import org.camunda.community.rest.impl.query.DelegatingProcessDefinitionQuery
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
+import java.io.ByteArrayInputStream
+import kotlin.text.Charsets.UTF_8
 
 
 /**
@@ -97,4 +100,9 @@ class RemoteRepositoryService(
     processDefinitionApiClient.deleteProcessDefinition(processDefinitionId, cascade, skipCustomListeners, skipIoMappings)
   }
 
+  override fun getBpmnModelInstance(processDefinitionId: String?): BpmnModelInstance {
+    requireNotNull(processDefinitionId)
+    val diagramDto = processDefinitionApiClient.getProcessDefinitionBpmn20Xml(processDefinitionId).body!!
+    return Bpmn.readModelFromStream(ByteArrayInputStream(diagramDto.bpmn20Xml.toByteArray(UTF_8)))
+  }
 }

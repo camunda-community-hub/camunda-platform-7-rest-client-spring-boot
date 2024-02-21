@@ -88,7 +88,7 @@ Here are currently implemented methods. The version behind the service name deno
 * `# deleteProcessInstancesIfExists`
 * `# deleteProcessInstancesAsync`
 
-## RepositoryService @ 0.0.7
+## RepositoryService @ 7.20.2
 
 * `# createProcessDefinitionQuery`
 * `# updateDecisionDefinitionHistoryTimeToLive`
@@ -99,6 +99,7 @@ Here are currently implemented methods. The version behind the service name deno
 * `# createDeploymentQuery`
 * `# deleteProcessDefinition`
 * `# updateProcessDefinitionSuspensionState`
+* `# getBpmnModelInstance`
 
 ## ExternalTaskService @ 0.0.5
 

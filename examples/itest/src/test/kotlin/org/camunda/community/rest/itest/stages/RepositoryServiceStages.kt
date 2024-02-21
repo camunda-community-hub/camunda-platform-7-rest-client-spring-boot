@@ -26,11 +26,14 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
+import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentQuery
+import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.repository.ProcessDefinitionQuery
 import org.camunda.bpm.model.bpmn.Bpmn
+import org.camunda.bpm.model.bpmn.BpmnModelInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import java.util.*
@@ -50,6 +53,9 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var deployment: Deployment
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
+  lateinit var processDefinition: ProcessDefinition
 
   fun no_deployment_exists() = step {
     localService.createDeploymentQuery().list().map {
@@ -74,6 +80,12 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
       .addModelInstance("$processDefinitionKey.bpmn", instance)
       .name(deploymentName)
       .deploy()
+
+    processDefinition = localService
+      .createProcessDefinitionQuery()
+      .deploymentId(deployment.id)
+      .processDefinitionKey(processDefinitionKey)
+      .singleResult()
   }
 
   fun process_definitions_are_deployed(
@@ -136,5 +148,12 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
     deploymentQueryAssertions(query, this)
   }
 
+  fun bpmn_model_query_succeeds(
+    processDefinitionId: String,
+    processDefinitionQueryAssertions: (BpmnModelInstance, AssertStage<*, RepositoryService>) -> Unit = { _, _ -> },
+  ): RepositoryServiceAssertStage = step {
+    assertThat(remoteService.getBpmnModelInstance(processDefinitionId)).isNotNull
+    return self()
+  }
 }
 
