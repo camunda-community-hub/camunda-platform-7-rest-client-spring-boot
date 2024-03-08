@@ -35,7 +35,7 @@
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
     <camunda-bpm-api.version>7.20.0</camunda-bpm-api.version>
-    <spin.version>1.22.0</spin.version>
+    <spin.version>1.23.0</spin.version>
 
     <spring-boot.version>3.1.5</spring-boot.version>
     <spring-cloud.version>2022.0.4</spring-cloud.version>
