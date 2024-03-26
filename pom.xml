@@ -369,6 +369,11 @@
               </goals>
             </execution>
           </executions>
+          <configuration>
+            <sourceDirectories>
+              <dir>${project.basedir}/src/main/kotlin</dir>
+            </sourceDirectories>
+          </configuration>
         </plugin>
 
         <!-- sources from kotlin -->
