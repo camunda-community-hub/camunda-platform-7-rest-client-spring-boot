@@ -124,6 +124,7 @@
                 <invokerPackage>${camunda.openapi.package}</invokerPackage>
                 <apiPackage>${camunda.openapi.package}.api</apiPackage>
                 <modelPackage>${camunda.openapi.package}.model</modelPackage>
+                <configPackage>${camunda.openapi.package}.config</configPackage>
                 <useBeanValidation>false</useBeanValidation>
                 <useSpringBoot3>true</useSpringBoot3>
                 <openApiNullable>false</openApiNullable>
@@ -191,11 +192,11 @@
             <configuration>
               <basedir>${project.basedir}</basedir>
               <includes>
-                <include>target/generated-sources/openapi/**/HistoricVariableInstanceApi.java</include>
+                <include>target/generated-sources/openapi/**/HistoryApi.java</include>
               </includes>
               <regex>false</regex>
               <replacements>
-                <!-- RequestParam in HistoricVariableInstanceApi is generated with value = "" for variableValue as this is specified with type object in openapi.json -->
+                <!-- RequestParam in HistoryApi is generated with value = "" for variableValue as this is specified with type object in openapi.json -->
                 <replacement>
                   <token>@RequestParam(value = "",</token>
                   <value>@RequestParam(value = "variableValue",</value>
