@@ -23,7 +23,7 @@
 package org.camunda.community.rest.impl
 
 import org.camunda.community.rest.adapter.AbstractHistoryServiceAdapter
-import org.camunda.community.rest.client.api.HistoricProcessInstanceApiClient
+import org.camunda.community.rest.client.api.HistoryApiClient
 import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -35,9 +35,9 @@ import org.springframework.stereotype.Component
 @Component
 @Qualifier("remote")
 class RemoteHistoryService(
-  private val historicProcessInstanceApiClient: HistoricProcessInstanceApiClient
+  private val historyApiClient: HistoryApiClient
 ) : AbstractHistoryServiceAdapter() {
 
-  override fun createHistoricProcessInstanceQuery() = DelegatingHistoricProcessInstanceQuery(historicProcessInstanceApiClient)
+  override fun createHistoricProcessInstanceQuery() = DelegatingHistoricProcessInstanceQuery(historyApiClient)
 
 }

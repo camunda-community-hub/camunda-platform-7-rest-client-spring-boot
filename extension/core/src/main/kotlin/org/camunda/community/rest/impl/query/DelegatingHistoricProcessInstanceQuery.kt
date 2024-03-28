@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.history.HistoricProcessInstance
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.community.rest.adapter.HistoricInstanceBean
 import org.camunda.community.rest.adapter.HistoricProcessInstanceAdapter
-import org.camunda.community.rest.client.api.HistoricProcessInstanceApiClient
+import org.camunda.community.rest.client.api.HistoryApiClient
 import org.camunda.community.rest.client.model.HistoricProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toHistoricProcessInstanceSorting
 import org.camunda.community.rest.variables.toDto
@@ -19,7 +19,7 @@ import kotlin.reflect.jvm.isAccessible
  * Implementation of the process instance query.
  */
 class DelegatingHistoricProcessInstanceQuery(
-  private val historicProcessInstanceApiClient: HistoricProcessInstanceApiClient,
+  private val historyApiClient: HistoryApiClient,
   var processInstanceId: String? = null,
   var processDefinitionId: String? = null,
   var processDefinitionName: String? = null,
@@ -221,11 +221,11 @@ class DelegatingHistoricProcessInstanceQuery(
   override fun endOr() = this
 
   override fun listPage(firstResult: Int, maxResults: Int): List<HistoricProcessInstance> =
-    historicProcessInstanceApiClient.queryHistoricProcessInstances(firstResult, maxResults, fillQueryDto()).body!!.map {
+    historyApiClient.queryHistoricProcessInstances(firstResult, maxResults, fillQueryDto()).body!!.map {
       HistoricProcessInstanceAdapter(HistoricInstanceBean.fromHistoricProcessInstanceDto(it))
     }
 
-  override fun count() = historicProcessInstanceApiClient.queryHistoricProcessInstancesCount(fillQueryDto()).body!!.count
+  override fun count() = historyApiClient.queryHistoricProcessInstancesCount(fillQueryDto()).body!!.count
 
   fun fillQueryDto() = HistoricProcessInstanceQueryDto().apply {
     validate()
