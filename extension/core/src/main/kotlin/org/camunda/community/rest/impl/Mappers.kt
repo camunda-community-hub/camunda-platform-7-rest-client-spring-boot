@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.adapter.IdentityLinkAdapter
 import org.camunda.community.rest.client.model.ExecutionQueryDtoSortingInner
+import org.camunda.community.rest.client.model.ExternalTaskQueryDtoSortingInner
 import org.camunda.community.rest.client.model.HistoricProcessInstanceQueryDtoSortingInner
 import org.camunda.community.rest.client.model.IdentityLinkDto
 import org.camunda.community.rest.client.model.ProcessInstanceQueryDtoSortingInner
@@ -112,8 +113,13 @@ fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSortingInner? {
         Relation.PROCESS_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.PROCESSVARIABLE
       }
     }
-  }
-  else dtoSorting.apply {
-      this.sortBy = TaskQueryDtoSortingInner.SortByEnum.fromValue(this@toTaskSorting.property)
+  } else dtoSorting.apply {
+    this.sortBy = TaskQueryDtoSortingInner.SortByEnum.fromValue(this@toTaskSorting.property)
   }
 }
+
+fun QueryOrderingProperty.toExternalTaskSorting(): ExternalTaskQueryDtoSortingInner =
+  ExternalTaskQueryDtoSortingInner()
+    .sortOrder(if (this.direction == SortDirection.DESC) ExternalTaskQueryDtoSortingInner.SortOrderEnum.DESC else ExternalTaskQueryDtoSortingInner.SortOrderEnum.ASC)
+    .sortBy(ExternalTaskQueryDtoSortingInner.SortByEnum.fromValue(this@toExternalTaskSorting.property))
+

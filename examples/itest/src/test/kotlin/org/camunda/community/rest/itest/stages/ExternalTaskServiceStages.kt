@@ -23,6 +23,7 @@
 package org.camunda.community.rest.itest.stages
 
 import com.tngtech.jgiven.annotation.AfterStage
+import com.tngtech.jgiven.annotation.Hidden
 import com.tngtech.jgiven.annotation.ProvidedScenarioState
 import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
@@ -31,9 +32,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.ExternalTaskService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.externaltask.ExternalTaskQuery
+import org.camunda.bpm.engine.externaltask.LockedExternalTask
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ProcessInstance
+import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 
@@ -66,6 +70,9 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   lateinit var externalTaskId: String
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var lockedTasks: List<LockedExternalTask>
 
   fun process_from_a_resource_is_deployed(
     processModelFilename: String = "processModelFilename.bpmn"
@@ -123,6 +130,10 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
     assertThat(externalTaskId).isNotNull
   }
 
+  fun fetch_and_lock_external_tasks(maxTasks: Int) = step {
+    lockedTasks = remoteService.fetchAndLock(maxTasks, "worker-id").topic("topic", 10).execute()
+  }
+
 
 }
 
@@ -138,6 +149,10 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var localService: ExternalTaskService
 
+  @Autowired
+  @Qualifier("remote")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  override lateinit var remoteService: ExternalTaskService
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var processInstance: ProcessInstance
@@ -147,6 +162,9 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   lateinit var externalTaskId: String
+
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var lockedTasks: List<LockedExternalTask>
 
   fun execution_is_waiting_for_signal(signalName: String) = step {
 
@@ -171,6 +189,27 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
       }
 
     assertThat(externalTaskId).isNotNull
+  }
+
+  fun external_task_has_retries(retries: Int) = step {
+    val externalTask = localService.createExternalTaskQuery().externalTaskId(externalTaskId).singleResult()
+
+    assertThat(externalTask).isNotNull
+    assertThat(externalTask.retries).isEqualTo(retries)
+  }
+
+  fun external_task_query_succeeds(
+    @Hidden externalTaskQueryAssertions: (ExternalTaskQuery, AssertStage<*, ExternalTaskService>) -> Unit = { _, _ -> }
+  ) = step {
+    val query = remoteService.createExternalTaskQuery()
+    externalTaskQueryAssertions(query, this)
+  }
+
+  fun locked_external_tasks_exist(
+    count: Int, topicName: String
+  ) = step {
+    assertThat(lockedTasks).hasSize(count)
+    assertThat(lockedTasks.map { it.topicName }).containsOnly(topicName)
   }
 
   @AfterStage

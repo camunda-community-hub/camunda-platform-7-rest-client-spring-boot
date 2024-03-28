@@ -27,19 +27,23 @@ import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
+import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.ExternalTaskService
-import org.camunda.bpm.engine.variable.Variables.*
+import org.camunda.bpm.engine.variable.Variables
+import org.camunda.bpm.engine.variable.Variables.createVariables
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceActionStage
 import org.camunda.community.rest.itest.stages.ExternalTaskServiceAssertStage
 import org.junit.jupiter.api.Test
+import org.springframework.test.annotation.DirtiesContext
 
-@As("External Task")
-class ExternalTaskServiceITest :
+@As("Creates process instance query")
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+class ExternalTaskQueryITest :
   CamundaRestClientITestBase<ExternalTaskService, ExternalTaskServiceActionStage, ExternalTaskServiceAssertStage>() {
 
   @Test
-  fun `should complete external task`() {
+  fun `find external task by process instance id`() {
 
     GIVEN
       .process_from_a_resource_is_deployed("test_external_task.bpmn")
@@ -48,142 +52,130 @@ class ExternalTaskServiceITest :
         "test_external_task", "my-business-key2", "caseInstanceId2",
         createVariables()
           .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
-      )
-      .AND
-      .process_waits_in_external_task("topic")
-
-
-    WHEN
-      .remoteService.complete(
-        GIVEN.externalTaskId, "worker-id",
-        createVariables()
-          .putValue("VAR1", "NEW-VAL1")
-          .putValue("VAR2", "VAL2")
-          .putValueTyped("VAR3", stringValue("VAL3")),
-        createVariables()
-          .putValue("LOCAL", "LOCAL-VAL")
-      )
-
-    THEN
-      .execution_is_waiting_for_signal("never_happens")
-
-  }
-
-  @Test
-  fun `should fail external task`() {
-
-    GIVEN
-      .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .AND
-      .process_is_started_by_key(
-        "test_external_task", "my-business-key2", "caseInstanceId2",
-        createVariables()
-          .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
-      )
-      .AND
-      .process_waits_in_external_task("topic")
-
-
-    WHEN
-      .remoteService.handleBpmnError(
-        GIVEN.externalTaskId, "worker-id",
-        "error-code",
-        "ultimately failed",
-        createVariables()
-          .putValue("VAR1", "NEW-VAL1")
-          .putValue("VAR2", "VAL2")
-          .putValueTyped("VAR3", stringValue("VAL3")),
-      )
-
-    THEN
-      .execution_is_waiting_for_signal("never_happens_after_error")
-
-  }
-
-  @Test
-  fun `should report failure for external task`() {
-
-    GIVEN
-      .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .AND
-      .process_is_started_by_key(
-        "test_external_task", "my-business-key2", "caseInstanceId2",
-        createVariables()
-          .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
-      )
-      .AND
-      .process_waits_in_external_task("topic")
-
-
-    WHEN
-      .remoteService.handleFailure(
-        GIVEN.externalTaskId, "worker-id",
-        "failed",
-        "ultimately failed",
-        2,
-        10
-      )
-
-    THEN
-      .process_waits_in_external_task("topic")
-
-  }
-
-  @Test
-  fun `should set retries for external task`() {
-
-    GIVEN
-      .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .AND
-      .process_is_started_by_key(
-        "test_external_task", "my-business-key2", "caseInstanceId2",
-        createVariables()
-          .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
-      )
-      .AND
-      .process_waits_in_external_task("topic")
-
-
-    WHEN
-      .remoteService.setRetries(
-        GIVEN.externalTaskId, 5
-      )
-
-    THEN
-      .external_task_has_retries(5)
-
-  }
-
-  @Test
-  fun `should fetch and lock external tasks`() {
-
-    GIVEN
-      .process_from_a_resource_is_deployed("test_external_task.bpmn")
-      .AND
-      .process_is_started_by_key(
-        "test_external_task", "my-business-key2", "caseInstanceId2",
-        createVariables()
-          .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
       )
       .AND
       .process_is_started_by_key(
         "test_external_task", "my-business-key3", "caseInstanceId2",
         createVariables()
           .putValue("VAR1", "VAL1")
-          .putValueTyped("VAR4", objectValue("My object value").create())
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
       )
 
 
     WHEN
-      .fetch_and_lock_external_tasks(2)
+      .process_waits_in_external_task("topic")
 
     THEN
-      .locked_external_tasks_exist(2, "topic")
+      .external_task_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .processInstanceId(THEN.processInstance.id)
+            .count()
+        ).isEqualTo(1)
+
+       }
+
+  }
+
+  @Test
+  fun `find external task by topic name`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key3", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+
+
+    WHEN
+      .process_waits_in_external_task("topic")
+
+    THEN
+      .external_task_query_succeeds { query, _ ->
+
+        assertThat(
+          query
+            .topicName("topic")
+            .count()
+        ).isEqualTo(2)
+
+        assertThat(
+          query
+            .active()
+            .count()
+        ).isEqualTo(2)
+
+        assertThat(
+          query
+            .notLocked()
+            .count()
+        ).isEqualTo(2)
+
+        assertThat(
+          query
+            .withRetriesLeft()
+            .list()
+        ).hasSize(2)
+
+        assertThat(
+          query
+            .withRetriesLeft()
+            .list()
+            .map { it.businessKey }
+        ).contains("my-business-key2", "my-business-key3")
+
+      }
+
+  }
+
+  @Test
+  fun `find external task sort by id`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key3", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+
+
+    WHEN
+      .process_waits_in_external_task("topic")
+
+    THEN
+      .external_task_query_succeeds { query, _ ->
+
+        assertThat(
+          query
+            .topicName("topic")
+            .orderById()
+            .desc()
+            .count()
+        ).isEqualTo(2)
+
+      }
 
   }
 
