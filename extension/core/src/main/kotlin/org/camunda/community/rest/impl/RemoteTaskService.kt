@@ -2,7 +2,6 @@ package org.camunda.community.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.task.IdentityLink
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.engine.task.TaskQuery
@@ -12,9 +11,6 @@ import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.TaskApiClient
-import org.camunda.community.rest.client.api.TaskIdentityLinkApiClient
-import org.camunda.community.rest.client.api.TaskLocalVariableApiClient
-import org.camunda.community.rest.client.api.TaskVariableApiClient
 import org.camunda.community.rest.client.model.*
 import org.camunda.community.rest.impl.query.DelegatingTaskQuery
 import org.camunda.community.rest.variables.ValueMapper
@@ -29,9 +25,6 @@ import org.springframework.stereotype.Component
 @Qualifier("remote")
 class RemoteTaskService(
   private val taskApiClient: TaskApiClient,
-  private val taskVariableApiClient: TaskVariableApiClient,
-  private val taskLocalVariableApiClient: TaskLocalVariableApiClient,
-  private val identityLinkApiClient: TaskIdentityLinkApiClient,
   objectMapper: ObjectMapper,
   valueTypeResolver: ValueTypeResolver
 ) : AbstractTaskServiceAdapter() {
@@ -131,21 +124,21 @@ class RemoteTaskService(
   // Variable handling.
 
   override fun setVariable(taskId: String, variableName: String, value: Any?) {
-    taskVariableApiClient.putTaskVariable(taskId, variableName, valueMapper.mapValue(value))
+    taskApiClient.putTaskVariable(taskId, variableName, valueMapper.mapValue(value))
   }
 
   override fun setVariables(taskId: String, variables: MutableMap<String, out Any>) {
-    taskVariableApiClient.modifyTaskVariables(taskId, PatchVariablesDto().apply {
+    taskApiClient.modifyTaskVariables(taskId, PatchVariablesDto().apply {
       modifications = valueMapper.mapValues(variables)
     })
   }
 
   override fun setVariableLocal(taskId: String, variableName: String, value: Any?) {
-    taskLocalVariableApiClient.putTaskLocalVariable(taskId, variableName, valueMapper.mapValue(value))
+    taskApiClient.putTaskLocalVariable(taskId, variableName, valueMapper.mapValue(value))
   }
 
   override fun setVariablesLocal(taskId: String, variables: MutableMap<String, out Any>) {
-    taskLocalVariableApiClient.modifyTaskLocalVariables(taskId, PatchVariablesDto().apply {
+    taskApiClient.modifyTaskLocalVariables(taskId, PatchVariablesDto().apply {
       modifications = valueMapper.mapValues(variables)
     })
   }
@@ -159,7 +152,7 @@ class RemoteTaskService(
   }
 
   override fun <T : TypedValue> getVariableTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = taskVariableApiClient.getTaskVariable(taskId, variableName, deserializeValue).body!!
+    val dto = taskApiClient.getTaskVariable(taskId, variableName, deserializeValue).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -172,7 +165,7 @@ class RemoteTaskService(
   }
 
   override fun <T : TypedValue> getVariableLocalTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = taskLocalVariableApiClient.getTaskLocalVariable(taskId, variableName, true).body!!
+    val dto = taskApiClient.getTaskLocalVariable(taskId, variableName, true).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -193,7 +186,7 @@ class RemoteTaskService(
   }
 
   override fun getVariablesTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = taskVariableApiClient.getTaskVariables(taskId, deserializeValues).body!!
+    val variables = taskApiClient.getTaskVariables(taskId, deserializeValues).body!!
       .filter { variableNames.isEmpty() || variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
@@ -215,27 +208,27 @@ class RemoteTaskService(
   }
 
   override fun getVariablesLocalTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = taskLocalVariableApiClient.getTaskLocalVariables(taskId, deserializeValues).body!!
+    val variables = taskApiClient.getTaskLocalVariables(taskId, deserializeValues).body!!
       .filter { variableNames.isEmpty() || variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
 
   override fun removeVariable(taskId: String, variableName: String) {
-    taskVariableApiClient.deleteTaskVariable(taskId, variableName)
+    taskApiClient.deleteTaskVariable(taskId, variableName)
   }
 
   override fun removeVariableLocal(taskId: String, variableName: String) {
-    taskLocalVariableApiClient.deleteTaskLocalVariable(taskId, variableName)
+    taskApiClient.deleteTaskLocalVariable(taskId, variableName)
   }
 
   override fun removeVariables(taskId: String, variableNames: MutableCollection<String>) {
-    taskVariableApiClient.modifyTaskVariables(taskId, PatchVariablesDto().apply {
+    taskApiClient.modifyTaskVariables(taskId, PatchVariablesDto().apply {
       deletions = variableNames.toList()
     })
   }
 
   override fun removeVariablesLocal(taskId: String, variableNames: MutableCollection<String>) {
-    taskLocalVariableApiClient.modifyTaskLocalVariables(taskId, PatchVariablesDto().apply {
+    taskApiClient.modifyTaskLocalVariables(taskId, PatchVariablesDto().apply {
       deletions = variableNames.toList()
     })
   }
@@ -243,24 +236,24 @@ class RemoteTaskService(
   // Identity links.
 
   override fun getIdentityLinksForTask(taskId: String): MutableList<IdentityLink> {
-    return identityLinkApiClient.getIdentityLinks(taskId, null).body!!.map { IdentityLinkAdapter(IdentityLinkBean.fromDto(taskId, it)) }
+    return taskApiClient.getIdentityLinks(taskId, null).body!!.map { IdentityLinkAdapter(IdentityLinkBean.fromDto(taskId, it)) }
       .toMutableList()
   }
 
   override fun addCandidateUser(taskId: String, userId: String) {
-    identityLinkApiClient.addIdentityLink(
+    taskApiClient.addIdentityLink(
       taskId, IdentityLinkAdapter(CandidateUserLinkBean(userId = userId, taskId = taskId)).toDto()
     )
   }
 
   override fun addCandidateGroup(taskId: String, groupId: String) {
-    identityLinkApiClient.addIdentityLink(
+    taskApiClient.addIdentityLink(
       taskId, IdentityLinkAdapter(GroupLinkBean(groupId = groupId, taskId = taskId)).toDto()
     )
   }
 
   override fun addUserIdentityLink(taskId: String, userId: String, identityLinkType: String) {
-    identityLinkApiClient.addIdentityLink(
+    taskApiClient.addIdentityLink(
       taskId,
       IdentityLinkDto().apply {
         this.userId = userId
@@ -270,7 +263,7 @@ class RemoteTaskService(
   }
 
   override fun addGroupIdentityLink(taskId: String, groupId: String, identityLinkType: String) {
-    identityLinkApiClient.addIdentityLink(
+    taskApiClient.addIdentityLink(
       taskId,
       IdentityLinkDto().apply {
         this.groupId = groupId
@@ -280,21 +273,21 @@ class RemoteTaskService(
   }
 
   override fun deleteCandidateUser(taskId: String, userId: String) {
-    identityLinkApiClient.deleteIdentityLink(
+    taskApiClient.deleteIdentityLink(
       taskId,
       IdentityLinkAdapter(CandidateUserLinkBean(userId = userId, taskId = taskId)).toDto()
     )
   }
 
   override fun deleteCandidateGroup(taskId: String, groupId: String) {
-    identityLinkApiClient.deleteIdentityLink(
+    taskApiClient.deleteIdentityLink(
       taskId,
       IdentityLinkAdapter(GroupLinkBean(groupId = groupId, taskId = taskId)).toDto()
     )
   }
 
   override fun deleteUserIdentityLink(taskId: String, userId: String, identityLinkType: String) {
-    identityLinkApiClient.deleteIdentityLink(
+    taskApiClient.deleteIdentityLink(
       taskId,
       IdentityLinkDto().apply {
         this.userId = userId
@@ -304,7 +297,7 @@ class RemoteTaskService(
   }
 
   override fun deleteGroupIdentityLink(taskId: String, groupId: String, identityLinkType: String) {
-    identityLinkApiClient.deleteIdentityLink(
+    taskApiClient.deleteIdentityLink(
       taskId,
       IdentityLinkDto().apply {
         this.groupId = groupId
