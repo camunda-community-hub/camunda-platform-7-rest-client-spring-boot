@@ -38,7 +38,7 @@
     <spin.version>1.23.0</spin.version>
 
     <spring-boot.version>3.2.4</spring-boot.version>
-    <spring-cloud.version>2023.0.0</spring-cloud.version>
+    <spring-cloud.version>2023.0.1</spring-cloud.version>
 
     <kotlin.version>1.9.23</kotlin.version>
     <kotlin-logging.version>3.0.5</kotlin-logging.version>
