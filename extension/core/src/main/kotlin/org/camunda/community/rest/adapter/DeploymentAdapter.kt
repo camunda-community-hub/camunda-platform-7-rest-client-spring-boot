@@ -2,6 +2,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.repository.*
 import org.camunda.community.rest.client.model.*
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 class DeploymentAdapter(private val deploymentBean: DeploymentBean) : DeploymentWithDefinitions {
@@ -47,7 +48,7 @@ data class DeploymentBean(
     fun fromDto(dto: DeploymentWithDefinitionsDto) = DeploymentBean(
       id = dto.id,
       name = dto.name,
-      deploymentTime = dto.deploymentTime,
+      deploymentTime = dto.deploymentTime.toDate(),
       source = dto.source,
       tenantId = dto.tenantId,
       deployedCaseDefinitions = dto.deployedCaseDefinitions?.map { it.value.toBean() },
@@ -62,7 +63,7 @@ data class DeploymentBean(
     fun fromDto(dto: DeploymentDto) = DeploymentBean(
       id = dto.id,
       name = dto.name,
-      deploymentTime = dto.deploymentTime,
+      deploymentTime = dto.deploymentTime.toDate(),
       source = dto.source,
       tenantId = dto.tenantId,
       deployedCaseDefinitions = null,

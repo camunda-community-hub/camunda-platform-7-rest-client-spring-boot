@@ -2,6 +2,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.runtime.EventSubscription
 import org.camunda.community.rest.client.model.EventSubscriptionDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 class EventSubscriptionAdapter(private val eventSubscriptionBean: EventSubscriptionBean) : EventSubscription {
@@ -44,7 +45,7 @@ data class EventSubscriptionBean(
       id = dto.id,
       eventName = dto.eventName,
       eventType = dto.eventType,
-      createdDate = dto.createdDate,
+      createdDate = dto.createdDate.toDate()!!,
       tenantId = dto.tenantId,
       executionId = dto.executionId,
       processInstanceId = dto.processInstanceId,

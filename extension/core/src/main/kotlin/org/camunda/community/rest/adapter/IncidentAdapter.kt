@@ -24,6 +24,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.runtime.Incident
 import org.camunda.community.rest.client.model.IncidentDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 /**
@@ -78,7 +79,7 @@ data class IncidentBean(
     fun fromDto(dto: IncidentDto): IncidentBean =
       IncidentBean(
         id = dto.id,
-        incidentTimestamp = dto.incidentTimestamp,
+        incidentTimestamp = dto.incidentTimestamp.toDate()!!,
         incidentType = dto.incidentType,
         executionId = dto.executionId,
         activityId = dto.activityId,

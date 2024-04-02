@@ -40,6 +40,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import java.time.Instant
 
 @JGivenStage
 class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStage, ExternalTaskService>() {
@@ -130,8 +131,15 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
     assertThat(externalTaskId).isNotNull
   }
 
-  fun fetch_and_lock_external_tasks(maxTasks: Int) = step {
-    lockedTasks = remoteService.fetchAndLock(maxTasks, "worker-id").topic("topic", 10).execute()
+  fun fetch_and_lock_external_tasks(maxTasks: Int, topicName: String = "topic", lockDuration: Long = 1000) = step {
+    lockedTasks = remoteService.fetchAndLock(maxTasks, "worker-id").topic(topicName, lockDuration).execute()
+    if (lockedTasks.size == 1) {
+      externalTaskId = lockedTasks[0].id
+    }
+  }
+
+  fun extend_lock(lockDuration: Long) = step {
+    remoteService.extendLock(externalTaskId, "worker-id", lockDuration)
   }
 
 
@@ -210,6 +218,15 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
   ) = step {
     assertThat(lockedTasks).hasSize(count)
     assertThat(lockedTasks.map { it.topicName }).containsOnly(topicName)
+  }
+
+  fun external_task_is_locked(
+    topicName: String, lockDuration: Long
+  ) = step {
+    val externalTask = localService.createExternalTaskQuery().externalTaskId(externalTaskId).singleResult()
+    assertThat(externalTask).isNotNull
+    assertThat(externalTask.topicName).isEqualTo(topicName)
+    assertThat(externalTask.lockExpirationTime).isCloseTo(Instant.now().plusMillis(lockDuration), 100)
   }
 
   @AfterStage

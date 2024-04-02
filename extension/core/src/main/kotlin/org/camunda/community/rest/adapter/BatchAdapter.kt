@@ -2,6 +2,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.community.rest.client.model.BatchDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 class BatchAdapter(private val batchBean: BatchBean) : Batch {
@@ -60,8 +61,8 @@ data class BatchBean(
       tenantId = dto.tenantId,
       createUserId = dto.createUserId,
       suspended = dto.suspended,
-      startTime = dto.startTime,
-      executionStartTime = dto.executionStartTime
+      startTime = dto.startTime.toDate(),
+      executionStartTime = dto.executionStartTime.toDate()
     )
   }
 }

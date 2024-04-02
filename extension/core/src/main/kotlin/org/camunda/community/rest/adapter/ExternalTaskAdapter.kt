@@ -2,6 +2,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.externaltask.ExternalTask
 import org.camunda.community.rest.client.model.ExternalTaskDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 class ExternalTaskAdapter(
@@ -85,7 +86,7 @@ data class ExternalTaskBean(
         processDefinitionKey = dto.processDefinitionKey,
         processDefinitionVersionTag = dto.processDefinitionVersionTag,
         tenantId = dto.tenantId,
-        lockExpirationTime = dto.lockExpirationTime,
+        lockExpirationTime = dto.lockExpirationTime.toDate(),
         errorMessage = dto.errorMessage,
         retries = dto.retries,
         priority = dto.priority,

@@ -19,13 +19,15 @@ camunda:
 server:
   port: 8085
 
+
 feign:
   client:
     config:
       default:
         url: "http://localhost:${server.port}/engine-rest/"
-        loggerLevel: basic
+        loggerLevel: BASIC
 
 logging:
   level:
-    org.camunda.community.rest.client.api: INFO
+    org.camunda.community.rest.client.api: DEBUG
+

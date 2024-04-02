@@ -22,11 +22,14 @@
  */
 package org.camunda.community.rest.client
 
+import feign.Logger
 import feign.Retryer
 import feign.codec.Encoder
 import org.camunda.community.rest.client.KeyChangingSpringManyMultipartFilesWriter.Companion.camundaMultipartFormEncoder
 import org.springframework.beans.factory.ObjectFactory
 import org.springframework.beans.factory.ObjectProvider
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.cloud.openfeign.support.FeignEncoderProperties
@@ -54,6 +57,10 @@ class FeignClientConfiguration {
 
   @Bean
   fun retryer() = Retryer.Default()
+
+  @Bean
+  @ConditionalOnProperty("feign.client.config.default.loggerLevel")
+  fun feignLoggerLevel(@Value("\${feign.client.config.default.loggerLevel}") defaultLogLevel: String) = Logger.Level.valueOf(defaultLogLevel)
 
 }
 

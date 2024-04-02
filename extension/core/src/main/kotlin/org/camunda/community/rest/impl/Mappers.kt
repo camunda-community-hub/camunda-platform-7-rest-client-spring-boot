@@ -15,6 +15,9 @@ import org.camunda.community.rest.client.model.TaskQueryDtoSortingInner
 import org.camunda.community.rest.impl.query.QueryOrderingProperty
 import org.camunda.community.rest.impl.query.Relation
 import org.camunda.community.rest.impl.query.SortDirection
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.util.Date
 
 private val logger = KotlinLogging.logger {}
 
@@ -23,9 +26,9 @@ fun Task.toDto(): TaskDto = TaskDto()
   .name(this.name)
   .assignee(this.assignee)
   .owner(this.owner)
-  .created(this.createTime)
-  .due(this.dueDate)
-  .followUp(this.followUpDate)
+  .created(this.createTime.toOffsetDateTime())
+  .due(this.dueDate.toOffsetDateTime())
+  .followUp(this.followUpDate.toOffsetDateTime())
   .delegationState(when (this.delegationState) {
     DelegationState.PENDING -> TaskDto.DelegationStateEnum.PENDING
     DelegationState.RESOLVED -> TaskDto.DelegationStateEnum.RESOLVED
@@ -123,3 +126,6 @@ fun QueryOrderingProperty.toExternalTaskSorting(): ExternalTaskQueryDtoSortingIn
     .sortOrder(if (this.direction == SortDirection.DESC) ExternalTaskQueryDtoSortingInner.SortOrderEnum.DESC else ExternalTaskQueryDtoSortingInner.SortOrderEnum.ASC)
     .sortBy(ExternalTaskQueryDtoSortingInner.SortByEnum.fromValue(this@toExternalTaskSorting.property))
 
+fun OffsetDateTime?.toDate() = this?.let { Date.from(it.toInstant()) }
+
+fun Date?.toOffsetDateTime() = this?.let { OffsetDateTime.ofInstant(it.toInstant(), ZoneOffset.UTC) }

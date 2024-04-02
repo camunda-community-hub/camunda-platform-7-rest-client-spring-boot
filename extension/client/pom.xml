@@ -139,7 +139,7 @@
               <templateDirectory>openapi-templates</templateDirectory>
               <configOptions>
                 <library>spring-cloud</library>
-                <dateLibrary>legacy</dateLibrary>
+                <dateLibrary>java8</dateLibrary>
                 <invokerPackage>${camunda.openapi.package}</invokerPackage>
                 <apiPackage>${camunda.openapi.package}.api</apiPackage>
                 <modelPackage>${camunda.openapi.package}.model</modelPackage>

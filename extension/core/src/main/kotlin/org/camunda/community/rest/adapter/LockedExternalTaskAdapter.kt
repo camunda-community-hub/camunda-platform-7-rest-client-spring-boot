@@ -3,6 +3,7 @@ package org.camunda.community.rest.adapter
 import org.camunda.bpm.engine.externaltask.LockedExternalTask
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
+import org.camunda.community.rest.impl.toDate
 import org.camunda.community.rest.variables.ValueMapper
 import java.util.*
 
@@ -90,7 +91,7 @@ data class LockedExternalTaskBean(
         processDefinitionKey = dto.processDefinitionKey,
         processDefinitionVersionTag = dto.processDefinitionVersionTag,
         tenantId = dto.tenantId,
-        lockExpirationTime = dto.lockExpirationTime,
+        lockExpirationTime = dto.lockExpirationTime.toDate(),
         errorMessage = dto.errorMessage,
         errorDetails = dto.errorDetails,
         retries = dto.retries,

@@ -187,4 +187,28 @@ class ExternalTaskServiceITest :
 
   }
 
+  @Test
+  fun `should extend lock for external task`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .fetch_and_lock_external_tasks(maxTasks = 1, lockDuration = 5000)
+
+
+    WHEN
+      .extend_lock(10000)
+
+    THEN
+      .external_task_is_locked("topic", 10000)
+
+  }
+
 }
