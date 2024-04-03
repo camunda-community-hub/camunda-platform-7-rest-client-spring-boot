@@ -15,6 +15,7 @@ import org.camunda.community.rest.client.api.ProcessInstanceApiClient
 import org.camunda.community.rest.client.model.ExternalTaskQueryDto
 import org.camunda.community.rest.client.model.ProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toExternalTaskSorting
+import org.camunda.community.rest.impl.toOffsetDateTime
 import org.camunda.community.rest.impl.toProcessInstanceSorting
 import org.camunda.community.rest.impl.toTaskSorting
 import org.camunda.community.rest.variables.toDto
@@ -109,8 +110,10 @@ class DelegatingExternalTaskQuery(
     val dtoPropertiesByName = ExternalTaskQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ExternalTaskQueryDto, Any?>>().associateBy { it.name }
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
-        "externalTaskIdIn" -> this@DelegatingExternalTaskQuery.externalTaskIds?.toTypedArray()
-        "processInstanceIdIn" -> this@DelegatingExternalTaskQuery.processInstanceIds?.toTypedArray()
+        "externalTaskIdIn" -> this@DelegatingExternalTaskQuery.externalTaskIds
+        "lockExpirationAfter" -> this@DelegatingExternalTaskQuery.lockExpirationAfter.toOffsetDateTime()
+        "lockExpirationBefore" -> this@DelegatingExternalTaskQuery.lockExpirationBefore.toOffsetDateTime()
+        "processInstanceIdIn" -> this@DelegatingExternalTaskQuery.processInstanceIds
         "active" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
         "suspended" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
         "tenantIdIn" -> this@DelegatingExternalTaskQuery.tenantIds?.toList()

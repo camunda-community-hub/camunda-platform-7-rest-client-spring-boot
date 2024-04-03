@@ -77,7 +77,7 @@ class DelegatingEventSubscriptionQuery(
     val value = parameter.annotations.find { it is RequestParam }?.let { (it as RequestParam).value }
     return when(value) {
       "id" -> eventSubscriptionId
-      "tenantIdIn" -> tenantIds?.toList()
+      "tenantIdIn" -> tenantIds?.joinToString(",")
       "withoutTenantId" -> tenantIdsSet && tenantIds == null
       "sortBy" -> sortProperty()?.property
       "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
