@@ -1,24 +1,13 @@
 package org.camunda.community.rest.impl.query
 
 import mu.KLogging
-import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.externaltask.ExternalTask
 import org.camunda.bpm.engine.externaltask.ExternalTaskQuery
-import org.camunda.bpm.engine.runtime.ProcessInstance
-import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
 import org.camunda.community.rest.adapter.ExternalTaskAdapter
 import org.camunda.community.rest.adapter.ExternalTaskBean
-import org.camunda.community.rest.adapter.InstanceBean
-import org.camunda.community.rest.adapter.ProcessInstanceAdapter
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
-import org.camunda.community.rest.client.api.ProcessInstanceApiClient
 import org.camunda.community.rest.client.model.ExternalTaskQueryDto
-import org.camunda.community.rest.client.model.ProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toExternalTaskSorting
-import org.camunda.community.rest.impl.toOffsetDateTime
-import org.camunda.community.rest.impl.toProcessInstanceSorting
-import org.camunda.community.rest.impl.toTaskSorting
-import org.camunda.community.rest.variables.toDto
 import java.util.*
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
@@ -111,8 +100,6 @@ class DelegatingExternalTaskQuery(
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "externalTaskIdIn" -> this@DelegatingExternalTaskQuery.externalTaskIds
-        "lockExpirationAfter" -> this@DelegatingExternalTaskQuery.lockExpirationAfter.toOffsetDateTime()
-        "lockExpirationBefore" -> this@DelegatingExternalTaskQuery.lockExpirationBefore.toOffsetDateTime()
         "processInstanceIdIn" -> this@DelegatingExternalTaskQuery.processInstanceIds
         "active" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
         "suspended" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }

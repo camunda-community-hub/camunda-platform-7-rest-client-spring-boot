@@ -32,6 +32,7 @@ import org.camunda.community.rest.adapter.TaskAdapter
 import org.camunda.community.rest.adapter.TaskBean
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.client.model.TaskQueryDto
+import org.camunda.community.rest.impl.toOffsetDateTime
 import org.camunda.community.rest.impl.toTaskSorting
 import org.camunda.community.rest.variables.toDto
 import java.time.format.DateTimeFormatter
@@ -628,6 +629,7 @@ class DelegatingTaskQuery(
         "assigneeIn" -> this@DelegatingTaskQuery.assigneeIn?.toList()
         "assigneeNotIn" -> this@DelegatingTaskQuery.assingeeNotIn?.toList()
         "ownerExpression" -> this@DelegatingTaskQuery.expressions["taskOwner"]
+        "candidateGroups" -> this@DelegatingTaskQuery.candidateGroups
         "candidateGroupExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroup"]
         "candidateUserExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateUser"]
         "involvedUserExpression" -> this@DelegatingTaskQuery.expressions["taskInvolvedUser"]
@@ -638,19 +640,19 @@ class DelegatingTaskQuery(
         "dueAfterExpression" -> this@DelegatingTaskQuery.expressions["dueDateAfter"]
         "dueBeforeExpression" -> this@DelegatingTaskQuery.expressions["dueDateBefore"]
         "withoutDueDate" -> this@DelegatingTaskQuery.isWithoutDueDate
-        "followUpBefore" -> this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_DATE_TIME.format(it.toInstant()) }
+        "followUpBefore" -> this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it.toOffsetDateTime()) }
         "followUpDateExpression" -> this@DelegatingTaskQuery.expressions["followUpDate"]
         "followUpAfterExpression" -> this@DelegatingTaskQuery.expressions["followUpDateAfter"]
         "followUpBeforeExpression" -> this@DelegatingTaskQuery.expressions["followUpDateBefore"]
-        "followUpBeforeOrNotExistent" -> if (this@DelegatingTaskQuery.followUpNullAccepted) this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_DATE_TIME.format(it.toInstant()) } else null
+        "followUpBeforeOrNotExistent" -> if (this@DelegatingTaskQuery.followUpNullAccepted) this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it.toOffsetDateTime()) } else null
         "followUpBeforeOrNotExistentExpression" -> this@DelegatingTaskQuery.expressions["followUpBeforeOrNotExistent"]
-        "createdOn" -> this@DelegatingTaskQuery.createTime
+        "createdOn" -> this@DelegatingTaskQuery.createTime.toOffsetDateTime()
         "createdOnExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedOn"]
-        "createdAfter" -> this@DelegatingTaskQuery.createTimeAfter
+        "createdAfter" -> this@DelegatingTaskQuery.createTimeAfter.toOffsetDateTime()
         "createdAfterExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedAfter"]
-        "createdBefore" -> this@DelegatingTaskQuery.createTimeBefore
+        "createdBefore" -> this@DelegatingTaskQuery.createTimeBefore.toOffsetDateTime()
         "createdBeforeExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedBefore"]
-        "updatedAfter" -> this@DelegatingTaskQuery.updatedAfter
+        "updatedAfter" -> this@DelegatingTaskQuery.updatedAfter.toOffsetDateTime()
         "updatedAfterExpression" -> this@DelegatingTaskQuery.expressions["taskUpdatedAfter"]
         "candidateGroupsExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroupIn"]
         "active" -> this@DelegatingTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }

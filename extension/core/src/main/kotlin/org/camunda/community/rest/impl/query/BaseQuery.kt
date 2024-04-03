@@ -4,10 +4,15 @@ import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.query.Query
 import org.camunda.bpm.engine.variable.type.ValueType
+import org.camunda.community.rest.impl.toOffsetDateTime
+import java.time.OffsetDateTime
+import java.util.*
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.full.withNullability
 import kotlin.reflect.jvm.isAccessible
 
 /**
@@ -119,6 +124,11 @@ abstract class BaseQuery<T : Query<*, *>, U>(
     val property = propertiesByName[name]
     if (property == null) {
       throw IllegalArgumentException("no property found for $name")
+    } else if (property.returnType.isSubtypeOf(Date::class.starProjectedType.withNullability(true))
+        && expectedType.isSubtypeOf(OffsetDateTime::class.starProjectedType)) {
+      property.isAccessible = true
+      val propValue = (property as KProperty1<Q, *>).get(query) as Date?
+      return propValue?.toOffsetDateTime()
     } else if (!property.returnType.isSubtypeOf(expectedType)) {
       throw IllegalArgumentException("${property.returnType} is not assignable to $expectedType for $name")
     } else {
