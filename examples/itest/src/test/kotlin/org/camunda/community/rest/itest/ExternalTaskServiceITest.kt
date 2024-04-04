@@ -27,6 +27,7 @@ import io.toolisticon.testing.jgiven.AND
 import io.toolisticon.testing.jgiven.GIVEN
 import io.toolisticon.testing.jgiven.THEN
 import io.toolisticon.testing.jgiven.WHEN
+import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.ExternalTaskService
 import org.camunda.bpm.engine.variable.Variables.*
 import org.camunda.community.rest.itest.stages.CamundaRestClientITestBase
@@ -208,6 +209,211 @@ class ExternalTaskServiceITest :
 
     THEN
       .external_task_is_locked("topic", 10000)
+
+  }
+
+  @Test
+  fun `should unlock external task`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .fetch_and_lock_external_tasks(maxTasks = 1, lockDuration = 5000)
+
+
+    WHEN
+      .unlock_external_task()
+
+    THEN
+      .external_task_is_unlocked("topic")
+
+  }
+
+  @Test
+  fun `should lock external task`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .unlock_external_task()
+      .AND
+      .lock_external_task(7000)
+
+    THEN
+      .external_task_is_locked("topic", 7000)
+
+  }
+
+  @Test
+  fun `should set priority`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .set_priority(50)
+
+    THEN
+      .external_task_query_succeeds { query, _ ->
+        val externalTask = query.externalTaskId(WHEN.externalTaskId).singleResult()
+        assertThat(externalTask.priority).isEqualTo(50)
+      }
+
+  }
+
+  @Test
+  fun `should get topic names`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+
+    WHEN
+      .fetch_and_lock_external_tasks(1, "topic", lockDuration = 5000)
+
+    THEN
+      .topic_names_exist("topic")
+      .topic_names_exist_for_locked_tasks("topic")
+
+  }
+
+  @Test
+  fun `should get error details`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .handle_failure()
+
+    THEN
+      .has_error_details()
+
+  }
+
+  @Test
+  fun `should set retries`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .handle_failure()
+      .AND
+      .set_retries(3)
+
+    THEN
+      .external_task_has_retries(3)
+
+
+  }
+
+  @Test
+  fun `should set retries async`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .handle_failure()
+      .AND
+      .set_retries_async(3)
+
+    THEN
+      .wait_for_batch()
+      .AND
+      .external_task_has_retries(3)
+
+
+  }
+
+  @Test
+  fun `should update retries`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", objectValue("My object value").create())
+      )
+      .AND
+      .process_waits_in_external_task("topic")
+
+
+    WHEN
+      .handle_failure()
+      .AND
+      .update_retries(3)
+
+    THEN
+      .external_task_has_retries(3)
 
   }
 

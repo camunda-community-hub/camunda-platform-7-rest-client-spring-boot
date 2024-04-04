@@ -29,17 +29,22 @@ import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.kotlin.await
 import org.camunda.bpm.engine.ExternalTaskService
+import org.camunda.bpm.engine.ManagementService
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.externaltask.ExternalTaskQuery
 import org.camunda.bpm.engine.externaltask.LockedExternalTask
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
+import org.camunda.community.rest.impl.query.DelegatingExternalTaskQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import java.time.Duration
 import java.time.Instant
 
 @JGivenStage
@@ -74,6 +79,9 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   lateinit var lockedTasks: List<LockedExternalTask>
+
+  @ProvidedScenarioState
+  lateinit var batch: Batch
 
   fun process_from_a_resource_is_deployed(
     processModelFilename: String = "processModelFilename.bpmn"
@@ -142,6 +150,37 @@ class ExternalTaskServiceActionStage : ActionStage<ExternalTaskServiceActionStag
     remoteService.extendLock(externalTaskId, "worker-id", lockDuration)
   }
 
+  fun unlock_external_task() = step {
+    remoteService.unlock(externalTaskId)
+  }
+
+  fun lock_external_task(lockDuration: Long = 1000) = step {
+    remoteService.lock(externalTaskId, "worker-id", lockDuration)
+  }
+
+  fun set_priority(priority: Long) = step {
+    remoteService.setPriority(externalTaskId, priority)
+  }
+
+  fun handle_failure(errorDetails: String = "error-details", retries: Int = 1) = step {
+    remoteService.handleFailure(externalTaskId, "worker-id", "error", errorDetails, retries, 1000,
+      mapOf("var" to "value"), mapOf("local-var" to "local-value")
+    )
+  }
+
+  fun set_retries(retries: Int) = step {
+    remoteService.setRetries(externalTaskId, retries)
+  }
+
+  fun set_retries_async(retries: Int) = step {
+    batch = remoteService.setRetriesAsync(listOf(externalTaskId), null, retries)
+  }
+
+  fun update_retries(retries: Int) = step {
+    remoteService.updateRetries().externalTaskQuery(
+      remoteService.createExternalTaskQuery().externalTaskId(externalTaskId)
+    ).set(retries)
+  }
 
 }
 
@@ -162,6 +201,11 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   override lateinit var remoteService: ExternalTaskService
 
+  @Autowired
+  @Qualifier("managementService")
+  @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
+  lateinit var managementService: ManagementService
+
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.TYPE)
   lateinit var processInstance: ProcessInstance
 
@@ -173,6 +217,9 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
 
   @ProvidedScenarioState(resolution = ScenarioState.Resolution.NAME)
   lateinit var lockedTasks: List<LockedExternalTask>
+
+  @ProvidedScenarioState
+  lateinit var batch: Batch
 
   fun execution_is_waiting_for_signal(signalName: String) = step {
 
@@ -227,6 +274,34 @@ class ExternalTaskServiceAssertStage : AssertStage<ExternalTaskServiceAssertStag
     assertThat(externalTask).isNotNull
     assertThat(externalTask.topicName).isEqualTo(topicName)
     assertThat(externalTask.lockExpirationTime).isCloseTo(Instant.now().plusMillis(lockDuration), 100)
+  }
+
+  fun external_task_is_unlocked(
+    topicName: String
+  ) = step {
+    val externalTask = localService.createExternalTaskQuery().externalTaskId(externalTaskId).singleResult()
+    assertThat(externalTask).isNotNull
+    assertThat(externalTask.topicName).isEqualTo(topicName)
+    assertThat(externalTask.lockExpirationTime).isNull()
+    assertThat(externalTask.workerId).isNull()
+  }
+
+  fun topic_names_exist(vararg topicNames: String) = step {
+    assertThat(remoteService.topicNames).containsOnly(*topicNames)
+  }
+
+  fun topic_names_exist_for_locked_tasks(vararg topicNames: String) = step {
+    assertThat(remoteService.getTopicNames(true, false, true)).containsOnly(*topicNames)
+  }
+
+  fun has_error_details(errorDetails: String = "error-details") = step {
+    assertThat(remoteService.getExternalTaskErrorDetails(externalTaskId)).isEqualTo(errorDetails)
+  }
+
+  fun wait_for_batch() = step {
+    await.atMost(Duration.ofSeconds(5)).until {
+      managementService.createBatchQuery().batchId(batch.id).singleResult() == null
+    }
   }
 
   @AfterStage

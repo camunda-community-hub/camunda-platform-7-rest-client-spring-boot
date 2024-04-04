@@ -39,30 +39,36 @@ class RemoteUpdateExternalTaskRetriesBuilder(
     return this
   }
 
-  override fun externalTaskQuery(externalTaskQuery: ExternalTaskQuery): UpdateExternalTaskRetriesBuilder {
-    if (externalTaskQuery is DelegatingExternalTaskQuery) {
-      setRetriesForExternalTasksDto.externalTaskQuery = externalTaskQuery.fillQueryDto()
-      return this
-    } else {
-      throw IllegalStateException("delegating external task query needed")
+  override fun externalTaskQuery(externalTaskQuery: ExternalTaskQuery?): UpdateExternalTaskRetriesBuilder {
+    return when (externalTaskQuery) {
+      null -> this
+      is DelegatingExternalTaskQuery -> {
+        setRetriesForExternalTasksDto.externalTaskQuery = externalTaskQuery.fillQueryDto()
+        this
+      }
+      else -> throw IllegalStateException("delegating external task query needed")
     }
   }
 
-  override fun processInstanceQuery(processInstanceQuery: ProcessInstanceQuery): UpdateExternalTaskRetriesBuilder {
-    if (processInstanceQuery is DelegatingProcessInstanceQuery) {
-      setRetriesForExternalTasksDto.processInstanceQuery = processInstanceQuery.fillQueryDto()
-      return this
-    } else {
-      throw IllegalStateException("delegating process instance query needed")
+  override fun processInstanceQuery(processInstanceQuery: ProcessInstanceQuery?): UpdateExternalTaskRetriesBuilder {
+    return when (processInstanceQuery) {
+      null -> this
+      is DelegatingProcessInstanceQuery -> {
+        setRetriesForExternalTasksDto.processInstanceQuery = processInstanceQuery.fillQueryDto()
+        this
+      }
+      else -> throw IllegalStateException("delegating process instance query needed")
     }
   }
 
-  override fun historicProcessInstanceQuery(historicProcessInstanceQuery: HistoricProcessInstanceQuery): UpdateExternalTaskRetriesBuilder {
-    if (historicProcessInstanceQuery is DelegatingHistoricProcessInstanceQuery) {
-      setRetriesForExternalTasksDto.historicProcessInstanceQuery = historicProcessInstanceQuery.fillQueryDto()
-      return this
-    } else {
-      throw IllegalStateException("delegating historic process instance query needed")
+  override fun historicProcessInstanceQuery(historicProcessInstanceQuery: HistoricProcessInstanceQuery?): UpdateExternalTaskRetriesBuilder {
+    return when (historicProcessInstanceQuery) {
+      null -> this
+      is DelegatingHistoricProcessInstanceQuery -> {
+        setRetriesForExternalTasksDto.historicProcessInstanceQuery = historicProcessInstanceQuery.fillQueryDto()
+        return this
+      }
+      else -> throw IllegalStateException("delegating historic process instance query needed")
     }
   }
 
@@ -73,8 +79,10 @@ class RemoteUpdateExternalTaskRetriesBuilder(
 
   override fun setAsync(retries: Int): Batch {
     setRetriesForExternalTasksDto.retries = retries
-    return BatchAdapter(BatchBean.fromDto(
-      externalTaskApiClient.setExternalTaskRetriesAsyncOperation(setRetriesForExternalTasksDto).body!!
-    ))
+    return BatchAdapter(
+      BatchBean.fromDto(
+        externalTaskApiClient.setExternalTaskRetriesAsyncOperation(setRetriesForExternalTasksDto).body!!
+      )
+    )
   }
 }

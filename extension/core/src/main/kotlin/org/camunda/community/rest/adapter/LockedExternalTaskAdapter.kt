@@ -46,7 +46,7 @@ class LockedExternalTaskAdapter(
 
   override fun getBusinessKey() = lockedExternalTaskBean.businessKey
 
-  override fun getExtensionProperties(): Map<String, String> = lockedExternalTaskBean.extensionProperties
+  override fun getExtensionProperties(): Map<String, String>? = lockedExternalTaskBean.extensionProperties
 
 }
 
@@ -69,7 +69,7 @@ data class LockedExternalTaskBean(
   val businessKey: String?,
   val priority: Long,
   val variables: VariableMap?,
-  val extensionProperties: Map<String, String>
+  val extensionProperties: Map<String, String>?
 ) {
 
   companion object {
@@ -97,7 +97,7 @@ data class LockedExternalTaskBean(
         retries = dto.retries,
         priority = dto.priority,
         businessKey = dto.businessKey,
-        variables = valueMapper.mapDtos(dto.variables),
+        variables = dto.variables?.let { valueMapper.mapDtos(it) },
         extensionProperties = dto.extensionProperties
       )
   }
