@@ -13,6 +13,7 @@ import org.camunda.bpm.model.dmn.DmnModelInstance
 import org.camunda.community.rest.adapter.DeploymentAdapter
 import org.camunda.community.rest.adapter.DeploymentBean
 import org.camunda.community.rest.client.api.DeploymentApiClient
+import org.camunda.community.rest.impl.toOffsetDateTime
 import org.springframework.web.multipart.MultipartFile
 import java.io.*
 import java.util.*
@@ -36,6 +37,7 @@ class DelegatingDeploymentBuilder(
   var deploymentName: String? = null
   var deployChangedOnly: Boolean? = null
   var enableDuplicateFiltering: Boolean? = null
+  var deploymentActivationDate: Date? = null
 
   val resources: MutableList<MultipartFile> = mutableListOf()
 
@@ -158,7 +160,7 @@ class DelegatingDeploymentBuilder(
     this.deployChangedOnly = deployChangedOnly
   }
 
-  override fun activateProcessDefinitionsOn(date: Date): DeploymentBuilder = throw UnsupportedOperationException("activation on a specific date is not yet supported")
+  override fun activateProcessDefinitionsOn(date: Date): DeploymentBuilder = this.apply { this.deploymentActivationDate = date }
 
   override fun source(source: String) = this.apply { this.deploymentSource = source }
 
@@ -166,7 +168,8 @@ class DelegatingDeploymentBuilder(
 
   override fun deployWithResult() =
     DeploymentAdapter(DeploymentBean.fromDto(
-      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName, null, resources.toTypedArray()).body!!
+      deploymentApiClient.createDeployment(tenantId, deploymentSource, deployChangedOnly, enableDuplicateFiltering, deploymentName,
+        deploymentActivationDate.toOffsetDateTime(), resources.toTypedArray()).body!!
     ))
 
   override fun getResourceNames(): MutableCollection<String> = this.resources.map { it.name }.toMutableList()
