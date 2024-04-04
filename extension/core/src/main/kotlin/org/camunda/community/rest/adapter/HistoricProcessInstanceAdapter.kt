@@ -24,6 +24,7 @@ package org.camunda.community.rest.adapter
 
 import org.camunda.bpm.engine.history.HistoricProcessInstance
 import org.camunda.community.rest.client.model.HistoricProcessInstanceDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 /**
@@ -93,9 +94,9 @@ data class HistoricInstanceBean(
         processDefinitionId = processInstance.processDefinitionId,
         processDefinitionName = processInstance.processDefinitionName,
         processDefinitionVersion = processInstance.processDefinitionVersion,
-        startTime = processInstance.startTime,
-        endTime = processInstance.endTime,
-        removalTime = processInstance.removalTime,
+        startTime = processInstance.startTime.toDate()!!,
+        endTime = processInstance.endTime.toDate(),
+        removalTime = processInstance.removalTime.toDate(),
         durationInMillis = processInstance.durationInMillis,
         endActivityId = null,
         startUserId = processInstance.startUserId,

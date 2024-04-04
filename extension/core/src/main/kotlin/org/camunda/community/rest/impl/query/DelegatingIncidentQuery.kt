@@ -9,7 +9,6 @@ import org.camunda.community.rest.client.api.IncidentApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.declaredMemberProperties
 
 class DelegatingIncidentQuery(
   private val incidentApiClient: IncidentApiClient,

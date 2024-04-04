@@ -27,35 +27,35 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
   }
 
   override fun unlock(externalTaskId: String) {
-    TODO("not implemented")
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun getExternalTaskErrorDetails(externalTaskId: String?): String {
-    TODO("not implemented")
+  override fun getExternalTaskErrorDetails(externalTaskId: String): String {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun createExternalTaskQuery(): ExternalTaskQuery {
-    TODO("not implemented")
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun setRetries(externalTaskId: String?, retries: Int) {
-    TODO("not implemented")
+  override fun setRetries(externalTaskId: String, retries: Int) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun setRetries(externalTaskIds: MutableList<String>?, retries: Int) {
-    TODO("not implemented")
+  override fun setRetries(externalTaskIds: List<String>, retries: Int) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun extendLock(externalTaskId: String?, workerId: String?, newLockDuration: Long) {
-    TODO("not implemented")
+  override fun extendLock(externalTaskId: String, workerId: String, newLockDuration: Long) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun setRetriesAsync(externalTaskIds: MutableList<String>?, externalTaskQuery: ExternalTaskQuery?, retries: Int): Batch {
-    TODO("not implemented")
+  override fun setRetriesAsync(externalTaskIds: List<String>?, externalTaskQuery: ExternalTaskQuery?, retries: Int): Batch {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun updateRetries(): UpdateExternalTaskRetriesSelectBuilder {
-    TODO("not implemented")
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun handleFailure(externalTaskId: String, workerId: String, errorMessage: String, retries: Int, retryTimeout: Long) {
@@ -66,12 +66,12 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
     implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun fetchAndLock(maxTasks: Int, workerId: String?): ExternalTaskQueryBuilder {
-    TODO("not implemented")
+  override fun fetchAndLock(maxTasks: Int, workerId: String): ExternalTaskQueryBuilder {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun fetchAndLock(maxTasks: Int, workerId: String?, usePriority: Boolean): ExternalTaskQueryBuilder {
-    TODO("not implemented")
+  override fun fetchAndLock(maxTasks: Int, workerId: String, usePriority: Boolean): ExternalTaskQueryBuilder {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   override fun handleBpmnError(externalTaskId: String, workerId: String, errorCode: String) {
@@ -86,16 +86,16 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
     implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun setPriority(externalTaskId: String?, priority: Long) {
-    TODO("not implemented")
+  override fun setPriority(externalTaskId: String, priority: Long) {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun getTopicNames(): MutableList<String> {
-    TODO("Not yet implemented")
+  override fun getTopicNames(): List<String> {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
-  override fun getTopicNames(withLockedTasks: Boolean, withUnlockedTasks: Boolean, withRetriesLeft: Boolean): MutableList<String> {
-    TODO("Not yet implemented")
+  override fun getTopicNames(withLockedTasks: Boolean, withUnlockedTasks: Boolean, withRetriesLeft: Boolean): List<String> {
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   /**
@@ -111,13 +111,13 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
     variables: MutableMap<String, Any>,
     localVariables: MutableMap<String, Any>
   ) {
-    TODO("Not yet implemented")
+    implementedBy(RemoteExternalTaskService::class)
   }
 
   /**
    * @since 7.15
    */
   override fun lock(externalTaskId: String, workerId: String, lockDuration: Long) {
-    TODO("Not yet implemented")
+    implementedBy(RemoteExternalTaskService::class)
   }
 }

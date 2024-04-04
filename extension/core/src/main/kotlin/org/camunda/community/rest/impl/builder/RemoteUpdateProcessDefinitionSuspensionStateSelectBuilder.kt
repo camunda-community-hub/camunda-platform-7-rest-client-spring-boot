@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.repository.UpdateProcessDefinitionSuspensionStateS
 import org.camunda.bpm.engine.repository.UpdateProcessDefinitionSuspensionStateTenantBuilder
 import org.camunda.community.rest.client.api.ProcessDefinitionApiClient
 import org.camunda.community.rest.client.model.ProcessDefinitionSuspensionStateDto
+import org.camunda.community.rest.impl.toOffsetDateTime
 import java.util.*
 
 class RemoteUpdateProcessDefinitionSuspensionStateSelectBuilder(
@@ -49,7 +50,7 @@ class RemoteUpdateProcessDefinitionSuspensionStateBuilder(
     processDefinitionApiClient.updateProcessDefinitionSuspensionStateById(processDefinitionId,
       ProcessDefinitionSuspensionStateDto()
         .includeProcessInstances(includeProcessInstances)
-        .executionDate(executionDate)
+        .executionDate(executionDate.toOffsetDateTime())
         .suspended(!active)
     )
   }
@@ -77,14 +78,14 @@ class RemoteUpdateProcessDefinitionSuspensionStateTenantBuilder(
       processDefinitionApiClient.updateProcessDefinitionSuspensionStateByKey(processDefinitionKey,
         ProcessDefinitionSuspensionStateDto()
           .includeProcessInstances(includeProcessInstances)
-          .executionDate(executionDate)
+          .executionDate(executionDate.toOffsetDateTime())
           .suspended(!active)
       )
     } else {
       processDefinitionApiClient.updateProcessDefinitionSuspensionStateByKeyAndTenantId(processDefinitionKey, tenantId,
         ProcessDefinitionSuspensionStateDto()
           .includeProcessInstances(includeProcessInstances)
-          .executionDate(executionDate)
+          .executionDate(executionDate.toOffsetDateTime())
           .suspended(!active)
       )
     }

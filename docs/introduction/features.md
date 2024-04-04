@@ -68,6 +68,13 @@ but still provide an alternative implementation for some methods.
 * Complete a task by id: `#complete()`
 * Handle BPMN Errors: `#handleBpmnError()`
 * Handle failures: `#handleFailure()`
+* Fetch and lock: `#fetchAndLock()`
+* Handling locks: `#extendLock()`,`#lock()`,`#unlock()`
+* Setting priority: `#setPriority()`
+* Getting topic names: `#getTopicNames()`
+* Getting error details: `#getExternalTaskErrorDetails()`
+* Querying external tasks: `#createExternalTaskQuery()`
+* Setting retries: `#setRetries()`,`#setRetriesAsync()`,`#updateRetries()`
 
 ## HistoryService
 

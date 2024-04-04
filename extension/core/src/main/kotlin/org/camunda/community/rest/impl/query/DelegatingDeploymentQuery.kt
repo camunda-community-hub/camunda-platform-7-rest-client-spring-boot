@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.community.rest.adapter.DeploymentAdapter
 import org.camunda.community.rest.adapter.DeploymentBean
 import org.camunda.community.rest.client.api.DeploymentApiClient
+import org.camunda.community.rest.impl.toOffsetDateTime
 import org.springframework.web.bind.annotation.RequestParam
 import java.util.*
 import kotlin.reflect.KParameter
@@ -89,10 +90,10 @@ class DelegatingDeploymentQuery(
     return when(value) {
       "id" -> deploymentId
       "withoutSource" -> sourceQueryParamEnabled && source == null
-      "tenantIdIn" -> tenantIds?.toList()
+      "tenantIdIn" -> tenantIds?.joinToString(",")
       "withoutTenantId" -> tenantIdsSet && tenantIds == null
-      "after" -> deploymentAfter
-      "before" -> deploymentBefore
+      "after" -> deploymentAfter.toOffsetDateTime()
+      "before" -> deploymentBefore.toOffsetDateTime()
       "sortBy" -> sortProperty()?.property
       "sortOrder" -> sortProperty()?.direction?.let { if (it == SortDirection.DESC) "desc" else "asc" }
       null -> throw IllegalArgumentException("value of RequestParam annotation is null")

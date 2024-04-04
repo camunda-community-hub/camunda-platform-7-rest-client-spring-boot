@@ -27,6 +27,7 @@ import org.camunda.bpm.engine.form.CamundaFormRef
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.client.model.TaskDto
+import org.camunda.community.rest.impl.toDate
 import java.util.*
 
 /**
@@ -170,9 +171,9 @@ data class TaskBean(
       caseExecutionId = dto.caseExecutionId,
       caseInstanceId = dto.caseInstanceId,
       suspended = dto.suspended,
-      created = dto.created,
-      due = dto.due,
-      followUp = dto.followUp,
+      created = dto.created.toDate(),
+      due = dto.due.toDate(),
+      followUp = dto.followUp.toDate(),
       formKey = dto.formKey,
       processDefinitionId = dto.processDefinitionId,
       processInstanceId = dto.processInstanceId,
@@ -184,7 +185,7 @@ data class TaskBean(
       parentTaskId = dto.parentTaskId,
       owner = dto.owner,
       taskDefinitionKey = dto.taskDefinitionKey,
-      lastUpdated = dto.lastUpdated
+      lastUpdated = dto.lastUpdated.toDate()
     )
   }
 }

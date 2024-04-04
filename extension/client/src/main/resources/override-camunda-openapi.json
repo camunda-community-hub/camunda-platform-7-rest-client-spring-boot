@@ -1,0 +1,19 @@
+{
+  "components": {
+    "schemas": {
+      "LockedExternalTaskDto": {
+        "properties": {
+          "extensionProperties": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "A JSON object containing a property for each extension property. The key is the property name,\nthe value is the property value"
+
+          }
+        }
+      }
+    }
+  }
+}
