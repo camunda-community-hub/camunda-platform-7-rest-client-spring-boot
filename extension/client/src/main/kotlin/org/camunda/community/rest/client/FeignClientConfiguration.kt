@@ -77,7 +77,7 @@ class FeignClientConfiguration {
         OffsetDateTimeSerializer(
           OffsetDateTimeSerializer.INSTANCE,
           false,
-          DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXX"), 
+          DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
           JsonFormat.Shape.STRING
         )
       )
