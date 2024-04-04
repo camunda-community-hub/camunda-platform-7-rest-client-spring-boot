@@ -123,3 +123,17 @@ Here are currently implemented methods. The version behind the service name deno
 
 * `# createEventSubscriptionQuery`
 * `# createExecutionQuery`
+
+## ExternalTaskService @ 7.20.2
+
+* `# createExernalTaskQuery`
+* `# fetchAndLock`
+* `# extendLock`
+* `# unlock`
+* `# lock`
+* `# getTopicNames`
+* `# getExternalTaskErrorDetails`
+* `# setPriority`
+* `# setRetries`
+* `# setRetriesAsync`
+* `# updateRetries`

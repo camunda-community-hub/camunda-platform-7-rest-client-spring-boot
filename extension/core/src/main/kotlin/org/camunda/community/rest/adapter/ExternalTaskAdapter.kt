@@ -5,6 +5,9 @@ import org.camunda.community.rest.client.model.ExternalTaskDto
 import org.camunda.community.rest.impl.toDate
 import java.util.*
 
+/**
+ * Implementation of Camunda API External Task backed by a bean.
+ */
 class ExternalTaskAdapter(
   private val externalTaskBean: ExternalTaskBean
 ) : ExternalTask {
@@ -47,6 +50,9 @@ class ExternalTaskAdapter(
 
 }
 
+/**
+ * Backing bean for the external task.
+ */
 data class ExternalTaskBean(
   val id: String?,
   val topicName: String?,

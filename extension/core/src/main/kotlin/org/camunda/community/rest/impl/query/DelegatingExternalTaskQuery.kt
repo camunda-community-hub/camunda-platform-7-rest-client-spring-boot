@@ -14,7 +14,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 /**
- * Implementation of the process instance query.
+ * Implementation of the external task query.
  */
 class DelegatingExternalTaskQuery(
   private val externalTaskApiClient: ExternalTaskApiClient,
@@ -94,6 +94,9 @@ class DelegatingExternalTaskQuery(
 
   override fun count() = externalTaskApiClient.queryExternalTasksCount(fillQueryDto()).body!!.count
 
+  /**
+   * Mapping for the query DTO, which will be sent to the REST endpoint.
+   */
   fun fillQueryDto() = ExternalTaskQueryDto().apply {
     validate()
     val dtoPropertiesByName = ExternalTaskQueryDto::class.memberProperties.filterIsInstance<KMutableProperty1<ExternalTaskQueryDto, Any?>>().associateBy { it.name }

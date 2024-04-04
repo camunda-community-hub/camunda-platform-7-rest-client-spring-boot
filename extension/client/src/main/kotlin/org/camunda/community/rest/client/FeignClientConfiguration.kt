@@ -65,10 +65,17 @@ class FeignClientConfiguration {
   @Bean
   fun retryer() = Retryer.Default()
 
+  /**
+   * Configure feign logger level if corresponding property is set.
+   */
   @Bean
   @ConditionalOnProperty("feign.client.config.default.loggerLevel")
-  fun feignLoggerLevel(@Value("\${feign.client.config.default.loggerLevel}") defaultLogLevel: String) = Logger.Level.valueOf(defaultLogLevel)
+  fun feignLoggerLevel(@Value("\${feign.client.config.default.loggerLevel}") defaultLogLevel: String) =
+    Logger.Level.valueOf(defaultLogLevel)
 
+  /**
+   * Configure the jackson2 object mapper to use correct date format pattern.
+   */
   @Bean
   fun jsonCustomizer(): Jackson2ObjectMapperBuilder {
     return Jackson2ObjectMapperBuilder.json()
@@ -83,6 +90,9 @@ class FeignClientConfiguration {
       )
   }
 
+  /**
+   + Configure the message converter with the customized object mapper.
+   */
   @Bean
   fun mappingJackson2HttpMessageConverter(jackson2ObjectMapperBuilder: Jackson2ObjectMapperBuilder): MappingJackson2HttpMessageConverter {
     return MappingJackson2HttpMessageConverter(jackson2ObjectMapperBuilder.build())

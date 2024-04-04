@@ -7,6 +7,9 @@ import org.camunda.community.rest.impl.toDate
 import org.camunda.community.rest.variables.ValueMapper
 import java.util.*
 
+/**
+ * Implementation of Camunda API Locked External Task backed by a bean.
+ */
 class LockedExternalTaskAdapter(
   private val lockedExternalTaskBean: LockedExternalTaskBean
 ) : LockedExternalTask {
@@ -50,6 +53,9 @@ class LockedExternalTaskAdapter(
 
 }
 
+/**
+ * Backing bean for the locked external task.
+ */
 data class LockedExternalTaskBean(
   val id: String?,
   val topicName: String?,

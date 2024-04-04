@@ -9,6 +9,9 @@ import org.camunda.community.rest.client.model.FetchExternalTaskTopicDto
 import org.camunda.community.rest.client.model.FetchExternalTasksDto
 import org.camunda.community.rest.variables.ValueMapper
 
+/**
+ * Builder for external task queries, collecting all settings in the DTO sent to the REST endpoint later.
+ */
 class RemoteExternalTaskQueryBuilder(
   private val externalTaskApiClient: ExternalTaskApiClient,
   private val valueMapper: ValueMapper,

@@ -13,6 +13,9 @@ import org.camunda.community.rest.impl.query.DelegatingExternalTaskQuery
 import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
 import org.camunda.community.rest.impl.query.DelegatingProcessInstanceQuery
 
+/**
+ * Builder for updating retries of external task, collecting all settings in the DTO sent to the REST endpoint later.
+ */
 class RemoteUpdateExternalTaskRetriesBuilder(
   private val externalTaskApiClient: ExternalTaskApiClient
 ) : UpdateExternalTaskRetriesBuilder {
