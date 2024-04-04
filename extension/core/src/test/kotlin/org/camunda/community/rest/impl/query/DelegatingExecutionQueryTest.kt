@@ -17,22 +17,23 @@ class DelegatingExecutionQueryTest {
 
   val query = DelegatingExecutionQuery(
     executionApiClient,
-    processDefinitionId = "processDefinitionId",
-    processDefinitionKey = "processDefinitionKey",
-    businessKey = "businessKey",
-    activityId = "activityId",
-    executionId = "executionId",
-    processInstanceId = "processInstanceId",
-    suspensionState = SuspensionState.ACTIVE,
-    incidentType = "incidentType",
-    incidentId = "incidentId",
-    incidentMessage = "incidentMessage",
-    incidentMessageLike = "incidentMessageLike",
-    eventSubscriptions = mutableListOf(EventSubscriptionQueryValue("eventSubscriptions", "message")),
   ).apply {
+    this.processDefinitionId("processDefinitionId")
+    this.processDefinitionKey("processDefinitionKey")
+    this.processInstanceBusinessKey("businessKey")
+    this.activityId("activityId")
+    this.executionId("executionId")
+    this.processInstanceId("processInstanceId")
+    this.suspended()
+    this.incidentType("incidentType")
+    this.incidentId("incidentId")
+    this.incidentMessage("incidentMessage")
+    this.incidentMessageLike("incidentMessageLike")
+    this.messageEventSubscriptionName("message")
+    this.signalEventSubscriptionName("signal")
     this.tenantIdIn("tenantId")
-    this.variableNamesIgnoreCase = true
-    this.variableValuesIgnoreCase = true
+    this.matchVariableNamesIgnoreCase()
+    this.matchVariableValuesIgnoreCase()
     this.variableValueLike("var", "value")
     this.variableValueEquals("var2", "value2")
     this.orderByProcessDefinitionKey().asc()

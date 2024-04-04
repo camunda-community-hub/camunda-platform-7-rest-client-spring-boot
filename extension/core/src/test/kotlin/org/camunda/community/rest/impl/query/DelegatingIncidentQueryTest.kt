@@ -20,23 +20,23 @@ class DelegatingIncidentQueryTest {
 
   val query = DelegatingIncidentQuery(
     incidentApiClient,
-    id = "id",
-    incidentType = "incidentType",
-    incidentMessage = "incidentMessage",
-    incidentMessageLike = "incidentMessageLike",
-    executionId = "executionId",
-    incidentTimestampBefore = Date(),
-    incidentTimestampAfter = Date(),
-    activityId = "activityId",
-    failedActivityId = "failedActivityId",
-    processInstanceId = "processInstanceId",
-    processDefinitionId = "processDefinitionId",
-    processDefinitionKeys = arrayOf("processDefinitionKeys"),
-    causeIncidentId = "causeIncidentId",
-    rootCauseIncidentId = "rootCauseIncidentId",
-    configuration = "configuration",
-    jobDefinitionIds = arrayOf("jobDefinitionIds"),
   ).apply {
+    this.incidentId("id")
+    this.incidentType("incidentType")
+    this.incidentMessage("incidentMessage")
+    this.incidentMessageLike("incidentMessageLike")
+    this.executionId("executionId")
+    this.incidentTimestampBefore(Date())
+    this.incidentTimestampAfter(Date())
+    this.activityId("activityId")
+    this.failedActivityId("failedActivityId")
+    this.processInstanceId("processInstanceId")
+    this.processDefinitionId("processDefinitionId")
+    this.processDefinitionKeyIn("processDefinitionKeys")
+    this.causeIncidentId("causeIncidentId")
+    this.rootCauseIncidentId("rootCauseIncidentId")
+    this.configuration("configuration")
+    this.jobDefinitionIdIn("jobDefinitionIds")
     this.tenantIdIn("tenantId")
     this.orderByIncidentType().asc()
   }

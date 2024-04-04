@@ -17,13 +17,13 @@ class DelegatingEventSubscriptionQueryTest {
 
   val query: DelegatingEventSubscriptionQuery = DelegatingEventSubscriptionQuery(
     eventSubscriptionApiClient,
-    eventSubscriptionId = "eventSubscriptionId",
-    eventName = "eventName",
-    eventType = "eventType",
-    executionId = "executionId",
-    processInstanceId = "processInstanceId",
-    activityId = "activityId",
   ).apply {
+    this.eventSubscriptionId("eventSubscriptionId")
+    this.eventName("eventName")
+    this.eventType("eventType")
+    this.executionId("executionId")
+    this.processInstanceId("processInstanceId")
+    this.activityId("activityId")
     this.tenantIdIn("tenantId")
     this.orderByCreated().asc()
   }

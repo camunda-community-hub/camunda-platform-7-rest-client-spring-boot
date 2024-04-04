@@ -19,26 +19,27 @@ class DelegatingExternalTaskQueryTest {
 
   val query: DelegatingExternalTaskQuery = DelegatingExternalTaskQuery(
     externalTaskApiClient,
-    externalTaskId = "externalTaskId",
-    externalTaskIds = listOf("externalTaskId"),
-    workerId = "workerId",
-    topicName = "topicName",
-    processDefinitionId = "processDefinitionId",
-    processInstanceId = "processInstanceId",
-    processInstanceIds = listOf("processInstanceIds"),
-    executionId = "executionId",
-    suspensionState = SuspensionState.ACTIVE,
-    activityId = "activityId",
-    activityIds = arrayOf("activityIds"),
-    withRetriesLeft = true,
-    noRetriesLeft = false,
-    priorityHigherThanOrEquals = 1,
-    priorityLowerThanOrEquals = 5,
-    locked = false,
-    notLocked = true,
-    lockExpirationBefore = Date.from(Instant.now().plusSeconds(10)),
-    lockExpirationAfter = Date.from(Instant.now().minusSeconds(10)),
-  )
+  ).apply {
+    this.externalTaskId("externalTaskId")
+    this.externalTaskIdIn(setOf("externalTaskId"))
+    this.workerId("workerId")
+    this.topicName("topicName")
+    this.processDefinitionId("processDefinitionId")
+    this.processInstanceId("processInstanceId")
+    this.processInstanceIdIn("processInstanceIds")
+    this.executionId("executionId")
+    this.suspended()
+    this.activityId("activityId")
+    this.activityIdIn("activityIds")
+    this.withRetriesLeft()
+    this.noRetriesLeft()
+    this.priorityHigherThanOrEquals(1)
+    this.priorityLowerThanOrEquals(5)
+    this.locked()
+    this.notLocked()
+    this.lockExpirationBefore(Date.from(Instant.now().plusSeconds(10)))
+    this.lockExpirationAfter(Date.from(Instant.now().minusSeconds(10)))
+  }
 
   @Test
   fun testListPage() {

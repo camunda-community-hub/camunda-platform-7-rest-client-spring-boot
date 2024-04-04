@@ -18,35 +18,34 @@ class DelegatingProcessInstanceQueryTest {
 
   val query = DelegatingProcessInstanceQuery(
     processInstanceApiClient,
-    processInstanceId = "processInstanceId",
-    processInstanceIds = setOf("processInstanceIds"),
-    businessKey = "businessKey",
-    businessKeyLike = "businessKeyLike",
-    processDefinitionId = "processDefinitionId",
-    processDefinitionKey = "processDefinitionKey",
-    processDefinitionKeys = arrayOf("processDefinitionKeys"),
-    processDefinitionKeyNotIn = arrayOf("processDefinitionKeyNotIn"),
-    deploymentId = "deploymentId",
-    superProcessInstanceId = "superProcessInstanceId",
-    subProcessInstanceId = "subProcessInstanceId",
-    suspensionState = SuspensionState.ACTIVE,
-    withIncident = true,
-    incidentType = "incidentType",
-    incidentId = "incidentId",
-    incidentMessage = "incidentMessage",
-    incidentMessageLike = "incidentMessageLike",
-    caseInstanceId = "caseInstanceId",
-    superCaseInstanceId = "superCaseInstanceId",
-    subCaseInstanceId = "subCaseInstanceId",
-    activityIds = arrayOf("activityIds"),
-    isRootProcessInstances = false,
-    isLeafProcessInstances = false,
-    isProcessDefinitionWithoutTenantId = false,
-    isOrQueryActive = false,
   ).apply {
+    this.processInstanceId("processInstanceId")
+    this.processInstanceIds(mutableSetOf("processInstanceIds"))
+    this.processInstanceBusinessKey("businessKey")
+    this.processInstanceBusinessKeyLike("businessKeyLike")
+    this.processDefinitionId("processDefinitionId")
+    this.processDefinitionKey("processDefinitionKey")
+    this.processDefinitionKeyIn("processDefinitionKeys")
+    this.processDefinitionKeyNotIn("processDefinitionKeyNotIn")
+    this.deploymentId("deploymentId")
+    this.superProcessInstanceId("superProcessInstanceId")
+    this.subProcessInstanceId("subProcessInstanceId")
+    this.suspended()
+    this.withIncident()
+    this.incidentType("incidentType")
+    this.incidentId("incidentId")
+    this.incidentMessage("incidentMessage")
+    this.incidentMessageLike("incidentMessageLike")
+    this.caseInstanceId("caseInstanceId")
+    this.superCaseInstanceId("superCaseInstanceId")
+    this.subCaseInstanceId("subCaseInstanceId")
+    this.activityIdIn("activityIds")
+    //this.rootProcessInstances()
+    this.leafProcessInstances()
+    //this.withoutTenantId()
     this.tenantIdIn("tenantId")
-    this.variableNamesIgnoreCase = true
-    this.variableValuesIgnoreCase = true
+    this.matchVariableNamesIgnoreCase()
+    this.matchVariableValuesIgnoreCase()
     this.variableValueEquals("var", "value")
     this.orderByProcessDefinitionKey().asc()
   }

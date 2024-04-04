@@ -644,7 +644,7 @@ class DelegatingTaskQuery(
         "followUpDateExpression" -> this@DelegatingTaskQuery.expressions["followUpDate"]
         "followUpAfterExpression" -> this@DelegatingTaskQuery.expressions["followUpDateAfter"]
         "followUpBeforeExpression" -> this@DelegatingTaskQuery.expressions["followUpDateBefore"]
-        "followUpBeforeOrNotExistent" -> if (this@DelegatingTaskQuery.followUpNullAccepted) this@DelegatingTaskQuery.followUpBefore?.let { DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it.toOffsetDateTime()) } else null
+        "followUpBeforeOrNotExistent" -> if (this@DelegatingTaskQuery.followUpNullAccepted) this@DelegatingTaskQuery.followUpBefore?.let { it.toOffsetDateTime() } else null
         "followUpBeforeOrNotExistentExpression" -> this@DelegatingTaskQuery.expressions["followUpBeforeOrNotExistent"]
         "createdOn" -> this@DelegatingTaskQuery.createTime.toOffsetDateTime()
         "createdOnExpression" -> this@DelegatingTaskQuery.expressions["taskCreatedOn"]

@@ -18,40 +18,38 @@ class DelegatingProcessDefinitionQueryTest {
   val processDefinitionApiClient = mock<ProcessDefinitionApiClient>()
 
   val query = DelegatingProcessDefinitionQuery(
-    processDefinitionApiClient,
-    id = "id",
-    ids = arrayOf("ids"),
-    category = "category",
-    categoryLike = "categoryLike",
-    name = "name",
-    nameLike = "nameLike",
-    deploymentId = "deploymentId",
-    deployedAfter = Date(),
-    deployedAt = Date(),
-    key = "key",
-    keys = arrayOf("keys"),
-    keyLike = "keyLike",
-    resourceName = "resourceName",
-    resourceNameLike = "resourceNameLike",
-    version = 1,
-    latest = false,
-    suspensionState = SuspensionState.ACTIVE,
-    authorizationUserId = "authorizationUserId",
-    procDefId = mutableListOf("procDefId"),
-    incidentType = "incidentType",
-    incidentId = "incidentId",
-    incidentMessage = "incidentMessage",
-    incidentMessageLike = "incidentMessageLike",
-    eventSubscriptionName = "eventSubscriptionName",
-    eventSubscriptionType = "eventSubscriptionType",
-    includeDefinitionsWithoutTenantId = true,
-    isVersionTagSet = true,
-    versionTag = "versionTag",
-    versionTagLike = "versionTagLike",
-    isStartableInTasklist = true,
-    isNotStartableInTasklist = false,
-    startablePermissionCheck = true,
+    processDefinitionApiClient
   ).apply {
+    this.processDefinitionId("id")
+    this.processDefinitionIdIn("ids")
+    this.processDefinitionCategory("category")
+    this.processDefinitionCategoryLike("categoryLike")
+    this.processDefinitionName("name")
+    this.processDefinitionNameLike("nameLike")
+    this.deploymentId("deploymentId")
+    this.deployedAfter(Date())
+    this.deployedAt(Date())
+    this.processDefinitionKey("key")
+    this.processDefinitionKeysIn("keys")
+    this.processDefinitionKeyLike("keyLike")
+    this.processDefinitionResourceName("resourceName")
+    this.processDefinitionResourceNameLike("resourceNameLike")
+    this.processDefinitionVersion(1)
+    //this.latestVersion()
+    this.suspended()
+    this.startableByUser("authorizationUserId")
+    this.incidentType("incidentType")
+    this.incidentId("incidentId")
+    this.incidentMessage("incidentMessage")
+    this.incidentMessageLike("incidentMessageLike")
+    this.messageEventSubscriptionName("eventSubscriptionName")
+    //this.withoutTenantId()
+    this.withoutVersionTag()
+    this.versionTag("versionTag")
+    this.versionTagLike("versionTagLike")
+    this.startableInTasklist()
+    this.notStartableInTasklist()
+    this.startablePermissionCheck()
     this.tenantIdIn("tenantId")
     this.orderByProcessDefinitionName().asc()
   }

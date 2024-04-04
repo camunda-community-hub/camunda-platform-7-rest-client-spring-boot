@@ -18,57 +18,51 @@ class DelegatingHistoricProcessInstanceQueryTest {
   val historyApiClient = mock<HistoryApiClient>()
 
   val query = DelegatingHistoricProcessInstanceQuery(
-    historyApiClient,
-    processInstanceId = "processInstanceId",
-    processDefinitionId = "processDefinitionId",
-    processDefinitionName = "processDefinitionName",
-    processDefinitionNameLike = "processDefinitionNameLike",
-    businessKey = "businessKey",
-    businessKeyIn = arrayOf("businessKeyIn"),
-    businessKeyLike = "businessKeyLike",
-    incidentType = "incidentType",
-    incidentStatus = "incidentStatus",
-    incidentMessage = "incidentMessage",
-    incidentMessageLike = "incidentMessageLike",
-    startedBy = "startedBy",
-    isRootProcessInstances = true,
-    superProcessInstanceId = "superProcessInstanceId",
-    subProcessInstanceId = "subProcessInstanceId",
-    superCaseInstanceId = "superCaseInstanceId",
-    subCaseInstanceId = "subCaseInstanceId",
-    processKeyNotIn = arrayOf("processKeyNotIn"),
-    finished = true,
-    unfinished = true,
-    withIncidents = true,
-    withRootIncidents = false,
-    startedBefore = Date(),
-    startedAfter = Date(),
-    finishedBefore = Date(),
-    finishedAfter = Date(),
-    executedActivityAfter = Date(),
-    executedActivityBefore = Date(),
-    executedJobAfter = Date(),
-    executedJobBefore = Date(),
-    processDefinitionKey = "processDefinitionKey",
-    processDefinitionKeys = arrayOf("processDefinitionKeys"),
-    processInstanceIds = arrayOf("processInstanceIds"),
-    executedActivityIds = arrayOf("executedActivityIds"),
-    activeActivityIds = arrayOf("activeActivityIds"),
-    state = "state",
-    caseInstanceId = "caseInstanceId",
-    startDateBy = Date(),
-    startDateOn = Date(),
-    finishDateBy = Date(),
-    finishDateOn = Date(),
-    startDateOnBegin = Date(),
-    startDateOnEnd = Date(),
-    finishDateOnBegin = Date(),
-    finishDateOnEnd = Date(),
-    isOrQueryActive = false,
+    historyApiClient
   ).apply {
+    this.processInstanceId("processInstanceId")
+    this.processDefinitionId("processDefinitionId")
+    this.processDefinitionName("processDefinitionName")
+    this.processDefinitionNameLike("processDefinitionNameLike")
+    this.processInstanceBusinessKey("businessKey")
+    this.processInstanceBusinessKeyIn("businessKeyIn")
+    this.processInstanceBusinessKeyLike("businessKeyLike")
+    this.incidentType("incidentType")
+    this.incidentStatus("incidentStatus")
+    this.incidentMessage("incidentMessage")
+    this.incidentMessageLike("incidentMessageLike")
+    this.startedBy("startedBy")
+    //this.rootProcessInstances()
+    this.superProcessInstanceId("superProcessInstanceId")
+    this.subProcessInstanceId("subProcessInstanceId")
+    this.superCaseInstanceId("superCaseInstanceId")
+    this.subCaseInstanceId("subCaseInstanceId")
+    this.processDefinitionKeyNotIn(mutableListOf("processKeyNotIn"))
+    this.finished()
+    this.unfinished()
+    this.withIncidents()
+    this.withRootIncidents()
+    this.startedBefore(Date())
+    this.startedAfter(Date())
+    this.finishedBefore(Date())
+    this.finishedAfter(Date())
+    this.executedActivityAfter(Date())
+    this.executedActivityBefore(Date())
+    this.executedJobAfter(Date())
+    this.executedJobBefore(Date())
+    this.processDefinitionKey("processDefinitionKey")
+    this.processDefinitionKeyIn("processDefinitionKeys")
+    this.processInstanceIds(mutableSetOf("processInstanceIds"))
+    this.executedActivityIdIn("executedActivityIds")
+    this.activeActivityIdIn("activeActivityIds")
+    this.caseInstanceId("caseInstanceId")
+    this.startDateBy(Date())
+    this.startDateOn(Date())
+    this.finishDateBy(Date())
+    this.finishDateOn(Date())
     this.tenantIdIn("tenantId")
-    this.variableNamesIgnoreCase = false
-    this.variableValuesIgnoreCase = true
+    this.matchVariableNamesIgnoreCase()
+    this.matchVariableValuesIgnoreCase()
     this.variableValueEquals("var", "value")
     this.orderByProcessInstanceDuration().asc()
   }

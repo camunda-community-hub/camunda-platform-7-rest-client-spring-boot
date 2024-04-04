@@ -18,13 +18,13 @@ class DelegatingDeploymentQueryTest {
 
   val query: DelegatingDeploymentQuery = DelegatingDeploymentQuery(
     deploymentApiClient,
-    deploymentId = "deploymentId",
-    name = "name",
-    nameLike = "nameLike",
-    source = "source",
-    deploymentBefore = Date.from(Instant.now()),
-    deploymentAfter = Date.from(Instant.now().minusSeconds(5)),
   ).apply {
+    this.deploymentId("deploymentId")
+    this.deploymentName("name")
+    this.deploymentNameLike("nameLike")
+    this.deploymentSource("source")
+    this.deploymentBefore(Date.from(Instant.now()))
+    this.deploymentAfter(Date.from(Instant.now().minusSeconds(5)))
     this.tenantIdIn("tenantId")
     this.orderByDeploymentTime().asc()
   }

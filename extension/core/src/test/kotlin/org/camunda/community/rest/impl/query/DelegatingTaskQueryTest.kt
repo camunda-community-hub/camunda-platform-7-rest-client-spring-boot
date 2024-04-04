@@ -19,102 +19,97 @@ class DelegatingTaskQueryTest {
   val taskApiClient = mock<TaskApiClient>()
 
   val query = DelegatingTaskQuery(
-    taskApiClient,
-    taskId = "taskId",
-    taskIdIn = arrayOf("taskIdIn"),
-    name = "name",
-    nameNotEqual = "nameNotEqual",
-    nameLike = "nameLike",
-    nameNotLike = "nameNotLike",
-    description = "description",
-    descriptionLike = "descriptionLike",
-    priority = 1,
-    minPriority = 1,
-    maxPriority = 10,
-    assignee = "assignee",
-    assigneeLike = "assigneeLike",
-    assigneeIn = setOf("assigneeIn"),
-    assingeeNotIn = setOf("assingeeNotIn"),
-    involvedUser = "involvedUser",
-    owner = "owner",
-    unassigned = false,
-    assigned = true,
-    noDelegationState = true,
-    delegationState = DelegationState.PENDING,
-    candidateUser = "candidateUser",
-    candidateGroup = "candidateGroup",
-    candidateGroups = listOf("candidateGroups"),
-    withCandidateGroups = true,
-    withoutCandidateGroups = false,
-    withCandidateUsers = false,
-    withoutCandidateUsers = true,
-    includeAssignedTasks = true,
-    processInstanceId = "processInstanceId",
-    processInstanceIdIn = arrayOf("processInstanceIdIn"),
-    executionId = "executionId",
-    activityInstanceIdIn = arrayOf("activityInstanceIdIn"),
-    createTime = Date(),
-    createTimeBefore = Date(),
-    createTimeAfter = Date(),
-    updatedAfter = Date(),
-    key = "key",
-    keyLike = "keyLike",
-    taskDefinitionKeys = arrayOf("taskDefinitionKeys"),
-    processDefinitionKey = "processDefinitionKey",
-    processDefinitionKeys = arrayOf("processDefinitionKeys"),
-    processDefinitionId = "processDefinitionId",
-    processDefinitionName = "processDefinitionName",
-    processDefinitionNameLike = "processDefinitionNameLike",
-    processInstanceBusinessKey = "processInstanceBusinessKey",
-    processInstanceBusinessKeys = arrayOf("processInstanceBusinessKeys"),
-    processInstanceBusinessKeyLike = "processInstanceBusinessKeyLike",
-    dueDate = Date(),
-    dueBefore = Date(),
-    dueAfter = Date(),
-    followUpDate = Date(),
-    followUpBefore = Date(),
-    followUpNullAccepted = false,
-    followUpAfter = Date(),
-    excludeSubtasks = true,
-    suspensionState = SuspensionState.ACTIVE,
-    initializeFormKeys = true,
-    parentTaskId = "parentTaskId",
-    isWithoutDueDate = false,
-    caseDefinitionKey = "caseDefinitionKey",
-    caseDefinitionId = "caseDefinitionId",
-    caseDefinitionName = "caseDefinitionName",
-    caseDefinitionNameLike = "caseDefinitionNameLike",
-    caseInstanceId = "caseInstanceId",
-    caseInstanceBusinessKey = "caseInstanceBusinessKey",
-    caseInstanceBusinessKeyLike = "caseInstanceBusinessKeyLike",
-    caseExecutionId = "caseExecutionId",
-    expressions = mutableMapOf(
-      "processInstanceBusinessKey" to "value",
-      "processInstanceBusinessKeyLike" to "value",
-      "taskAssignee" to "value",
-      "taskAssigneeLike" to "value",
-      "taskOwner" to "value",
-      "taskCandidateGroup" to "value",
-      "taskCandidateUser" to "value",
-      "taskInvolvedUser" to "value",
-      "dueDate" to "value",
-      "dueDateAfter" to "value",
-      "dueDateBefore" to "value",
-      "followUpDate" to "value",
-      "followUpDateAfter" to "value",
-      "followUpDateBefore" to "value",
-      "followUpBeforeOrNotExistent" to "value",
-      "taskCreatedOn" to "value",
-      "taskCreatedAfter" to "value",
-      "taskCreatedBefore" to "value",
-      "taskUpdatedAfter" to "value",
-      "taskCandidateGroupIn" to "value",
-    ),
-    isOrQueryActive = false
+    taskApiClient
   ).apply {
+    this.taskId("taskId")
+    this.taskIdIn("taskIdIn")
+    this.taskName("name")
+    this.taskNameNotEqual("nameNotEqual")
+    this.taskNameLike("nameLike")
+    this.taskNameNotLike("nameNotLike")
+    this.taskDescription("description")
+    this.taskDescriptionLike("descriptionLike")
+    this.taskPriority(1)
+    this.taskMinPriority(1)
+    this.taskMaxPriority(10)
+    this.taskAssignee("assignee")
+    this.taskAssigneeLike("assigneeLike")
+    this.taskAssigneeIn("assigneeIn")
+    this.taskAssigneeNotIn("assingeeNotIn")
+    this.taskInvolvedUser("involvedUser")
+    this.taskOwner("owner")
+    this.taskUnassigned()
+    this.taskAssigned()
+    this.taskDelegationState(DelegationState.PENDING)
+    //this.taskCandidateUser("candidateUser")
+    this.taskCandidateGroup("candidateGroup")
+    this.taskCandidateGroupIn(listOf("candidateGroups"))
+    this.withCandidateGroups()
+    this.withoutCandidateGroups()
+    this.withCandidateUsers()
+    this.withoutCandidateUsers()
+    this.includeAssignedTasks()
+    this.processInstanceId("processInstanceId")
+    this.processInstanceIdIn("processInstanceIdIn")
+    this.executionId("executionId")
+    this.activityInstanceIdIn("activityInstanceIdIn")
+    this.taskCreatedOn(Date())
+    this.taskCreatedAfter(Date())
+    this.taskCreatedBefore(Date())
+    this.taskUpdatedAfter(Date())
+    this.taskDefinitionKey("key")
+    this.taskDefinitionKeyLike("keyLike")
+    this.taskDefinitionKeyIn("taskDefinitionKeys")
+    this.processDefinitionKey("processDefinitionKey")
+    this.processDefinitionKeyIn("processDefinitionKeys")
+    this.processDefinitionId("processDefinitionId")
+    this.processDefinitionName("processDefinitionName")
+    this.processDefinitionNameLike("processDefinitionNameLike")
+    this.processInstanceBusinessKey("processInstanceBusinessKey")
+    this.processInstanceBusinessKeyIn("processInstanceBusinessKeys")
+    this.processInstanceBusinessKeyLike("processInstanceBusinessKeyLike")
+    this.dueDate(Date())
+    this.dueBefore(Date())
+    this.dueAfter(Date())
+    this.followUpDate(Date())
+    this.followUpBefore(Date())
+    this.followUpAfter(Date())
+    this.excludeSubtasks()
+    this.suspended()
+    this.initializeFormKeys()
+    this.taskParentTaskId("parentTaskId")
+    //this.withoutDueDate()
+    this.caseDefinitionKey("caseDefinitionKey")
+    this.caseDefinitionId("caseDefinitionId")
+    this.caseDefinitionName("caseDefinitionName")
+    this.caseDefinitionNameLike("caseDefinitionNameLike")
+    this.caseInstanceId("caseInstanceId")
+    this.caseInstanceBusinessKey("caseInstanceBusinessKey")
+    this.caseInstanceBusinessKeyLike("caseInstanceBusinessKeyLike")
+    this.caseExecutionId("caseExecutionId")
+    this.processInstanceBusinessKeyExpression("processInstanceBusinessKeyExpression")
+    this.processInstanceBusinessKeyLikeExpression("processInstanceBusinessKeyLikeExpression")
+    this.taskAssigneeExpression("taskAssigneeExpression")
+    this.taskAssigneeLikeExpression("taskAssigneeExpression")
+    this.taskOwnerExpression("taskOwnerExpression")
+    this.taskCandidateGroupExpression("taskCandidateGroupExpression")
+    this.taskCandidateGroupInExpression("taskCandidateGroupInExpression")
+    //this.taskCandidateUserExpression("taskCandidateUserExpression")
+    this.taskInvolvedUserExpression("taskInvolvedUserExpression")
+    this.dueDateExpression("dueDateExpression")
+    this.dueAfterExpression("dueAfterExpression")
+    this.dueBeforeExpression("dueBeforeExpression")
+    this.followUpDateExpression("followUpDateExpression")
+    this.followUpAfterExpression("followUpAfterExpression")
+    this.followUpBeforeExpression("followUpBeforeExpression")
+    this.followUpBeforeOrNotExistentExpression("followUpBeforeOrNotExistentExpression")
+    this.taskCreatedOnExpression("taskCreatedOnExpression")
+    this.taskCreatedAfterExpression("taskCreatedAfterExpression")
+    this.taskCreatedBeforeExpression("taskCreatedBeforeExpression")
+    this.taskUpdatedAfterExpression("taskUpdatedAfterExpression")
     this.tenantIdIn("tenantId")
-    this.variableNamesIgnoreCase = true
-    this.variableValuesIgnoreCase = true
+    this.matchVariableNamesIgnoreCase()
+    this.matchVariableValuesIgnoreCase()
     this.variableValueEquals("var", "value")
     this.orderByTaskName().asc()
   }
