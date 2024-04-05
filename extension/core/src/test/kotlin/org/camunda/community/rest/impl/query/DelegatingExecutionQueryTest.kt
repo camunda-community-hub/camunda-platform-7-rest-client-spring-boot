@@ -35,7 +35,13 @@ class DelegatingExecutionQueryTest {
     this.matchVariableNamesIgnoreCase()
     this.matchVariableValuesIgnoreCase()
     this.variableValueLike("var", "value")
+    this.variableValueNotLike("var2", "value2")
     this.variableValueEquals("var2", "value2")
+    this.variableValueNotEquals("var2", "value2")
+    this.variableValueGreaterThan("var2", "value2")
+    this.variableValueGreaterThanOrEqual("var2", "value2")
+    this.variableValueLessThan("var2", "value2")
+    this.variableValueLessThanOrEqual("var2", "value2")
     this.orderByProcessDefinitionKey().asc()
   }
 
