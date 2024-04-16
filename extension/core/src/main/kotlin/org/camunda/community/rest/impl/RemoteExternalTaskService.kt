@@ -15,6 +15,7 @@ import org.camunda.community.rest.client.model.LockExternalTaskDto
 import org.camunda.community.rest.client.model.PriorityDto
 import org.camunda.community.rest.client.model.RetriesDto
 import org.camunda.community.rest.client.model.SetRetriesForExternalTasksDto
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.impl.builder.RemoteExternalTaskQueryBuilder
 import org.camunda.community.rest.impl.builder.RemoteUpdateExternalTaskRetriesBuilder
 import org.camunda.community.rest.impl.query.DelegatingExternalTaskQuery
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Component
 @Qualifier("remote")
 class RemoteExternalTaskService(
   private val externalTaskApiClient: ExternalTaskApiClient,
+  private val camundaRestClientProperties: CamundaRestClientProperties,
   valueTypeResolver: ValueTypeResolver,
   objectMapper: ObjectMapper
 ) : AbstractExternalTaskServiceAdapter() {
@@ -103,10 +105,12 @@ class RemoteExternalTaskService(
   }
 
   override fun fetchAndLock(maxTasks: Int, workerId: String) =
-    RemoteExternalTaskQueryBuilder(externalTaskApiClient, valueMapper, workerId = workerId, maxTasks = maxTasks)
+    RemoteExternalTaskQueryBuilder(externalTaskApiClient, valueMapper, camundaRestClientProperties,
+      workerId = workerId, maxTasks = maxTasks)
 
   override fun fetchAndLock(maxTasks: Int, workerId: String, usePriority: Boolean) =
-    RemoteExternalTaskQueryBuilder(externalTaskApiClient, valueMapper, workerId = workerId, maxTasks = maxTasks, usePriority = usePriority)
+    RemoteExternalTaskQueryBuilder(externalTaskApiClient, valueMapper, camundaRestClientProperties,
+      workerId = workerId, maxTasks = maxTasks, usePriority = usePriority)
 
   override fun extendLock(externalTaskId: String, workerId: String, newLockDuration: Long) {
     externalTaskApiClient.extendLock(externalTaskId, ExtendLockOnExternalTaskDto().apply {

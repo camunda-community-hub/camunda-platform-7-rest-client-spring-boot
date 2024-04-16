@@ -12,6 +12,7 @@ import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.client.model.*
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.impl.query.DelegatingTaskQuery
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Component
 @Qualifier("remote")
 class RemoteTaskService(
   private val taskApiClient: TaskApiClient,
+  private val camundaRestClientProperties: CamundaRestClientProperties,
   objectMapper: ObjectMapper,
   valueTypeResolver: ValueTypeResolver
 ) : AbstractTaskServiceAdapter() {
@@ -152,7 +154,8 @@ class RemoteTaskService(
   }
 
   override fun <T : TypedValue> getVariableTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = taskApiClient.getTaskVariable(taskId, variableName, deserializeValue).body!!
+    val dto = taskApiClient.getTaskVariable(taskId, variableName,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -165,7 +168,8 @@ class RemoteTaskService(
   }
 
   override fun <T : TypedValue> getVariableLocalTyped(taskId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = taskApiClient.getTaskLocalVariable(taskId, variableName, true).body!!
+    val dto = taskApiClient.getTaskLocalVariable(taskId, variableName,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -186,7 +190,8 @@ class RemoteTaskService(
   }
 
   override fun getVariablesTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = taskApiClient.getTaskVariables(taskId, deserializeValues).body!!
+    val variables = taskApiClient.getTaskVariables(taskId,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
       .filter { variableNames.isEmpty() || variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
@@ -208,7 +213,8 @@ class RemoteTaskService(
   }
 
   override fun getVariablesLocalTyped(taskId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = taskApiClient.getTaskLocalVariables(taskId, deserializeValues).body!!
+    val variables = taskApiClient.getTaskLocalVariables(taskId,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
       .filter { variableNames.isEmpty() || variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }

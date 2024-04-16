@@ -39,7 +39,7 @@ import org.camunda.community.rest.client.model.VariableValueDto
  * Create result from DTO.
  * @param valueMapper to to map variable values.
  */
-fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper): MessageCorrelationResultWithVariables {
+fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper, deserializeValues: Boolean = true): MessageCorrelationResultWithVariables {
 
   val execution: ExecutionDto? by lazy { this.execution }
   val processInstance: ProcessInstanceDto? by lazy { this.processInstance }
@@ -54,6 +54,6 @@ fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper): M
       MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESSDEFINITION -> MessageCorrelationResultType.ProcessDefinition
       null -> throw IllegalArgumentException("Result type should not be null")
     }
-    override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!.toMap()) else createVariables()
+    override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!.toMap(), deserializeValues) else createVariables()
   }
 }

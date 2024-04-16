@@ -155,17 +155,15 @@ class DelegatingMessageCorrelationBuilder(
   }
 
   override fun correlateWithResultAndVariables(deserializeValues: Boolean): MessageCorrelationResultWithVariables {
-    // FIXME: check if this flag can be used during de-serialization
-    logger.debug { "Ignoring 'deserializeValues' flag." }
     correlationMessageDto.resultEnabled = true
     correlationMessageDto.variablesInResultEnabled = true
     val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
     return when (result.size) {
       0 -> throw IllegalStateException("No result received")
-      1 -> result[0].fromDto(valueMapper)
+      1 -> result[0].fromDto(valueMapper, deserializeValues)
       else -> {
         logger.warn { "Multiple results received, returning the first one." }
-        result[0].fromDto(valueMapper)
+        result[0].fromDto(valueMapper, deserializeValues)
       }
     }
   }
@@ -173,10 +171,8 @@ class DelegatingMessageCorrelationBuilder(
   override fun correlateAllWithResultAndVariables(deserializeValues: Boolean): MutableList<MessageCorrelationResultWithVariables> {
     correlationMessageDto.resultEnabled = true
     correlationMessageDto.variablesInResultEnabled = true
-    // FIXME: check if this flag can be used during de-serialization
-    logger.debug { "Ignoring 'deserializeValues' flag." }
     val result = messageApiClient.deliverMessage(correlationMessageDto).body!!
-    return result.map { result[0].fromDto(valueMapper) }.toMutableList()
+    return result.map { result[0].fromDto(valueMapper, deserializeValues) }.toMutableList()
   }
 
   override fun correlateAllWithResult(): MutableList<MessageCorrelationResult> {

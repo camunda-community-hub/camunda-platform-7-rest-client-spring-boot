@@ -84,7 +84,7 @@ data class LockedExternalTaskBean(
      * @param dto: REST representation of the locked external task.
      */
     @JvmStatic
-    fun fromDto(dto: LockedExternalTaskDto, valueMapper: ValueMapper): LockedExternalTaskBean =
+    fun fromDto(dto: LockedExternalTaskDto, valueMapper: ValueMapper, deserializeValues: Boolean = false): LockedExternalTaskBean =
       LockedExternalTaskBean(
         id = dto.id,
         topicName = dto.topicName,

@@ -1,7 +1,6 @@
 package org.camunda.community.rest.variables
 
 import jakarta.annotation.PostConstruct
-import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
@@ -39,8 +38,10 @@ class SpinValueMapper(
   override fun mapValue(variableValue: Any): TypedValue =
     if (variableValue is SpinJsonNode) {
       jsonValue(variableValue).create()
+    } else if (variableValue is SpinValue) {
+      variableValue
     } else {
-      untypedValue(variableValue)
+      throw IllegalStateException("Variable value $variableValue not supported")
     }
 
   override fun canHandle(variableValue: Any) = variableValue is SpinValue || variableValue is SpinJsonNode

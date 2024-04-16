@@ -7,6 +7,7 @@ import org.camunda.community.rest.adapter.LockedExternalTaskBean
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.FetchExternalTaskTopicDto
 import org.camunda.community.rest.client.model.FetchExternalTasksDto
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.variables.ValueMapper
 
 /**
@@ -15,9 +16,11 @@ import org.camunda.community.rest.variables.ValueMapper
 class RemoteExternalTaskQueryBuilder(
   private val externalTaskApiClient: ExternalTaskApiClient,
   private val valueMapper: ValueMapper,
+  private val camundaRestClientProperties: CamundaRestClientProperties,
   workerId: String,
   maxTasks: Int,
-  usePriority: Boolean? = null
+  usePriority: Boolean? = null,
+  private var deserializeValues: Boolean = false
 ) : ExternalTaskQueryTopicBuilder {
 
   private val fetchExternalTasksDto = FetchExternalTasksDto().apply {
@@ -37,7 +40,7 @@ class RemoteExternalTaskQueryBuilder(
 
   override fun execute(): List<LockedExternalTask> {
     return externalTaskApiClient.fetchAndLock(fetchExternalTasksDto).body!!
-      .map { LockedExternalTaskAdapter(LockedExternalTaskBean.fromDto(it, valueMapper)) }
+      .map { LockedExternalTaskAdapter(LockedExternalTaskBean.fromDto(it, valueMapper, deserializeValues)) }
   }
 
   override fun variables(vararg variables: String): ExternalTaskQueryTopicBuilder {
@@ -101,7 +104,8 @@ class RemoteExternalTaskQueryBuilder(
   }
 
   override fun enableCustomObjectDeserialization(): ExternalTaskQueryTopicBuilder {
-    currentTopic!!.deserializeValues = true
+    this.deserializeValues = true
+    currentTopic!!.deserializeValues = camundaRestClientProperties.deserializeVariablesOnServer
     return this
   }
 

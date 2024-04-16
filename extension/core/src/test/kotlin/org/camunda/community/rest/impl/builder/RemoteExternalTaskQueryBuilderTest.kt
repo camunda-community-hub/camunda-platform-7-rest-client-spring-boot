@@ -3,6 +3,7 @@ package org.camunda.community.rest.impl.builder
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.junit.Test
@@ -15,9 +16,12 @@ class RemoteExternalTaskQueryBuilderTest {
 
   val externalTaskApiClient = mock<ExternalTaskApiClient>()
 
+  val camundaRestClientProperties = mock<CamundaRestClientProperties>()
+
   val builder = RemoteExternalTaskQueryBuilder(
     externalTaskApiClient,
     valueMapper = ValueMapper(valueTypeResolver = ValueTypeResolverImpl()),
+    camundaRestClientProperties,
     workerId = "workerId",
     maxTasks = 10,
     usePriority = true
