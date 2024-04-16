@@ -51,6 +51,13 @@ class LockedExternalTaskAdapter(
 
   override fun getExtensionProperties(): Map<String, String>? = lockedExternalTaskBean.extensionProperties
 
+  /**
+   * @since 7.21
+   */
+  override fun getCreateTime(): Date {
+    throw UnsupportedOperationException("Create time not supported via REST")
+  }
+
 }
 
 /**

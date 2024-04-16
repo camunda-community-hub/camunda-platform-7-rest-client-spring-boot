@@ -50,6 +50,7 @@ class DelegatingMessageCorrelationBuilder(
     this.localCorrelationKeys = mutableMapOf()
     this.processVariables = mutableMapOf()
     this.processVariablesLocal = mutableMapOf()
+    this.processVariablesToTriggeredScope = mutableMapOf()
   }
 
 
@@ -213,4 +214,18 @@ class DelegatingMessageCorrelationBuilder(
   override fun correlate() {
     messageApiClient.deliverMessage(correlationMessageDto)
   }
+
+  /**
+   * @since 7.21
+   */
+  override fun setVariablesToTriggeredScope(variables: MutableMap<String, Any>): MessageCorrelationBuilder {
+    correlationMessageDto.processVariablesToTriggeredScope.putAll(valueMapper.mapValues(variables))
+    return this
+  }
+
+  override fun setVariableToTriggeredScope(variableName: String, variableValue: Any): MessageCorrelationBuilder {
+    correlationMessageDto.processVariablesToTriggeredScope[variableName] = valueMapper.mapValue(variableValue)
+    return this
+  }
+
 }

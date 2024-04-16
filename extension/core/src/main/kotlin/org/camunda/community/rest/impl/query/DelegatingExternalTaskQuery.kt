@@ -86,6 +86,11 @@ class DelegatingExternalTaskQuery(
   override fun orderByPriority() = this.apply { orderBy("taskPriority") }
   override fun orderByProcessDefinitionId() = this.apply { orderBy("processDefinitionId") }
 
+  /**
+   * @since 7.21
+   */
+  override fun orderByCreateTime(): ExternalTaskQuery = this.apply { orderBy("createTime") }
+
   override fun listPage(firstResult: Int, maxResults: Int): List<ExternalTask> =
     externalTaskApiClient.queryExternalTasks(firstResult, maxResults, fillQueryDto()).body!!.map {
       ExternalTaskAdapter(ExternalTaskBean.fromDto(it))

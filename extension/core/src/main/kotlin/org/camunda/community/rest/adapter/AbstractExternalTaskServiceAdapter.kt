@@ -4,10 +4,12 @@ import org.camunda.bpm.engine.ExternalTaskService
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.externaltask.ExternalTaskQuery
 import org.camunda.bpm.engine.externaltask.ExternalTaskQueryBuilder
+import org.camunda.bpm.engine.externaltask.FetchAndLockBuilder
 import org.camunda.bpm.engine.externaltask.UpdateExternalTaskRetriesSelectBuilder
 import org.camunda.community.rest.impl.RemoteExternalTaskService
 import org.camunda.community.rest.impl.RemoteRuntimeService
 import org.camunda.community.rest.impl.implementedBy
+import java.util.*
 
 /**
  * Adapter for implementing external task service.
@@ -120,4 +122,12 @@ abstract class AbstractExternalTaskServiceAdapter : ExternalTaskService {
   override fun lock(externalTaskId: String, workerId: String, lockDuration: Long) {
     implementedBy(RemoteExternalTaskService::class)
   }
+
+  /**
+   * @since 7.21
+   */
+  override fun fetchAndLock(): FetchAndLockBuilder {
+    TODO("Not yet implemented")
+  }
+
 }

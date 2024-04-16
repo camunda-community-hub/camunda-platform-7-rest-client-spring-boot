@@ -33,6 +33,7 @@ import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.impl.RemoteRuntimeService
 import org.camunda.community.rest.impl.implementedBy
+import java.util.*
 
 /**
  * Adapter for implementing runtime service.
@@ -487,6 +488,20 @@ abstract class AbstractRuntimeServiceAdapter : RuntimeService {
    */
   override fun createMessageCorrelationAsync(messageName: String?): MessageCorrelationAsyncBuilder {
     TODO("Not yet implemented")
+  }
+
+  /**
+   * @since 7.21
+   */
+  override fun deleteProcessInstances(processInstanceIds: MutableList<String>, deleteReason: String?, skipCustomListeners: Boolean,
+                                      externallyTerminated: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean) {
+    implementedBy(RemoteRuntimeService::class)
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?,
+                                           historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?,
+                                           skipCustomListeners: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean): Batch {
+    implementedBy(RemoteRuntimeService::class)
   }
 
 }
