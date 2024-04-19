@@ -48,6 +48,13 @@ class ExternalTaskAdapter(
     throw UnsupportedOperationException("Extension properties not supported via REST")
   }
 
+  /**
+   * @since 7.21
+   */
+  override fun getCreateTime(): Date {
+    throw UnsupportedOperationException("Create time not supported via REST")
+  }
+
 }
 
 /**

@@ -530,15 +530,8 @@ class RemoteRuntimeService(
     }.correlateStartMessage()
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch =
-    BatchAdapter(BatchBean.fromDto(processInstanceApiClient.deleteProcessInstancesAsyncOperation(
-      DeleteProcessInstancesDto()
-        .processInstanceIds(processInstanceIds)
-        .processInstanceQuery(processInstanceQuery?.toDto())
-        .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
-        .deleteReason(deleteReason)
-        .skipSubprocesses(skipSubprocesses)
-        .skipCustomListeners(skipCustomListeners)
-    ).body!!))
+    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses, skipIoMappings = false)
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?) =
     deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
@@ -610,6 +603,28 @@ class RemoteRuntimeService(
   override fun createEventSubscriptionQuery() = DelegatingEventSubscriptionQuery(eventSubscriptionApiClient)
 
   override fun createExecutionQuery() = DelegatingExecutionQuery(executionApiClient)
+
+  override fun deleteProcessInstances(processInstanceIds: MutableList<String>, deleteReason: String?, skipCustomListeners: Boolean,
+                                      externallyTerminated: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean) {
+    processInstanceIds.forEach {
+      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings)
+    }
+  }
+
+  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?,
+                                           historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?,
+                                           skipCustomListeners: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean): Batch =
+    BatchAdapter(BatchBean.fromDto(processInstanceApiClient.deleteProcessInstancesAsyncOperation(
+      DeleteProcessInstancesDto()
+        .processInstanceIds(processInstanceIds)
+        .processInstanceQuery(processInstanceQuery?.toDto())
+        .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
+        .deleteReason(deleteReason)
+        .skipSubprocesses(skipSubprocesses)
+        .skipCustomListeners(skipCustomListeners)
+        .skipIoMappings(skipIoMappings)
+    ).body!!))
 
   private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 

@@ -95,10 +95,16 @@ class DelegatingProcessDefinitionQuery(
 
   override fun processDefinitionKey(processDefinitionKey: String?) = this.apply { this.key = requireNotNull(processDefinitionKey) }
 
+  @Deprecated("Deprecated in Java")
   override fun processDefinitionKeysIn(vararg processDefinitionKeysIn: String): ProcessDefinitionQueryImpl {
     this.keys = processDefinitionKeysIn
     return ProcessDefinitionQueryImpl()
   }
+
+  /**
+   * @since 7.21
+   */
+  override fun processDefinitionKeyIn(vararg processDefinitionKeys: String): ProcessDefinitionQuery = this.apply { this.keys = processDefinitionKeys }
 
   override fun processDefinitionKeyLike(processDefinitionKeyLike: String?) = this.apply { this.keyLike = requireNotNull(processDefinitionKeyLike) }
 
@@ -136,6 +142,7 @@ class DelegatingProcessDefinitionQuery(
     this.versionTag = null
   }
 
+  @Deprecated("Deprecated in Java")
   override fun messageEventSubscription(name: String?) = this.apply { this.messageEventSubscriptionName(name) }
 
   override fun messageEventSubscriptionName(name: String?) = this.apply {

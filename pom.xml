@@ -31,10 +31,10 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <version.java>${java.version}</version.java>
 
-    <camunda.version.base>7.20</camunda.version.base>
+    <camunda.version.base>7.21</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
-    <camunda-bpm-api.version>7.20.0</camunda-bpm-api.version>
+    <camunda-bpm-api.version>7.21.0</camunda-bpm-api.version>
     <spin.version>1.23.0</spin.version>
 
     <spring-boot.version>3.2.5</spring-boot.version>
