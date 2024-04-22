@@ -36,6 +36,14 @@ data class CamundaRestClientProperties(
    * Controls error decoding from HTTP response codes.
    */
   @NestedConfigurationProperty
-  val errorDecoding: ErrorDecoding = ErrorDecoding()
+  val errorDecoding: ErrorDecoding = ErrorDecoding(),
+
+  /**
+   * Controls whether variables should be deserialized on the server side, if requesting deserialization.
+   * For this to work, the classes all have to be known on the server side.
+   * Variables will then be deserialized and again serialized with jackson to send them as JSON.
+   */
+  val deserializeVariablesOnServer: Boolean = false
+
 )
 

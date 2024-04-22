@@ -33,6 +33,7 @@ import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.*
 import org.camunda.community.rest.client.model.*
+import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.community.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
@@ -61,6 +62,7 @@ class RemoteRuntimeService(
   private val incidentApiClient: IncidentApiClient,
   private val variableInstanceApiClient: VariableInstanceApiClient,
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
+  private val camundaRestClientProperties: CamundaRestClientProperties,
   customValueMapper: List<CustomValueMapper>,
   objectMapper: ObjectMapper,
   valueTypeResolver: ValueTypeResolver
@@ -286,20 +288,21 @@ class RemoteRuntimeService(
   }
 
   override fun getVariablesLocal(executionId: String): MutableMap<String, Any?> {
-    return executionApiClient.getLocalExecutionVariables(executionId, false).body!!
+    return executionApiClient.getLocalExecutionVariables(executionId, camundaRestClientProperties.deserializeVariablesOnServer).body!!
       .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
   override fun getVariablesLocal(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
-    return executionApiClient.getLocalExecutionVariables(executionId, false).body!!
+    return executionApiClient.getLocalExecutionVariables(executionId, camundaRestClientProperties.deserializeVariablesOnServer).body!!
       .filter { variableNames.contains(it.key) }
       .mapValues { valueMapper.mapDto<TypedValue>(it.value, true)?.value }
       .toMutableMap()
   }
 
   override fun getVariableLocal(executionId: String, variableName: String): Any? {
-    val dto = executionApiClient.getLocalExecutionVariable(executionId, variableName, false).body!!
+    val dto = executionApiClient.getLocalExecutionVariable(executionId, variableName,
+      camundaRestClientProperties.deserializeVariablesOnServer).body!!
     return valueMapper.mapDto<TypedValue>(dto, true)?.value
   }
 
@@ -307,7 +310,8 @@ class RemoteRuntimeService(
     getVariablesLocalTyped(executionId, true)
 
   override fun getVariablesLocalTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = executionApiClient.getLocalExecutionVariables(executionId, false).body!!
+    val variables = executionApiClient.getLocalExecutionVariables(executionId,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
     return valueMapper.mapDtos(variables, deserializeValues)
   }
 
@@ -317,7 +321,8 @@ class RemoteRuntimeService(
     deserializeValues: Boolean
   ): VariableMap {
     val variables = executionApiClient
-      .getLocalExecutionVariables(executionId, false).body!!
+      .getLocalExecutionVariables(executionId,
+        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
       .filter { variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
@@ -327,7 +332,8 @@ class RemoteRuntimeService(
 
   override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
     val dto = executionApiClient
-      .getLocalExecutionVariable(executionId, variableName, false).body!!
+      .getLocalExecutionVariable(executionId, variableName,
+        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
@@ -355,7 +361,7 @@ class RemoteRuntimeService(
 
   override fun getVariables(executionId: String): MutableMap<String, Any?> {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, false,
+      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId))
       )
       .body!!
@@ -366,7 +372,7 @@ class RemoteRuntimeService(
 
   override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, false,
+      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId))
       )
       .body!!
@@ -381,7 +387,8 @@ class RemoteRuntimeService(
   }
 
   override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = variableInstanceApiClient.queryVariableInstances(null, null, false,
+    val dto = variableInstanceApiClient.queryVariableInstances(null, null,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue,
       VariableInstanceQueryDto().variableName(variableName).executionIdIn(listOf(executionId))
     ).body
     return if (dto.isNullOrEmpty()) null else valueMapper.mapDto(dto[0], deserializeValue)
@@ -391,7 +398,8 @@ class RemoteRuntimeService(
     getVariablesTyped(executionId = executionId, deserializeValues = true)
 
   override fun getVariablesTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = variableInstanceApiClient.queryVariableInstances(null, null, false,
+    val variables = variableInstanceApiClient.queryVariableInstances(null, null,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues,
       VariableInstanceQueryDto().executionIdIn(listOf(executionId))
     ).body!!
     return valueMapper.mapDtos(
@@ -403,7 +411,8 @@ class RemoteRuntimeService(
   }
 
   override fun getVariablesTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = variableInstanceApiClient.queryVariableInstances(null, null, false,
+    val variables = variableInstanceApiClient.queryVariableInstances(null, null,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues,
       VariableInstanceQueryDto().executionIdIn(listOf(executionId))
     ).body!!
     return valueMapper.mapDtos(
@@ -417,7 +426,7 @@ class RemoteRuntimeService(
 
   override fun getVariable(executionId: String, variableName: String): Any? {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, false,
+      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId)).variableName(variableName)
       )
       .body!!

@@ -25,6 +25,7 @@ package org.camunda.community.rest.client
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.ser.std.DateSerializer
 import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer
 import feign.Logger
 import feign.Retryer
@@ -43,6 +44,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 
@@ -86,6 +89,10 @@ class FeignClientConfiguration {
           false,
           DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
           JsonFormat.Shape.STRING
+        ),
+        DateSerializer(
+          false,
+          SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         )
       )
   }
