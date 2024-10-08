@@ -53,8 +53,10 @@ class DelegatingHistoricProcessInstanceQuery(
   var processDefinitionKey: String? = null,
   var processDefinitionKeys: Array<out String>? = null,
   var processInstanceIds: Array<out String>? = null,
+  var incidentIds: Array<out String>? = null,
   var executedActivityIds: Array<out String>? = null,
   var activeActivityIds: Array<out String>? = null,
+  var activityIds: Array<out String>? = null,
   var state: String? = null,
   var caseInstanceId: String? = null,
   var startDateBy: Date? = null,
@@ -79,7 +81,6 @@ class DelegatingHistoricProcessInstanceQuery(
   override fun processDefinitionKey(processDefinitionKey: String?) = this.apply { this.processDefinitionKey = requireNotNull(processDefinitionKey) }
 
   override fun processDefinitionKeyIn(vararg processDefinitionKeyIn: String) = this.apply { this.processDefinitionKeys = processDefinitionKeyIn }
-
 
   override fun processDefinitionKeyNotIn(processDefinitionKeyNotIn: MutableList<String>) = this.apply { this.processKeyNotIn = processDefinitionKeyNotIn.toTypedArray() }
 
@@ -108,6 +109,8 @@ class DelegatingHistoricProcessInstanceQuery(
   override fun incidentMessage(incidentMessage: String?) = this.apply { this.incidentMessage = requireNotNull(incidentMessage) }
 
   override fun incidentMessageLike(incidentMessageLike: String?) = this.apply { this.incidentMessageLike = requireNotNull(incidentMessageLike) }
+
+  override fun incidentIdIn(vararg incidentIds: String) = this.apply { this.incidentIds = incidentIds }
 
   override fun caseInstanceId(caseInstanceId: String?) = this.apply { this.caseInstanceId = requireNotNull(caseInstanceId) }
 
@@ -181,8 +184,9 @@ class DelegatingHistoricProcessInstanceQuery(
     this.startDateOn = requireNotNull(startDateOn)
     this.startDateOnBegin = this.calculateMidnight(startDateOn)
     this.startDateOnEnd = this.calculateBeforeMidnight(startDateOn)
-
   }
+
+  override fun activityIdIn(vararg activityIds: String) = this.apply { this.activityIds = activityIds }
 
   @Deprecated("Deprecated in Java")
   override fun finishDateBy(finishDateBy: Date?) = this.apply { this.finishDateBy = requireNotNull(finishDateBy) }
@@ -244,6 +248,8 @@ class DelegatingHistoricProcessInstanceQuery(
         "withoutTenantId" -> this@DelegatingHistoricProcessInstanceQuery.tenantIdsSet && this@DelegatingHistoricProcessInstanceQuery.tenantIds == null
         "executedActivityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.executedActivityIds?.toList()
         "activeActivityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.activeActivityIds?.toList()
+        "activityIdIn" -> this@DelegatingHistoricProcessInstanceQuery.activityIds?.toList()
+        "incidentIdIn" -> this@DelegatingHistoricProcessInstanceQuery.incidentIds?.toList()
         "active" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_ACTIVE
         "suspended" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_SUSPENDED
         "completed" -> this@DelegatingHistoricProcessInstanceQuery.state == HistoricProcessInstance.STATE_COMPLETED

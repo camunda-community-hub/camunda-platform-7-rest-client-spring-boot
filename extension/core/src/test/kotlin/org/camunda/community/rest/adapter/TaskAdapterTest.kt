@@ -3,11 +3,12 @@ package org.camunda.community.rest.adapter
 import org.assertj.core.api.Assertions
 import org.camunda.community.rest.client.model.CamundaFormRef
 import org.camunda.community.rest.client.model.TaskDto
+import org.camunda.community.rest.client.model.TaskWithAttachmentAndCommentDto
 import org.junit.Test
 import java.time.OffsetDateTime
 
 class TaskAdapterTest {
-  private val dto = TaskDto()
+  private val dto = TaskWithAttachmentAndCommentDto()
     .id("id")
     .tenantId("tenantId")
     .name("name")
@@ -17,7 +18,7 @@ class TaskAdapterTest {
     .lastUpdated(OffsetDateTime.now())
     .due(OffsetDateTime.now())
     .followUp(OffsetDateTime.now())
-    .delegationState(TaskDto.DelegationStateEnum.RESOLVED)
+    .delegationState(TaskWithAttachmentAndCommentDto.DelegationStateEnum.RESOLVED)
     .description("description")
     .executionId("executionId")
     .parentTaskId("parentTaskId")
@@ -31,6 +32,8 @@ class TaskAdapterTest {
     .suspended(false)
     .formKey("formKey")
     .camundaFormRef(CamundaFormRef().key("key").binding("binding").version(1))
+    .attachment(true)
+    .comment(true)
 
 
   @Test

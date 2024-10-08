@@ -114,13 +114,13 @@ class RemoteTaskService(
   }
 
   override fun setOwner(taskId: String, userId: String?) {
-    val task = taskApiClient.getTask(taskId).body!!
-    taskApiClient.updateTask(taskId, task.apply { this.owner = userId })
+    val taskWithAttachmentAndComment = taskApiClient.getTask(taskId).body!!
+    taskApiClient.updateTask(taskId, taskWithAttachmentAndComment.toTaskDto().apply { this.owner = userId })
   }
 
   override fun setPriority(taskId: String, priority: Int) {
-    val task = taskApiClient.getTask(taskId).body!!
-    taskApiClient.updateTask(taskId, task.apply { this.priority = priority })
+    val taskWithAttachmentAndComment = taskApiClient.getTask(taskId).body!!
+    taskApiClient.updateTask(taskId, taskWithAttachmentAndComment.toTaskDto().apply { this.priority = priority })
   }
 
   // Variable handling.

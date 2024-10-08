@@ -12,6 +12,7 @@ import org.camunda.community.rest.client.model.ProcessInstanceQueryDtoSortingInn
 import org.camunda.community.rest.client.model.SortTaskQueryParametersDto
 import org.camunda.community.rest.client.model.TaskDto
 import org.camunda.community.rest.client.model.TaskQueryDtoSortingInner
+import org.camunda.community.rest.client.model.TaskWithAttachmentAndCommentDto
 import org.camunda.community.rest.impl.query.QueryOrderingProperty
 import org.camunda.community.rest.impl.query.Relation
 import org.camunda.community.rest.impl.query.SortDirection
@@ -138,3 +139,34 @@ fun OffsetDateTime?.toDate() = this?.let { Date.from(it.toInstant()) }
  * Extension function to map a java.util.Date to a java.time.OffsetDateTime.
  */
 fun Date?.toOffsetDateTime() = this?.let { OffsetDateTime.ofInstant(it.toInstant(), ZoneOffset.UTC) }
+
+
+/**
+ * Extension function to map the DTO retrieved from the REST API as a response to the one used as request.
+ */
+fun TaskWithAttachmentAndCommentDto.toTaskDto() = TaskDto()
+  .id(this.id)
+  .name(this.name)
+  .assignee(this.assignee)
+  .owner(this.owner)
+  .created(this.created)
+  .due(this.due)
+  .followUp(this.followUp)
+  .delegationState(when (this.delegationState) {
+    TaskWithAttachmentAndCommentDto.DelegationStateEnum.PENDING -> TaskDto.DelegationStateEnum.PENDING
+    TaskWithAttachmentAndCommentDto.DelegationStateEnum.RESOLVED -> TaskDto.DelegationStateEnum.RESOLVED
+    else -> null
+  })
+  .description(this.description)
+  .executionId(this.executionId)
+  .parentTaskId(this.parentTaskId)
+  .priority(this.priority)
+  .processDefinitionId(this.processDefinitionId)
+  .processInstanceId(this.processInstanceId)
+  .caseDefinitionId(this.caseDefinitionId)
+  .caseInstanceId(this.caseInstanceId)
+  .caseExecutionId(this.caseExecutionId)
+  .taskDefinitionKey(this.taskDefinitionKey)
+  .suspended(this.suspended)
+  .formKey(this.formKey)
+  .tenantId(this.tenantId)
