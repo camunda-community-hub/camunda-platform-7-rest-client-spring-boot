@@ -37,7 +37,7 @@
     <camunda-bpm-api.version>7.21.0</camunda-bpm-api.version>
     <spin.version>1.23.0</spin.version>
 
-    <spring-boot.version>3.2.6</spring-boot.version>
+    <spring-boot.version>3.3.4</spring-boot.version>
     <spring-cloud.version>2023.0.3</spring-cloud.version>
 
     <kotlin.version>2.0.20</kotlin.version>
