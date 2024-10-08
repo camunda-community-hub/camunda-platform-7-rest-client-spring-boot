@@ -33,7 +33,7 @@ jobs:
       run: mvn -B -ntp -Pitest verify failsafe:verify
 
     - name: Deploy SNAPSHOT / Release
-      uses: camunda-community-hub/community-action-maven-release@v1.2.1
+      uses: camunda-community-hub/community-action-maven-release@v1.2.2
       id: release
       with:
         maven-release-options: -DskipExamples # avoid publication of examples into public repositories
