@@ -17,27 +17,20 @@ jobs:
     - name: Checks out code
       uses: actions/checkout@v4
 
-    - name: Cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
     - name: Set up Java environment
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: 17
+        cache: maven
         gpg-private-key: ${{ secrets.MAVEN_CENTRAL_GPG_SIGNING_KEY_SEC }}
         gpg-passphrase: MAVEN_CENTRAL_GPG_PASSPHRASE
 
-    - name: Run Maven
-      run: mvn -B clean install # com.mycila:license-maven-plugin:check # disabled for the moment
+    - name: Run Build
+      run: mvn -B -ntp clean install # com.mycila:license-maven-plugin:check # disabled for the moment
 
     - name: Run I-Tests and generate coverage reports
-      run: mvn -B -Pitest verify failsafe:verify
+      run: mvn -B -ntp -Pitest verify failsafe:verify
 
     - name: Deploy SNAPSHOT / Release
       uses: camunda-community-hub/community-action-maven-release@v1.2.1
@@ -71,9 +64,3 @@ jobs:
       uses: codecov/codecov-action@v4.5.0
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-
-    - name: Upload coverage to Codacy
-      uses: codacy/codacy-coverage-reporter-action@v1
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: examples/coverage-report/target/site/jacoco-aggregate/jacoco.xml
