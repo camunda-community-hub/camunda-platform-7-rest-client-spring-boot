@@ -27,6 +27,7 @@ import org.camunda.bpm.engine.form.CamundaFormRef
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.client.model.TaskDto
+import org.camunda.community.rest.client.model.TaskWithAttachmentAndCommentDto
 import org.camunda.community.rest.impl.toDate
 import java.util.*
 
@@ -129,6 +130,17 @@ class TaskAdapter(private val taskBean: TaskBean) : Task {
 
   override fun getLastUpdated() = taskBean.lastUpdated
 
+  override fun getTaskState(): String {
+    TODO("Not yet implemented")
+  }
+
+  override fun setTaskState(taskState: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun hasAttachment(): Boolean = taskBean.hasAttachments ?: throw NotImplementedError("An operation is not implemented: Not yet implemented")
+
+  override fun hasComment(): Boolean = taskBean.hasComments ?: throw NotImplementedError("An operation is not implemented: Not yet implemented")
 }
 
 /**
@@ -156,7 +168,9 @@ data class TaskBean(
   var followUp: Date?,
   var tenantId: String?,
   var delegationState: DelegationState?,
-  val lastUpdated: Date?
+  val lastUpdated: Date?,
+  val hasAttachments: Boolean?,
+  val hasComments: Boolean?
 ) {
   companion object {
     /**
@@ -185,7 +199,38 @@ data class TaskBean(
       parentTaskId = dto.parentTaskId,
       owner = dto.owner,
       taskDefinitionKey = dto.taskDefinitionKey,
-      lastUpdated = dto.lastUpdated.toDate()
+      lastUpdated = dto.lastUpdated.toDate(),
+      hasAttachments = null,
+      hasComments = null
     )
+
+    @JvmStatic
+    fun fromDto(dto: TaskWithAttachmentAndCommentDto) = TaskBean(
+      assignee = dto.assignee,
+      id = dto.id,
+      name = dto.name,
+      caseDefinitionId = dto.caseDefinitionId,
+      caseExecutionId = dto.caseExecutionId,
+      caseInstanceId = dto.caseInstanceId,
+      suspended = dto.suspended,
+      created = dto.created.toDate(),
+      due = dto.due.toDate(),
+      followUp = dto.followUp.toDate(),
+      formKey = dto.formKey,
+      processDefinitionId = dto.processDefinitionId,
+      processInstanceId = dto.processInstanceId,
+      processExecutionId = dto.executionId,
+      delegationState = if (dto.delegationState != null) DelegationState.valueOf(dto.delegationState.name) else null,
+      tenantId = dto.tenantId,
+      description = dto.description,
+      priority = dto.priority,
+      parentTaskId = dto.parentTaskId,
+      owner = dto.owner,
+      taskDefinitionKey = dto.taskDefinitionKey,
+      lastUpdated = dto.lastUpdated.toDate(),
+      hasAttachments = dto.attachment,
+      hasComments = dto.comment
+    )
+
   }
 }

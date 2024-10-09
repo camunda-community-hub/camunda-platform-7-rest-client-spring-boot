@@ -69,6 +69,7 @@ class DelegatingTaskQuery(
   var delegationState: DelegationState? = null,
   var candidateUser: String? = null,
   var candidateGroup: String? = null,
+  var candidateGroupLike: String? = null,
   var candidateGroups: List<String>? = null,
   var withCandidateGroups: Boolean? = null,
   var withoutCandidateGroups: Boolean? = null,
@@ -241,6 +242,11 @@ class DelegatingTaskQuery(
       throw ProcessEngineException("Invalid query usage: cannot set both candidateGroup and candidateUser")
     }
     this.expressions["taskCandidateGroup"] = requireNotNull(taskCandidateGroupExpression)
+  }
+
+  override fun taskCandidateGroupLike(candidateGroupLike: String?) = this.apply {
+    this.candidateGroupLike = requireNotNull(candidateGroupLike)
+    this.expressions.remove("taskCandidateGroup")
   }
 
   override fun taskCandidateGroupIn(taskCandidateGroupIn: List<String>) = this.apply {
@@ -603,6 +609,10 @@ class DelegatingTaskQuery(
 
   override fun endOr() = this
 
+  override fun withCommentAttachmentInfo(): TaskQuery {
+    TODO("Not yet implemented")
+  }
+
   override fun listPage(firstResult: Int, maxResults: Int): List<Task> =
     taskApiClient.queryTasks(firstResult, maxResults, fillQueryDto()).body!!.map { TaskAdapter(TaskBean.fromDto(it)) }
 
@@ -630,6 +640,7 @@ class DelegatingTaskQuery(
         "assigneeNotIn" -> this@DelegatingTaskQuery.assingeeNotIn?.toList()
         "ownerExpression" -> this@DelegatingTaskQuery.expressions["taskOwner"]
         "candidateGroups" -> this@DelegatingTaskQuery.candidateGroups
+        "candidateGroupLike" -> this@DelegatingTaskQuery.expressions["candidateGroupLike"]
         "candidateGroupExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateGroup"]
         "candidateUserExpression" -> this@DelegatingTaskQuery.expressions["taskCandidateUser"]
         "involvedUserExpression" -> this@DelegatingTaskQuery.expressions["taskInvolvedUser"]

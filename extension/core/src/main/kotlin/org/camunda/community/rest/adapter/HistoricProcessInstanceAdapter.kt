@@ -53,6 +53,7 @@ class HistoricProcessInstanceAdapter(private val historicInstanceBean: HistoricI
   override fun getId(): String = historicInstanceBean.id
   override fun getTenantId(): String? = historicInstanceBean.tenantId
   override fun getState(): String? = historicInstanceBean.state
+  override fun getRestartedProcessInstanceId(): String? = historicInstanceBean.restartedProcessInstanceId
 }
 
 /**
@@ -78,7 +79,8 @@ data class HistoricInstanceBean(
   val superCaseInstanceId: String?,
   val caseInstanceId: String?,
   val tenantId: String?,
-  val state: String?
+  val state: String?,
+  val restartedProcessInstanceId: String?
 ) {
   companion object {
     /**
@@ -113,8 +115,9 @@ data class HistoricInstanceBean(
           HistoricProcessInstanceDto.StateEnum.SUSPENDED -> HistoricProcessInstance.STATE_SUSPENDED
           HistoricProcessInstanceDto.StateEnum.EXTERNALLY_TERMINATED -> HistoricProcessInstance.STATE_EXTERNALLY_TERMINATED
           HistoricProcessInstanceDto.StateEnum.INTERNALLY_TERMINATED -> HistoricProcessInstance.STATE_INTERNALLY_TERMINATED
-          else -> throw IllegalStateException("unknow state for historic process instance")
-        }
+          else -> throw IllegalStateException("Unknown state for historic process instance")
+        },
+        restartedProcessInstanceId = processInstance.restartedProcessInstanceId
       )
 
   }

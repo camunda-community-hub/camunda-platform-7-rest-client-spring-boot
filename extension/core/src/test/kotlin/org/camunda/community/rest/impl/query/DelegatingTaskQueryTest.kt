@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.client.model.CountResultDto
 import org.camunda.community.rest.client.model.TaskDto
+import org.camunda.community.rest.client.model.TaskWithAttachmentAndCommentDto
 import org.junit.Test
 
 import org.mockito.kotlin.any
@@ -138,7 +139,7 @@ class DelegatingTaskQueryTest {
   @Test
   fun listPage() {
     whenever(taskApiClient.queryTasks(eq(1), eq(10), any())).thenReturn(
-      ResponseEntity.ok(listOf(TaskDto().id("taskId").name("taskName").priority(1).suspended(false)))
+      ResponseEntity.ok(listOf(TaskWithAttachmentAndCommentDto().id("taskId").name("taskName").priority(1).suspended(false)))
     )
     val result = query.listPage(1, 10)
     assertThat(result).hasSize(1)
