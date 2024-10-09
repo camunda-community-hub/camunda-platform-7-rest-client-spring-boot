@@ -238,8 +238,8 @@
               <replacements>
                 <!-- Produces should only contain text/plain for error details -->
                 <replacement>
-                  <token>@produces = { "application/json", "text/plain" }</token>
-                  <value>@produces = { "text/plain" }</value>
+                  <token>produces = { "application/json", "text/plain" }</token>
+                  <value>produces = { "text/plain" }</value>
                 </replacement>
               </replacements>
             </configuration>
