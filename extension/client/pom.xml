@@ -223,11 +223,31 @@
               </replacements>
             </configuration>
           </execution>
+          <execution>
+            <id>changeProducesForExternalTask</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <basedir>${project.basedir}</basedir>
+              <includes>
+                <include>target/generated-sources/openapi/**/ExternalTaskApi.java</include>
+              </includes>
+              <regex>false</regex>
+              <replacements>
+                <!-- Produces should only contain text/plain for error details -->
+                <replacement>
+                  <token>@produces = { "application/json", "text/plain" }</token>
+                  <value>@produces = { "text/plain" }</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
   <profiles>
     <profile>
       <id>license</id>
