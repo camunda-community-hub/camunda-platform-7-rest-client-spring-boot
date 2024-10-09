@@ -317,7 +317,7 @@ fun QueryOperator.toRestOperator() = when (this) {
   QueryOperator.LESS_THAN_OR_EQUAL -> VariableQueryParameterDto.OperatorEnum.LTEQ
   QueryOperator.LIKE -> VariableQueryParameterDto.OperatorEnum.LIKE
   QueryOperator.NOT_EQUALS -> VariableQueryParameterDto.OperatorEnum.NEQ
-  QueryOperator.NOT_LIKE -> VariableQueryParameterDto.OperatorEnum.NOTLIKE
+  QueryOperator.NOT_LIKE -> VariableQueryParameterDto.OperatorEnum.NOT_LIKE
 }
 
 fun List<QueryVariableValue>.toDto() = if (this.isEmpty()) null else this.map { it.toDto() }

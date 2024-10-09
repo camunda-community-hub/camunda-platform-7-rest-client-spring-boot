@@ -58,11 +58,11 @@ fun IdentityLinkAdapter.toDto(): IdentityLinkDto = IdentityLinkDto(this.type)
 fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSortingInner = ProcessInstanceQueryDtoSortingInner()
     .sortOrder(if (this.direction == SortDirection.DESC) ProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else ProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
     .sortBy(when (this@toProcessInstanceSorting.property) {
-        "instanceId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
-        "definitionId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
-        "definitionKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-        "tenantId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
-        "businessKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
+        "instanceId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCE_ID
+        "definitionId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_ID
+        "definitionKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_KEY
+        "tenantId" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.TENANT_ID
+        "businessKey" -> ProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESS_KEY
         else -> {
           logger.warn { "query property ${this@toProcessInstanceSorting.property} is not supported for sorting" }
           null
@@ -72,15 +72,15 @@ fun QueryOrderingProperty.toProcessInstanceSorting(): ProcessInstanceQueryDtoSor
 fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessInstanceQueryDtoSortingInner = HistoricProcessInstanceQueryDtoSortingInner()
   .sortOrder(if (this.direction == SortDirection.DESC) HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.DESC else HistoricProcessInstanceQueryDtoSortingInner.SortOrderEnum.ASC)
   .sortBy(when (this@toHistoricProcessInstanceSorting.property) {
-    "instanceId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCEID
-    "definitionId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONID
-    "definitionKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-    "definitionName" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONNAME
-    "definitionVersion" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITIONVERSION
-    "tenantId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.TENANTID
-    "businessKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESSKEY
-    "startTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.STARTTIME
-    "endTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.ENDTIME
+    "instanceId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.INSTANCE_ID
+    "definitionId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_ID
+    "definitionKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_KEY
+    "definitionName" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_NAME
+    "definitionVersion" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DEFINITION_VERSION
+    "tenantId" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.TENANT_ID
+    "businessKey" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.BUSINESS_KEY
+    "startTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.START_TIME
+    "endTime" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.END_TIME
     "duration" -> HistoricProcessInstanceQueryDtoSortingInner.SortByEnum.DURATION
     else -> {
       logger.warn { "query property ${this@toHistoricProcessInstanceSorting.property} is not supported for sorting" }
@@ -91,10 +91,10 @@ fun QueryOrderingProperty.toHistoricProcessInstanceSorting(): HistoricProcessIns
 fun QueryOrderingProperty.toExecutionSorting(): ExecutionQueryDtoSortingInner = ExecutionQueryDtoSortingInner()
   .sortOrder(if (this.direction == SortDirection.DESC) ExecutionQueryDtoSortingInner.SortOrderEnum.DESC else ExecutionQueryDtoSortingInner.SortOrderEnum.ASC)
   .sortBy(when (this@toExecutionSorting.property) {
-    "instanceId" -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCEID
-    "definitionId" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONID
-    "definitionKey" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITIONKEY
-    "tenantId" -> ExecutionQueryDtoSortingInner.SortByEnum.TENANTID
+    "instanceId" -> ExecutionQueryDtoSortingInner.SortByEnum.INSTANCE_ID
+    "definitionId" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITION_ID
+    "definitionKey" -> ExecutionQueryDtoSortingInner.SortByEnum.DEFINITION_KEY
+    "tenantId" -> ExecutionQueryDtoSortingInner.SortByEnum.TENANT_ID
     else -> {
       logger.warn { "query property ${this@toExecutionSorting.property} is not supported for sorting" }
       null
@@ -109,11 +109,11 @@ fun QueryOrderingProperty.toTaskSorting(): TaskQueryDtoSortingInner? {
     dtoSorting.apply {
       this.parameters = SortTaskQueryParametersDto().variable(this@toTaskSorting.property).type(this@toTaskSorting.type!!.name)
       this.sortBy = when (this@toTaskSorting.relation) {
-        Relation.TASK -> TaskQueryDtoSortingInner.SortByEnum.TASKVARIABLE
-        Relation.CASE_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.CASEINSTANCEVARIABLE
-        Relation.CASE_EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.CASEEXECUTIONVARIABLE
-        Relation.EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.EXECUTIONVARIABLE
-        Relation.PROCESS_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.PROCESSVARIABLE
+        Relation.TASK -> TaskQueryDtoSortingInner.SortByEnum.TASK_VARIABLE
+        Relation.CASE_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.CASE_INSTANCE_VARIABLE
+        Relation.CASE_EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.CASE_EXECUTION_VARIABLE
+        Relation.EXECUTION -> TaskQueryDtoSortingInner.SortByEnum.EXECUTION_VARIABLE
+        Relation.PROCESS_INSTANCE -> TaskQueryDtoSortingInner.SortByEnum.PROCESS_VARIABLE
       }
     }
   } else dtoSorting.apply {

@@ -51,7 +51,7 @@ fun MessageCorrelationResultWithVariableDto.fromDto(valueMapper: ValueMapper, de
     override fun getProcessInstance(): ProcessInstance? = if (processInstance != null) ProcessInstanceAdapter(instanceBean = InstanceBean.fromProcessInstanceDto(processInstance!!)) else null
     override fun getResultType(): MessageCorrelationResultType = when (resultType) {
       MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION -> MessageCorrelationResultType.Execution
-      MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESSDEFINITION -> MessageCorrelationResultType.ProcessDefinition
+      MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION -> MessageCorrelationResultType.ProcessDefinition
       null -> throw IllegalArgumentException("Result type should not be null")
     }
     override fun getVariables(): VariableMap? = if (variables != null) valueMapper.mapDtos(variables!!.toMap(), deserializeValues) else createVariables()

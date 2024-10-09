@@ -82,7 +82,7 @@ class DelegatingMessageCorrelationBuilderTest {
   fun correlateWithResult() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
       ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESSDEFINITION)))
+        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)))
     )
     val result = builder.correlateWithResult()
     assertThat(result).isNotNull
@@ -93,7 +93,7 @@ class DelegatingMessageCorrelationBuilderTest {
   fun correlateExclusively() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
       ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESSDEFINITION)))
+        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)))
     )
     val result = builder.correlateExclusively()
     assertThat(result).isNotNull
