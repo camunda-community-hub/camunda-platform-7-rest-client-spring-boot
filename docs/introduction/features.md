@@ -43,6 +43,10 @@ The library supports the following features:
 * Delete process definition: `#deleteProcessDefinition()`
 * Update process definition suspension state: `#updateProcessDefinitionSuspensionState()`
 * Get bpmn model instance: `#getBpmnModelInstance()`
+* Activate process definition by key `#activateProcessDefinitionByKey()`
+* Activate process definition by id `#activateProcessDefinitionById()`
+* Suspend process definition by key `#suspendProcessDefinitionByKey()`
+* Suspend process definition by id `#suspendProcessDefinitionById()`
 
 ## TaskService 
 

@@ -104,7 +104,7 @@ class RepositoryServiceDeploymentITest :
       .and()
       .process_is_deployed("test")
     WHEN
-      .process_definition_is_suspended("test")
+      .process_definition_is_suspended_by_key("test")
     THEN
       .process_definition_query_succeeds { query, _ ->
         assertThat(
