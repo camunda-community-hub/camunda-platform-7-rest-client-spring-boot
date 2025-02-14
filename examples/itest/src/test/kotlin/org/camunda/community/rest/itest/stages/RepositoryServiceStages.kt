@@ -115,25 +115,48 @@ class RepositoryServiceActionStage : ActionStage<RepositoryServiceActionStage, R
   fun process_definition_is_suspended_by_key(processDefinitionKey: String) {
     remoteService.suspendProcessDefinitionByKey(processDefinitionKey)
   }
+  fun process_definition_is_suspended_by_key_with_details(processDefinitionKey: String) {
+    remoteService.suspendProcessDefinitionByKey(processDefinitionKey, true, Date())
+  }
 
   fun process_definition_is_activated_by_key(processDefinitionKey: String) {
     remoteService.activateProcessDefinitionByKey(processDefinitionKey)
+  }
+
+  fun process_definition_is_activated_by_key_with_details(processDefinitionKey: String) {
+    remoteService.activateProcessDefinitionByKey(processDefinitionKey, true, Date())
   }
 
   fun process_definition_is_suspended_by_id(processDefinitionId: String) {
     remoteService.suspendProcessDefinitionById(processDefinitionId)
   }
 
+  fun process_definition_is_suspended_by_id_with_details(processDefinitionId: String) {
+    remoteService.suspendProcessDefinitionById(processDefinitionId, true, Date())
+  }
+
   fun process_definition_is_suspended_by_id() {
     remoteService.suspendProcessDefinitionById(processDefinition.id)
+  }
+
+  fun process_definition_is_suspended_by_id_with_details() {
+    remoteService.suspendProcessDefinitionById(processDefinition.id, true, Date())
   }
 
   fun process_definition_is_activated_by_id(processDefinitionId: String) {
     remoteService.activateProcessDefinitionById(processDefinitionId)
   }
 
- fun process_definition_is_activated_by_id() {
+  fun process_definition_is_activated_by_id_with_details(processDefinitionId: String) {
+    remoteService.activateProcessDefinitionById(processDefinitionId, true, Date())
+  }
+
+  fun process_definition_is_activated_by_id() {
     remoteService.activateProcessDefinitionById(processDefinition.id)
+  }
+
+  fun process_definition_is_activated_by_id_with_details() {
+    remoteService.activateProcessDefinitionById(processDefinition.id, true, Date())
   }
 
 }
@@ -166,8 +189,16 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
     remoteService.activateProcessDefinitionByKey(processDefinition.key)
   }
 
+  fun process_definition_is_activated_by_key_with_details() = step {
+    remoteService.activateProcessDefinitionByKey(processDefinition.key, true, Date())
+  }
+
   fun process_definition_is_activated_by_id() = step {
     remoteService.activateProcessDefinitionById(processDefinition.id)
+  }
+
+  fun process_definition_is_activated_by_id_with_details() = step {
+    remoteService.activateProcessDefinitionById(processDefinition.id, true, Date())
   }
 
   fun deployment_query_succeeds(
