@@ -140,3 +140,10 @@ Here are currently implemented methods. The version behind the service name deno
 * `# setRetries`
 * `# setRetriesAsync`
 * `# updateRetries`
+
+## RepositoryService @7.22.2
+
+* `# activateProcessDefinitionByKey()`
+* `# activateProcessDefinitionById()`
+* `# suspendProcessDefinitionByKey()`
+* `# suspendProcessDefinitionById()`

@@ -71,11 +71,11 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun activateProcessDefinitionByKey(processDefinitionKey: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun activateProcessDefinitionByKey(processDefinitionKey: String?, activateProcessInstances: Boolean, activationDate: Date?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getBpmnModelInstance(processDefinitionId: String?): BpmnModelInstance {
@@ -99,11 +99,11 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun suspendProcessDefinitionById(processDefinitionId: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun suspendProcessDefinitionById(processDefinitionId: String?, suspendProcessInstances: Boolean, suspensionDate: Date?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getDecisionDiagram(decisionDefinitionId: String?): InputStream {
@@ -111,11 +111,11 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun activateProcessDefinitionById(processDefinitionId: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun activateProcessDefinitionById(processDefinitionId: String?, activateProcessInstances: Boolean, activationDate: Date?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getResourceAsStreamById(deploymentId: String?, resourceId: String?): InputStream {
@@ -179,11 +179,11 @@ abstract class AbstractRepositoryServiceAdapter : RepositoryService {
   }
 
   override fun suspendProcessDefinitionByKey(processDefinitionKey: String?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun suspendProcessDefinitionByKey(processDefinitionKey: String?, suspendProcessInstances: Boolean, suspensionDate: Date?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    implementedBy(RemoteRepositoryService::class)
   }
 
   override fun getIdentityLinksForProcessDefinition(processDefinitionId: String?): MutableList<IdentityLink> {
