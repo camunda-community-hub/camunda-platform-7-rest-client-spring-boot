@@ -23,7 +23,7 @@
 
 package org.camunda.community.rest.example.processapplication.client
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
@@ -32,6 +32,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.annotation.Scheduled
 import java.time.Instant
 import java.util.*
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * This client could be a spring component, but is built using configuration
@@ -42,7 +44,7 @@ class ProcessClient(
   @Qualifier("remote") private val repositoryService: RepositoryService
 ) {
 
-  companion object : KLogging() {
+  companion object {
     const val RATE = 5_000L // loop with rate of five seconds
   }
 

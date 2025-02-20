@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.bpm.engine.runtime.ProcessInstanceQuery
@@ -45,8 +44,6 @@ class DelegatingProcessInstanceQuery(
   var isProcessDefinitionWithoutTenantId: Boolean = false,
   var isOrQueryActive: Boolean = false
 ) : BaseVariableQuery<ProcessInstanceQuery, ProcessInstance>(), ProcessInstanceQuery {
-
-  companion object : KLogging()
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
 

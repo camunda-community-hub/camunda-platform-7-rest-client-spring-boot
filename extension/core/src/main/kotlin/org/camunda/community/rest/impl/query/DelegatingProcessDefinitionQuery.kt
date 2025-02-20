@@ -22,7 +22,6 @@
  */
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.impl.ProcessDefinitionQueryImpl
 import org.camunda.bpm.engine.repository.ProcessDefinition
@@ -72,8 +71,6 @@ class DelegatingProcessDefinitionQuery(
   var isNotStartableInTasklist: Boolean = false,
   var startablePermissionCheck: Boolean = false
 ) : BaseQuery<ProcessDefinitionQuery, ProcessDefinition>(), ProcessDefinitionQuery {
-
-  companion object : KLogging()
 
   override fun processDefinitionId(processDefinitionId: String?) = this.apply { this.id = requireNotNull(processDefinitionId) }
 

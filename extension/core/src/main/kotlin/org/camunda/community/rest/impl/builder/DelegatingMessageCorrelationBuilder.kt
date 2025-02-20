@@ -23,7 +23,7 @@
 
 package org.camunda.community.rest.impl.builder
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder
 import org.camunda.bpm.engine.runtime.MessageCorrelationResult
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultWithVariables
@@ -33,6 +33,8 @@ import org.camunda.community.rest.client.model.CorrelationMessageDto
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.fromDto
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Correlation builder, collecting all settings in the DTO sent to the REST endpoint later.
  */
@@ -41,8 +43,6 @@ class DelegatingMessageCorrelationBuilder(
   private val messageApiClient: MessageApiClient,
   private val valueMapper: ValueMapper
 ) : MessageCorrelationBuilder {
-
-  companion object : KLogging()
 
   private val correlationMessageDto: CorrelationMessageDto = CorrelationMessageDto().apply {
     this.messageName = messageName

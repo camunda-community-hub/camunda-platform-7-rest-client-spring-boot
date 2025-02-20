@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentQuery
 import org.camunda.community.rest.adapter.DeploymentAdapter
@@ -22,8 +21,6 @@ class DelegatingDeploymentQuery(
   var deploymentAfter: Date? = null,
   var includeDeploymentsWithoutTenantId: Boolean = false
 ) : BaseQuery<DeploymentQuery, Deployment>(), DeploymentQuery {
-
-  companion object : KLogging()
 
   override fun deploymentId(deploymentId: String?) = this.apply { this.deploymentId = requireNotNull(deploymentId) }
 

@@ -22,7 +22,6 @@
  */
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
@@ -118,8 +117,6 @@ class DelegatingTaskQuery(
   val expressions: MutableMap<String, String> = mutableMapOf(),
   var isOrQueryActive: Boolean = false
 ) : BaseVariableQuery<TaskQuery, Task>(), TaskQuery {
-
-  companion object : KLogging()
 
   override fun taskId(taskId: String?) = this.apply { this.taskId = requireNotNull(taskId) }
 

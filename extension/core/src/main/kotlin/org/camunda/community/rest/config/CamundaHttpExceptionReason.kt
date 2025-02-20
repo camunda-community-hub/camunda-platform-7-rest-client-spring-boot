@@ -1,7 +1,9 @@
 package org.camunda.community.rest.config
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Exception reason.
@@ -17,7 +19,7 @@ internal data class CamundaHttpExceptionReason(
   @JsonProperty("code")
   val code: String?
 ) {
-  companion object : KLogging() {
+  companion object {
     private const val FQCN = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)"
 
     /**

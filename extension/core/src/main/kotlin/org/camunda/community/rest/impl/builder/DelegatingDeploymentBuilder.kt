@@ -1,6 +1,6 @@
 package org.camunda.community.rest.impl.builder
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentBuilder
@@ -19,6 +19,8 @@ import java.io.*
 import java.util.*
 import java.util.zip.ZipInputStream
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Deployment builder, collecting all settings in the DTO sent to the REST endpoint later.
  */
@@ -26,7 +28,7 @@ class DelegatingDeploymentBuilder(
   private val deploymentApiClient: DeploymentApiClient
 ) : DeploymentBuilder {
 
-  companion object : KLogging() {
+  companion object {
     val BPMN_RESOURCE_SUFFIXES = arrayOf("bpmn20.xml", "bpmn")
     val DMN_RESOURCE_SUFFIXES = arrayOf("dmn11.xml", "dmn")
     val CMMN_RESOURCE_SUFFIXES = arrayOf("cmmn11.xml", "cmmn10.xml", "cmmn")

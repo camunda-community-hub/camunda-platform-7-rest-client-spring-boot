@@ -3,6 +3,7 @@ name: 'Bug report'
 about: 'Report a bug in camunda-platform-7-rest-client-spring-boot'
 title:
 labels: 'Type: bug'
+type: 'Bug'
 assignees: 
 
 ---

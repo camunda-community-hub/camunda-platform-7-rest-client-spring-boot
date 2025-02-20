@@ -1,10 +1,9 @@
 package org.camunda.community.rest.impl.builder
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.dmn.engine.DmnDecisionResult
 import org.camunda.bpm.engine.BadUserRequestException
-import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.dmn.DecisionEvaluationBuilder
 import org.camunda.bpm.engine.dmn.DecisionsEvaluationBuilder
 import org.camunda.bpm.engine.exception.NotFoundException
@@ -19,6 +18,8 @@ import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionRul
 import org.camunda.community.rest.impl.builder.decision.DelegatingDmnDecisionTableResult
 import org.camunda.community.rest.variables.ValueMapper
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Decision evaluation builder, collecting all settings in the DTO sent to the REST endpoint later.
  */
@@ -29,8 +30,6 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
   private val decisionDefinitionId: String? = null,
   private val decisionDefinitionKey: String? = null
 ) {
-
-  companion object : KLogging()
 
   private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
