@@ -1,6 +1,6 @@
 package org.camunda.community.rest.starter
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.DecisionService
 import org.camunda.bpm.engine.ExternalTaskService
 import org.camunda.bpm.engine.HistoryService
@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+private val logger = KotlinLogging.logger {}
 /**
  * Auto configuration providing client stub if no process engine is available.
  */
@@ -20,7 +21,7 @@ import org.springframework.context.annotation.Configuration
 @AutoConfigureAfter(name = ["org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration"])
 class ProcessEngineClientStubAutoConfiguration {
 
-  companion object : KLogging()
+  companion object
 
   /**
    * Sets up a fake engine if no engine is provided.

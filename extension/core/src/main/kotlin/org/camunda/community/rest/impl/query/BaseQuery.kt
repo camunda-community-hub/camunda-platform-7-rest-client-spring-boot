@@ -1,6 +1,6 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.ProcessEngineException
 import org.camunda.bpm.engine.query.Query
 import org.camunda.bpm.engine.variable.type.ValueType
@@ -15,6 +15,8 @@ import kotlin.reflect.full.starProjectedType
 import kotlin.reflect.full.withNullability
 import kotlin.reflect.jvm.isAccessible
 
+val logger = KotlinLogging.logger {}
+
 /**
  * Base clas for queries delegating to remote calls.
  */
@@ -24,8 +26,6 @@ abstract class BaseQuery<T : Query<*, *>, U>(
   var tenantIds: Array<out String>? = null,
   var tenantIdsSet: Boolean = false,
 ) : Query<T, U> {
-
-  companion object : KLogging()
 
   override fun unlimitedList(): List<U> {
     // FIXME: best approximation so far.
@@ -145,7 +145,7 @@ abstract class BaseQuery<T : Query<*, *>, U>(
    * @return the sorting property
    */
   fun sortProperty(): QueryOrderingProperty? {
-    if (this.orderingProperties.size > 1) BaseQuery.logger.warn { "sorting with more than one property not supported, ignoring all but first" }
+    if (this.orderingProperties.size > 1) logger.warn { "sorting with more than one property not supported, ignoring all but first" }
     return this.orderingProperties.firstOrNull()
   }
 

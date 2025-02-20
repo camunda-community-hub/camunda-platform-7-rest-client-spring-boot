@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.externaltask.ExternalTask
 import org.camunda.bpm.engine.externaltask.ExternalTaskQuery
 import org.camunda.community.rest.adapter.ExternalTaskAdapter
@@ -38,8 +37,6 @@ class DelegatingExternalTaskQuery(
   var lockExpirationBefore: Date? = null,
   var lockExpirationAfter: Date? = null,
 ) : BaseQuery<ExternalTaskQuery, ExternalTask>(), ExternalTaskQuery {
-
-  companion object : KLogging()
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
   override fun processInstanceIdIn(vararg processInstanceIdIn: String) = this.apply { this.processInstanceIds = processInstanceIdIn.toList() }

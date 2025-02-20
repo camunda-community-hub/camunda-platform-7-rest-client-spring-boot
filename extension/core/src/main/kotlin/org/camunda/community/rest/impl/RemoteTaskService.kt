@@ -1,7 +1,7 @@
 package org.camunda.community.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.task.IdentityLink
 import org.camunda.bpm.engine.task.Task
 import org.camunda.bpm.engine.task.TaskQuery
@@ -18,6 +18,8 @@ import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
+private val logger = KotlinLogging.logger {}
+
 /**
  * Remote implementation of Camunda Core TaskService API, delegating
  * all request over HTTP to a remote Camunda Engine.
@@ -30,8 +32,6 @@ class RemoteTaskService(
   objectMapper: ObjectMapper,
   valueTypeResolver: ValueTypeResolver
 ) : AbstractTaskServiceAdapter() {
-
-  companion object : KLogging()
 
   private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 

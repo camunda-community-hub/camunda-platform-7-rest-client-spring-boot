@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.runtime.Incident
 import org.camunda.bpm.engine.runtime.IncidentQuery
 import org.camunda.community.rest.adapter.IncidentAdapter
@@ -29,8 +28,6 @@ class DelegatingIncidentQuery(
   var configuration: String? = null,
   var jobDefinitionIds: Array<out String>? = null
 ) : BaseQuery<IncidentQuery, Incident>(), IncidentQuery {
-
-  companion object : KLogging()
 
   override fun incidentId(incidentId: String?) = this.apply { this.id = requireNotNull(incidentId) }
 

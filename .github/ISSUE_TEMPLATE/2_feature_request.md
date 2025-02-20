@@ -3,6 +3,7 @@ name: 'Feature request'
 about: 'Suggest a feature for camunda-platform-7-rest-client-spring-boot'
 title:
 labels: 'Type: enhancement'
+type: 'Feature'
 assignees: 
 
 ---

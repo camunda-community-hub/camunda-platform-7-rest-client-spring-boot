@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.BadUserRequestException
 import org.camunda.bpm.engine.history.HistoricProcessInstance
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
@@ -69,8 +68,6 @@ class DelegatingHistoricProcessInstanceQuery(
   var finishDateOnEnd: Date? = null,
   var isOrQueryActive: Boolean = false
 ) : BaseVariableQuery<HistoricProcessInstanceQuery, HistoricProcessInstance>(), HistoricProcessInstanceQuery {
-
-  companion object : KLogging()
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
 

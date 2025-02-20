@@ -1,6 +1,6 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.exception.NotValidException
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ExecutionQuery
@@ -11,8 +11,6 @@ import org.camunda.community.rest.client.model.ExecutionQueryDto
 import org.camunda.community.rest.impl.toExecutionSorting
 import org.camunda.community.rest.variables.toDto
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
@@ -31,8 +29,6 @@ class DelegatingExecutionQuery(
   var incidentMessageLike: String? = null,
   val eventSubscriptions: MutableList<EventSubscriptionQueryValue> = mutableListOf()
 ) : BaseVariableQuery<ExecutionQuery, Execution>(), ExecutionQuery {
-
-  companion object : KLogging()
 
   override fun processDefinitionKey(processDefinitionKey: String?) = this.apply { this.processDefinitionKey = requireNotNull(processDefinitionKey) }
 

@@ -1,6 +1,6 @@
 package org.camunda.community.rest.impl
 
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.task.DelegationState
 import org.camunda.bpm.engine.task.Task
 import org.camunda.community.rest.adapter.IdentityLinkAdapter

@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import mu.KLogging
 import org.camunda.bpm.engine.runtime.EventSubscription
 import org.camunda.bpm.engine.runtime.EventSubscriptionQuery
 import org.camunda.community.rest.adapter.EventSubscriptionAdapter
@@ -8,7 +7,6 @@ import org.camunda.community.rest.adapter.EventSubscriptionBean
 import org.camunda.community.rest.client.api.EventSubscriptionApiClient
 import org.springframework.web.bind.annotation.RequestParam
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.declaredMemberProperties
 
 class DelegatingEventSubscriptionQuery(
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
@@ -20,8 +18,6 @@ class DelegatingEventSubscriptionQuery(
   var activityId: String? = null,
   var includeEventSubscriptionsWithoutTenantId: Boolean = false
 ) : BaseQuery<EventSubscriptionQuery, EventSubscription>(), EventSubscriptionQuery {
-
-  companion object : KLogging()
 
   override fun eventSubscriptionId(eventSubscriptionId: String?) = this.apply { this.eventSubscriptionId = requireNotNull(eventSubscriptionId) }
 

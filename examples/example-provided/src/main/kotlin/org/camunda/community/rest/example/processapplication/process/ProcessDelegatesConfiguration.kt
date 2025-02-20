@@ -23,12 +23,14 @@
 
 package org.camunda.community.rest.example.processapplication.process
 
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.delegate.JavaDelegate
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.Instant
 import java.util.*
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Configure delegates for the process service tasks.
@@ -36,7 +38,6 @@ import java.util.*
 @Configuration
 class ProcessDelegatesConfiguration {
 
-  companion object : KLogging()
 
   /**
    * Logging delegate.

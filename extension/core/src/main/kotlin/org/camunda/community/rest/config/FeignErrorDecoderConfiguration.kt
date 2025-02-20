@@ -23,12 +23,13 @@
 package org.camunda.community.rest.config
 
 import feign.codec.ErrorDecoder
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.community.rest.exception.RemoteProcessEngineException
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+private val logger = KotlinLogging.logger {}
 
 /**
  * Configures error decoding.
@@ -41,8 +42,6 @@ import org.springframework.context.annotation.Configuration
 class FeignErrorDecoderConfiguration(
   val camundaRestClientProperties: CamundaRestClientProperties
 ) {
-
-  companion object : KLogging()
 
   /**
    * Provides an error decoder bean for feign.
