@@ -59,10 +59,15 @@ class FeignClientConfiguration {
   @Bean
   @ConditionalOnMissingBean
   fun camundaFeignEncoder(
+    standardconverters: ObjectFactory<HttpMessageConverters>,
     feignEncoderProperties: FeignEncoderProperties,
     customizers: ObjectProvider<HttpMessageConverterCustomizer>
   ): Encoder {
-    return SpringEncoder(camundaMultipartFormEncoder(), camunda7feignHttpMessageConverters(), feignEncoderProperties, customizers)
+
+    val x = standardconverters.`object`
+    val myConverters = camunda7feignHttpMessageConverters()
+
+    return SpringEncoder(camundaMultipartFormEncoder(), myConverters, feignEncoderProperties, customizers)
   }
 
   @Bean
