@@ -34,6 +34,7 @@ import org.camunda.community.rest.client.KeyChangingSpringManyMultipartFilesWrit
 import org.springframework.beans.factory.ObjectFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.cloud.openfeign.EnableFeignClients
@@ -44,7 +45,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
@@ -57,16 +57,21 @@ import java.time.format.DateTimeFormatter
 class FeignClientConfiguration {
 
   @Bean
-  fun feignEncoder(
-    messageConverters: ObjectFactory<HttpMessageConverters>,
+  @ConditionalOnMissingBean
+  fun camundaFeignEncoder(
+    standardconverters: ObjectFactory<HttpMessageConverters>,
     feignEncoderProperties: FeignEncoderProperties,
     customizers: ObjectProvider<HttpMessageConverterCustomizer>
   ): Encoder {
-    return SpringEncoder(camundaMultipartFormEncoder(), messageConverters, feignEncoderProperties, customizers)
+
+    val x = standardconverters.`object`
+    val myConverters = camunda7feignHttpMessageConverters()
+
+    return SpringEncoder(camundaMultipartFormEncoder(), myConverters, feignEncoderProperties, customizers)
   }
 
   @Bean
-  fun retryer() = Retryer.Default()
+  fun camundaRetryer() = Retryer.Default()
 
   /**
    * Configure feign logger level if corresponding property is set.
@@ -76,12 +81,13 @@ class FeignClientConfiguration {
   fun feignLoggerLevel(@Value("\${feign.client.config.default.loggerLevel}") defaultLogLevel: String) =
     Logger.Level.valueOf(defaultLogLevel)
 
+
   /**
-   * Configure the jackson2 object mapper to use correct date format pattern.
+   * Create an object factory for the message converter with the customized object mapper.
    */
-  @Bean
-  fun jsonCustomizer(): Jackson2ObjectMapperBuilder {
-    return Jackson2ObjectMapperBuilder.json()
+  fun camunda7feignHttpMessageConverters(): ObjectFactory<HttpMessageConverters> {
+    val builder = Jackson2ObjectMapperBuilder
+      .json()
       .featuresToDisable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
       .serializers(
         OffsetDateTimeSerializer(
@@ -95,15 +101,13 @@ class FeignClientConfiguration {
           SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
         )
       )
+    return ObjectFactory<HttpMessageConverters> {
+      HttpMessageConverters(
+        listOf(
+          MappingJackson2HttpMessageConverter(builder.build())
+        )
+      )
+    }
   }
-
-  /**
-   + Configure the message converter with the customized object mapper.
-   */
-  @Bean
-  fun mappingJackson2HttpMessageConverter(jackson2ObjectMapperBuilder: Jackson2ObjectMapperBuilder): MappingJackson2HttpMessageConverter {
-    return MappingJackson2HttpMessageConverter(jackson2ObjectMapperBuilder.build())
-  }
-
 }
 
