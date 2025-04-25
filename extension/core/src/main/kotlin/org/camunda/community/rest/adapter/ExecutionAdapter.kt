@@ -34,6 +34,9 @@ class ExecutionAdapter(private val executionBean: ExecutionBean) : Execution {
   override fun getId(): String = executionBean.id
   override fun isSuspended(): Boolean = executionBean.suspended
   override fun getTenantId(): String? = executionBean.tenantId
+  override fun getProcessDefinitionKey(): String? {
+    throw UnsupportedOperationException("Process definition key not supported via REST")
+  }
 }
 
 /**

@@ -62,6 +62,8 @@ class ProcessInstanceAdapter(private val instanceBean: InstanceBean) : ProcessIn
   override fun isEnded(): Boolean = instanceBean.ended
   override fun getId(): String = instanceBean.id
   override fun getTenantId(): String? = instanceBean.tenantId
+  override fun getProcessDefinitionKey(): String? = instanceBean.processDefinitionKey
+
 }
 
 /**
@@ -76,6 +78,7 @@ data class InstanceBean(
   val businessKey: String? = null,
   val tenantId: String? = null,
   val processDefinitionId: String? = null,
+  val processDefinitionKey: String? = null,
   val rootProcessInstanceId: String? = null
 ) {
   companion object {
@@ -101,7 +104,8 @@ data class InstanceBean(
         } else {
           processInstance.id
         },
-        processDefinitionId = processInstance.definitionId
+        processDefinitionId = processInstance.definitionId,
+        processDefinitionKey = processInstance.definitionKey
       )
 
     /**
