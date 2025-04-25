@@ -384,4 +384,30 @@ abstract class AbstractTaskServiceAdapter : TaskService {
     TODO("Not yet implemented")
   }
 
+  // 7.23
+
+  override fun updateTaskComment(p0: String?, p1: String?, p2: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun deleteTaskComment(p0: String?, p1: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun deleteTaskComments(p0: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun updateProcessInstanceComment(p0: String?, p1: String?, p2: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun deleteProcessInstanceComment(p0: String?, p1: String?) {
+    TODO("Not yet implemented")
+  }
+
+  override fun deleteProcessInstanceComments(p0: String?) {
+    TODO("Not yet implemented")
+  }
+
 }

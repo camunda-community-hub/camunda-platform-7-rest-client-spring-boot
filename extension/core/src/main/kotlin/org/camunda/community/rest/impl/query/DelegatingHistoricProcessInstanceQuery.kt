@@ -20,6 +20,7 @@ import kotlin.reflect.jvm.isAccessible
 class DelegatingHistoricProcessInstanceQuery(
   private val historyApiClient: HistoryApiClient,
   var processInstanceId: String? = null,
+  var processInstanceIdNotIn: Array<out String>? = null,
   var processDefinitionId: String? = null,
   var processDefinitionName: String? = null,
   var processDefinitionNameLike: String? = null,
@@ -66,12 +67,15 @@ class DelegatingHistoricProcessInstanceQuery(
   var startDateOnEnd: Date? = null,
   var finishDateOnBegin: Date? = null,
   var finishDateOnEnd: Date? = null,
-  var isOrQueryActive: Boolean = false
+  var isOrQueryActive: Boolean = false,
+  var withJobsRetrying: Boolean = false
 ) : BaseVariableQuery<HistoricProcessInstanceQuery, HistoricProcessInstance>(), HistoricProcessInstanceQuery {
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
 
   override fun processInstanceIds(processInstanceIds: MutableSet<String>?) = this.apply { this.processInstanceIds = requireNotNull(processInstanceIds).toTypedArray() }
+
+  override fun processInstanceIdNotIn(vararg processInstanceIdNotIn: String) = this.apply { this.processInstanceIdNotIn = processInstanceIdNotIn }
 
   override fun processDefinitionId(processDefinitionId: String?) = this.apply { this.processDefinitionId = requireNotNull(processDefinitionId) }
 
@@ -217,6 +221,8 @@ class DelegatingHistoricProcessInstanceQuery(
 
   override fun internallyTerminated() = this.apply { this.state = HistoricProcessInstance.STATE_INTERNALLY_TERMINATED }
 
+  override fun withJobsRetrying() = this.apply { this.withJobsRetrying = true }
+
   override fun or() = this.apply {this.isOrQueryActive = true }
 
   override fun endOr() = this
@@ -234,6 +240,7 @@ class DelegatingHistoricProcessInstanceQuery(
     dtoPropertiesByName.forEach {
       val valueToSet = when (it.key) {
         "processInstanceIds" -> this@DelegatingHistoricProcessInstanceQuery.processInstanceIds?.toList()
+        "processInstanceIdNotIn" -> this@DelegatingHistoricProcessInstanceQuery.processInstanceIdNotIn?.toList()
         "processDefinitionKeyIn" -> this@DelegatingHistoricProcessInstanceQuery.processDefinitionKeys?.toList()
         "processDefinitionKeyNotIn" -> this@DelegatingHistoricProcessInstanceQuery.processKeyNotIn?.toList()
         "processInstanceBusinessKey" -> this@DelegatingHistoricProcessInstanceQuery.businessKey

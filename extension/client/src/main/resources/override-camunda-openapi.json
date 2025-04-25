@@ -18,15 +18,6 @@
             "description": "Time of task creation. \n[Default format](https://docs.camunda.org/manual/7.22/reference/rest/overview/date-format/)\n`yyyy-MM-dd'T'HH:mm:ss.SSSZ`."
           }
         }
-      },
-      "TaskDto": {
-        "properties":{
-          "taskState": {
-            "type": "string",
-            "nullable": true,
-            "description": "The task's state."
-          }
-        }
       }
     }
   }
