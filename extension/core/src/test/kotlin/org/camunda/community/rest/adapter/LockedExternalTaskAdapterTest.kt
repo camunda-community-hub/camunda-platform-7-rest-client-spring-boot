@@ -25,6 +25,7 @@ package org.camunda.community.rest.adapter
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.impl.toRequiredDate
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.junit.Test
@@ -53,6 +54,7 @@ class LockedExternalTaskAdapterTest {
     .topicName("topicName")
     .variables(mapOf("var1" to VariableValueDto().type("integer").value(1)))
     .workerId("workerId")
+    .createTime(OffsetDateTime.now())
 
   @Test
   fun `should delegate`() {
@@ -64,8 +66,9 @@ class LockedExternalTaskAdapterTest {
   @Test
   fun `should construct from dto`() {
     val bean = LockedExternalTaskBean.fromDto(dto, ValueMapper(valueTypeResolver = ValueTypeResolverImpl()))
-    assertThat(bean).usingRecursiveComparison().ignoringFields("lockExpirationTime", "variables").isEqualTo(dto)
+    assertThat(bean).usingRecursiveComparison().ignoringFields("lockExpirationTime", "variables", "createTime").isEqualTo(dto)
     assertThat(bean.lockExpirationTime).isEqualTo(dto.lockExpirationTime.toInstant())
     assertThat(bean.variables).containsEntry("var1", 1)
+    assertThat(bean.createTime).isEqualTo(dto.createTime.toRequiredDate())
   }
 }
