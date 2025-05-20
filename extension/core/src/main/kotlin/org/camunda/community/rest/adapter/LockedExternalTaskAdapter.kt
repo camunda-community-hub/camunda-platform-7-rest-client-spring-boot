@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.externaltask.LockedExternalTask
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.impl.toDate
+import org.camunda.community.rest.impl.toRequiredDate
 import org.camunda.community.rest.variables.ValueMapper
 import java.util.*
 
@@ -51,13 +52,7 @@ class LockedExternalTaskAdapter(
 
   override fun getExtensionProperties(): Map<String, String>? = lockedExternalTaskBean.extensionProperties
 
-  /**
-   * @since 7.21
-   */
-  override fun getCreateTime(): Date {
-    throw UnsupportedOperationException("Create time not supported via REST")
-  }
-
+  override fun getCreateTime(): Date = lockedExternalTaskBean.createTime
 }
 
 /**
@@ -82,7 +77,8 @@ data class LockedExternalTaskBean(
   val businessKey: String?,
   val priority: Long,
   val variables: VariableMap?,
-  val extensionProperties: Map<String, String>?
+  val extensionProperties: Map<String, String>?,
+  val createTime: Date,
 ) {
 
   companion object {
@@ -111,7 +107,8 @@ data class LockedExternalTaskBean(
         priority = dto.priority,
         businessKey = dto.businessKey,
         variables = dto.variables?.let { valueMapper.mapDtos(it) },
-        extensionProperties = dto.extensionProperties
+        extensionProperties = dto.extensionProperties,
+        createTime = dto.createTime.toRequiredDate(),
       )
   }
 

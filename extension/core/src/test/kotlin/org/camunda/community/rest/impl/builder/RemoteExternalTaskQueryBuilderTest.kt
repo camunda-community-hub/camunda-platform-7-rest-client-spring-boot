@@ -11,6 +11,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.http.ResponseEntity
+import java.time.OffsetDateTime
 
 class RemoteExternalTaskQueryBuilderTest {
 
@@ -30,7 +31,7 @@ class RemoteExternalTaskQueryBuilderTest {
   @Test
   fun execute() {
     whenever(externalTaskApiClient.fetchAndLock(any())).thenReturn(
-      ResponseEntity.ok(listOf(LockedExternalTaskDto().id("id").priority(1)))
+      ResponseEntity.ok(listOf(LockedExternalTaskDto().id("id").priority(1).createTime(OffsetDateTime.now())))
     )
     val result = builder
       .topic("topic", 5000)

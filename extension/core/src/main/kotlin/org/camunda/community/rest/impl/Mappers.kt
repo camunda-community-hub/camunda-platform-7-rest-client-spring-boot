@@ -136,6 +136,11 @@ fun QueryOrderingProperty.toExternalTaskSorting(): ExternalTaskQueryDtoSortingIn
 fun OffsetDateTime?.toDate() = this?.let { Date.from(it.toInstant()) }
 
 /**
+ * Extension function to map a java.time.OffsetDateTime to a java.util.Date.
+ */
+fun OffsetDateTime.toRequiredDate() = this.let { Date.from(it.toInstant()) }
+
+/**
  * Extension function to map a java.util.Date to a java.time.OffsetDateTime.
  */
 fun Date?.toOffsetDateTime() = this?.let { OffsetDateTime.ofInstant(it.toInstant(), ZoneOffset.UTC) }
