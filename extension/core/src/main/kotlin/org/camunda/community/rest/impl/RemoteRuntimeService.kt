@@ -23,7 +23,6 @@
 package org.camunda.community.rest.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.*

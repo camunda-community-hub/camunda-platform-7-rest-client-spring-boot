@@ -1,6 +1,5 @@
 package org.camunda.community.rest.impl.query
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.exception.NotValidException
 import org.camunda.bpm.engine.runtime.Execution
 import org.camunda.bpm.engine.runtime.ExecutionQuery
@@ -9,7 +8,7 @@ import org.camunda.community.rest.adapter.ExecutionBean
 import org.camunda.community.rest.client.api.ExecutionApiClient
 import org.camunda.community.rest.client.model.ExecutionQueryDto
 import org.camunda.community.rest.impl.toExecutionSorting
-import org.camunda.community.rest.variables.toDto
+import org.camunda.community.rest.impl.toDto
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible

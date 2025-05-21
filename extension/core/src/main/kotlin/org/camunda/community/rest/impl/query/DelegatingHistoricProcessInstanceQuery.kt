@@ -8,7 +8,7 @@ import org.camunda.community.rest.adapter.HistoricProcessInstanceAdapter
 import org.camunda.community.rest.client.api.HistoryApiClient
 import org.camunda.community.rest.client.model.HistoricProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toHistoricProcessInstanceSorting
-import org.camunda.community.rest.variables.toDto
+import org.camunda.community.rest.impl.toDto
 import java.util.*
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties

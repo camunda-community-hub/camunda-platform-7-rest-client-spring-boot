@@ -36,12 +36,10 @@ class SpinValueMapper(
   }
 
   override fun mapValue(variableValue: Any): TypedValue =
-    if (variableValue is SpinJsonNode) {
-      jsonValue(variableValue).create()
-    } else if (variableValue is SpinValue) {
-      variableValue
-    } else {
-      throw IllegalStateException("Variable value $variableValue not supported")
+    when (variableValue) {
+      is SpinJsonNode -> jsonValue(variableValue).create()
+      is SpinValue -> variableValue
+      else -> throw IllegalStateException("Variable value $variableValue not supported")
     }
 
   override fun canHandle(variableValue: Any) = variableValue is SpinValue || variableValue is SpinJsonNode
@@ -55,7 +53,9 @@ class SpinValueMapper(
 
   override fun deserializeValue(variableValue: SerializableValue): SerializableValue =
     if (variableValue is JsonValue) {
-      jsonValue(JSON(variableValue.valueSerialized)).create().apply { (this as JsonValueImpl).valueSerialized = variableValue.valueSerialized }
+      jsonValue(JSON(variableValue.valueSerialized))
+        .create()
+        .apply { (this as JsonValueImpl).valueSerialized = variableValue.valueSerialized }
     } else {
       variableValue
     }

@@ -22,7 +22,7 @@
  */
 
 @file:JvmName("PrettyPrinter")
-package org.camunda.community.rest.variables
+package org.camunda.community.rest.util
 
 import org.camunda.bpm.engine.repository.ProcessDefinition
 import org.camunda.bpm.engine.runtime.*
