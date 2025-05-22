@@ -9,8 +9,8 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>camunda-platform-7-rest-client-spring-boot-starter-provided</artifactId>
-  <name>camunda-platform-7-rest-client-spring-boot/starter-provided</name>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-starter-feign</artifactId>
+  <name>camunda-platform-7-rest-client-spring-boot/starter-feign</name>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -18,7 +18,12 @@
     <!-- Extension -->
     <dependency>
       <groupId>org.camunda.community.rest</groupId>
-      <artifactId>camunda-platform-7-rest-client-spring-boot</artifactId>
+      <artifactId>camunda-platform-7-rest-client-spring-boot-openapi</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.community.rest</groupId>
+      <artifactId>camunda-platform-7-rest-client-variables</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -35,5 +40,17 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
     </dependency>
+
+    <!-- Variable Commons -->
+    <dependency>
+      <groupId>org.camunda.commons</groupId>
+      <artifactId>camunda-commons-typed-values</artifactId>
+    </dependency>
+    <!-- SPIN -->
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+    </dependency>
+
   </dependencies>
 </project>

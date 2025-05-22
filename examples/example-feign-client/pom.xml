@@ -24,19 +24,16 @@
     <!-- Include feign clients -->
     <dependency>
       <groupId>org.camunda.community.rest</groupId>
-      <artifactId>camunda-platform-7-rest-client-spring-boot-openapi</artifactId>
+      <artifactId>camunda-platform-7-rest-client-spring-boot-starter-feign</artifactId>
       <version>${project.version}</version>
     </dependency>
 
+    <!--
     <dependency>
       <groupId>org.camunda.bpm.springboot</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-openfeign</artifactId>
-    </dependency>
+    -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

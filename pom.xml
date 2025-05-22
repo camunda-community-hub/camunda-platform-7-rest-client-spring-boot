@@ -63,6 +63,7 @@
     <module>extension/core</module>
     <module>extension/starter</module>
     <module>extension/starter-provided</module>
+    <module>extension/starter-feign</module>
   </modules>
 
   <dependencyManagement>

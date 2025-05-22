@@ -48,7 +48,7 @@ class FeignErrorDecoderConfiguration {
    * @param camundaRestClientProperties properties for configuration.
    */
   @Bean
-  fun errorDecoder(camundaRestClientProperties: CamundaRestClientProperties): ErrorDecoder {
+  fun defaultErrorDecoder(camundaRestClientProperties: CamundaRestClientProperties): ErrorDecoder {
     return CamundaHttpFeignErrorDecoder(
       httpCodes = camundaRestClientProperties.errorDecoding.httpCodes,
       defaultDecoder = ErrorDecoder.Default(),

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import feign.Logger
 import org.camunda.community.rest.client.EnableCamundaFeignClients
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat
  * Starts example application.
  */
 fun main(args: Array<String>) {
-  runApplication<CamundaRestClientExampleApplication>(*args)
+  runApplication<CamundaRestClientFeignExampleApplication>(*args)
 }
 
 /**
@@ -25,7 +24,7 @@ fun main(args: Array<String>) {
 @SpringBootApplication
 @EnableCamundaFeignClients
 @EnableScheduling
-class CamundaRestClientExampleApplication {
+class CamundaRestClientFeignExampleApplication {
   // full debug of feign client
   @Bean
   fun feignLoggerLevel(): Logger.Level {
