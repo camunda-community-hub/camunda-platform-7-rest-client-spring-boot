@@ -48,7 +48,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
-
 /**
  * Basic configuration of the feign client.
  */
@@ -62,7 +61,6 @@ class FeignClientConfiguration {
     feignEncoderProperties: FeignEncoderProperties,
     customizers: ObjectProvider<HttpMessageConverterCustomizer>
   ): Encoder {
-
     val myConverters = camunda7feignHttpMessageConverters()
     return SpringEncoder(camundaMultipartFormEncoder(), myConverters, feignEncoderProperties, customizers)
   }
@@ -85,7 +83,10 @@ class FeignClientConfiguration {
   fun camunda7feignHttpMessageConverters(): ObjectFactory<HttpMessageConverters> {
     val builder = Jackson2ObjectMapperBuilder
       .json()
-      .featuresToDisable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+      .featuresToDisable(
+        DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE,
+        SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
+      )
       .serializers(
         OffsetDateTimeSerializer(
           OffsetDateTimeSerializer.INSTANCE,
