@@ -37,6 +37,13 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- SPIN -->
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Feign -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>

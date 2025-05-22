@@ -33,6 +33,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty
 @ConfigurationProperties("camunda.rest.client")
 data class CamundaRestClientProperties(
   /**
+   * Enables (by default `true`) or disables the entire configuration of the extension.
+   */
+  val enabled: Boolean = true,
+  /**
    * Controls error decoding from HTTP response codes.
    */
   @NestedConfigurationProperty

@@ -38,15 +38,17 @@ import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.springframework.stereotype.Component
 import java.io.ObjectInputStream
 import java.util.*
 
 /**
  * Class responsible for mapping variables from and to DTO representations.
  */
+@Component
 class ValueMapper(
   private val objectMapper: ObjectMapper = jacksonObjectMapper(),
-  private val valueTypeResolver: ValueTypeResolver,
+  private val valueTypeResolver: ValueTypeResolver = ValueTypeResolverImpl(),
   private val customValueMapper: List<CustomValueMapper> = emptyList()
 ) {
   /**

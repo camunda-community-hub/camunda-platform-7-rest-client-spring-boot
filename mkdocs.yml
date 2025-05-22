@@ -98,8 +98,9 @@ nav:
     - Further Outlook: introduction/further-outlook.md
   - User Guide:
     - Overview: user-guide/index.md
-    - Support Martix: user-guide/support-matrix.md
+    - Support Matrix: user-guide/support-matrix.md
     - Examples: user-guide/examples.md
+    - Configuration: user-guide/configuration.md
     - Logging: user-guide/logging.md
     - Error-Decoding: user-guide/error-decoding.md
   - Developer Guide:

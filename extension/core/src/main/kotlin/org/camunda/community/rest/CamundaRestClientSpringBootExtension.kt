@@ -22,13 +22,22 @@
  */
 package org.camunda.community.rest
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.community.rest.client.FeignClientConfiguration
+import org.camunda.community.rest.config.CamundaRemoteServicesConfiguration
 import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.config.FeignErrorDecoderConfiguration
 import org.camunda.community.rest.impl.*
+import org.camunda.community.rest.variables.CustomValueMapper
 import org.camunda.community.rest.variables.SpinValueMapper
+import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
@@ -37,20 +46,41 @@ import org.springframework.context.annotation.Import
  * Basic configuration of the extension.
  */
 @Configuration
+@ConditionalOnProperty(prefix = "camunda.rest.client", name = ["enabled"], havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(CamundaRestClientProperties::class)
-@Import(
-  RemoteExternalTaskService::class,
-  RemoteHistoryService::class,
-  RemoteRepositoryService::class,
-  RemoteRuntimeService::class,
-  RemoteTaskService::class,
-  RemoteDecisionService::class,
+@ImportAutoConfiguration(
   FeignClientConfiguration::class,
   FeignErrorDecoderConfiguration::class,
-  SpinValueMapper::class,
-  ValueTypeResolverImpl::class
+  CamundaRemoteServicesConfiguration::class,
 )
-class CamundaRestClientSpringBootExtension
+class CamundaRestClientSpringBootExtension {
+
+  @Bean
+  @ConditionalOnMissingBean(ValueMapper::class)
+  fun defaultValueTypeResolver(): ValueTypeResolver {
+    return ValueTypeResolverImpl()
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(ValueMapper::class)
+  fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver): SpinValueMapper {
+    return SpinValueMapper(valueTypeResolver = valueTypeResolver)
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(ValueMapper::class)
+  fun defaultValueMapper(
+    objectMapper: ObjectMapper,
+    valueTypeResolver: ValueTypeResolver,
+    customValueMappers: List<CustomValueMapper>
+  ): ValueMapper {
+    return ValueMapper(
+      objectMapper = objectMapper,
+      valueTypeResolver = valueTypeResolver,
+      customValueMapper = customValueMappers
+    )
+  }
+}
 
 
 /**
