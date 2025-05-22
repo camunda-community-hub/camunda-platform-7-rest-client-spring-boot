@@ -3,7 +3,7 @@ package org.camunda.community.rest.itest
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.community.rest.client.api.TaskApiClient
-import org.camunda.community.rest.itest.SpringBootPropertiesITest.CustomValueMapperConfiguration.Companion.VALUE_MAPPER
+import org.camunda.community.rest.itest.SpringBootConfigurationITest.CustomValueMapperConfiguration.Companion.VALUE_MAPPER
 import org.camunda.community.rest.itest.stages.TestApplication
 import org.camunda.community.rest.variables.ValueMapper
 import org.junit.jupiter.api.Nested
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.test.context.ActiveProfiles
 
-internal class SpringBootPropertiesITest {
+internal class SpringBootConfigurationITest {
 
   @Configuration
   class CustomValueMapperConfiguration {
