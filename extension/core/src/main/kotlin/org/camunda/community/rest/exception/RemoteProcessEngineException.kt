@@ -30,4 +30,7 @@ import org.camunda.bpm.engine.ProcessEngineException
  * @param message message of the exception.
  * @param cause cause.
  */
-class RemoteProcessEngineException(override val message: String, override val cause: Throwable? = null) : ProcessEngineException(message, cause)
+class RemoteProcessEngineException(
+  override val message: String,
+  override val cause: Throwable? = null
+) : ProcessEngineException(message, cause)

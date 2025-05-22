@@ -1,10 +1,9 @@
-package org.camunda.community.rest.config
+package org.camunda.community.rest.exception
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
-
 /**
  * Exception reason.
  * @constructor constructs the reason.
@@ -20,16 +19,15 @@ internal data class CamundaHttpExceptionReason(
   val code: String?
 ) {
   companion object {
-    private const val FQCN = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)"
+    private val FULL_QUALIFIED_CLASS_NAME = "(([a-zA-Z_\$][a-zA-Z\\d_\$]*\\.)*[a-zA-Z_\$][a-zA-Z\\d_\$]*): (.*)".toRegex()
 
     /**
      * Factory method to construct a reason from string response of the server.
-     * @param string response.
+     * @param message response.
      * @return instance or <code>null</code>.
      */
     fun fromMessage(message: String): CamundaHttpExceptionReason? {
-      val match = FQCN.toRegex().find(message)
-
+      val match = FULL_QUALIFIED_CLASS_NAME.find(message)
       return if (match != null) {
         val (clazz, _, remaining) = match.destructured
           CamundaHttpExceptionReason(clazz = clazz, message = remaining, code = null)

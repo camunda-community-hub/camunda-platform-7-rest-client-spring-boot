@@ -23,50 +23,43 @@
 package org.camunda.community.rest.config
 
 import feign.codec.ErrorDecoder
-import io.github.oshai.kotlinlogging.KotlinLogging
+import org.camunda.community.rest.exception.CamundaHttpFeignErrorDecoder
+import org.camunda.community.rest.exception.ClientExceptionFactory
 import org.camunda.community.rest.exception.RemoteProcessEngineException
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-private val logger = KotlinLogging.logger {}
-
 /**
  * Configures error decoding.
- * @constructor creates the configuration.
- * @param camundaRestClientProperties properties for configuration.
  */
 @Configuration
-// camunda.rest.client.error-encoding.enabled is still listed due to backwards compatibility
-@ConditionalOnProperty("camunda.rest.client.error-encoding.enabled", "camunda.rest.client.error-decoding.enabled", matchIfMissing = true)
-class FeignErrorDecoderConfiguration(
-  val camundaRestClientProperties: CamundaRestClientProperties
-) {
+@ConditionalOnProperty(
+  name = [
+    "camunda.rest.client.error-encoding.enabled", // is still listed due to backwards compatibility
+    "camunda.rest.client.error-decoding.enabled"
+  ],
+  matchIfMissing = true
+)
+class FeignErrorDecoderConfiguration {
 
   /**
    * Provides an error decoder bean for feign.
+   * @param camundaRestClientProperties properties for configuration.
    */
   @Bean
-  fun errorDecoder(): ErrorDecoder {
-
-    val default = ErrorDecoder.Default()
-    val errorDecoding = camundaRestClientProperties.errorDecoding
-
-    return ErrorDecoder { methodKey, response ->
-      when {
-        errorDecoding.httpCodes.contains(response.status()) -> {
-          CamundaFeignExceptionDecoder(response).decodeException()?.let {
-            if (errorDecoding.wrapExceptions && it !is RemoteProcessEngineException) {
-              RemoteProcessEngineException("REST-CLIENT-002 Error during remote Camunda engine invocation", it)
-            } else {
-              it
-            }
-          } ?: RemoteProcessEngineException(message = "REST-CLIENT-001 Error during remote Camunda engine invocation of $methodKey: ${response.reason()}")
-        }
-        else -> default.decode(methodKey, response)
+  fun errorDecoder(camundaRestClientProperties: CamundaRestClientProperties): ErrorDecoder {
+    return CamundaHttpFeignErrorDecoder(
+      httpCodes = camundaRestClientProperties.errorDecoding.httpCodes,
+      defaultDecoder = ErrorDecoder.Default(),
+      wrapExceptions = camundaRestClientProperties.errorDecoding.wrapExceptions,
+      targetExceptionType = RemoteProcessEngineException::class.java,
+      exceptionFactory = object : ClientExceptionFactory<RemoteProcessEngineException> {
+        override fun create(message: String, cause: Throwable?) = RemoteProcessEngineException(message, cause)
       }
-    }
+    )
   }
 }
+
 
 
