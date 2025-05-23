@@ -12,13 +12,13 @@
         <meta name="author" content="Camunda OSS Developers">
       
       
-        <link rel="canonical" href="https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/introduction/features.html">
+        <link rel="canonical" href="https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/configuration.html">
       
       
-        <link rel="prev" href="motivation.html">
+        <link rel="prev" href="examples.html">
       
       
-        <link rel="next" href="solution.html">
+        <link rel="next" href="logging.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Features - Camunda REST Client Spring Boot</title>
+        <title>Configuration - Camunda REST Client Spring Boot</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#general" class="md-skip">
+        <a href="#spring-boot-configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -119,7 +119,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Features
+              Configuration
             
           </span>
         </div>
@@ -260,13 +260,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="index.html" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../introduction/index.html" class="md-tabs__link">
           
   
   
@@ -282,11 +280,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../user-guide/index.html" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="index.html" class="md-tabs__link">
           
   
   
@@ -418,31 +418,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -455,7 +450,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Introduction
@@ -469,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="index.html" class="md-nav__link">
+      <a href="../introduction/index.html" class="md-nav__link">
         
   
   
@@ -492,12 +487,205 @@
   
   
     <li class="md-nav__item">
-      <a href="motivation.html" class="md-nav__link">
+      <a href="../introduction/motivation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     Motivation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/features.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/solution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Solution
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/further-outlook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Further Outlook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="support-matrix.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Support Matrix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Examples
     
   </span>
   
@@ -527,7 +715,7 @@
   
   
   <span class="md-ellipsis">
-    Features
+    Configuration
     
   </span>
   
@@ -535,12 +723,12 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="features.html" class="md-nav__link md-nav__link--active">
+      <a href="configuration.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Features
+    Configuration
     
   </span>
   
@@ -561,63 +749,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#general" class="md-nav__link">
+  <a href="#spring-boot-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      General
+      Spring Boot Configuration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#runtimeservice" class="md-nav__link">
+  <a href="#customization-and-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      RuntimeService
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#repositoryservice" class="md-nav__link">
-    <span class="md-ellipsis">
-      RepositoryService
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#taskservice" class="md-nav__link">
-    <span class="md-ellipsis">
-      TaskService
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#externaltaskservice" class="md-nav__link">
-    <span class="md-ellipsis">
-      ExternalTaskService
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#historyservice" class="md-nav__link">
-    <span class="md-ellipsis">
-      HistoryService
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#decisionservice" class="md-nav__link">
-    <span class="md-ellipsis">
-      DecisionService
+      Customization and usage
     </span>
   </a>
   
@@ -639,195 +782,7 @@
   
   
     <li class="md-nav__item">
-      <a href="solution.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Solution
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="further-outlook.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Further Outlook
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    User Guide
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            User Guide
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user-guide/index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Overview
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user-guide/support-matrix.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Support Matrix
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user-guide/examples.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Examples
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user-guide/configuration.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Configuration
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../user-guide/logging.html" class="md-nav__link">
+      <a href="logging.html" class="md-nav__link">
         
   
   
@@ -850,7 +805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/error-decoding.html" class="md-nav__link">
+      <a href="error-decoding.html" class="md-nav__link">
         
   
   
@@ -988,97 +943,50 @@
   
 
 
-  <h1>Features</h1>
+  <h1>Configuration</h1>
 
-<p>The library supports the following features:</p>
-<h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">#</a></h2>
-<ul>
-<li>Usage of Open Feign library to allow for high-customizable REST client (generated from camunda openapi definition) </li>
-<li>Provides a SpringBoot starter for usage in standalone client mode</li>
-<li>Provides a SpringBoot starter for usage inside a process application</li>
-<li>Decode HTTP error response and simulate exceptions, as if they are thrown locally by the service.</li>
-<li>Implemented Services: <code>RuntimeService</code>, <code>RepositoryService</code>, <code>TaskService</code>, <code>ExternalTaskService</code>, <code>HistoryService</code></li>
-</ul>
-<h2 id="runtimeservice">RuntimeService<a class="headerlink" href="#runtimeservice" title="Permanent link">#</a></h2>
-<ul>
-<li>Process start by key: <code>#startProcessInstanceByKey()</code></li>
-<li>Process start by id: <code>#startProcessInstanceById()</code></li>
-<li>Process instance query: <code>#createProcessInstanceQuery()</code></li>
-<li>Message correlation: <code>#correlateMessage()</code>, <code>#createMessageCorrelation()</code></li>
-<li>Signal event: <code>#signalEventReceived()</code>, <code>#createSignalEvent()</code></li>
-<li>Execution trigger: <code>#signal()</code></li>
-<li>Read variables: <code>#getVariable()</code>,<code>#getVariables()</code>, <code>#getVariableTyped()</code>, <code>#getVariablesTyped()</code></li>
-<li>Read local variables: <code>#getVariableLocal()</code>,<code>#getVariablesLocal()</code>, <code>#getVariableLocalTyped()</code>, <code>#getVariablesLocalTyped()</code></li>
-<li>Write variables: <code>#setVariable()</code>,<code>#setVariables()</code>, <code>#setVariableTyped()</code>, <code>#setVariablesTyped()</code></li>
-<li>Delete variables: <code>#removeVariable()</code>,<code>#removeVariables()</code></li>
-<li>Write local variables: <code>#setVariableLocal()</code>,<code>#setVariablesLocal()</code>, <code>#setVariableLocalTyped()</code>, <code>#setVariablesLocalTyped()</code></li>
-<li>Delete local variables: <code>#removeVariableLocal()</code>,<code>#removeVariablesLocal()</code></li>
-<li>Incident query: <code>#createIncidentQuery()</code></li>
-<li>Create/Resolve incidents: <code>#createIncident()</code>, <code>#resolveIncident()</code></li>
-<li>Annotations for incidents: <code>#setAnnotationForIncidentById()</code>, <code>#clearAnnotationForIncidentById()</code></li>
-<li>Activate/Suspend process instances by definition key: <code>#suspendProcessInstanceByProcessDefinitionKey()</code>, <code>#activateProcessInstanceByProcessDefinitionKey()</code></li>
-<li>Activate/Suspend process instances by definition id: <code>#suspendProcessInstanceByProcessDefinitionId()</code>, <code>#activateProcessInstanceByProcessDefinitionId()</code></li>
-<li>Activate/Suspend process instances: <code>#suspendProcessInstanceById()</code>, <code>#activateProcessInstanceById()</code></li>
-<li>Update process instance suspension state: <code>#updateProcessInstanceSuspensionState()</code></li>
-<li>Delete process instances: <code>#deleteProcessInstance()</code>, <code>#deleteProcessInstanceIfExists()</code>, <code>#deleteProcessInstances()</code>, <code>#deleteProcessInstancesIfExists()</code>, <code>#deleteProcessInstancesAsync()</code></li>
-<li>Create event subscription query: <code>#createEventSubscriptionQuery()</code></li>
-<li>Create execution query: <code>#createExecutionQuery()</code></li>
-</ul>
-<h2 id="repositoryservice">RepositoryService<a class="headerlink" href="#repositoryservice" title="Permanent link">#</a></h2>
-<ul>
-<li>Query for process definitions: <code>#createProcessDefinitionQuery()</code></li>
-<li>History time to live: <code>#updateDecisionDefinitionHistoryTimeToLive()</code>, <code>#updateProcessDefinitionHistoryTimeToLive()</code></li>
-<li>Create deployment: <code>#createDeployment()</code></li>
-<li>Delete deployment: <code>#deleteDeployment()</code>, <code>#deleteDeploymentCascade()</code></li>
-<li>Deployment query: <code>#createDeploymentQuery()</code></li>
-<li>Delete process definition: <code>#deleteProcessDefinition()</code></li>
-<li>Update process definition suspension state: <code>#updateProcessDefinitionSuspensionState()</code></li>
-<li>Get bpmn model instance: <code>#getBpmnModelInstance()</code></li>
-<li>Activate process definition by key <code>#activateProcessDefinitionByKey()</code></li>
-<li>Activate process definition by id <code>#activateProcessDefinitionById()</code></li>
-<li>Suspend process definition by key <code>#suspendProcessDefinitionByKey()</code></li>
-<li>Suspend process definition by id <code>#suspendProcessDefinitionById()</code></li>
-</ul>
-<h2 id="taskservice">TaskService<a class="headerlink" href="#taskservice" title="Permanent link">#</a></h2>
-<ul>
-<li>Query for tasks: <code>#createTaskQuery()</code></li>
-<li>Task assignment: <code>#claim()</code>, <code>#defer()</code>, <code>#resolve()</code>, <code>#addCandidateGroup()</code>, <code>#deleteCandidateGroup()</code>, <code>#addCadidateUser()</code>, <code>#deleteCandidateUser()</code></li>
-<li>Identity links: <code>#addUserIdentityLink()</code>, <code>#addGroupIdentityLink()</code>, <code>#deleteUserIdentityLink()</code>, <code>#deleteGroupIdentityLink()</code>,</li>
-<li>Task completion: <code>#complete()</code></li>
-<li>Task deletion: <code>#deleteTasks()</code></li>
-<li>Task attributes: <code>#setPriority()</code>, <code>#setOwner()</code>, <code>#setAssignee()</code>, <code>#saveTask()</code></li>
-<li>Handling Errors and Escalation: <code>#handleBpmnError()</code>, <code>#handleEscalation()</code></li>
-<li>Read variables: <code>#getVariable()</code>,<code>#getVariables()</code>, <code>#getVariableTyped()</code>, <code>#getVariablesTyped()</code></li>
-<li>Read local variables: <code>#getVariableLocal()</code>,<code>#getVariablesLocal()</code>, <code>#getVariableLocalTyped()</code>, <code>#getVariablesLocalTyped()</code></li>
-<li>Write variables: <code>#setVariable()</code>,<code>#setVariables()</code>, <code>#setVariableTyped()</code>, <code>#setVariablesTyped()</code></li>
-<li>Delete variables: <code>#removeVariable()</code>,<code>#removeVariables()</code></li>
-<li>Write local variables: <code>#setVariableLocal()</code>,<code>#setVariablesLocal()</code>, <code>#setVariableLocalTyped()</code>, <code>#setVariablesLocalTyped()</code></li>
-<li>Delete local variables: <code>#removeVariableLocal()</code>,<code>#removeVariablesLocal()</code></li>
-</ul>
-<h2 id="externaltaskservice">ExternalTaskService<a class="headerlink" href="#externaltaskservice" title="Permanent link">#</a></h2>
-<p>We are not aiming to replace the existing <a href="https://docs.camunda.org/manual/latest/user-guide/ext-client/">External Task Client</a>,
-but still provide an alternative implementation for some methods.</p>
-<ul>
-<li>Complete a task by id: <code>#complete()</code></li>
-<li>Handle BPMN Errors: <code>#handleBpmnError()</code></li>
-<li>Handle failures: <code>#handleFailure()</code></li>
-<li>Fetch and lock: <code>#fetchAndLock()</code></li>
-<li>Handling locks: <code>#extendLock()</code>,<code>#lock()</code>,<code>#unlock()</code></li>
-<li>Setting priority: <code>#setPriority()</code></li>
-<li>Getting topic names: <code>#getTopicNames()</code></li>
-<li>Getting error details: <code>#getExternalTaskErrorDetails()</code></li>
-<li>Querying external tasks: <code>#createExternalTaskQuery()</code></li>
-<li>Setting retries: <code>#setRetries()</code>,<code>#setRetriesAsync()</code>,<code>#updateRetries()</code></li>
-</ul>
-<h2 id="historyservice">HistoryService<a class="headerlink" href="#historyservice" title="Permanent link">#</a></h2>
-<ul>
-<li>Historic process instance query: <code>#createHistoricProcessInstanceQuery()</code></li>
-</ul>
-<h2 id="decisionservice">DecisionService<a class="headerlink" href="#decisionservice" title="Permanent link">#</a></h2>
-<ul>
-<li>Evaluate decision: <code>#evaluateDecisionById()</code>,<code>#evaluateDecisionByKey()</code></li>
-<li>Evaluate decision table: <code>#evaluateDecisionTableById()</code>,<code>#evaluateDecisionTableByKey()</code>.<code>#evaluateDecisionTableByKeyAndVersion()</code></li>
-</ul>
+<h2 id="spring-boot-configuration">Spring Boot Configuration<a class="headerlink" href="#spring-boot-configuration" title="Permanent link">#</a></h2>
+<p>Configuration of the extension can be performed by setting up the following configuration properties in your <code>application.yaml</code>:
+<div class="highlight"><pre><span></span><code><span class="nt">camunda</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rest</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">client</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># flag to switch the entire extension on/off</span>
+<span class="w">      </span><span class="nt">error-decoding</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">     </span><span class="c1"># enable error decoding</span>
+<span class="w">        </span><span class="nt">http-codes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">400, 500</span><span class="w"> </span><span class="c1"># what HTTP status codes should be considered as errors</span>
+<span class="w">        </span><span class="nt">wrap-exceptions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># wrap exceptions into ProcessEngineExceptions</span>
+<span class="w">      </span><span class="nt">deserialize-variables-on-server</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># should variables be deserialized on process engine side (require classes to be on classpath)</span>
+</code></pre></div></p>
+<h2 id="customization-and-usage">Customization and usage<a class="headerlink" href="#customization-and-usage" title="Permanent link">#</a></h2>
+<p>By default, the extension will provide you with the remote implementations of Camunda Java API (see <a href="support-matrix.html">Support Matrix</a>).
+To use them, you can inject them into your code by:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Autowired</span>
+<span class="nd">@Qualifier</span><span class="p">(</span><span class="s">&quot;remote&quot;</span><span class="p">)</span>
+<span class="kd">private</span><span class="w"> </span><span class="n">RuntimeService</span><span class="w"> </span><span class="n">runtimeService</span><span class="p">;</span>
+</code></pre></div>
+<p>In addition, there are beans responsible for variable mapping: <code>ValueMapper</code>, <code>SpinValueMapper</code> and <code>ValueTypeResolver</code> which will be 
+constructed if missing. Since the <code>ValueMapper</code> requires a Jackson ObjectMapper to operate, you may want to provide your own by putting
+this code into your configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Bean</span>
+<span class="nd">@Qualifier</span><span class="p">(</span><span class="s">&quot;customCamundaRestClientObjectMapper&quot;</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">ObjectMapper</span><span class="w"> </span><span class="nf">myCustomObjectMapper</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ObjectMapper</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ObjectMapper</span><span class="p">();</span>
+<span class="w">  </span><span class="c1">// custom setup of your object mapper</span>
+<span class="w">  </span><span class="n">om</span><span class="p">.</span><span class="na">enabled</span><span class="p">(...);</span><span class="w"> </span>
+<span class="w">  </span><span class="n">om</span><span class="p">.</span><span class="na">register</span><span class="p">(...);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">om</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span>
+
+<span class="nd">@Bean</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">ValueMapper</span><span class="w"> </span><span class="nf">myCustomValueMapper</span><span class="p">(</span>
+<span class="w">  </span><span class="nd">@Qualifier</span><span class="p">(</span><span class="s">&quot;customCamundaRestClientObjectMapper&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="n">ObjectMapper</span><span class="w"> </span><span class="n">myCustomObjectMapper</span><span class="p">,</span>
+<span class="w">  </span><span class="n">ValueTypeResolver</span><span class="w"> </span><span class="n">valueTypeResolver</span><span class="p">,</span>
+<span class="w">  </span><span class="n">List</span><span class="o">&lt;</span><span class="n">CustomValueMapper</span><span class="o">&gt;</span><span class="w"> </span><span class="n">customValueMappers</span>
+<span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ValueMapper</span><span class="p">(</span><span class="n">myCustomObjectMapper</span><span class="p">,</span><span class="w"> </span><span class="n">valueTypeResolver</span><span class="p">,</span><span class="w"> </span><span class="n">customValueMappers</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 
