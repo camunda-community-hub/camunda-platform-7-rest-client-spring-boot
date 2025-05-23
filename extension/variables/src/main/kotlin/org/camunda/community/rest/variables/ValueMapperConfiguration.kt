@@ -32,13 +32,13 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class ValueMapperConfiguration {
   @Bean
-  @ConditionalOnMissingBean(ValueMapper::class)
+  @ConditionalOnMissingBean(ValueTypeResolver::class)
   fun defaultValueTypeResolver(): ValueTypeResolver {
     return ValueTypeResolverImpl()
   }
 
   @Bean
-  @ConditionalOnMissingBean(ValueMapper::class)
+  @ConditionalOnMissingBean(SpinValueMapper::class)
   fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver): SpinValueMapper {
     return SpinValueMapper(valueTypeResolver = valueTypeResolver)
   }

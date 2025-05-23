@@ -32,8 +32,6 @@ this code into your configuration:
 
 ```java
 
-import java.beans.BeanProperty;
-
 @Bean
 @Qualifier("customCamundaRestClientObjectMapper")
 public ObjectMapper myCustomObjectMapper() {
