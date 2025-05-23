@@ -28,6 +28,7 @@ import com.tngtech.jgiven.annotation.ScenarioState
 import com.tngtech.jgiven.integration.spring.JGivenStage
 import io.toolisticon.testing.jgiven.step
 import org.assertj.core.api.Assertions.assertThat
+import org.awaitility.Awaitility.await
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.repository.Deployment
 import org.camunda.bpm.engine.repository.DeploymentQuery
@@ -182,7 +183,7 @@ class RepositoryServiceAssertStage : AssertStage<RepositoryServiceAssertStage, R
     processDefinitionQueryAssertions: (ProcessDefinitionQuery, AssertStage<*, RepositoryService>) -> Unit = { _, _ -> }
   ): RepositoryServiceAssertStage = step {
     val query = remoteService.createProcessDefinitionQuery()
-    processDefinitionQueryAssertions(query, this)
+    await().untilAsserted { processDefinitionQueryAssertions(query, this) }
   }
 
   fun process_definition_is_activated_by_key() = step {
