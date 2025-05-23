@@ -25,6 +25,8 @@ package org.camunda.community.rest.variables
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
+import org.camunda.spin.plugin.variable.value.SpinValue
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,6 +41,7 @@ class ValueMapperConfiguration {
 
   @Bean
   @ConditionalOnMissingBean(SpinValueMapper::class)
+  @ConditionalOnClass(SpinValue::class)
   fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver): SpinValueMapper {
     return SpinValueMapper(valueTypeResolver = valueTypeResolver)
   }
