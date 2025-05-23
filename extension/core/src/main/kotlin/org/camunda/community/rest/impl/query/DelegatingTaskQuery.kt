@@ -33,7 +33,7 @@ import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.client.model.TaskQueryDto
 import org.camunda.community.rest.impl.toOffsetDateTime
 import org.camunda.community.rest.impl.toTaskSorting
-import org.camunda.community.rest.variables.toDto
+import org.camunda.community.rest.impl.toDto
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.reflect.KMutableProperty1

@@ -9,8 +9,8 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>camunda-platform-7-rest-client-spring-boot</artifactId>
-  <name>camunda-platform-7-rest-client-spring-boot/core</name>
+  <artifactId>camunda-platform-7-rest-client-variables</artifactId>
+  <name>camunda-platform-7-rest-client-spring-boot/variables</name>
   <packaging>jar</packaging>
 
   <properties>
@@ -19,38 +19,11 @@
   </properties>
 
   <dependencies>
-    <!-- Client -->
     <dependency>
-      <groupId>${project.groupId}</groupId>
+      <groupId>org.camunda.community.rest</groupId>
       <artifactId>camunda-platform-7-rest-client-spring-boot-openapi</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>camunda-platform-7-rest-client-variables</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <!-- Camunda API -->
-    <dependency>
-      <groupId>io.holunda.camunda-api</groupId>
-      <artifactId>camunda-bpm-engine-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- SPIN -->
-    <dependency>
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-engine-plugin-spin</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- Feign -->
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-openfeign</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
     <!-- Jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -82,19 +55,32 @@
       <artifactId>jackson-module-kotlin</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!-- Variable Commons -->
+    <dependency>
+      <groupId>org.camunda.commons</groupId>
+      <artifactId>camunda-commons-typed-values</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- SPIN -->
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
-    <!-- Annotation processing -->
+    <!-- Spring -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
+      <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
     </dependency>
-
   </dependencies>
 
   <profiles>

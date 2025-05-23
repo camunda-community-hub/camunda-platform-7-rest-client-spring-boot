@@ -65,6 +65,7 @@ class RemoteRepositoryService(
   override fun deleteDeployment(deploymentId: String?) =
     deleteDeployment(deploymentId, cascade = false, skipCustomListeners = false, skipIoMappings = false)
 
+  @Deprecated("Deprecated in Camunda API", replaceWith = ReplaceWith("deleteDeployment(deploymentId, cascade = true)"))
   override fun deleteDeploymentCascade(deploymentId: String?) =
     deleteDeployment(deploymentId, cascade = true)
 

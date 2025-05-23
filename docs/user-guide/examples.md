@@ -120,7 +120,7 @@ The application uses the library by adding it to the classpath via Apache Maven 
 ```xml
 <dependency>
   <groupId>org.camunda.community.rest</groupId>
-  <artifactId>camunda-platform-7-rest-client-spring-boot-openapi</artifactId>
+  <artifactId>camunda-platform-7-rest-client-spring-boot-starter-feign</artifactId>
   <version>${project.version}</version>
 </dependency>
 ```
@@ -128,7 +128,7 @@ The application uses the library by adding it to the classpath via Apache Maven 
 In order to activate the library, the `@EnableCamundaFeignClients` has to be put
 on the configuration class of the application. The interesting part is now the `ProcessClient` component.
 This Spring Component has several methods marked with `@Scheduled` annotation to demonstrate the time-based execution
-of desired functionality. To do so, the component has injected the needed feign clients as resources.
+of desired functionality. To do so, the component has injected the needed Feign clients as resources.
 
 In order to configure the library, the same block of properties e.g. in `application.yml` as before is required:
 
@@ -139,3 +139,4 @@ feign:
       ...
 ```
 
+You will need a Camunda Engine with deployed process to play with this client.

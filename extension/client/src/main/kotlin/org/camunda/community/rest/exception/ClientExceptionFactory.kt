@@ -22,15 +22,17 @@
  */
 package org.camunda.community.rest.exception
 
-import org.camunda.bpm.engine.ProcessEngineException
-
 /**
- * Exception thrown by accessing remote Camunda engine.
- * @constructor Creates the exception.
- * @param message message of the exception.
- * @param cause cause.
+ * Factory responsible for creation exception of type <T>.
+ * @param T type of exception to create.
  */
-class RemoteProcessEngineException(
-  override val message: String,
-  override val cause: Throwable? = null
-) : ProcessEngineException(message, cause)
+@FunctionalInterface
+interface ClientExceptionFactory<T: Exception> {
+  /**
+   * Creates an exception.
+   * @param message message of the exception.
+   * @param cause optional reason.
+   * @return exception instance.
+   */
+  fun create(message: String, cause: Throwable? = null): T
+}

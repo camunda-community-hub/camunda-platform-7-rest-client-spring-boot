@@ -25,13 +25,10 @@ private val logger = KotlinLogging.logger {}
  */
 abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationBuilder<T>>(
   private val decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  objectMapper: ObjectMapper,
-  valueTypeResolver: ValueTypeResolver,
+  private val valueMapper: ValueMapper,
   private val decisionDefinitionId: String? = null,
   private val decisionDefinitionKey: String? = null
 ) {
-
-  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver)
 
   var tenantIdSet: Boolean = false
   var tenantId: String? = null
@@ -95,16 +92,14 @@ abstract class AbstractDecisionEvaluationBuilder<T : AbstractDecisionEvaluationB
 
 class DelegatingDecisionEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  objectMapper: ObjectMapper,
-  valueTypeResolver: ValueTypeResolver,
+  valueMapper: ValueMapper,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionEvaluationBuilder>(
-  decisionDefinitionApiClient,
-  objectMapper,
-  valueTypeResolver,
-  decisionDefinitionId,
-  decisionDefinitionKey
+  decisionDefinitionApiClient = decisionDefinitionApiClient,
+  valueMapper = valueMapper,
+  decisionDefinitionId = decisionDefinitionId,
+  decisionDefinitionKey = decisionDefinitionKey
 ) {
 
   override fun evaluate() =
@@ -118,16 +113,14 @@ class DelegatingDecisionEvaluationBuilder(
 
 class DelegatingDecisionsEvaluationBuilder(
   decisionDefinitionApiClient: DecisionDefinitionApiClient,
-  objectMapper: ObjectMapper,
-  valueTypeResolver: ValueTypeResolver,
+  valueMapper: ValueMapper,
   decisionDefinitionId: String? = null,
   decisionDefinitionKey: String? = null
 ) : DecisionsEvaluationBuilder, AbstractDecisionEvaluationBuilder<DelegatingDecisionsEvaluationBuilder>(
-  decisionDefinitionApiClient,
-  objectMapper,
-  valueTypeResolver,
-  decisionDefinitionId,
-  decisionDefinitionKey
+  decisionDefinitionApiClient = decisionDefinitionApiClient,
+  valueMapper = valueMapper,
+  decisionDefinitionId = decisionDefinitionId,
+  decisionDefinitionKey = decisionDefinitionKey
 ) {
 
   override fun evaluate(): DmnDecisionResult {

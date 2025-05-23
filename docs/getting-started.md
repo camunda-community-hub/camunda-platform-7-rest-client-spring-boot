@@ -16,34 +16,14 @@ First install the extension dependency and configure Feign and Feign client:
 
 <properties>
   <camunda-platform-7-rest-client-spring-boot.version>{{ POM_VERSION }}</camunda-platform-7-rest-client-spring-boot.version>
-  <spring-cloud.version>{{ POM_SPRING_CLOUD_VERSION }}</spring-cloud.version>
 </properties>
 
-<dependencyManagement>
 <dependencies>
   <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-dependencies</artifactId>
-    <version>${spring-cloud.version}</version>
-    <type>pom</type>
-    <scope>import</scope>
+    <groupId>org.camunda.community.rest</groupId>
+    <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
+    <version>${camunda-platform-7-rest-client-spring-boot.version}</version>
   </dependency>
-</dependencies>
-</dependencyManagement>
-<dependencies>
-<dependency>
-  <groupId>org.camunda.community.rest</groupId>
-  <artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
-  <version>${camunda-platform-7-rest-client-spring-boot.version}</version>
-</dependency>
-<dependency>
-  <groupId>org.springframework.cloud</groupId>
-  <artifactId>spring-cloud-starter-openfeign</artifactId>
-</dependency>
-<dependency>
-  <groupId>io.github.openfeign</groupId>
-  <artifactId>feign-httpclient</artifactId>
-</dependency>
 </dependencies>
 ```
 

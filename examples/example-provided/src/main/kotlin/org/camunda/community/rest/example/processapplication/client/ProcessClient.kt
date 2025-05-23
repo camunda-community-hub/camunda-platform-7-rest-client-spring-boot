@@ -27,7 +27,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.camunda.bpm.engine.RepositoryService
 import org.camunda.bpm.engine.RuntimeService
 import org.camunda.bpm.engine.variable.Variables.*
-import org.camunda.community.rest.variables.toPrettyString
+import org.camunda.community.rest.util.toPrettyString
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.scheduling.annotation.Scheduled
 import java.time.Instant

@@ -31,7 +31,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance
 import org.camunda.community.rest.client.api.MessageApiClient
 import org.camunda.community.rest.client.model.CorrelationMessageDto
 import org.camunda.community.rest.variables.ValueMapper
-import org.camunda.community.rest.variables.fromDto
+import org.camunda.community.rest.impl.fromDto
 
 private val logger = KotlinLogging.logger {}
 

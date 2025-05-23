@@ -22,13 +22,10 @@
  */
 package org.camunda.community.rest.impl
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.batch.Batch
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery
 import org.camunda.bpm.engine.runtime.*
 import org.camunda.bpm.engine.variable.VariableMap
-import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.adapter.*
 import org.camunda.community.rest.client.api.*
@@ -37,12 +34,7 @@ import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.impl.builder.DelegatingMessageCorrelationBuilder
 import org.camunda.community.rest.impl.builder.DelegatingSignalEventReceivedBuilder
 import org.camunda.community.rest.impl.builder.RemoteUpdateProcessInstanceSuspensionStateSelectBuilder
-import org.camunda.community.rest.impl.query.DelegatingEventSubscriptionQuery
-import org.camunda.community.rest.impl.query.DelegatingExecutionQuery
-import org.camunda.community.rest.impl.query.DelegatingHistoricProcessInstanceQuery
-import org.camunda.community.rest.impl.query.DelegatingIncidentQuery
-import org.camunda.community.rest.impl.query.DelegatingProcessInstanceQuery
-import org.camunda.community.rest.variables.CustomValueMapper
+import org.camunda.community.rest.impl.query.*
 import org.camunda.community.rest.variables.ValueMapper
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -63,12 +55,8 @@ class RemoteRuntimeService(
   private val variableInstanceApiClient: VariableInstanceApiClient,
   private val eventSubscriptionApiClient: EventSubscriptionApiClient,
   private val camundaRestClientProperties: CamundaRestClientProperties,
-  customValueMapper: List<CustomValueMapper>,
-  objectMapper: ObjectMapper,
-  valueTypeResolver: ValueTypeResolver
+  private val valueMapper: ValueMapper
 ) : AbstractRuntimeServiceAdapter() {
-
-  private val valueMapper: ValueMapper = ValueMapper(objectMapper, valueTypeResolver, customValueMapper)
 
   override fun correlateMessage(messageName: String) =
     doCorrelateMessage(messageName = messageName)
@@ -301,8 +289,10 @@ class RemoteRuntimeService(
   }
 
   override fun getVariableLocal(executionId: String, variableName: String): Any? {
-    val dto = executionApiClient.getLocalExecutionVariable(executionId, variableName,
-      camundaRestClientProperties.deserializeVariablesOnServer).body!!
+    val dto = executionApiClient.getLocalExecutionVariable(
+      executionId, variableName,
+      camundaRestClientProperties.deserializeVariablesOnServer
+    ).body!!
     return valueMapper.mapDto<TypedValue>(dto, true)?.value
   }
 
@@ -310,8 +300,10 @@ class RemoteRuntimeService(
     getVariablesLocalTyped(executionId, true)
 
   override fun getVariablesLocalTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = executionApiClient.getLocalExecutionVariables(executionId,
-      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
+    val variables = executionApiClient.getLocalExecutionVariables(
+      executionId,
+      camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues
+    ).body!!
     return valueMapper.mapDtos(variables, deserializeValues)
   }
 
@@ -321,8 +313,10 @@ class RemoteRuntimeService(
     deserializeValues: Boolean
   ): VariableMap {
     val variables = executionApiClient
-      .getLocalExecutionVariables(executionId,
-        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues).body!!
+      .getLocalExecutionVariables(
+        executionId,
+        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues
+      ).body!!
       .filter { variableNames.contains(it.key) }
     return valueMapper.mapDtos(variables, deserializeValues)
   }
@@ -332,17 +326,20 @@ class RemoteRuntimeService(
 
   override fun <T : TypedValue> getVariableLocalTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
     val dto = executionApiClient
-      .getLocalExecutionVariable(executionId, variableName,
-        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue).body!!
+      .getLocalExecutionVariable(
+        executionId, variableName,
+        camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue
+      ).body!!
     return valueMapper.mapDto(dto, deserializeValue)
   }
 
   override fun removeVariablesLocal(executionId: String, variableNames: MutableCollection<String>) {
     executionApiClient
-      .modifyLocalExecutionVariables(executionId, PatchVariablesDto()
-        .apply {
-          deletions = variableNames.toList()
-        })
+      .modifyLocalExecutionVariables(
+        executionId, PatchVariablesDto()
+          .apply {
+            deletions = variableNames.toList()
+          })
   }
 
   override fun removeVariableLocal(executionId: String, variableName: String) {
@@ -361,7 +358,8 @@ class RemoteRuntimeService(
 
   override fun getVariables(executionId: String): MutableMap<String, Any?> {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
+      .queryVariableInstances(
+        null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId))
       )
       .body!!
@@ -372,7 +370,8 @@ class RemoteRuntimeService(
 
   override fun getVariables(executionId: String, variableNames: MutableCollection<String>): MutableMap<String, Any?> {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
+      .queryVariableInstances(
+        null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId))
       )
       .body!!
@@ -387,7 +386,8 @@ class RemoteRuntimeService(
   }
 
   override fun <T : TypedValue> getVariableTyped(executionId: String, variableName: String, deserializeValue: Boolean): T? {
-    val dto = variableInstanceApiClient.queryVariableInstances(null, null,
+    val dto = variableInstanceApiClient.queryVariableInstances(
+      null, null,
       camundaRestClientProperties.deserializeVariablesOnServer && deserializeValue,
       VariableInstanceQueryDto().variableName(variableName).executionIdIn(listOf(executionId))
     ).body
@@ -398,7 +398,8 @@ class RemoteRuntimeService(
     getVariablesTyped(executionId = executionId, deserializeValues = true)
 
   override fun getVariablesTyped(executionId: String, deserializeValues: Boolean): VariableMap {
-    val variables = variableInstanceApiClient.queryVariableInstances(null, null,
+    val variables = variableInstanceApiClient.queryVariableInstances(
+      null, null,
       camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues,
       VariableInstanceQueryDto().executionIdIn(listOf(executionId))
     ).body!!
@@ -411,7 +412,8 @@ class RemoteRuntimeService(
   }
 
   override fun getVariablesTyped(executionId: String, variableNames: MutableCollection<String>, deserializeValues: Boolean): VariableMap {
-    val variables = variableInstanceApiClient.queryVariableInstances(null, null,
+    val variables = variableInstanceApiClient.queryVariableInstances(
+      null, null,
       camundaRestClientProperties.deserializeVariablesOnServer && deserializeValues,
       VariableInstanceQueryDto().executionIdIn(listOf(executionId))
     ).body!!
@@ -426,7 +428,8 @@ class RemoteRuntimeService(
 
   override fun getVariable(executionId: String, variableName: String): Any? {
     return variableInstanceApiClient
-      .queryVariableInstances(null, null, camundaRestClientProperties.deserializeVariablesOnServer,
+      .queryVariableInstances(
+        null, null, camundaRestClientProperties.deserializeVariablesOnServer,
         VariableInstanceQueryDto().executionIdIn(listOf(executionId)).variableName(variableName)
       )
       .body!!
@@ -463,11 +466,15 @@ class RemoteRuntimeService(
   }
 
   override fun activateProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false))
+    processInstanceApiClient.updateSuspensionState(
+      ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(false)
+    )
   }
 
   override fun activateProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false))
+    processInstanceApiClient.updateSuspensionState(
+      ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(false)
+    )
   }
 
   override fun suspendProcessInstanceById(processInstanceId: String?) {
@@ -475,11 +482,15 @@ class RemoteRuntimeService(
   }
 
   override fun suspendProcessInstanceByProcessDefinitionId(processDefinitionId: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true))
+    processInstanceApiClient.updateSuspensionState(
+      ProcessInstanceSuspensionStateDto().processDefinitionId(processDefinitionId).suspended(true)
+    )
   }
 
   override fun suspendProcessInstanceByProcessDefinitionKey(processDefinitionKey: String?) {
-    processInstanceApiClient.updateSuspensionState(ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true))
+    processInstanceApiClient.updateSuspensionState(
+      ProcessInstanceSuspensionStateDto().processDefinitionKey(processDefinitionKey).suspended(true)
+    )
   }
 
   override fun updateProcessInstanceSuspensionState(): UpdateProcessInstanceSuspensionStateSelectBuilder =
@@ -490,14 +501,21 @@ class RemoteRuntimeService(
   }
 
   override fun createIncident(incidentType: String?, executionId: String?, configuration: String?): Incident =
-    IncidentAdapter(IncidentBean.fromDto(
-      executionApiClient.createIncident(executionId, CreateIncidentDto().incidentType(incidentType)._configuration(configuration)).body!!
-    ))
+    IncidentAdapter(
+      IncidentBean.fromDto(
+        executionApiClient.createIncident(executionId, CreateIncidentDto().incidentType(incidentType)._configuration(configuration)).body!!
+      )
+    )
 
   override fun createIncident(incidentType: String?, executionId: String?, configuration: String?, message: String?): Incident =
-    IncidentAdapter(IncidentBean.fromDto(
-      executionApiClient.createIncident(executionId, CreateIncidentDto().incidentType(incidentType)._configuration(configuration).message(message)).body!!
-    ))
+    IncidentAdapter(
+      IncidentBean.fromDto(
+        executionApiClient.createIncident(
+          executionId,
+          CreateIncidentDto().incidentType(incidentType)._configuration(configuration).message(message)
+        ).body!!
+      )
+    )
 
   override fun createIncidentQuery() = DelegatingIncidentQuery(incidentApiClient)
 
@@ -518,7 +536,11 @@ class RemoteRuntimeService(
   override fun startProcessInstanceByMessage(messageName: String, processVariables: MutableMap<String, Any>): ProcessInstance =
     doStartProcessInstanceByMessage(messageName = messageName, variables = processVariables)
 
-  override fun startProcessInstanceByMessage(messageName: String, businessKey: String, processVariables: MutableMap<String, Any>): ProcessInstance =
+  override fun startProcessInstanceByMessage(
+    messageName: String,
+    businessKey: String,
+    processVariables: MutableMap<String, Any>
+  ): ProcessInstance =
     doStartProcessInstanceByMessage(messageName = messageName, businessKey = businessKey, variables = processVariables)
 
   /**
@@ -538,51 +560,118 @@ class RemoteRuntimeService(
       }
     }.correlateStartMessage()
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean): Batch =
-    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses, skipIoMappings = false)
+  override fun deleteProcessInstancesAsync(
+    processInstanceIds: MutableList<String>?,
+    processInstanceQuery: ProcessInstanceQuery?,
+    historicProcessInstanceQuery: HistoricProcessInstanceQuery?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    skipSubprocesses: Boolean
+  ): Batch =
+    deleteProcessInstancesAsync(
+      processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses, skipIoMappings = false
+    )
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?) =
-    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+  override fun deleteProcessInstancesAsync(
+    processInstanceIds: MutableList<String>?,
+    processInstanceQuery: ProcessInstanceQuery?,
+    deleteReason: String?
+  ) =
+    deleteProcessInstancesAsync(
+      processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false
+    )
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean) =
-    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = false)
+  override fun deleteProcessInstancesAsync(
+    processInstanceIds: MutableList<String>?,
+    processInstanceQuery: ProcessInstanceQuery?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean
+  ) =
+    deleteProcessInstancesAsync(
+      processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = false
+    )
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?, skipCustomListeners: Boolean, skipSubprocesses: Boolean) =
-    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses)
+  override fun deleteProcessInstancesAsync(
+    processInstanceIds: MutableList<String>?,
+    processInstanceQuery: ProcessInstanceQuery?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    skipSubprocesses: Boolean
+  ) =
+    deleteProcessInstancesAsync(
+      processInstanceIds = processInstanceIds, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, skipSubprocesses = skipSubprocesses
+    )
 
   override fun deleteProcessInstancesAsync(processInstanceQuery: ProcessInstanceQuery?, deleteReason: String?) =
-    deleteProcessInstancesAsync(processInstanceIds = null, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+    deleteProcessInstancesAsync(
+      processInstanceIds = null, processInstanceQuery = processInstanceQuery, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false
+    )
 
   override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, deleteReason: String?) =
-    deleteProcessInstancesAsync(processInstanceIds = processInstanceIds, processInstanceQuery = null, historicProcessInstanceQuery = null,
-      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false)
+    deleteProcessInstancesAsync(
+      processInstanceIds = processInstanceIds, processInstanceQuery = null, historicProcessInstanceQuery = null,
+      deleteReason = deleteReason, skipCustomListeners = false, skipSubprocesses = false
+    )
 
-  override fun deleteProcessInstanceIfExists(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
+  override fun deleteProcessInstanceIfExists(
+    processInstanceId: String?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean,
+    skipIoMappings: Boolean,
+    skipSubprocesses: Boolean
+  ) {
     processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipSubprocesses, false)
   }
 
-  override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
+  override fun deleteProcessInstances(
+    processInstanceIds: MutableList<String>?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean
+  ) {
     processInstanceIds?.forEach {
-      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, externallyTerminated = externallyTerminated)
+      deleteProcessInstance(
+        processInstanceId = it,
+        deleteReason = deleteReason,
+        skipCustomListeners = skipCustomListeners,
+        externallyTerminated = externallyTerminated
+      )
     }
   }
 
-  override fun deleteProcessInstances(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
+  override fun deleteProcessInstances(
+    processInstanceIds: MutableList<String>?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean,
+    skipSubprocesses: Boolean
+  ) {
     processInstanceIds?.forEach {
-      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
-        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false)
+      deleteProcessInstance(
+        processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false
+      )
     }
   }
 
-  override fun deleteProcessInstancesIfExists(processInstanceIds: MutableList<String>?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipSubprocesses: Boolean) {
+  override fun deleteProcessInstancesIfExists(
+    processInstanceIds: MutableList<String>?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean,
+    skipSubprocesses: Boolean
+  ) {
     processInstanceIds?.forEach {
-      deleteProcessInstanceIfExists(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
-        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false)
+      deleteProcessInstanceIfExists(
+        processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = false
+      )
     }
   }
 
@@ -591,20 +680,47 @@ class RemoteRuntimeService(
   }
 
   override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean) {
-    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners, externallyTerminated = false)
+    deleteProcessInstance(
+      processInstanceId = processInstanceId,
+      deleteReason = deleteReason,
+      skipCustomListeners = skipCustomListeners,
+      externallyTerminated = false
+    )
   }
 
-  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean) {
-    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
-      externallyTerminated = externallyTerminated, skipIoMappings = false)
+  override fun deleteProcessInstance(
+    processInstanceId: String?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean
+  ) {
+    deleteProcessInstance(
+      processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+      externallyTerminated = externallyTerminated, skipIoMappings = false
+    )
   }
 
-  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean) {
-    deleteProcessInstance(processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
-      externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings, skipSubprocesses = false)
+  override fun deleteProcessInstance(
+    processInstanceId: String?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean,
+    skipIoMappings: Boolean
+  ) {
+    deleteProcessInstance(
+      processInstanceId = processInstanceId, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+      externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings, skipSubprocesses = false
+    )
   }
 
-  override fun deleteProcessInstance(processInstanceId: String?, deleteReason: String?, skipCustomListeners: Boolean, externallyTerminated: Boolean, skipIoMappings: Boolean, skipSubprocesses: Boolean) {
+  override fun deleteProcessInstance(
+    processInstanceId: String?,
+    deleteReason: String?,
+    skipCustomListeners: Boolean,
+    externallyTerminated: Boolean,
+    skipIoMappings: Boolean,
+    skipSubprocesses: Boolean
+  ) {
     processInstanceApiClient.deleteProcessInstance(processInstanceId, skipCustomListeners, skipIoMappings, skipCustomListeners, true)
   }
 
@@ -613,31 +729,43 @@ class RemoteRuntimeService(
 
   override fun createExecutionQuery() = DelegatingExecutionQuery(executionApiClient)
 
-  override fun deleteProcessInstances(processInstanceIds: MutableList<String>, deleteReason: String?, skipCustomListeners: Boolean,
-                                      externallyTerminated: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean) {
+  override fun deleteProcessInstances(
+    processInstanceIds: MutableList<String>, deleteReason: String?, skipCustomListeners: Boolean,
+    externallyTerminated: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean
+  ) {
     processInstanceIds.forEach {
-      deleteProcessInstance(processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
-        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings)
+      deleteProcessInstance(
+        processInstanceId = it, deleteReason = deleteReason, skipCustomListeners = skipCustomListeners,
+        skipSubprocesses = skipSubprocesses, externallyTerminated = externallyTerminated, skipIoMappings = skipIoMappings
+      )
     }
   }
 
-  override fun deleteProcessInstancesAsync(processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?,
-                                           historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?,
-                                           skipCustomListeners: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean): Batch =
-    BatchAdapter(BatchBean.fromDto(processInstanceApiClient.deleteProcessInstancesAsyncOperation(
-      DeleteProcessInstancesDto()
-        .processInstanceIds(processInstanceIds)
-        .processInstanceQuery(processInstanceQuery?.toDto())
-        .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
-        .deleteReason(deleteReason)
-        .skipSubprocesses(skipSubprocesses)
-        .skipCustomListeners(skipCustomListeners)
-        .skipIoMappings(skipIoMappings)
-    ).body!!))
+  override fun deleteProcessInstancesAsync(
+    processInstanceIds: MutableList<String>?, processInstanceQuery: ProcessInstanceQuery?,
+    historicProcessInstanceQuery: HistoricProcessInstanceQuery?, deleteReason: String?,
+    skipCustomListeners: Boolean, skipSubprocesses: Boolean, skipIoMappings: Boolean
+  ): Batch =
+    BatchAdapter(
+      BatchBean.fromDto(
+        processInstanceApiClient.deleteProcessInstancesAsyncOperation(
+          DeleteProcessInstancesDto()
+            .processInstanceIds(processInstanceIds)
+            .processInstanceQuery(processInstanceQuery?.toDto())
+            .historicProcessInstanceQuery(historicProcessInstanceQuery?.toDto())
+            .deleteReason(deleteReason)
+            .skipSubprocesses(skipSubprocesses)
+            .skipCustomListeners(skipCustomListeners)
+            .skipIoMappings(skipIoMappings)
+        ).body!!
+      )
+    )
 
-  private fun ProcessInstanceQuery.toDto() = if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
+  private fun ProcessInstanceQuery.toDto() =
+    if (this is DelegatingProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 
-  private fun HistoricProcessInstanceQuery.toDto() = if (this is DelegatingHistoricProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
+  private fun HistoricProcessInstanceQuery.toDto() =
+    if (this is DelegatingHistoricProcessInstanceQuery) this.fillQueryDto() else throw IllegalArgumentException()
 
 }
 

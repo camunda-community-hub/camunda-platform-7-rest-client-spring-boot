@@ -32,40 +32,23 @@ import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.impl.value.ObjectValueImpl
-import org.camunda.bpm.engine.variable.type.FileValueType
-import org.camunda.bpm.engine.variable.type.PrimitiveValueType
-import org.camunda.bpm.engine.variable.type.SerializableValueType
-import org.camunda.bpm.engine.variable.type.ValueType
-import org.camunda.bpm.engine.variable.type.ValueTypeResolver
+import org.camunda.bpm.engine.variable.type.*
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
-import org.camunda.community.rest.client.model.VariableQueryParameterDto
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.impl.query.QueryOperator
-import org.camunda.community.rest.impl.query.QueryVariableValue
+import org.springframework.stereotype.Component
 import java.io.ObjectInputStream
 import java.util.*
-
-interface CustomValueMapper {
-
-  fun mapValue(variableValue: Any): TypedValue
-
-  fun canHandle(variableValue: Any): Boolean
-
-  fun serializeValue(variableValue: SerializableValue): SerializableValue
-
-  fun deserializeValue(variableValue: SerializableValue): TypedValue
-
-}
 
 /**
  * Class responsible for mapping variables from and to DTO representations.
  */
+@Component
 class ValueMapper(
   private val objectMapper: ObjectMapper = jacksonObjectMapper(),
-  private val valueTypeResolver: ValueTypeResolver,
+  private val valueTypeResolver: ValueTypeResolver = ValueTypeResolverImpl(),
   private val customValueMapper: List<CustomValueMapper> = emptyList()
 ) {
   /**
@@ -81,7 +64,7 @@ class ValueMapper(
   /**
    * Create a variable value DTO out of typed variable value.
    */
-  private fun mapValue(variableValue: TypedValue): VariableValueDto {
+  fun mapValue(variableValue: TypedValue): VariableValueDto {
     val variable = customValueMapper.firstOrNull { it.canHandle(variableValue.value) }?.mapValue(variableValue.value) ?: variableValue
     if (variable is SerializableValue) {
       serializeValue(variable)
@@ -115,9 +98,11 @@ class ValueMapper(
   /**
    * Converts variable map to its REST representation.
    */
-  fun mapValues(variables: MutableMap<String, out Any>): Map<String, VariableValueDto> {
+  fun mapValues(variables: Map<String, Any>): Map<String, VariableValueDto> {
     return if (variables is VariableMap) {
-      variables.map { it.key to mapValue(variables.getValueTyped(it.key)) }.toMap()
+      variables.mapValues {
+        mapValue(variables.getValueTyped(it.key))
+      }
     } else {
       variables.mapValues {
         mapValue(it.value)
@@ -307,23 +292,24 @@ class ValueMapper(
       value
     }
   }
+
+  /**
+   * Tries to guess the type from the passed value.
+   */
+  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+  private fun Any?.resolveValueType(): ValueType = when (this) {
+    null -> ValueType.NULL
+    is Boolean -> ValueType.BOOLEAN
+    is Date -> ValueType.DATE
+    is Double -> ValueType.DOUBLE
+    is Integer -> ValueType.INTEGER
+    is Long -> ValueType.LONG
+    is Short -> ValueType.SHORT
+    is String -> ValueType.STRING
+    is ByteArray -> ValueType.BYTES
+    is Number -> ValueType.NUMBER
+    else -> ValueType.OBJECT
+  }
+
 }
-
-fun QueryOperator.toRestOperator() = when (this) {
-  QueryOperator.EQUALS -> VariableQueryParameterDto.OperatorEnum.EQ
-  QueryOperator.GREATER_THAN -> VariableQueryParameterDto.OperatorEnum.GT
-  QueryOperator.GREATER_THAN_OR_EQUAL -> VariableQueryParameterDto.OperatorEnum.GTEQ
-  QueryOperator.LESS_THAN -> VariableQueryParameterDto.OperatorEnum.LT
-  QueryOperator.LESS_THAN_OR_EQUAL -> VariableQueryParameterDto.OperatorEnum.LTEQ
-  QueryOperator.LIKE -> VariableQueryParameterDto.OperatorEnum.LIKE
-  QueryOperator.NOT_EQUALS -> VariableQueryParameterDto.OperatorEnum.NEQ
-  QueryOperator.NOT_LIKE -> VariableQueryParameterDto.OperatorEnum.NOT_LIKE
-}
-
-fun List<QueryVariableValue>.toDto() = if (this.isEmpty()) null else this.map { it.toDto() }
-
-fun QueryVariableValue.toDto(): VariableQueryParameterDto = VariableQueryParameterDto()
-  .name(this.name)
-  .value(this.value)
-  .operator(this.operator.toRestOperator())
 

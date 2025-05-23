@@ -8,7 +8,7 @@ import org.camunda.community.rest.adapter.ProcessInstanceAdapter
 import org.camunda.community.rest.client.api.ProcessInstanceApiClient
 import org.camunda.community.rest.client.model.ProcessInstanceQueryDto
 import org.camunda.community.rest.impl.toProcessInstanceSorting
-import org.camunda.community.rest.variables.toDto
+import org.camunda.community.rest.impl.toDto
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
