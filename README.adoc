@@ -3,7 +3,7 @@ image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable
 image::https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c[caption="compatible with Camunda Platform 7"]
 
 
-[cols="a,a,a,a,a,a,a,a"]
+[cols="a,a,a,a,a,a"]
 |===
 | // maven central
 image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
@@ -11,10 +11,6 @@ image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.re
 image::https://img.shields.io/badge/Camunda%20Version-7.20-orange.svg[link="https://docs.camunda.org/manual/7.20/"]
 | // codecov
 image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/master/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot]
-| // codacy code quality
-image::https://app.codacy.com/project/badge/Grade/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy code quality", link="https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&utm_campaign=Badge_Grade"]
-| // codacy coverage
-image::https://app.codacy.com/project/badge/Coverage/689735cb8ec5408a8390ac7b0d5df59f[caption="Codacy Coverage Badge", link=https://www.codacy.com/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/dashboard?utm_source=github.com&utm_medium=referral&utm_content=camunda-community-hub/camunda-platform-7-rest-client-spring-boot&utm_campaign=Badge_Coverage]
 | // license
 image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/blob/master/LICENSE"]
 | // changelog
@@ -30,6 +26,20 @@ image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="spon
 This library aims to provide a REST client for Camunda REST API for SpringBoot. In doing so it offers "remote" implementations of Camunda
 Engine Java API. This project is highly iterative and releases the functionality in small increments. Please check the link:https://camunda-community-hub.github.io/camunda-platform-7-rest-client-spring-boot/snapshot/user-guide/support-matrix.html[support matrix]
 to find out if the functionality you require is already supported by the library.
+
+[cols="a,a,a"]
+|===
+| Library | Spring Boot | Spring Cloud
+
+| 7.23.3 | 3.4.5 | 2024.0.1 
+| 7.23.2 | 3.4.5 | 2024.0.1 
+| 7.23.1 | 3.4.5 | 2024.0.1 
+| 7.23.0 | 3.4.5 | 2024.0.1
+| 7.22.4 | 3.4.3 | 2024.0.1 
+| 7.22.3 | 3.4.2 | 2024.0.0 
+| 7.22.2 | 3.4.2 | 2024.0.0 
+
+|===
 
 
 == Quick Start
