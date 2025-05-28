@@ -65,7 +65,10 @@ class ValueMapper(
    * Create a variable value DTO out of typed variable value.
    */
   fun mapValue(variableValue: TypedValue): VariableValueDto {
-    val variable = customValueMapper.firstOrNull { it.canHandle(variableValue.value) }?.mapValue(variableValue.value) ?: variableValue
+    val variable = customValueMapper.firstOrNull {
+      it.canHandle(variableValue.value)
+    }?.mapValue(variableValue.value)
+      ?: variableValue
     if (variable is SerializableValue) {
       serializeValue(variable)
     }
@@ -98,7 +101,7 @@ class ValueMapper(
   /**
    * Converts variable map to its REST representation.
    */
-  fun mapValues(variables: Map<String, Any>): Map<String, VariableValueDto> {
+  fun mapValues(variables: Map<String, Any?>): Map<String, VariableValueDto> {
     return if (variables is VariableMap) {
       variables.mapValues {
         mapValue(variables.getValueTyped(it.key))

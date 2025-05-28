@@ -58,14 +58,14 @@ class SpinValueMapper(
     valueTypeResolver.addType(XmlValueTypeImpl())
   }
 
-  override fun mapValue(variableValue: Any): TypedValue =
+  override fun mapValue(variableValue: Any?): TypedValue =
     when (variableValue) {
       is SpinJsonNode -> jsonValue(variableValue).create()
       is SpinValue -> variableValue
       else -> throw IllegalStateException("Variable value $variableValue not supported")
     }
 
-  override fun canHandle(variableValue: Any) = variableValue is SpinValue || variableValue is SpinJsonNode
+  override fun canHandle(variableValue: Any?) = variableValue is SpinValue || variableValue is SpinJsonNode
 
   override fun serializeValue(variableValue: SerializableValue): SerializableValue =
     if (variableValue is SpinValueImpl) {

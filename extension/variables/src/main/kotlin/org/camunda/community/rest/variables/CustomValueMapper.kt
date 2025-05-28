@@ -36,14 +36,14 @@ interface CustomValueMapper {
    * @param variableValue value.
    * @return `true`of the mapper is responsible.
    */
-  fun canHandle(variableValue: Any): Boolean
+  fun canHandle(variableValue: Any?): Boolean
 
   /**
    * Maps the value into a typed value.
    * @param variableValue value.
    * @return typed representation.
    */
-  fun mapValue(variableValue: Any): TypedValue
+  fun mapValue(variableValue: Any?): TypedValue
 
   /**
    * Serializes the value (still returning the serializable value type).
