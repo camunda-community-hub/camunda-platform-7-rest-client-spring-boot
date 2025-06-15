@@ -33,15 +33,18 @@ jobs:
       run: mvn -B -ntp -Pitest verify failsafe:verify
 
     - name: Deploy SNAPSHOT / Release
-      uses: camunda-community-hub/community-action-maven-release@v2.0.1
+      uses: camunda-community-hub/community-action-maven-release@v2
       id: release
       with:
         maven-release-options: -DskipExamples # avoid publication of examples into public repositories
         release-version: ${{ github.event.release.tag_name }}
         release-profile: community-action-maven-release
-        central-release-profile: oss-maven-central
         nexus-usr: ${{ secrets.NEXUS_USR }}
         nexus-psw: ${{ secrets.NEXUS_PSW }}
+        sonatype-central-portal-usr: ${{ secrets.COMMUNITY_HUB_MAVEN_CENTRAL_CP_USR }}
+        sonatype-central-portal-psw: ${{ secrets.COMMUNITY_HUB_MAVEN_CENTRAL_CP_PSW }}
+        # maven-usr, maven-psw and maven-url are deprecated; they are required only for publishing to the legacy OSS Sonatype repository.
+        # Once the io.zeebe namespace is migrated to the Sonatype Central Portal, these can be safely removed.
         maven-usr: ${{ secrets.COMMUNITY_HUB_MAVEN_CENTRAL_OSS_USR }}
         maven-psw: ${{ secrets.COMMUNITY_HUB_MAVEN_CENTRAL_OSS_PSW }}
         maven-url: oss.sonatype.org
