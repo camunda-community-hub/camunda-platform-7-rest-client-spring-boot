@@ -34,11 +34,11 @@
     <camunda.version.base>7.23</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
-    <camunda-bpm-api.version>2025.06.1</camunda-bpm-api.version>
+    <holunda-c7.version>2025.06.1</holunda-c7.version>
     <spin.version>7.23.0</spin.version>
 
-    <spring-boot.version>3.4.5</spring-boot.version>
-    <spring-cloud.version>2024.0.1</spring-cloud.version>
+    <spring-boot.version>3.5.3</spring-boot.version>
+    <spring-cloud.version>2025.0.0</spring-cloud.version>
 
     <kotlin.version>2.2.0</kotlin.version>
     <kotlin-logging.version>7.0.7</kotlin-logging.version>
@@ -106,7 +106,7 @@
       <dependency>
         <groupId>io.holunda.camunda-api</groupId>
         <artifactId>camunda-bpm-engine-api</artifactId>
-        <version>${camunda-bpm-api.version}</version>
+        <version>${holunda-c7.version}</version>
       </dependency>
       <dependency>
         <groupId>org.camunda.bpm</groupId>
