@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
+import org.camunda.bpm.engine.variable.Variables.SerializationDataFormats
 import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.impl.value.ObjectValueImpl
 import org.camunda.bpm.engine.variable.type.*
@@ -38,6 +39,7 @@ import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.variables.ext.resolveValueType
 import org.springframework.stereotype.Component
 import java.io.ObjectInputStream
 import java.util.*
@@ -49,53 +51,12 @@ import java.util.*
 class ValueMapper(
   private val objectMapper: ObjectMapper = jacksonObjectMapper(),
   private val valueTypeResolver: ValueTypeResolver = ValueTypeResolverImpl(),
-  private val customValueMapper: List<CustomValueMapper> = emptyList()
+  private val customValueMapper: List<CustomValueMapper> = emptyList(),
+  private val defaultSerializationFormat: SerializationDataFormats = SerializationDataFormats.JSON,
 ) {
-  /**
-   * Creates a variable value DTO out of variable value.
-   */
-  fun mapValue(variableValue: Any?, isTransient: Boolean = false): VariableValueDto {
-    return mapValue(convertToTypedValue(variableValue, isTransient))
-  }
-
-  private fun convertToTypedValue(variableValue: Any?, isTransient: Boolean) =
-    variableValue.resolveValueType().createValue(variableValue, mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient))
-
-  /**
-   * Create a variable value DTO out of typed variable value.
-   */
-  fun mapValue(variableValue: TypedValue): VariableValueDto {
-    val variable = customValueMapper.firstOrNull {
-      it.canHandle(variableValue.value)
-    }?.mapValue(variableValue.value)
-      ?: variableValue
-    if (variable is SerializableValue) {
-      serializeValue(variable)
-    }
-    return variable.toDto()
-  }
-
-  private fun TypedValue.toDto() = VariableValueDto().apply {
-    this@toDto.type?.let {
-      type = toRestApiTypeName(it.name)
-      valueInfo = it.getValueInfo(this@toDto)
-    } ?: let {
-      type = toRestApiTypeName(this@toDto.value.resolveValueType().name)
-    }
-
-    value = when (this@toDto) {
-      is SerializableValue -> this@toDto.valueSerialized
-      is FileValue -> null //do not set the value for FileValues since we don't want to send megabytes over the network without explicit request
-      else -> this@toDto.value
-    }
-  }
-
-  private fun toRestApiTypeName(name: String): String {
-    return name.substring(0, 1).uppercase(Locale.getDefault()) + name.substring(1)
-  }
-
-  private fun fromRestApiTypeName(name: String): String {
-    return name.substring(0, 1).lowercase(Locale.getDefault()) + name.substring(1)
+  companion object {
+    private fun toRestApiTypeName(name: String): String = name.replaceFirstChar { it.uppercase(Locale.getDefault()) }
+    private fun fromRestApiTypeName(name: String): String = name.replaceFirstChar { it.lowercase(Locale.getDefault()) }
   }
 
   /**
@@ -116,6 +77,7 @@ class ValueMapper(
   /**
    * Convert variable REST implementation to variable map.
    */
+  @JvmOverloads
   fun mapDtos(variables: Map<String, VariableValueDto>, deserializeValues: Boolean = true): VariableMap {
     val result: VariableMap = Variables.createVariables()
     variables.mapValues {
@@ -125,9 +87,51 @@ class ValueMapper(
   }
 
   /**
+   * Creates a variable value DTO out of variable value.
+   */
+  fun mapValue(variableValue: Any?, isTransient: Boolean = false): VariableValueDto {
+    return mapValue(convertToTypedValue(variableValue, isTransient))
+  }
+
+  private fun convertToTypedValue(variableValue: Any?, isTransient: Boolean) =
+    resolveValueType(variableValue).createValue(variableValue, mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient))
+
+  /**
+   * Create a variable value DTO out of typed variable value.
+   */
+  fun mapValue(variableValue: TypedValue): VariableValueDto {
+    var variable = customValueMapper.firstOrNull {
+      it.canMapValue(variableValue.value)
+    }?.mapValue(variableValue.value)
+      ?: variableValue
+
+    if (variable is SerializableValue) {
+      variable = serializeValue(variable)
+    }
+    return variable.toDto()
+  }
+
+  private fun TypedValue.toDto() = VariableValueDto().apply {
+    this@toDto.type?.let {
+      type = toRestApiTypeName(it.name)
+      valueInfo = it.getValueInfo(this@toDto)
+    } ?: let {
+      type = toRestApiTypeName(resolveValueType(this@toDto.value).name)
+    }
+
+    value = when (this@toDto) {
+      is SerializableValue -> this@toDto.valueSerialized
+      is FileValue -> null //do not set the value for FileValues since we don't want to send megabytes over the network without explicit request
+      else -> this@toDto.value
+    }
+  }
+
+
+  /**
    * Maps DTO to its value.
    */
   @Suppress("UNCHECKED_CAST")
+  @JvmOverloads
   fun <T> mapDto(dto: VariableValueDto, deserializeValues: Boolean = true): T? {
     return if (deserializeValues) {
       deserializeObjectValue(restoreObjectJsonIfNeeded(dto).toTypedValue(objectMapper))
@@ -140,6 +144,7 @@ class ValueMapper(
    * Maps DTO to its value.
    */
   @Suppress("UNCHECKED_CAST")
+  @JvmOverloads
   fun <T> mapDto(dto: VariableInstanceDto, deserializeValues: Boolean = true): T? {
     val valueDto = VariableValueDto().type(dto.type).value(dto.value).valueInfo(dto.valueInfo)
     return if (deserializeValues) {
@@ -215,34 +220,41 @@ class ValueMapper(
    * Serialize value, if not already serialized.
    * @param variableValue value to modify.
    */
-  private fun serializeValue(variableValue: SerializableValue) {
+  private fun serializeValue(variableValue: TypedValue): SerializableValue {
+    // FIXME open type
+    require(variableValue is SerializableValue) { "Variable value must be a SerializableValue to be serialized, but was: $variableValue" }
     if (variableValue.valueSerialized == null) {
-      customValueMapper.firstOrNull { it.canHandle(variableValue) }?.serializeValue(variableValue) ?: run {
-        if (variableValue.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
-          // try it for application/json or unspecified
-          || variableValue.serializationDataFormat == null
-        ) {
-          if (variableValue is ObjectValueImpl) {
-            try {
-              val serializedValue = objectMapper.writeValueAsString(variableValue.value)
-              variableValue.setSerializedValue(serializedValue)
-              // fix format if missing
-              if (variableValue.serializationDataFormat == null) {
-                variableValue.serializationDataFormat = Variables.SerializationDataFormats.JSON.getName()
+      return customValueMapper.firstOrNull { it.canSerializeValue(variableValue) }
+        ?.serializeValue(variableValue)
+        ?: run {
+          if (variableValue.serializationDataFormat == SerializationDataFormats.JSON.getName()
+            // try it for application/json or unspecified
+            || variableValue.serializationDataFormat == null
+          ) {
+            if (variableValue is ObjectValueImpl) {
+              try {
+                val serializedValue = objectMapper.writeValueAsString(variableValue.value)
+                variableValue.setSerializedValue(serializedValue)
+                // fix format if missing
+                if (variableValue.serializationDataFormat == null) {
+                  variableValue.serializationDataFormat = SerializationDataFormats.JSON.getName()
+                }
+                // this allows to detect native types hidden in objectValue
+                variableValue.objectTypeName = constructType(variableValue.value).toCanonical()
+
+                return variableValue
+              } catch (e: JsonProcessingException) {
+                throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}'", e)
               }
-              // this allows to detect native types hidden in objectValue
-              variableValue.objectTypeName = constructType(variableValue.value).toCanonical()
-            } catch (e: JsonProcessingException) {
-              throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}'", e)
+            } else {
+              throw UnsupportedOperationException("Serialization not supported for $variableValue")
             }
           } else {
-            throw UnsupportedOperationException("Serialization not supported for $variableValue")
+            throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}' and no serialized value has been provided for $variableValue")
           }
-        } else {
-          throw IllegalArgumentException("Object value could not be serialized into '${variableValue.serializationDataFormat}' and no serialized value has been provided for $variableValue")
         }
-      }
     }
+    return variableValue
   }
 
   private fun constructType(value: Any): JavaType =
@@ -261,7 +273,7 @@ class ValueMapper(
   private fun deserializeObjectValue(value: TypedValue): TypedValue {
     return if (value is SerializableValue && !value.isDeserialized) {
       return customValueMapper.firstOrNull { it.canHandle(value) }?.deserializeValue(value)
-        ?: if (value.serializationDataFormat == Variables.SerializationDataFormats.JSON.getName()
+        ?: if (value.serializationDataFormat == SerializationDataFormats.JSON.getName()
           || value.serializationDataFormat == null
         ) {
           return when (value) {
@@ -277,7 +289,7 @@ class ValueMapper(
 
             else -> throw IllegalStateException("Could not deserialize value $value")
           }
-        } else if (value.serializationDataFormat == Variables.SerializationDataFormats.JAVA.getName()) {
+        } else if (value.serializationDataFormat == SerializationDataFormats.JAVA.getName()) {
           if (value is ObjectValueImpl) {
             val deserializedValue: Any = try {
               ObjectInputStream(Base64.getDecoder().decode(value.valueSerialized).inputStream()).use { it.readObject() }
@@ -296,23 +308,5 @@ class ValueMapper(
     }
   }
 
-  /**
-   * Tries to guess the type from the passed value.
-   */
-  @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-  private fun Any?.resolveValueType(): ValueType = when (this) {
-    null -> ValueType.NULL
-    is Boolean -> ValueType.BOOLEAN
-    is Date -> ValueType.DATE
-    is Double -> ValueType.DOUBLE
-    is Integer -> ValueType.INTEGER
-    is Long -> ValueType.LONG
-    is Short -> ValueType.SHORT
-    is String -> ValueType.STRING
-    is ByteArray -> ValueType.BYTES
-    is Number -> ValueType.NUMBER
-    else -> ValueType.OBJECT
-  }
 
 }
-

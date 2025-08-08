@@ -65,14 +65,18 @@ class SpinValueMapper(
       else -> throw IllegalStateException("Variable value $variableValue not supported")
     }
 
-  override fun canHandle(variableValue: Any?) = variableValue is SpinValue || variableValue is SpinJsonNode
+  override fun canMapValue(value: Any?): Boolean = value is SpinValue || value is SpinJsonNode
 
-  override fun serializeValue(variableValue: SerializableValue): SerializableValue =
-    if (variableValue is SpinValueImpl) {
+  override fun canSerializeValue(value: TypedValue): Boolean = value is SpinValue || value is SpinJsonNode
+
+  override fun canDeserializeValue(value: SerializableValue): Boolean = value is SpinValue || value is SpinJsonNode
+
+  override fun serializeValue(variableValue: TypedValue): SerializableValue =
+    (if (variableValue is SpinValueImpl) {
       variableValue.apply { valueSerialized = variableValue.value.toString() }
     } else {
       variableValue
-    }
+    }) as SerializableValue
 
   override fun deserializeValue(variableValue: SerializableValue): SerializableValue =
     if (variableValue is JsonValue) {
