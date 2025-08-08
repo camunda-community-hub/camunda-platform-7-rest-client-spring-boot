@@ -12,13 +12,12 @@ import java.time.ZonedDateTime
 import java.util.*
 
 class ValueMapperTest {
-
   private val objectMapper = jacksonObjectMapper().apply { findAndRegisterModules() }
+
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     customValueMapper = listOf(SpinValueMapper(ValueTypeResolverImpl()))
   )
-
 
   @Test
   fun `can map null values`() {
