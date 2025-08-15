@@ -15,7 +15,7 @@ import kotlin.io.encoding.Base64
 /**
  * Custom value mapper for Java serialized objects.
  */
-class JavaSerializedObjectFormatMapper : FormatValueMapper {
+open class JavaSerializedObjectFormatValueMapper : FormatValueMapper {
 
   companion object {
     fun <T : Serializable> encodeBase64(value: T): String = with(ByteArrayOutputStream()) {
@@ -35,7 +35,9 @@ class JavaSerializedObjectFormatMapper : FormatValueMapper {
     && value.hasSerializationDataFormat(serializationDataFormat)
     && value.value is Serializable
 
-  override fun canDeserializeValue(value: SerializableValue) = canSerializeValue(value)
+  override fun canDeserializeValue(value: SerializableValue) = value is ObjectValue
+  && value.hasSerializationDataFormat(serializationDataFormat)
+  && value.valueSerialized != null
 
   override fun mapValue(value: Any?): TypedValue = Variables
     .objectValue(requireNotNull(value) { "Value can not be null, filtered in canMapValue()" })
@@ -57,7 +59,7 @@ class JavaSerializedObjectFormatMapper : FormatValueMapper {
     require(value is ObjectValue) { "Expected ObjectValue, got: $value" }
     val serialized = value.valueSerialized
     val deserialized: Any = if (serialized != null) {
-      decodeBase64<Serializable>(serialized)
+      decodeBase64(serialized)
     } else {
       value.value
     }

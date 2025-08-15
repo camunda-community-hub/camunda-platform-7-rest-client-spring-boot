@@ -36,15 +36,11 @@ import org.camunda.spin.plugin.variable.value.JsonValue
 import org.camunda.spin.plugin.variable.value.SpinValue
 import org.camunda.spin.plugin.variable.value.impl.JsonValueImpl
 import org.camunda.spin.plugin.variable.value.impl.SpinValueImpl
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
-import org.springframework.stereotype.Component
 
 /**
  * Custom value mapper to map SPIN values.
  * Will only be used, if the SPIN dependencies are on the classpath.
  */
-@Component
-@ConditionalOnClass(SpinValue::class)
 class SpinValueMapper(
   private val valueTypeResolver: ValueTypeResolver
 ) : CustomValueMapper {
@@ -58,18 +54,18 @@ class SpinValueMapper(
     valueTypeResolver.addType(XmlValueTypeImpl())
   }
 
+  override fun canMapValue(value: Any?): Boolean = value is SpinValue || value is SpinJsonNode
+
+  override fun canSerializeValue(value: TypedValue): Boolean = value is SpinValue || value is SpinJsonNode
+
+  override fun canDeserializeValue(value: SerializableValue): Boolean = value is SpinValue || value is SpinJsonNode
+
   override fun mapValue(variableValue: Any?): TypedValue =
     when (variableValue) {
       is SpinJsonNode -> jsonValue(variableValue).create()
       is SpinValue -> variableValue
       else -> throw IllegalStateException("Variable value $variableValue not supported")
     }
-
-  override fun canMapValue(value: Any?): Boolean = value is SpinValue || value is SpinJsonNode
-
-  override fun canSerializeValue(value: TypedValue): Boolean = value is SpinValue || value is SpinJsonNode
-
-  override fun canDeserializeValue(value: SerializableValue): Boolean = value is SpinValue || value is SpinJsonNode
 
   override fun serializeValue(variableValue: TypedValue): SerializableValue =
     (if (variableValue is SpinValueImpl) {

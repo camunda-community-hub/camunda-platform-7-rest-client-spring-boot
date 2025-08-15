@@ -27,7 +27,7 @@ internal class DelegatingDecisionEvaluationBuilderTest {
   private val valueMapper = ValueMapper(
     objectMapper = jacksonObjectMapper(),
     valueTypeResolver = valueTypeResolver,
-    customValueMapper = listOf(SpinValueMapper(valueTypeResolver))
+    customValueMappers = listOf(SpinValueMapper(valueTypeResolver))
   )
 
   val builder = DelegatingDecisionEvaluationBuilder(

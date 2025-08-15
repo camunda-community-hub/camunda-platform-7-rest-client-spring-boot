@@ -22,16 +22,26 @@
  */
 package org.camunda.community.rest.adapter
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.impl.toRequiredDate
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
+import org.camunda.community.rest.variables.format.JsonFormatValueMapper
 import org.junit.Test
 import java.time.OffsetDateTime
 
 class LockedExternalTaskAdapterTest {
+
+  private val objectMapper = jacksonObjectMapper()
+  private val typeResolver = ValueTypeResolverImpl()
+  private val valueMapper = ValueMapper(
+    objectMapper = objectMapper,
+    valueTypeResolver = typeResolver,
+    customValueMappers = listOf(JsonFormatValueMapper(objectMapper))
+  )
 
   private val dto = LockedExternalTaskDto()
     .id("id")
@@ -58,14 +68,15 @@ class LockedExternalTaskAdapterTest {
 
   @Test
   fun `should delegate`() {
-    val lockedExternalTaskBean = LockedExternalTaskBean.fromDto(dto, ValueMapper(valueTypeResolver = ValueTypeResolverImpl()))
+    val lockedExternalTaskBean = LockedExternalTaskBean.fromDto(dto = dto, valueMapper = valueMapper)
     val lockedExternalTaskAdapter = LockedExternalTaskAdapter(lockedExternalTaskBean)
-    assertThat(lockedExternalTaskAdapter).usingRecursiveComparison().ignoringFields("lockedExternalTaskBean").isEqualTo(lockedExternalTaskBean)
+    assertThat(lockedExternalTaskAdapter).usingRecursiveComparison().ignoringFields("lockedExternalTaskBean")
+      .isEqualTo(lockedExternalTaskBean)
   }
 
   @Test
   fun `should construct from dto`() {
-    val bean = LockedExternalTaskBean.fromDto(dto, ValueMapper(valueTypeResolver = ValueTypeResolverImpl()))
+    val bean = LockedExternalTaskBean.fromDto(dto = dto, valueMapper = valueMapper)
     assertThat(bean).usingRecursiveComparison().ignoringFields("lockExpirationTime", "variables", "createTime").isEqualTo(dto)
     assertThat(bean.lockExpirationTime).isEqualTo(dto.lockExpirationTime.toInstant())
     assertThat(bean.variables).containsEntry("var1", 1)

@@ -3,6 +3,7 @@ package org.camunda.community.rest.variables
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.variables.format.JsonFormatValueMapper
 import org.junit.jupiter.api.Test
 import org.mockito.internal.util.collections.Sets
 import java.time.Instant
@@ -13,10 +14,15 @@ import java.util.*
 
 class ValueMapperTest {
   private val objectMapper = jacksonObjectMapper().apply { findAndRegisterModules() }
+  private val valueTypeResolver = ValueTypeResolverImpl()
 
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
-    customValueMapper = listOf(SpinValueMapper(ValueTypeResolverImpl()))
+    valueTypeResolver = valueTypeResolver,
+    customValueMappers = listOf(
+      SpinValueMapper(valueTypeResolver),
+      JsonFormatValueMapper(objectMapper)
+    )
   )
 
   @Test

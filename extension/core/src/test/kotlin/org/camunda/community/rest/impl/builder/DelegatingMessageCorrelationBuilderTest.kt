@@ -1,5 +1,6 @@
 package org.camunda.community.rest.impl.builder
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultType
 import org.camunda.community.rest.client.api.MessageApiClient
@@ -21,7 +22,7 @@ class DelegatingMessageCorrelationBuilderTest {
   val builder = DelegatingMessageCorrelationBuilder(
     messageName = "messageName",
     messageApiClient = messageApiClient,
-    valueMapper = ValueMapper(valueTypeResolver = ValueTypeResolverImpl())
+    valueMapper = ValueMapper(objectMapper = jacksonObjectMapper(), valueTypeResolver = ValueTypeResolverImpl(), customValueMappers = emptyList())
   ).apply {
     this.localVariableEquals("localVar", "localValue")
     // this.processDefinitionId("processDefinitionId")
