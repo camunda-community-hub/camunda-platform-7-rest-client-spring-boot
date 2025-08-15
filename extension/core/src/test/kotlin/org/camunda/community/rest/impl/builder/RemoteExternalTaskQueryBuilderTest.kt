@@ -1,6 +1,8 @@
 package org.camunda.community.rest.impl.builder
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.config.CamundaRestClientProperties
@@ -21,7 +23,12 @@ class RemoteExternalTaskQueryBuilderTest {
 
   val builder = RemoteExternalTaskQueryBuilder(
     externalTaskApiClient,
-    valueMapper = ValueMapper(valueTypeResolver = ValueTypeResolverImpl()),
+    valueMapper = ValueMapper(
+      objectMapper = jacksonObjectMapper(),
+      valueTypeResolver = ValueTypeResolverImpl(),
+      customValueMappers = emptyList(),
+      serializationFormat = Variables.SerializationDataFormats.JSON
+    ),
     camundaRestClientProperties,
     workerId = "workerId",
     maxTasks = 10,

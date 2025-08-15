@@ -25,14 +25,19 @@ package org.camunda.community.rest.variables
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
+import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper
+import org.camunda.community.rest.variables.format.JsonFormatValueMapper
 import org.camunda.spin.plugin.variable.value.SpinValue
+import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-@Configuration
+@AutoConfiguration
+@EnableConfigurationProperties(value = [CamundaRestClientVariablesProperties::class])
 class ValueMapperConfiguration {
+
   @Bean
   @ConditionalOnMissingBean(ValueTypeResolver::class)
   fun defaultValueTypeResolver(): ValueTypeResolver {
@@ -51,12 +56,16 @@ class ValueMapperConfiguration {
   fun defaultValueMapper(
     objectMapper: ObjectMapper,
     valueTypeResolver: ValueTypeResolver,
-    customValueMappers: List<CustomValueMapper>
+    customValueMappers: List<CustomValueMapper>?,
+    properties: CamundaRestClientVariablesProperties
   ): ValueMapper {
+    val valueMappers = (customValueMappers ?: emptyList()) + JavaSerializedObjectFormatValueMapper() + JsonFormatValueMapper(objectMapper)
+
     return ValueMapper(
       objectMapper = objectMapper,
       valueTypeResolver = valueTypeResolver,
-      customValueMapper = customValueMappers
+      customValueMappers = valueMappers,
+      serializationFormat = properties.defaultSerializationFormat
     )
   }
 }

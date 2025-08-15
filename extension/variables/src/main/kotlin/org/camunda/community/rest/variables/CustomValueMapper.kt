@@ -36,27 +36,48 @@ interface CustomValueMapper {
    * @param variableValue value.
    * @return `true`of the mapper is responsible.
    */
-  fun canHandle(variableValue: Any?): Boolean
+  @Deprecated("Use fine grained check methods instead.")
+  fun canHandle(value: Any?): Boolean {
+    return canMapValue(value) ||
+      canSerializeValue(value as TypedValue) ||
+      canDeserializeValue(value as SerializableValue)
+  }
+
+  /**
+   * @param value - the (nullable) value to check
+   * @return `true` if the #mapValue method should be called.
+   */
+  fun canMapValue(value: Any?): Boolean
+
+  /**
+   * @param value - the typedValue that should be serialized
+   * @return `true` if the #serializeValue method should be called.
+   */
+  fun canSerializeValue(value: TypedValue): Boolean
+
+  /**
+   * @param value - the serializableValue that should be de-serialized
+   * @return `true` if the #deserializeValue method should be called.
+   */
+  fun canDeserializeValue(value: SerializableValue): Boolean
+
 
   /**
    * Maps the value into a typed value.
-   * @param variableValue value.
    * @return typed representation.
    */
-  fun mapValue(variableValue: Any?): TypedValue
+  fun mapValue(value: Any?): TypedValue
 
   /**
    * Serializes the value (still returning the serializable value type).
-   * @param variableValue value.
    * @return serialized representation.
    */
-  fun serializeValue(variableValue: SerializableValue): SerializableValue
+  fun serializeValue(value: TypedValue): SerializableValue
 
   /**
    * De-serializes the value.
-   * @param variableValue serialized value.
    * @return typed value.
    */
-  fun deserializeValue(variableValue: SerializableValue): TypedValue
+  fun deserializeValue(value: SerializableValue): TypedValue
 
 }
