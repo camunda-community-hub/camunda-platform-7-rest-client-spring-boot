@@ -17,7 +17,8 @@ class JsonFormatValueMapperTest {
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(jsonFormatValueMapper)
+    customValueMappers = listOf(jsonFormatValueMapper),
+    serializationFormat = SerializationDataFormats.JSON
   )
 
   data class Foo(val name: String, val age: Int)

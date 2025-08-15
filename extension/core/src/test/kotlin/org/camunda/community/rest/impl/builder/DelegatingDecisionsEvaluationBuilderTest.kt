@@ -2,6 +2,7 @@ package org.camunda.community.rest.impl.builder
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.variables.SpinValueMapper
@@ -21,7 +22,8 @@ internal class DelegatingDecisionsEvaluationBuilderTest {
   private val valueMapper = ValueMapper(
     objectMapper = jacksonObjectMapper(),
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(SpinValueMapper(valueTypeResolver))
+    customValueMappers = listOf(SpinValueMapper(valueTypeResolver)),
+    serializationFormat = Variables.SerializationDataFormats.JSON
   )
 
 

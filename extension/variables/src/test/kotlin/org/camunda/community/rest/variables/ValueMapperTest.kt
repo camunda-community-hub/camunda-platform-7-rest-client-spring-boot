@@ -2,7 +2,9 @@ package org.camunda.community.rest.variables
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.model.VariableValueDto
+import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper
 import org.camunda.community.rest.variables.format.JsonFormatValueMapper
 import org.junit.jupiter.api.Test
 import org.mockito.internal.util.collections.Sets
@@ -21,8 +23,10 @@ class ValueMapperTest {
     valueTypeResolver = valueTypeResolver,
     customValueMappers = listOf(
       SpinValueMapper(valueTypeResolver),
+      JavaSerializedObjectFormatValueMapper(),
       JsonFormatValueMapper(objectMapper)
-    )
+    ),
+    serializationFormat = Variables.SerializationDataFormats.JSON
   )
 
   @Test

@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.camunda.bpm.engine.BadUserRequestException
 import org.camunda.bpm.engine.exception.NotFoundException
 import org.camunda.bpm.engine.exception.NotValidException
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.DecisionDefinitionDto
 import org.camunda.community.rest.client.model.VariableValueDto
@@ -27,7 +28,8 @@ internal class DelegatingDecisionEvaluationBuilderTest {
   private val valueMapper = ValueMapper(
     objectMapper = jacksonObjectMapper(),
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(SpinValueMapper(valueTypeResolver))
+    customValueMappers = listOf(SpinValueMapper(valueTypeResolver)),
+    serializationFormat = Variables.SerializationDataFormats.JSON
   )
 
   val builder = DelegatingDecisionEvaluationBuilder(

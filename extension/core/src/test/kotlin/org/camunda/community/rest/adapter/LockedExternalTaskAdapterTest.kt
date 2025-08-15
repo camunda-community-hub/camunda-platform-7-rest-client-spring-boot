@@ -24,6 +24,7 @@ package org.camunda.community.rest.adapter
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.impl.toRequiredDate
@@ -40,7 +41,8 @@ class LockedExternalTaskAdapterTest {
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = typeResolver,
-    customValueMappers = listOf(JsonFormatValueMapper(objectMapper))
+    customValueMappers = listOf(JsonFormatValueMapper(objectMapper)),
+    serializationFormat = Variables.SerializationDataFormats.JSON
   )
 
   private val dto = LockedExternalTaskDto()

@@ -34,6 +34,7 @@ import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.variables.ext.resolveValueType
+import org.camunda.community.rest.variables.format.FormatValueMapper
 import java.util.*
 
 /**
@@ -43,6 +44,7 @@ open class ValueMapper(
   private val objectMapper: ObjectMapper,
   private val valueTypeResolver: ValueTypeResolver,
   private val customValueMappers: List<CustomValueMapper>,
+  private val serializationFormat: Variables.SerializationDataFormats
 ) {
   companion object {
     fun toRestApiTypeName(name: String): String = name.replaceFirstChar { it.uppercase(Locale.getDefault()) }
@@ -203,7 +205,13 @@ open class ValueMapper(
     return dto
   }
 
-  private fun findMapFunction(value: Any?) = customValueMappers.firstOrNull { it.canMapValue(value) }
+  private fun findMapFunction(value: Any?) =
+    customValueMappers.firstOrNull {
+      when (it) {
+        is FormatValueMapper -> it.canMapValue(value) && it.serializationDataFormat == this.serializationFormat
+        else -> it.canMapValue(value)
+      }
+    }
 
   private fun findSerializeFunction(value: TypedValue) = customValueMappers.firstOrNull { it.canSerializeValue(value) }
     ?: throw IllegalArgumentException("No custom serializeValue() function configured for value type: ${value.javaClass.name}")

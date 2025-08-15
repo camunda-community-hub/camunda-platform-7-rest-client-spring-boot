@@ -22,7 +22,8 @@ public class ValueMapperJavaTest {
     private final ValueMapper valueMapper = new ValueMapper(
       new ObjectMapper(),
       new ValueTypeResolverImpl(),
-      List.of(mapper)
+      List.of(mapper),
+      Variables.SerializationDataFormats.JAVA
     );
 
     @Test

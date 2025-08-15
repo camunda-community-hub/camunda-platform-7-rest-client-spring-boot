@@ -1,6 +1,7 @@
 package org.camunda.community.rest.impl.builder
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.SignalApiClient
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
@@ -21,7 +22,8 @@ class DelegatingSignalEventReceivedBuilderTest {
     valueMapper = ValueMapper(
       objectMapper = jacksonObjectMapper(),
       valueTypeResolver = ValueTypeResolverImpl(),
-      customValueMappers = emptyList()
+      customValueMappers = emptyList(),
+      serializationFormat = Variables.SerializationDataFormats.JSON
     )
   ).apply {
     this.tenantId("tenantId")

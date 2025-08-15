@@ -24,7 +24,6 @@
 package org.camunda.community.rest.variables
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.camunda.bpm.engine.variable.Variables.SerializationDataFormats
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper
 import org.camunda.community.rest.variables.format.JsonFormatValueMapper
@@ -57,19 +56,16 @@ class ValueMapperConfiguration {
   fun defaultValueMapper(
     objectMapper: ObjectMapper,
     valueTypeResolver: ValueTypeResolver,
-    customValueMappers: List<CustomValueMapper> = emptyList(),
+    customValueMappers: List<CustomValueMapper>?,
     properties: CamundaRestClientVariablesProperties
   ): ValueMapper {
-    val valueMappers = when (properties.defaultSerializationFormat) {
-      SerializationDataFormats.JAVA -> customValueMappers + JavaSerializedObjectFormatValueMapper()
-      SerializationDataFormats.JSON -> customValueMappers + JsonFormatValueMapper(objectMapper)
-      else -> customValueMappers
-    }
+    val valueMappers = (customValueMappers ?: emptyList()) + JavaSerializedObjectFormatValueMapper() + JsonFormatValueMapper(objectMapper)
 
     return ValueMapper(
       objectMapper = objectMapper,
       valueTypeResolver = valueTypeResolver,
-      customValueMappers = valueMappers
+      customValueMappers = valueMappers,
+      serializationFormat = properties.defaultSerializationFormat
     )
   }
 }
