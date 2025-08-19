@@ -41,7 +41,7 @@
     <spring-cloud.version>2025.0.0</spring-cloud.version>
 
     <kotlin.version>2.2.10</kotlin.version>
-    <kotlin-logging.version>7.0.12</kotlin-logging.version>
+    <kotlin-logging.version>7.0.13</kotlin-logging.version>
 
     <!-- test tools -->
     <assertj.version>3.27.4</assertj.version>
