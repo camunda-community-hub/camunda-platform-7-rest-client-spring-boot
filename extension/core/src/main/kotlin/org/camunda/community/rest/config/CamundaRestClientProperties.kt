@@ -50,6 +50,9 @@ data class CamundaRestClientProperties(
    */
   val deserializeVariablesOnServer: Boolean = false,
 
+  /**
+   * Allows configuration of variable handling specific properties, such as serialization format.
+   */
   @NestedConfigurationProperty
   val variables: CamundaRestClientVariablesProperties = CamundaRestClientVariablesProperties()
 ) {

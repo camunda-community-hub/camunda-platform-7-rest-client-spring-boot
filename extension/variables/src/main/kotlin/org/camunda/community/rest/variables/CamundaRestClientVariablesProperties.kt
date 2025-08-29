@@ -9,6 +9,8 @@ data class CamundaRestClientVariablesProperties(
   /**
    * Default serialization format for variables.
    * This is used when no serialization format is specified in the variable.
+   *
+   * Note: XML serialization format is not supported.
    */
   val defaultSerializationFormat: SerializationDataFormats = SerializationDataFormats.JSON,
 ) {
