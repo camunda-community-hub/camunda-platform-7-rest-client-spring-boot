@@ -64,7 +64,7 @@ class ValueMapperConfiguration {
     return ValueMapper(
       objectMapper = objectMapper,
       valueTypeResolver = valueTypeResolver,
-      customValueMappers = valueMappers,
+      valueMappers = valueMappers,
       serializationFormat = properties.defaultSerializationFormat
     )
   }

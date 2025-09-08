@@ -21,7 +21,7 @@ class ValueMapperTest {
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(
+    valueMappers = listOf(
       SpinValueMapper(valueTypeResolver),
       JavaSerializedObjectFormatValueMapper(),
       JsonFormatValueMapper(objectMapper)

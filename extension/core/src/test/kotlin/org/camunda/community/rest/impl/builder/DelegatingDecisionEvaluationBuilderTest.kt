@@ -14,11 +14,7 @@ import org.camunda.community.rest.variables.SpinValueMapper
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.isNull
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import org.springframework.http.ResponseEntity
 
 internal class DelegatingDecisionEvaluationBuilderTest {
@@ -28,7 +24,7 @@ internal class DelegatingDecisionEvaluationBuilderTest {
   private val valueMapper = ValueMapper(
     objectMapper = jacksonObjectMapper(),
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(SpinValueMapper(valueTypeResolver)),
+    valueMappers = listOf(SpinValueMapper(valueTypeResolver)),
     serializationFormat = Variables.SerializationDataFormats.JSON
   )
 
@@ -71,9 +67,36 @@ internal class DelegatingDecisionEvaluationBuilderTest {
   @Test
   fun testEvaluateDecisionWithKeyAndVersion() {
     builder.version(1)
-    whenever(decisionDefinitionApiClient.getDecisionDefinitions(isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(),
-      isNull(), isNull(), isNull(), isNull(), eq("decisionDefinitionKey"), isNull(), isNull(), isNull(), eq(1), isNull(), isNull(), isNull(),
-      isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull())
+    whenever(
+      decisionDefinitionApiClient.getDecisionDefinitions(
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        eq("decisionDefinitionKey"),
+        isNull(),
+        isNull(),
+        isNull(),
+        eq(1),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull()
+      )
     ).thenReturn(
       ResponseEntity.ok(listOf(DecisionDefinitionDto().id("decisionDefinitionId")))
     )
@@ -87,9 +110,36 @@ internal class DelegatingDecisionEvaluationBuilderTest {
   @Test
   fun testEvaluateDecisionWithKeyAndVersionNotFound() {
     builder.version(1)
-    whenever(decisionDefinitionApiClient.getDecisionDefinitions(isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(),
-      isNull(), isNull(), isNull(), isNull(), eq("decisionDefinitionKey"), isNull(), isNull(), isNull(), eq(1), isNull(), isNull(), isNull(),
-      isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull(), isNull())
+    whenever(
+      decisionDefinitionApiClient.getDecisionDefinitions(
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        eq("decisionDefinitionKey"),
+        isNull(),
+        isNull(),
+        isNull(),
+        eq(1),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull(),
+        isNull()
+      )
     ).thenReturn(
       ResponseEntity.ok(listOf())
     )

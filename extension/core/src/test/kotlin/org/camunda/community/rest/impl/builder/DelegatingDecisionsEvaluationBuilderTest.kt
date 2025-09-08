@@ -22,10 +22,9 @@ internal class DelegatingDecisionsEvaluationBuilderTest {
   private val valueMapper = ValueMapper(
     objectMapper = jacksonObjectMapper(),
     valueTypeResolver = valueTypeResolver,
-    customValueMappers = listOf(SpinValueMapper(valueTypeResolver)),
+    valueMappers = listOf(SpinValueMapper(valueTypeResolver)),
     serializationFormat = Variables.SerializationDataFormats.JSON
   )
-
 
   val builder = DelegatingDecisionsEvaluationBuilder(
     decisionDefinitionApiClient = decisionDefinitionApiClient,

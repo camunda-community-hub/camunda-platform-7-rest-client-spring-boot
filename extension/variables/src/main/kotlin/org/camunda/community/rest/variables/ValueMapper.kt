@@ -43,7 +43,7 @@ import java.util.*
 open class ValueMapper(
   private val objectMapper: ObjectMapper,
   private val valueTypeResolver: ValueTypeResolver,
-  private val customValueMappers: List<CustomValueMapper>,
+  private val valueMappers: List<IValueMapper>,
   private val serializationFormat: Variables.SerializationDataFormats
 ) {
   companion object {
@@ -206,17 +206,17 @@ open class ValueMapper(
   }
 
   private fun findMapFunction(value: Any?) =
-    customValueMappers.firstOrNull {
+    valueMappers.firstOrNull {
       when (it) {
         is FormatValueMapper -> it.canMapValue(value) && it.serializationDataFormat == this.serializationFormat
         else -> it.canMapValue(value)
       }
     }
 
-  private fun findSerializeFunction(value: TypedValue) = customValueMappers.firstOrNull { it.canSerializeValue(value) }
+  private fun findSerializeFunction(value: TypedValue) = valueMappers.firstOrNull { it.canSerializeValue(value) }
     ?: throw IllegalArgumentException("No custom serializeValue() function configured for value type: ${value.javaClass.name}")
 
-  private fun findDeserializeFunction(value: SerializableValue) = customValueMappers.firstOrNull { it.canDeserializeValue(value) }
+  private fun findDeserializeFunction(value: SerializableValue) = valueMappers.firstOrNull { it.canDeserializeValue(value) }
     ?: throw IllegalArgumentException("No custom deserializeValue() function configured for value type: ${value.javaClass.name}")
 
 }

@@ -41,7 +41,7 @@ class LockedExternalTaskAdapterTest {
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = typeResolver,
-    customValueMappers = listOf(JsonFormatValueMapper(objectMapper)),
+    valueMappers = listOf(JsonFormatValueMapper(objectMapper)),
     serializationFormat = Variables.SerializationDataFormats.JSON
   )
 

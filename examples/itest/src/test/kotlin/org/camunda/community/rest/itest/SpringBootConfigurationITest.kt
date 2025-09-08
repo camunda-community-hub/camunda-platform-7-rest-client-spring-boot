@@ -32,7 +32,7 @@ internal class SpringBootConfigurationITest {
     companion object {
       val VALUE_MAPPER: ValueMapper =
         ValueMapper(objectMapper = jacksonObjectMapper(), valueTypeResolver = ValueTypeResolverImpl(),
-          customValueMappers = emptyList(),
+          valueMappers = emptyList(),
           serializationFormat = Variables.SerializationDataFormats.JSON)
     }
 

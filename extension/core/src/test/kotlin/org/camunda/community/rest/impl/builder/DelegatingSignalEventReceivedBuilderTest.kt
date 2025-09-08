@@ -22,7 +22,7 @@ class DelegatingSignalEventReceivedBuilderTest {
     valueMapper = ValueMapper(
       objectMapper = jacksonObjectMapper(),
       valueTypeResolver = ValueTypeResolverImpl(),
-      customValueMappers = emptyList(),
+      valueMappers = emptyList(),
       serializationFormat = Variables.SerializationDataFormats.JSON
     )
   ).apply {
