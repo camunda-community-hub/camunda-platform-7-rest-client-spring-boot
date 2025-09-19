@@ -1,5 +1,6 @@
 package org.camunda.community.rest.variables;
 
+import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.type.ValueType;
 import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializerTest;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +43,7 @@ public class ValueTypeRegistrationTest {
   @MethodSource
   void determineValueType(final Object value, final ValueType expectedType) {
     ValueTypeRegistration valueTypeRegistration = new ValueTypeRegistration();
-    assertThat(valueTypeRegistration.getRegisteredValueType(value)).isEqualTo(expectedType);
+    assertThat(valueTypeRegistration.convertToTypedValue(value, false, Variables.SerializationDataFormats.JSON).getType()).isEqualTo(expectedType);
   }
 
 }

@@ -17,7 +17,7 @@ import org.camunda.spin.plugin.variable.value.SpinValue
 import org.camunda.spin.plugin.variable.value.XmlValue
 import org.camunda.spin.plugin.variable.value.impl.JsonValueImpl
 import org.camunda.spin.plugin.variable.value.impl.SpinValueImpl
-import org.camunda.spin.xml.SpinXmlNode
+import org.camunda.spin.xml.SpinXmlElement
 
 /**
  * Custom value mapper to map SPIN values.
@@ -35,12 +35,12 @@ class SpinValueSerializer(
    */
   @PostConstruct
   fun addValueTypes() {
-    val jsonValueType = JsonValueTypeImpl()
-    val xmlValueType = XmlValueTypeImpl()
-    valueTypeResolver.addType(jsonValueType)
-    valueTypeResolver.addType(xmlValueType)
-    valueTypeRegistration.registerTypeForClass(jsonValueType, SpinJsonNode::class)
-    valueTypeRegistration.registerTypeForClass(xmlValueType, SpinXmlNode::class)
+    valueTypeResolver.addType(JsonValueTypeImpl())
+    valueTypeResolver.addType(XmlValueTypeImpl())
+    valueTypeRegistration.registerTypeForClass(SpinJsonNode::class
+    ) { value, isTransient, _ -> SpinValues.jsonValue(value as SpinJsonNode, isTransient).create() }
+    valueTypeRegistration.registerTypeForClass(SpinXmlElement::class
+    ) { value, isTransient, _ -> SpinValues.xmlValue(value as SpinXmlElement, isTransient).create() }
   }
 
   override fun canSerializeValue(value: TypedValue): Boolean = value is SpinValue

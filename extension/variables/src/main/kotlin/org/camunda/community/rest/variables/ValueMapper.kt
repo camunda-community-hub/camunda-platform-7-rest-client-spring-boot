@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedValue
-import org.camunda.bpm.engine.variable.impl.value.UntypedValueImpl
 import org.camunda.bpm.engine.variable.type.*
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
@@ -86,7 +85,7 @@ open class ValueMapper(
    * Creates a variable value DTO out of variable value.
    */
   fun mapValue(variableValue: Any?, isTransient: Boolean = false): VariableValueDto {
-    return mapValue(convertToTypedValue(variableValue, isTransient))
+    return mapValue(valueTypeRegistration.convertToTypedValue(variableValue, isTransient, serializationFormat))
   }
 
   /**
@@ -94,7 +93,7 @@ open class ValueMapper(
    */
   private fun mapValue(typedVariable: TypedValue): VariableValueDto {
     val typedValue = if (typedVariable.type == null) {
-      convertToTypedValue(typedVariable.value, typedVariable.isTransient)
+      valueTypeRegistration.convertToTypedValue(typedVariable.value, typedVariable.isTransient, serializationFormat)
     } else typedVariable
     val variable = if (typedValue is SerializableValue) {
       // throws exception if serialization is not supported
@@ -128,27 +127,12 @@ open class ValueMapper(
     mapDto(dto = VariableValueDto().type(dto.type).value(dto.value).valueInfo(dto.valueInfo), deserializeValues = deserializeValues)
 
 
-  private fun convertToTypedValue(variableValue: Any?, isTransient: Boolean): TypedValue {
-    if (variableValue is TypedValue) {
-      return variableValue
-    }
-    val valueType = valueTypeRegistration.getRegisteredValueType(variableValue)
-    val valueInfo = if (valueType == ValueType.OBJECT) {
-      mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient,
-        SerializableValueType.VALUE_INFO_SERIALIZATION_DATA_FORMAT to serializationFormat.name)
-    } else {
-      mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient)
-    }
-    return valueType.createValue(variableValue, valueInfo)
-  }
-
-
   private fun TypedValue.toDto() = VariableValueDto().apply {
     this@toDto.type?.let {
       type = toRestApiTypeName(it.name)
       valueInfo = it.getValueInfo(this@toDto)
     } ?: let {
-      type = toRestApiTypeName(valueTypeRegistration.getRegisteredValueType(this@toDto.value).name)
+      type = toRestApiTypeName(valueTypeRegistration.convertToTypedValue(this@toDto.value, false, serializationFormat).type.name)
     }
 
     value = when (this@toDto) {
@@ -230,10 +214,11 @@ open class ValueMapper(
   }
 
   private fun findDeserializeFunction(value: SerializableValue): ValueSerializer {
+    val serializationFormatToUse = value.serializationDataFormat ?: serializationFormat.name
     val customValueSerializer =
-      customValueSerializers.firstOrNull { it.canDeserializeValue(value) && it.serializationDataFormat == serializationFormat }
-    return customValueSerializer ?: valueSerializers.firstOrNull { it.serializationDataFormat == serializationFormat }
-      ?: throw IllegalArgumentException("No serializer found for type: ${value.javaClass.name} and serialization format $serializationFormat")
+      customValueSerializers.firstOrNull { it.canDeserializeValue(value) && it.serializationDataFormat.name == serializationFormatToUse }
+    return customValueSerializer ?: valueSerializers.firstOrNull { it.serializationDataFormat.name == serializationFormatToUse }
+      ?: throw IllegalArgumentException("No serializer found for type: ${value.javaClass.name} and serialization format $serializationFormatToUse")
   }
 
 }
