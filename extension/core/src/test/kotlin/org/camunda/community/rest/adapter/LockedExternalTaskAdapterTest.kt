@@ -29,8 +29,9 @@ import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.impl.toRequiredDate
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
-import org.camunda.community.rest.variables.format.JsonFormatValueMapper
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
 import org.junit.Test
 import java.time.OffsetDateTime
 
@@ -38,11 +39,14 @@ class LockedExternalTaskAdapterTest {
 
   private val objectMapper = jacksonObjectMapper()
   private val typeResolver = ValueTypeResolverImpl()
+  private val typeRegistration = ValueTypeRegistration()
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = typeResolver,
-    valueMappers = listOf(JsonFormatValueMapper(objectMapper)),
-    serializationFormat = Variables.SerializationDataFormats.JSON
+    valueTypeRegistration = typeRegistration,
+    valueSerializers = listOf(JsonValueSerializer(objectMapper)),
+    serializationFormat = Variables.SerializationDataFormats.JSON,
+    customValueSerializers = listOf()
   )
 
   private val dto = LockedExternalTaskDto()

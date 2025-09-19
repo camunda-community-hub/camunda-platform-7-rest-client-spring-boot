@@ -1,4 +1,4 @@
-package org.camunda.community.rest.variables.format
+package org.camunda.community.rest.variables.serialization
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -6,38 +6,17 @@ import com.fasterxml.jackson.databind.type.TypeFactory
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.SerializationDataFormats
 import org.camunda.bpm.engine.variable.impl.value.ObjectValueImpl
-import org.camunda.bpm.engine.variable.type.ValueType
-import org.camunda.bpm.engine.variable.value.ObjectValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.variables.ext.constructType
-import org.camunda.community.rest.variables.ext.hasSerializationDataFormat
-import org.camunda.community.rest.variables.ext.resolveValueType
-import java.io.Serializable
 
 /**
- * Custom value mapper for JSON serialized objects.
- * This mapper uses Jackson to serialize and deserialize objects to/from JSON format.
+ * Serializer for serializing and deserializing values in JSON format.
+ * This serializer uses Jackson to serialize and deserialize objects to/from JSON format.
  */
-class JsonFormatValueMapper(
+class JsonValueSerializer(
   private val objectMapper: ObjectMapper,
-) : FormatValueMapper {
-
-  override fun canMapValue(value: Any?) = ValueType.OBJECT == resolveValueType(value)
-
-  override fun canSerializeValue(value: TypedValue) = value is ObjectValue
-    && value.hasSerializationDataFormat(serializationDataFormat)
-
-  override fun canDeserializeValue(value: SerializableValue) = value is ObjectValue
-    && value.hasSerializationDataFormat(serializationDataFormat)
-    && value.valueSerialized != null
-
-  override fun mapValue(value: Any?): TypedValue {
-    requireNotNull(value) { "Value can not be null, filtered in canMapValue()" }
-    return Variables.objectValue(value)
-      .serializationDataFormat(serializationDataFormat)
-      .create()
-  }
+) : ValueSerializer {
 
   override fun serializeValue(value: TypedValue): SerializableValue {
     require(value is ObjectValueImpl) { "Variable value must be a ObjectValueImpl to be serialized, but was: ${value.type}" }

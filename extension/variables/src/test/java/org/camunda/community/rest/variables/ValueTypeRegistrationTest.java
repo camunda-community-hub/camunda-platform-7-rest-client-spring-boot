@@ -1,7 +1,7 @@
-package org.camunda.community.rest.variables.ext;
+package org.camunda.community.rest.variables;
 
 import org.camunda.bpm.engine.variable.type.ValueType;
-import org.camunda.community.rest.variables.ValueMapperJavaTest;
+import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializerTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,10 +12,9 @@ import java.util.Date;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.community.rest.variables.ext.VariablesKt.resolveValueType;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class VariablesExtTest {
+public class ValueTypeRegistrationTest {
 
   static Stream<Arguments> determineValueType() {
     return Stream.of(
@@ -35,14 +34,15 @@ public class VariablesExtTest {
       arguments("string".getBytes(), ValueType.BYTES),
       arguments(BigDecimal.valueOf(1L), ValueType.NUMBER),
       arguments(new ArrayList<String>(), ValueType.OBJECT),
-      arguments(new ValueMapperJavaTest(), ValueType.OBJECT)
+      arguments(new JavaSerializationValueSerializerTest(), ValueType.OBJECT)
     );
   }
 
   @ParameterizedTest
   @MethodSource
   void determineValueType(final Object value, final ValueType expectedType) {
-    assertThat(resolveValueType(value)).isEqualTo(expectedType);
+    ValueTypeRegistration valueTypeRegistration = new ValueTypeRegistration();
+    assertThat(valueTypeRegistration.getRegisteredValueType(value)).isEqualTo(expectedType);
   }
 
 }

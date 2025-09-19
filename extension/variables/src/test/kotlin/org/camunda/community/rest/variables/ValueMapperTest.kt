@@ -4,8 +4,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper
-import org.camunda.community.rest.variables.format.JsonFormatValueMapper
+import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializer
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinValueSerializer
+import org.camunda.community.rest.variables.serialization.ValueSerializer
 import org.junit.jupiter.api.Test
 import org.mockito.internal.util.collections.Sets
 import java.time.Instant
@@ -17,16 +19,20 @@ import java.util.*
 class ValueMapperTest {
   private val objectMapper = jacksonObjectMapper().apply { findAndRegisterModules() }
   private val valueTypeResolver = ValueTypeResolverImpl()
+  private val valueTypeRegistration = ValueTypeRegistration()
 
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = valueTypeResolver,
-    valueMappers = listOf(
-      SpinValueMapper(valueTypeResolver),
-      JavaSerializedObjectFormatValueMapper(),
-      JsonFormatValueMapper(objectMapper)
+    valueTypeRegistration = valueTypeRegistration,
+    serializationFormat = Variables.SerializationDataFormats.JSON,
+    valueSerializers = listOf(
+      JavaSerializationValueSerializer(),
+      JsonValueSerializer(objectMapper)
     ),
-    serializationFormat = Variables.SerializationDataFormats.JSON
+    customValueSerializers = listOf(
+      SpinValueSerializer(valueTypeResolver, valueTypeRegistration),
+    )
   )
 
   @Test
