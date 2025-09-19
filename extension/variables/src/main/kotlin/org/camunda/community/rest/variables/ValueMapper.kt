@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.variable.VariableMap
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.bpm.engine.variable.Variables.untypedValue
+import org.camunda.bpm.engine.variable.impl.value.UntypedValueImpl
 import org.camunda.bpm.engine.variable.type.*
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
@@ -91,12 +92,15 @@ open class ValueMapper(
   /**
    * Create a variable value DTO out of typed variable value.
    */
-  fun mapValue(typedVariable: TypedValue): VariableValueDto {
-    val variable = if (typedVariable is SerializableValue) {
+  private fun mapValue(typedVariable: TypedValue): VariableValueDto {
+    val typedValue = if (typedVariable.type == null) {
+      convertToTypedValue(typedVariable.value, typedVariable.isTransient)
+    } else typedVariable
+    val variable = if (typedValue is SerializableValue) {
       // throws exception if serialization is not supported
-      findSerializeFunction(typedVariable).serializeValue(typedVariable)
+      findSerializeFunction(typedValue).serializeValue(typedValue)
     } else {
-      typedVariable
+      typedValue
     }
     return variable.toDto()
   }
@@ -125,6 +129,9 @@ open class ValueMapper(
 
 
   private fun convertToTypedValue(variableValue: Any?, isTransient: Boolean): TypedValue {
+    if (variableValue is TypedValue) {
+      return variableValue
+    }
     val valueType = valueTypeRegistration.getRegisteredValueType(variableValue)
     val valueInfo = if (valueType == ValueType.OBJECT) {
       mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient,
