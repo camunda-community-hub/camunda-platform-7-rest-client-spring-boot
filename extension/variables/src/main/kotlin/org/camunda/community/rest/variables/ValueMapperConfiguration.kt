@@ -25,8 +25,10 @@ package org.camunda.community.rest.variables
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.camunda.bpm.engine.variable.type.ValueTypeResolver
-import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper
-import org.camunda.community.rest.variables.format.JsonFormatValueMapper
+import org.camunda.community.rest.variables.serialization.CustomValueSerializer
+import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializer
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinValueSerializer
 import org.camunda.spin.plugin.variable.value.SpinValue
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -45,10 +47,13 @@ class ValueMapperConfiguration {
   }
 
   @Bean
-  @ConditionalOnMissingBean(SpinValueMapper::class)
+  fun valueTypeRegistration() = ValueTypeRegistration()
+
+  @Bean
+  @ConditionalOnMissingBean(SpinValueSerializer::class)
   @ConditionalOnClass(SpinValue::class)
-  fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver): SpinValueMapper {
-    return SpinValueMapper(valueTypeResolver = valueTypeResolver)
+  fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver, valueTypeRegistration: ValueTypeRegistration): SpinValueSerializer {
+    return SpinValueSerializer(valueTypeResolver = valueTypeResolver, valueTypeRegistration = valueTypeRegistration)
   }
 
   @Bean
@@ -56,15 +61,16 @@ class ValueMapperConfiguration {
   fun defaultValueMapper(
     objectMapper: ObjectMapper,
     valueTypeResolver: ValueTypeResolver,
-    customValueMappers: List<CustomValueMapper>?,
+    valueTypeRegistration: ValueTypeRegistration,
+    customValueSerializers: List<CustomValueSerializer>?,
     properties: CamundaRestClientVariablesProperties
   ): ValueMapper {
-    val valueMappers = (customValueMappers ?: emptyList()) + JavaSerializedObjectFormatValueMapper() + JsonFormatValueMapper(objectMapper)
-
     return ValueMapper(
       objectMapper = objectMapper,
       valueTypeResolver = valueTypeResolver,
-      valueMappers = valueMappers,
+      valueTypeRegistration = valueTypeRegistration,
+      valueSerializers = listOf(JavaSerializationValueSerializer(), JsonValueSerializer(objectMapper)),
+      customValueSerializers = customValueSerializers ?: emptyList(),
       serializationFormat = properties.defaultSerializationFormat
     )
   }

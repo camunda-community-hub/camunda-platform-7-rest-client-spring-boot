@@ -1,9 +1,11 @@
-package org.camunda.community.rest.variables;
+package org.camunda.community.rest.variables.serialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.type.SerializableValueType;
-import org.camunda.community.rest.variables.format.JavaSerializedObjectFormatValueMapper;
+import org.camunda.community.rest.variables.ValueMapper;
+import org.camunda.community.rest.variables.ValueTypeRegistration;
+import org.camunda.community.rest.variables.ValueTypeResolverImpl;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -12,18 +14,20 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ValueMapperJavaTest {
+public class JavaSerializationValueSerializerTest {
 
   @Nested
   class JavaSerializedObjectFormatMapperTest {
 
-    private final JavaSerializedObjectFormatValueMapper mapper = new JavaSerializedObjectFormatValueMapper();
+    private final JavaSerializationValueSerializer mapper = new JavaSerializationValueSerializer();
 
     private final ValueMapper valueMapper = new ValueMapper(
       new ObjectMapper(),
       new ValueTypeResolverImpl(),
+      new ValueTypeRegistration(),
+      Variables.SerializationDataFormats.JAVA,
       List.of(mapper),
-      Variables.SerializationDataFormats.JAVA
+      List.of()
     );
 
     @Test
