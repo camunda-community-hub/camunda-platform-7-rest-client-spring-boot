@@ -1,13 +1,16 @@
 package org.camunda.community.rest.itest
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.camunda.bpm.engine.RuntimeService
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.itest.SpringBootConfigurationITest.CustomValueMapperConfiguration.Companion.VALUE_MAPPER
 import org.camunda.community.rest.itest.stages.TestApplication
 import org.camunda.community.rest.variables.SpinValueMapper
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.camunda.spin.plugin.variable.value.SpinValue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -27,7 +30,10 @@ internal class SpringBootConfigurationITest {
   @Configuration
   class CustomValueMapperConfiguration {
     companion object {
-      val VALUE_MAPPER: ValueMapper = ValueMapper()
+      val VALUE_MAPPER: ValueMapper =
+        ValueMapper(objectMapper = jacksonObjectMapper(), valueTypeResolver = ValueTypeResolverImpl(),
+          valueMappers = emptyList(),
+          serializationFormat = Variables.SerializationDataFormats.JSON)
     }
 
     @Bean

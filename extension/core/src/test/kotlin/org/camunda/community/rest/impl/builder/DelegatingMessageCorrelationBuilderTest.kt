@@ -1,7 +1,9 @@
 package org.camunda.community.rest.impl.builder
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.camunda.bpm.engine.runtime.MessageCorrelationResultType
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.MessageApiClient
 import org.camunda.community.rest.client.model.MessageCorrelationResultWithVariableDto
 import org.camunda.community.rest.client.model.ProcessInstanceDto
@@ -21,7 +23,12 @@ class DelegatingMessageCorrelationBuilderTest {
   val builder = DelegatingMessageCorrelationBuilder(
     messageName = "messageName",
     messageApiClient = messageApiClient,
-    valueMapper = ValueMapper(valueTypeResolver = ValueTypeResolverImpl())
+    valueMapper = ValueMapper(
+      objectMapper = jacksonObjectMapper(),
+      valueTypeResolver = ValueTypeResolverImpl(),
+      valueMappers = emptyList(),
+      serializationFormat = Variables.SerializationDataFormats.JSON
+    )
   ).apply {
     this.localVariableEquals("localVar", "localValue")
     // this.processDefinitionId("processDefinitionId")
@@ -36,9 +43,13 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateStartMessage() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto().processInstance(
-        ProcessInstanceDto().id("processInstanceId").ended(false).suspended(false)
-      )))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto().processInstance(
+            ProcessInstanceDto().id("processInstanceId").ended(false).suspended(false)
+          )
+        )
+      )
     )
     val result = builder.correlateStartMessage()
     assertThat(result).isNotNull
@@ -48,8 +59,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateWithResultAndVariables() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)
+        )
+      )
     )
     val result = builder.correlateWithResultAndVariables(true)
     assertThat(result).isNotNull
@@ -59,8 +74,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateAllWithResultAndVariables() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)
+        )
+      )
     )
     val result = builder.correlateAllWithResultAndVariables(true)
     assertThat(result).isNotNull
@@ -70,8 +89,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateAllWithResult() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)
+        )
+      )
     )
     val result = builder.correlateAllWithResult()
     assertThat(result).isNotNull
@@ -81,8 +104,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateWithResult() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)
+        )
+      )
     )
     val result = builder.correlateWithResult()
     assertThat(result).isNotNull
@@ -92,8 +119,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateExclusively() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.PROCESS_DEFINITION)
+        )
+      )
     )
     val result = builder.correlateExclusively()
     assertThat(result).isNotNull
@@ -102,8 +133,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlateAll() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)
+        )
+      )
     )
     builder.correlateAll()
     verify(messageApiClient).deliverMessage(any())
@@ -112,8 +147,12 @@ class DelegatingMessageCorrelationBuilderTest {
   @Test
   fun correlate() {
     whenever(messageApiClient.deliverMessage(any())).thenReturn(
-      ResponseEntity.ok(listOf(MessageCorrelationResultWithVariableDto()
-        .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)))
+      ResponseEntity.ok(
+        listOf(
+          MessageCorrelationResultWithVariableDto()
+            .resultType(MessageCorrelationResultWithVariableDto.ResultTypeEnum.EXECUTION)
+        )
+      )
     )
     builder.correlate()
     verify(messageApiClient).deliverMessage(any())
