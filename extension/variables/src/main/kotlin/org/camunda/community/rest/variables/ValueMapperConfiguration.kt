@@ -62,15 +62,19 @@ class ValueMapperConfiguration {
     objectMapper: ObjectMapper,
     valueTypeResolver: ValueTypeResolver,
     valueTypeRegistration: ValueTypeRegistration,
-    customValueSerializers: List<CustomValueSerializer>?,
+    customValueSerializers: List<CustomValueSerializer>,
+    customValueMappers: List<CustomValueMapper>,
     properties: CamundaRestClientVariablesProperties
   ): ValueMapper {
+    val wrapperCustomValueMappers = customValueMappers.map {
+      CustomValueMapperAdapter(it)
+    }
     return ValueMapper(
       objectMapper = objectMapper,
       valueTypeResolver = valueTypeResolver,
       valueTypeRegistration = valueTypeRegistration,
       valueSerializers = listOf(JavaSerializationValueSerializer(), JsonValueSerializer(objectMapper)),
-      customValueSerializers = customValueSerializers ?: emptyList(),
+      customValueSerializers = customValueSerializers + wrapperCustomValueMappers,
       serializationFormat = properties.defaultSerializationFormat
     )
   }
