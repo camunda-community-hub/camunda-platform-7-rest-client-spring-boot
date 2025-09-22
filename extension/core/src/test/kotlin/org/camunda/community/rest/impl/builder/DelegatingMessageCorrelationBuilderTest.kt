@@ -11,7 +11,6 @@ import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.camunda.community.rest.variables.serialization.JsonValueSerializer
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock

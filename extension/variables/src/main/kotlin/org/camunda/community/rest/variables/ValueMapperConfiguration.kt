@@ -28,7 +28,8 @@ import org.camunda.bpm.engine.variable.type.ValueTypeResolver
 import org.camunda.community.rest.variables.serialization.CustomValueSerializer
 import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializer
 import org.camunda.community.rest.variables.serialization.JsonValueSerializer
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinJsonValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinXmlValueSerializer
 import org.camunda.spin.plugin.variable.value.SpinValue
 import org.springframework.boot.autoconfigure.AutoConfiguration
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
@@ -50,10 +51,17 @@ class ValueMapperConfiguration {
   fun valueTypeRegistration() = ValueTypeRegistration()
 
   @Bean
-  @ConditionalOnMissingBean(SpinValueSerializer::class)
+  @ConditionalOnMissingBean(SpinXmlValueSerializer::class)
   @ConditionalOnClass(SpinValue::class)
-  fun defaultSpinValueMapper(valueTypeResolver: ValueTypeResolver, valueTypeRegistration: ValueTypeRegistration): SpinValueSerializer {
-    return SpinValueSerializer(valueTypeResolver = valueTypeResolver, valueTypeRegistration = valueTypeRegistration)
+  fun spinXmlValueSerializer(valueTypeResolver: ValueTypeResolver, valueTypeRegistration: ValueTypeRegistration): SpinXmlValueSerializer {
+    return SpinXmlValueSerializer(valueTypeResolver = valueTypeResolver, valueTypeRegistration = valueTypeRegistration)
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(SpinJsonValueSerializer::class)
+  @ConditionalOnClass(SpinValue::class)
+  fun spinJsonValueSerializer(valueTypeResolver: ValueTypeResolver, valueTypeRegistration: ValueTypeRegistration): SpinJsonValueSerializer {
+    return SpinJsonValueSerializer(valueTypeResolver = valueTypeResolver, valueTypeRegistration = valueTypeRegistration)
   }
 
   @Bean

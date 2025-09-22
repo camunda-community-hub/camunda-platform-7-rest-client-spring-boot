@@ -8,7 +8,7 @@ import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.TaskApiClient
 import org.camunda.community.rest.itest.SpringBootConfigurationITest.CustomValueMapperConfiguration.Companion.VALUE_MAPPER
 import org.camunda.community.rest.itest.stages.TestApplication
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinJsonValueSerializer
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
@@ -62,7 +62,7 @@ internal class SpringBootConfigurationITest {
     lateinit var valueMapper: ValueMapper
 
     @Autowired(required = false)
-    lateinit var spinValueSerializer: SpinValueSerializer
+    lateinit var spinValueSerializer: SpinJsonValueSerializer
 
     @Autowired(required = false)
     lateinit var taskApiClient: TaskApiClient
@@ -143,7 +143,7 @@ internal class SpringBootConfigurationITest {
         .withUserConfiguration(TestApplication::class.java)
         .withClassLoader(FilteredClassLoader(SpinValue::class.java))
         .run {
-          assertThatThrownBy { it.getBean(SpinValueSerializer::class.java) }.isInstanceOf(NoSuchBeanDefinitionException::class.java)
+          assertThatThrownBy { it.getBean(SpinJsonValueSerializer::class.java) }.isInstanceOf(NoSuchBeanDefinitionException::class.java)
           assertThat(it.getBean(ValueMapper::class.java)).isNotNull
         }
 

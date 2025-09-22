@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions
 import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinXmlValueSerializer
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
@@ -29,7 +29,7 @@ internal class DelegatingDecisionsEvaluationBuilderTest {
     valueTypeRegistration = typeRegistration,
     valueSerializers = listOf(JsonValueSerializer(objectMapper)),
     serializationFormat = Variables.SerializationDataFormats.JSON,
-    customValueSerializers = listOf(SpinValueSerializer(typeResolver, typeRegistration))
+    customValueSerializers = listOf(SpinXmlValueSerializer(typeResolver, typeRegistration))
   )
   val builder = DelegatingDecisionsEvaluationBuilder(
     decisionDefinitionApiClient = decisionDefinitionApiClient,

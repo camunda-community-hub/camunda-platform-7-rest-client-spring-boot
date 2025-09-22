@@ -6,10 +6,14 @@ import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.variables.serialization.JavaSerializationValueSerializer
 import org.camunda.community.rest.variables.serialization.JsonValueSerializer
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
-import org.camunda.community.rest.variables.serialization.ValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinJsonValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinXmlValueSerializer
+import org.camunda.spin.json.SpinJsonNode
+import org.camunda.spin.plugin.variable.SpinValues
 import org.junit.jupiter.api.Test
 import org.mockito.internal.util.collections.Sets
+import spinjar.javax.xml.bind.annotation.XmlElement
+import spinjar.javax.xml.bind.annotation.XmlRootElement
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -17,9 +21,22 @@ import java.time.ZonedDateTime
 import java.util.*
 
 class ValueMapperTest {
+
+  @XmlRootElement
+  class TestDataStructure(@get:XmlElement val testString: String) {
+    constructor() : this("") {
+    }
+  }
+
   private val objectMapper = jacksonObjectMapper().apply { findAndRegisterModules() }
   private val valueTypeResolver = ValueTypeResolverImpl()
   private val valueTypeRegistration = ValueTypeRegistration()
+  private val spinXmlValueSerializer = SpinXmlValueSerializer(valueTypeResolver, valueTypeRegistration).apply {
+    this.addValueTypes()
+  }
+  private val spinJsonValueSerializer = SpinJsonValueSerializer(valueTypeResolver, valueTypeRegistration).apply {
+    this.addValueTypes()
+  }
 
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
@@ -31,7 +48,7 @@ class ValueMapperTest {
       JsonValueSerializer(objectMapper)
     ),
     customValueSerializers = listOf(
-      SpinValueSerializer(valueTypeResolver, valueTypeRegistration),
+      spinJsonValueSerializer,
     )
   )
 
@@ -181,6 +198,65 @@ class ValueMapperTest {
       )
     })
 
+  }
+
+  @Test
+  fun `can map json types supported by spin`() {
+
+    val map = mapOf<String, Any?>(
+      "spinJsonNode" to SpinJsonNode.JSON(TestDataStructure("spinJsonNode")),
+      "spinJsonValue" to SpinValues.jsonValue(SpinJsonNode.JSON(TestDataStructure("spinJsonValue"))).create()
+    )
+    val dtos = valueMapper.mapValues(map)
+    assertThat(dtos).containsOnlyKeys(map.keys)
+
+    assertThat(dtos["spinJsonNode"]).isEqualTo(VariableValueDto().apply {
+      type = "Json"
+      value = objectMapper.writeValueAsString(TestDataStructure("spinJsonNode"))
+      valueInfo = mapOf()
+    })
+    assertThat(dtos["spinJsonValue"]).isEqualTo(VariableValueDto().apply {
+      type = "Json"
+      value = objectMapper.writeValueAsString(TestDataStructure("spinJsonValue"))
+      valueInfo = mapOf()
+    })
+  }
+
+  @Test
+  fun `can map xml types supported by spin`() {
+
+    val xmlValueMapper = ValueMapper(
+      objectMapper = objectMapper,
+      valueTypeResolver = valueTypeResolver,
+      valueTypeRegistration = valueTypeRegistration,
+      serializationFormat = Variables.SerializationDataFormats.XML,
+      valueSerializers = listOf(),
+      customValueSerializers = listOf(
+        spinXmlValueSerializer,
+      )
+    )
+
+    val map = mapOf<String, Any?>(
+      "spinXmlNode" to SpinJsonNode.XML(TestDataStructure("spinXmlNode")),
+      "spinXmlValue" to SpinValues.xmlValue(SpinJsonNode.XML(TestDataStructure("spinXmlValue"))).create()
+    )
+    val dtos = xmlValueMapper.mapValues(map)
+    assertThat(dtos).containsOnlyKeys(map.keys)
+
+    assertThat(dtos["spinXmlNode"]).isEqualTo(VariableValueDto().apply {
+      type = "Xml"
+      value = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testDataStructure>\n" +
+              "  <testString>spinXmlNode</testString>\n" +
+              "</testDataStructure>\n"
+      valueInfo = mapOf()
+    })
+    assertThat(dtos["spinXmlValue"]).isEqualTo(VariableValueDto().apply {
+      type = "Xml"
+      value = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testDataStructure>\n" +
+              "  <testString>spinXmlValue</testString>\n" +
+              "</testDataStructure>\n"
+      valueInfo = mapOf()
+    })
   }
 
 }

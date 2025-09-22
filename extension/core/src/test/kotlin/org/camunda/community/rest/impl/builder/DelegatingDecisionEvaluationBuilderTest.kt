@@ -10,7 +10,7 @@ import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.DecisionDefinitionDto
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.variables.serialization.SpinValueSerializer
+import org.camunda.community.rest.variables.serialization.SpinJsonValueSerializer
 import org.camunda.community.rest.variables.ValueMapper
 import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
@@ -31,7 +31,7 @@ internal class DelegatingDecisionEvaluationBuilderTest {
     valueTypeRegistration = typeRegistration,
     valueSerializers = listOf(JsonValueSerializer(objectMapper)),
     serializationFormat = Variables.SerializationDataFormats.JSON,
-    customValueSerializers = listOf(SpinValueSerializer(typeResolver, typeRegistration))
+    customValueSerializers = listOf(SpinJsonValueSerializer(typeResolver, typeRegistration))
   )
 
   val builder = DelegatingDecisionEvaluationBuilder(
