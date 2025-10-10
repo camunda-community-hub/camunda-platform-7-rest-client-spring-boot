@@ -30,11 +30,12 @@ import org.camunda.bpm.engine.variable.Variables.untypedValue
 import org.camunda.bpm.engine.variable.type.*
 import org.camunda.bpm.engine.variable.value.FileValue
 import org.camunda.bpm.engine.variable.value.SerializableValue
+import org.camunda.bpm.engine.variable.value.SerializationDataFormat
 import org.camunda.bpm.engine.variable.value.TypedValue
 import org.camunda.community.rest.client.model.VariableInstanceDto
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.variables.ext.resolveValueType
-import org.camunda.community.rest.variables.format.FormatValueMapper
+import org.camunda.community.rest.variables.serialization.CustomValueSerializer
+import org.camunda.community.rest.variables.serialization.ValueSerializer
 import java.util.*
 
 /**
@@ -43,8 +44,10 @@ import java.util.*
 open class ValueMapper(
   private val objectMapper: ObjectMapper,
   private val valueTypeResolver: ValueTypeResolver,
-  private val valueMappers: List<IValueMapper>,
-  private val serializationFormat: Variables.SerializationDataFormats
+  private val valueTypeRegistration: ValueTypeRegistration,
+  private val serializationFormat: SerializationDataFormat,
+  private val valueSerializers: List<ValueSerializer>,
+  private val customValueSerializers: List<CustomValueSerializer>,
 ) {
   companion object {
     fun toRestApiTypeName(name: String): String = name.replaceFirstChar { it.uppercase(Locale.getDefault()) }
@@ -82,19 +85,21 @@ open class ValueMapper(
    * Creates a variable value DTO out of variable value.
    */
   fun mapValue(variableValue: Any?, isTransient: Boolean = false): VariableValueDto {
-    return mapValue(convertToTypedValue(variableValue, isTransient))
+    return mapValue(valueTypeRegistration.convertToTypedValue(variableValue, isTransient, serializationFormat))
   }
 
   /**
    * Create a variable value DTO out of typed variable value.
    */
-  fun mapValue(variableValue: TypedValue): VariableValueDto {
-    var variable = findMapFunction(variableValue.value)?.mapValue(variableValue.value)
-      ?: variableValue
-
-    if (variable is SerializableValue) {
+  private fun mapValue(typedVariable: TypedValue): VariableValueDto {
+    val typedValue = if (typedVariable.type == null) {
+      valueTypeRegistration.convertToTypedValue(typedVariable.value, typedVariable.isTransient, serializationFormat)
+    } else typedVariable
+    val variable = if (typedValue is SerializableValue) {
       // throws exception if serialization is not supported
-      variable = findSerializeFunction(variable).serializeValue(variable)
+      findSerializeFunction(typedValue).serializeValue(typedValue)
+    } else {
+      typedValue
     }
     return variable.toDto()
   }
@@ -122,16 +127,12 @@ open class ValueMapper(
     mapDto(dto = VariableValueDto().type(dto.type).value(dto.value).valueInfo(dto.valueInfo), deserializeValues = deserializeValues)
 
 
-  private fun convertToTypedValue(variableValue: Any?, isTransient: Boolean) =
-    resolveValueType(variableValue).createValue(variableValue, mapOf(ValueType.VALUE_INFO_TRANSIENT to isTransient))
-
-
   private fun TypedValue.toDto() = VariableValueDto().apply {
     this@toDto.type?.let {
       type = toRestApiTypeName(it.name)
       valueInfo = it.getValueInfo(this@toDto)
     } ?: let {
-      type = toRestApiTypeName(resolveValueType(this@toDto.value).name)
+      type = toRestApiTypeName(valueTypeRegistration.convertToTypedValue(this@toDto.value, false, serializationFormat).type.name)
     }
 
     value = when (this@toDto) {
@@ -188,8 +189,8 @@ open class ValueMapper(
 
 
   /**
-   * In case of object values, Jackson serializes any JSON to a map of String -> Object.
-   * We want to make use of type information provided by and therefor restore the original JSON.
+   * In the case of object values, Jackson serializes any JSON to a map of String -> Object.
+   * We want to make use of type information provided by and therefore restore the original JSON.
    */
   private fun restoreObjectJsonIfNeeded(dto: VariableValueDto): VariableValueDto {
     val valueType: ValueType? = valueTypeResolver.typeForName(fromRestApiTypeName(dto.type))
@@ -205,18 +206,19 @@ open class ValueMapper(
     return dto
   }
 
-  private fun findMapFunction(value: Any?) =
-    valueMappers.firstOrNull {
-      when (it) {
-        is FormatValueMapper -> it.canMapValue(value) && it.serializationDataFormat == this.serializationFormat
-        else -> it.canMapValue(value)
-      }
-    }
+  private fun findSerializeFunction(value: TypedValue): ValueSerializer {
+    val customValueSerializer =
+      customValueSerializers.firstOrNull { it.canSerializeValue(value) && it.serializationDataFormat == serializationFormat }
+    return customValueSerializer ?: valueSerializers.firstOrNull { it.serializationDataFormat == serializationFormat }
+      ?: throw IllegalArgumentException("No serializer found for type: ${value.javaClass.name} and serialization format $serializationFormat")
+  }
 
-  private fun findSerializeFunction(value: TypedValue) = valueMappers.firstOrNull { it.canSerializeValue(value) }
-    ?: throw IllegalArgumentException("No custom serializeValue() function configured for value type: ${value.javaClass.name}")
-
-  private fun findDeserializeFunction(value: SerializableValue) = valueMappers.firstOrNull { it.canDeserializeValue(value) }
-    ?: throw IllegalArgumentException("No custom deserializeValue() function configured for value type: ${value.javaClass.name}")
+  private fun findDeserializeFunction(value: SerializableValue): ValueSerializer {
+    val serializationFormatToUse = value.serializationDataFormat ?: serializationFormat.name
+    val customValueSerializer =
+      customValueSerializers.firstOrNull { it.canDeserializeValue(value) && it.serializationDataFormat.name == serializationFormatToUse }
+    return customValueSerializer ?: valueSerializers.firstOrNull { it.serializationDataFormat.name == serializationFormatToUse }
+      ?: throw IllegalArgumentException("No serializer found for type: ${value.javaClass.name} and serialization format $serializationFormatToUse")
+  }
 
 }

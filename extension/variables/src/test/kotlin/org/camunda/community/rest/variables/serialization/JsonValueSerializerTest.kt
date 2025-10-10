@@ -1,4 +1,4 @@
-package org.camunda.community.rest.variables.format
+package org.camunda.community.rest.variables.serialization
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
@@ -6,19 +6,23 @@ import org.camunda.bpm.engine.variable.Variables.SerializationDataFormats
 import org.camunda.bpm.engine.variable.type.SerializableValueType
 import org.camunda.community.rest.client.model.VariableValueDto
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
 import org.junit.jupiter.api.Test
 
-class JsonFormatValueMapperTest {
+class JsonValueSerializerTest {
   private val objectMapper = jacksonObjectMapper().apply { findAndRegisterModules() }
   private val valueTypeResolver = ValueTypeResolverImpl()
-  private val jsonFormatValueMapper = JsonFormatValueMapper(objectMapper)
+  private val valueTypeRegistration = ValueTypeRegistration()
+  private val jsonValueSerializer = JsonValueSerializer(objectMapper)
 
   private val valueMapper = ValueMapper(
     objectMapper = objectMapper,
     valueTypeResolver = valueTypeResolver,
-    valueMappers = listOf(jsonFormatValueMapper),
-    serializationFormat = SerializationDataFormats.JSON
+    valueTypeRegistration = valueTypeRegistration,
+    serializationFormat = SerializationDataFormats.JSON,
+    valueSerializers = listOf(jsonValueSerializer),
+    customValueSerializers = listOf()
   )
 
   data class Foo(val name: String, val age: Int)

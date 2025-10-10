@@ -1,6 +1,7 @@
 package org.camunda.community.rest.variables
 
 import org.camunda.bpm.engine.variable.Variables.SerializationDataFormats
+import org.camunda.bpm.engine.variable.value.SerializationDataFormat
 import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("camunda.rest.client.variables")
@@ -12,7 +13,7 @@ data class CamundaRestClientVariablesProperties(
    *
    * Note: XML serialization format is not supported.
    */
-  val defaultSerializationFormat: SerializationDataFormats = SerializationDataFormats.JSON,
+  val defaultSerializationFormat: SerializationDataFormat = SerializationDataFormats.JSON,
 ) {
   init {
     require(SerializationDataFormats.XML != defaultSerializationFormat) {

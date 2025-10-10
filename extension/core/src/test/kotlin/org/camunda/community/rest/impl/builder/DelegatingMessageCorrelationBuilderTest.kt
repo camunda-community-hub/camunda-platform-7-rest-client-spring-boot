@@ -8,7 +8,9 @@ import org.camunda.community.rest.client.api.MessageApiClient
 import org.camunda.community.rest.client.model.MessageCorrelationResultWithVariableDto
 import org.camunda.community.rest.client.model.ProcessInstanceDto
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -20,14 +22,20 @@ class DelegatingMessageCorrelationBuilderTest {
 
   val messageApiClient = mock<MessageApiClient>()
 
+  private val objectMapper = jacksonObjectMapper()
+  private val typeResolver = ValueTypeResolverImpl()
+  private val typeRegistration = ValueTypeRegistration()
+
   val builder = DelegatingMessageCorrelationBuilder(
     messageName = "messageName",
     messageApiClient = messageApiClient,
     valueMapper = ValueMapper(
-      objectMapper = jacksonObjectMapper(),
-      valueTypeResolver = ValueTypeResolverImpl(),
-      valueMappers = emptyList(),
-      serializationFormat = Variables.SerializationDataFormats.JSON
+      objectMapper = objectMapper,
+      valueTypeResolver = typeResolver,
+      valueTypeRegistration = typeRegistration,
+      valueSerializers = listOf(JsonValueSerializer(objectMapper)),
+      serializationFormat = Variables.SerializationDataFormats.JSON,
+      customValueSerializers = listOf()
     )
   ).apply {
     this.localVariableEquals("localVar", "localValue")

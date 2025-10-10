@@ -10,9 +10,11 @@ import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.DecisionDefinitionApiClient
 import org.camunda.community.rest.client.model.DecisionDefinitionDto
 import org.camunda.community.rest.client.model.VariableValueDto
-import org.camunda.community.rest.variables.SpinValueMapper
+import org.camunda.community.rest.variables.serialization.SpinJsonValueSerializer
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
 import org.junit.Test
 import org.mockito.kotlin.*
 import org.springframework.http.ResponseEntity
@@ -20,12 +22,16 @@ import org.springframework.http.ResponseEntity
 internal class DelegatingDecisionEvaluationBuilderTest {
 
   private val decisionDefinitionApiClient = mock<DecisionDefinitionApiClient>()
-  private val valueTypeResolver = ValueTypeResolverImpl()
+  private val objectMapper = jacksonObjectMapper()
+  private val typeResolver = ValueTypeResolverImpl()
+  private val typeRegistration = ValueTypeRegistration()
   private val valueMapper = ValueMapper(
-    objectMapper = jacksonObjectMapper(),
-    valueTypeResolver = valueTypeResolver,
-    valueMappers = listOf(SpinValueMapper(valueTypeResolver)),
-    serializationFormat = Variables.SerializationDataFormats.JSON
+    objectMapper = objectMapper,
+    valueTypeResolver = typeResolver,
+    valueTypeRegistration = typeRegistration,
+    valueSerializers = listOf(JsonValueSerializer(objectMapper)),
+    serializationFormat = Variables.SerializationDataFormats.JSON,
+    customValueSerializers = listOf(SpinJsonValueSerializer(typeResolver, typeRegistration))
   )
 
   val builder = DelegatingDecisionEvaluationBuilder(
