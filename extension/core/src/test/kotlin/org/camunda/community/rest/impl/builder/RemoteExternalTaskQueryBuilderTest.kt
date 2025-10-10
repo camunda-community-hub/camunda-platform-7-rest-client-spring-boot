@@ -1,11 +1,15 @@
 package org.camunda.community.rest.impl.builder
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.camunda.bpm.engine.variable.Variables
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.LockedExternalTaskDto
 import org.camunda.community.rest.config.CamundaRestClientProperties
 import org.camunda.community.rest.variables.ValueMapper
+import org.camunda.community.rest.variables.ValueTypeRegistration
 import org.camunda.community.rest.variables.ValueTypeResolverImpl
+import org.camunda.community.rest.variables.serialization.JsonValueSerializer
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -19,9 +23,20 @@ class RemoteExternalTaskQueryBuilderTest {
 
   val camundaRestClientProperties = mock<CamundaRestClientProperties>()
 
+  private val objectMapper = jacksonObjectMapper()
+  private val typeResolver = ValueTypeResolverImpl()
+  private val typeRegistration = ValueTypeRegistration()
+
   val builder = RemoteExternalTaskQueryBuilder(
     externalTaskApiClient,
-    valueMapper = ValueMapper(valueTypeResolver = ValueTypeResolverImpl()),
+    valueMapper = ValueMapper(
+      objectMapper = objectMapper,
+      valueTypeResolver = typeResolver,
+      valueTypeRegistration = typeRegistration,
+      valueSerializers = listOf(JsonValueSerializer(objectMapper)),
+      serializationFormat = Variables.SerializationDataFormats.JSON,
+      customValueSerializers = listOf()
+    ),
     camundaRestClientProperties,
     workerId = "workerId",
     maxTasks = 10,

@@ -22,6 +22,7 @@
  */
 package org.camunda.community.rest.config
 
+import org.camunda.community.rest.variables.CamundaRestClientVariablesProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.NestedConfigurationProperty
 
@@ -47,8 +48,13 @@ data class CamundaRestClientProperties(
    * For this to work, the classes all have to be known on the server side.
    * Variables will then be deserialized and again serialized with jackson to send them as JSON.
    */
-  val deserializeVariablesOnServer: Boolean = false
+  val deserializeVariablesOnServer: Boolean = false,
 
+  /**
+   * Allows configuration of variable handling specific properties, such as serialization format.
+   */
+  @NestedConfigurationProperty
+  val variables: CamundaRestClientVariablesProperties = CamundaRestClientVariablesProperties()
 ) {
   /**
    * Controls decoding of HTTP status response to Camunda Exceptions.
