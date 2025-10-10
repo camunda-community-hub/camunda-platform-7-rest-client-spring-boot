@@ -31,6 +31,7 @@ to find out if the functionality you require is already supported by the library
 |===
 | Library | Spring Boot | Spring Cloud
 
+| 7.23.5 | 3.5.6 | 2025.0.0
 | 7.23.3 | 3.4.5 | 2024.0.1 
 | 7.23.2 | 3.4.5 | 2024.0.1 
 | 7.23.1 | 3.4.5 | 2024.0.1 
