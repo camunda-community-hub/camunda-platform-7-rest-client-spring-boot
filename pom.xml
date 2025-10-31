@@ -34,7 +34,7 @@
     <camunda.version.base>7.23</camunda.version.base>
     <camunda.version.ce>${camunda.version.base}.0</camunda.version.ce>
     <camunda.version.ee>${camunda.version.base}.0-ee</camunda.version.ee>
-    <holunda-c7.version>2025.07.1</holunda-c7.version>
+    <holunda-c7.version>2025.10.1</holunda-c7.version>
     <spin.version>7.24.0</spin.version>
 
     <spring-boot.version>3.5.7</spring-boot.version>
