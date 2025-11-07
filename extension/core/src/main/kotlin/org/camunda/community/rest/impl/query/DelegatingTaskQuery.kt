@@ -86,6 +86,7 @@ class DelegatingTaskQuery(
   var key: String? = null,
   var keyLike: String? = null,
   var taskDefinitionKeys: Array<out String>? = null,
+  var taskDefinitionKeysNotIn: Array<out String>? = null,
   var processDefinitionKey: String? = null,
   var processDefinitionKeys: Array<out String>? = null,
   var processDefinitionId: String? = null,
@@ -341,6 +342,7 @@ class DelegatingTaskQuery(
   override fun taskDefinitionKeyLike(taskDefinitionKeyLike: String?) = this.apply { this.keyLike = requireNotNull(taskDefinitionKeyLike) }
 
   override fun taskDefinitionKeyIn(vararg taskDefinitionKeyIn: String) = this.apply { this.taskDefinitionKeys = taskDefinitionKeyIn }
+  override fun taskDefinitionKeyNotIn(vararg taskDefinitionKeyNotIn: String) = this.apply { this.taskDefinitionKeysNotIn = taskDefinitionKeyNotIn }
 
   override fun taskParentTaskId(taskParentTaskId: String?) = this.apply { this.parentTaskId = requireNotNull(taskParentTaskId) }
 
@@ -643,6 +645,7 @@ class DelegatingTaskQuery(
         "involvedUserExpression" -> this@DelegatingTaskQuery.expressions["taskInvolvedUser"]
         "taskDefinitionKey" -> this@DelegatingTaskQuery.key
         "taskDefinitionKeyIn" -> this@DelegatingTaskQuery.taskDefinitionKeys?.toList()
+        "taskDefinitionKeyNotIn" -> this@DelegatingTaskQuery.taskDefinitionKeysNotIn?.toList()
         "taskDefinitionKeyLike" -> this@DelegatingTaskQuery.keyLike
         "dueDateExpression" -> this@DelegatingTaskQuery.expressions["dueDate"]
         "dueAfterExpression" -> this@DelegatingTaskQuery.expressions["dueDateAfter"]

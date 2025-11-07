@@ -35,6 +35,7 @@ class DelegatingHistoricProcessInstanceQuery(
   var isRootProcessInstances: Boolean = false,
   var superProcessInstanceId: String? = null,
   var subProcessInstanceId: String? = null,
+  var rootProcessInstanceId: String? = null,
   var superCaseInstanceId: String? = null,
   var subCaseInstanceId: String? = null,
   var processKeyNotIn: Array<out String>? = null,
@@ -76,6 +77,7 @@ class DelegatingHistoricProcessInstanceQuery(
   override fun processInstanceIds(processInstanceIds: MutableSet<String>?) = this.apply { this.processInstanceIds = requireNotNull(processInstanceIds).toTypedArray() }
 
   override fun processInstanceIdNotIn(vararg processInstanceIdNotIn: String) = this.apply { this.processInstanceIdNotIn = processInstanceIdNotIn }
+  override fun rootProcessInstanceId(rootProcessInstanceId: String?) = this.apply { this.rootProcessInstanceId = requireNotNull(rootProcessInstanceId) }
 
   override fun processDefinitionId(processDefinitionId: String?) = this.apply { this.processDefinitionId = requireNotNull(processDefinitionId) }
 

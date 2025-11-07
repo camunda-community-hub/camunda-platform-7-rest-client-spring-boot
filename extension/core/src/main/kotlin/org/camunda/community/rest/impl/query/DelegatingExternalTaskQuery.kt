@@ -6,8 +6,10 @@ import org.camunda.community.rest.adapter.ExternalTaskAdapter
 import org.camunda.community.rest.adapter.ExternalTaskBean
 import org.camunda.community.rest.client.api.ExternalTaskApiClient
 import org.camunda.community.rest.client.model.ExternalTaskQueryDto
+import org.camunda.community.rest.impl.toDto
 import org.camunda.community.rest.impl.toExternalTaskSorting
 import java.util.*
+import kotlin.collections.toList
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
@@ -23,7 +25,11 @@ class DelegatingExternalTaskQuery(
   var topicName: String? = null,
   var processInstanceId: String? = null,
   var processInstanceIds: List<String>? = null,
+  var processDefinitionKey: String? = null,
+  var processDefinitionKeys: List<String>? = null,
   var processDefinitionId: String? = null,
+  var processDefinitionName: String? = null,
+  var processDefinitionNameLike: String? = null,
   var executionId: String? = null,
   var suspensionState: SuspensionState? = null,
   var activityId: String? = null,
@@ -36,11 +42,17 @@ class DelegatingExternalTaskQuery(
   var notLocked: Boolean? = null,
   var lockExpirationBefore: Date? = null,
   var lockExpirationAfter: Date? = null,
-) : BaseQuery<ExternalTaskQuery, ExternalTask>(), ExternalTaskQuery {
+) : BaseVariableQuery<ExternalTaskQuery, ExternalTask>(), ExternalTaskQuery {
 
   override fun processInstanceId(processInstanceId: String?) = this.apply { this.processInstanceId = requireNotNull(processInstanceId) }
   override fun processInstanceIdIn(vararg processInstanceIdIn: String) = this.apply { this.processInstanceIds = processInstanceIdIn.toList() }
+
+  override fun processDefinitionKey(processDefinitionKey: String?) = this.apply { this.processDefinitionKey = requireNotNull(processDefinitionKey) }
+  override fun processDefinitionKeyIn(vararg processDefinitionKeys: String) = this.apply { this.processDefinitionKeys = processDefinitionKeys.toList() }
   override fun processDefinitionId(processDefinitionId: String?) = this.apply { this.processDefinitionId = requireNotNull(processDefinitionId) }
+  override fun processDefinitionName(processDefinitionName: String?) = this.apply { this.processDefinitionName = requireNotNull(processDefinitionName) }
+  override fun processDefinitionNameLike(processDefinitionNameLike: String?) = this.apply { this.processDefinitionNameLike = requireNotNull(processDefinitionNameLike) }
+
   override fun activityId(activityId: String?) = this.apply { this.activityId = requireNotNull(activityId) }
 
   override fun suspended() = this.apply { this.suspensionState = SuspensionState.SUSPENDED }
@@ -54,6 +66,38 @@ class DelegatingExternalTaskQuery(
   override fun priorityHigherThanOrEquals(priority: Long) = this.apply { this.priorityHigherThanOrEquals = priority }
 
   override fun priorityLowerThanOrEquals(priority: Long) = this.apply { this.priorityLowerThanOrEquals = priority }
+
+  override fun processVariableValueEquals(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.EQUALS, processVariable = true))
+  }
+
+  override fun processVariableValueNotEquals(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.NOT_EQUALS, processVariable = true))
+  }
+
+  override fun processVariableValueLike(name: String, value: String?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.LIKE, processVariable = true))
+  }
+
+  override fun processVariableValueNotLike(name: String, value: String?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.NOT_LIKE, processVariable = true))
+  }
+
+  override fun processVariableValueGreaterThan(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.GREATER_THAN, processVariable = true))
+  }
+
+  override fun processVariableValueGreaterThanOrEquals(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.GREATER_THAN_OR_EQUAL, processVariable = true))
+  }
+
+  override fun processVariableValueLessThan(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.LESS_THAN, processVariable = true))
+  }
+
+  override fun processVariableValueLessThanOrEquals(name: String, value: Any?) = this.apply {
+    queryVariableValues.add(QueryVariableValue(name = name, value = value, operator = QueryOperator.LESS_THAN_OR_EQUAL, processVariable = true))
+  }
 
   override fun externalTaskId(externalTaskId: String?) = this.apply { this.externalTaskId = requireNotNull(externalTaskId) }
 
@@ -106,10 +150,12 @@ class DelegatingExternalTaskQuery(
       val valueToSet = when (it.key) {
         "externalTaskIdIn" -> this@DelegatingExternalTaskQuery.externalTaskIds
         "processInstanceIdIn" -> this@DelegatingExternalTaskQuery.processInstanceIds
+        "processDefinitionKeyIn" -> this@DelegatingExternalTaskQuery.processDefinitionKeys
         "active" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.ACTIVE }
         "suspended" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
         "tenantIdIn" -> this@DelegatingExternalTaskQuery.tenantIds?.toList()
         "activityIdIn" -> this@DelegatingExternalTaskQuery.activityIds?.toList()
+        "variables" -> this@DelegatingExternalTaskQuery.queryVariableValues.toDto()
         "sorting" -> this@DelegatingExternalTaskQuery.orderingProperties.map { it.toExternalTaskSorting() }.filter { it.sortBy != null }
         else -> valueForProperty(it.key, this@DelegatingExternalTaskQuery, it.value.returnType)
       }
