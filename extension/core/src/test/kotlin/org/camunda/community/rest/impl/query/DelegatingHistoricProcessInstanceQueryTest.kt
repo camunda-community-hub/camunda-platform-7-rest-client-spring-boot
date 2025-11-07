@@ -37,6 +37,7 @@ class DelegatingHistoricProcessInstanceQueryTest {
     this.subProcessInstanceId("subProcessInstanceId")
     this.superCaseInstanceId("superCaseInstanceId")
     this.subCaseInstanceId("subCaseInstanceId")
+    this.rootProcessInstanceId("rootProcessInstanceId")
     this.processDefinitionKeyNotIn(mutableListOf("processKeyNotIn"))
     this.finished()
     this.unfinished()
