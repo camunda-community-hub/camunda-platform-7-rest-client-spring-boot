@@ -61,6 +61,7 @@ class DelegatingTaskQueryTest {
     this.taskDefinitionKey("key")
     this.taskDefinitionKeyLike("keyLike")
     this.taskDefinitionKeyIn("taskDefinitionKeys")
+    this.taskDefinitionKeyNotIn("taskDefinitionKeysNotIn")
     this.processDefinitionKey("processDefinitionKey")
     this.processDefinitionKeyIn("processDefinitionKeys")
     this.processDefinitionId("processDefinitionId")

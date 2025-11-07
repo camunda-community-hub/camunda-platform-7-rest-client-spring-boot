@@ -79,6 +79,42 @@ class ExternalTaskQueryITest :
   }
 
   @Test
+  fun `find external task by process definition key`() {
+
+    GIVEN
+      .process_from_a_resource_is_deployed("test_external_task.bpmn")
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key2", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+      .AND
+      .process_is_started_by_key(
+        "test_external_task", "my-business-key3", "caseInstanceId2",
+        createVariables()
+          .putValue("VAR1", "VAL1")
+          .putValueTyped("VAR4", Variables.objectValue("My object value").create())
+      )
+
+
+    WHEN
+      .process_waits_in_external_task("topic")
+
+    THEN
+      .external_task_query_succeeds { query, _ ->
+        assertThat(
+          query
+            .processDefinitionKey("test_external_task")
+            .count()
+        ).isEqualTo(2)
+
+      }
+
+  }
+
+  @Test
   fun `find external task by topic name`() {
 
     GIVEN

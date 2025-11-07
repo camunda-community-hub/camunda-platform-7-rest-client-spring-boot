@@ -20,6 +20,7 @@ class DelegatingProcessInstanceQueryTest {
     processInstanceApiClient,
   ).apply {
     this.processInstanceId("processInstanceId")
+    this.rootProcessInstanceId("rootProcessInstanceId")
     this.processInstanceIds(mutableSetOf("processInstanceIds"))
     this.processInstanceBusinessKey("businessKey")
     this.processInstanceBusinessKeyLike("businessKeyLike")
