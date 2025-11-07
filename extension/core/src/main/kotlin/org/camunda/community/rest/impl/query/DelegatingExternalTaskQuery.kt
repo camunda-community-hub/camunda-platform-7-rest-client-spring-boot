@@ -155,7 +155,7 @@ class DelegatingExternalTaskQuery(
         "suspended" -> this@DelegatingExternalTaskQuery.suspensionState?.let { it == SuspensionState.SUSPENDED }
         "tenantIdIn" -> this@DelegatingExternalTaskQuery.tenantIds?.toList()
         "activityIdIn" -> this@DelegatingExternalTaskQuery.activityIds?.toList()
-        "variables" -> this@DelegatingExternalTaskQuery.queryVariableValues.toDto()
+        "processVariables" -> this@DelegatingExternalTaskQuery.queryVariableValues.toDto()
         "sorting" -> this@DelegatingExternalTaskQuery.orderingProperties.map { it.toExternalTaskSorting() }.filter { it.sortBy != null }
         else -> valueForProperty(it.key, this@DelegatingExternalTaskQuery, it.value.returnType)
       }
