@@ -23,9 +23,9 @@
 
 package org.camunda.community.rest.exception
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import feign.Response
 import feign.codec.ErrorDecoder
+import tools.jackson.module.kotlin.jacksonObjectMapper
 import java.io.IOException
 
 /**
