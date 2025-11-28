@@ -50,7 +50,7 @@ class ProcessClient
       null, null, null, null, null, null, null,
       null, null, null, null, null,
       null, null, null
-    ).body.count
+    ).body?.count
     LOGGER.info("CLIENT-91: Found {} deployed processes", count)
     val processDefinitions = processDefinitionApiClient.getProcessDefinitions(
       null, null, null, null,
@@ -62,10 +62,8 @@ class ProcessClient
     ).body
     LOGGER.info(
       "CLIENT-92: Deployed process definition are {}",
-      processDefinitions.stream().map { o: ProcessDefinitionDto? -> Objects.toString(o) }
-        .collect(
-          Collectors.toList()
-        ))
+      processDefinitions?.map { o: ProcessDefinitionDto? -> Objects.toString(o) }
+    )
   }
 
   /**
@@ -79,7 +77,7 @@ class ProcessClient
       StartProcessInstanceDto()
         .businessKey("WAIT_FOR_MESSAGE" + UUID.randomUUID())
         .putVariablesItem("ID", stringValue("MESSAGING-" + UUID.randomUUID()))
-    ).body
+    ).body!!
     LOGGER.trace("CLIENT-101: Started instance {} - {}", instance.id, instance.businessKey)
     instances[instance.id] = instance.businessKey
   }
@@ -125,7 +123,7 @@ class ProcessClient
             .all(true)
             .resultEnabled(true)
         ).body
-      result.forEach {
+      result?.forEach {
         LOGGER.info(
           "CLIENT-301: {}",
           it.toString()

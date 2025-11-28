@@ -23,28 +23,29 @@
 package org.camunda.community.rest.client
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.ser.std.DateSerializer
-import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer
 import feign.Logger
 import feign.Retryer
 import feign.codec.Encoder
 import org.camunda.community.rest.client.KeyChangingSpringManyMultipartFilesWriter.Companion.camundaMultipartFormEncoder
-import org.springframework.beans.factory.ObjectFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.cloud.openfeign.support.FeignEncoderProperties
-import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer
+import org.springframework.cloud.openfeign.support.FeignHttpMessageConverters
 import org.springframework.cloud.openfeign.support.SpringEncoder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.SerializationFeature
+import tools.jackson.databind.cfg.DateTimeFeature
+import tools.jackson.databind.ext.javatime.ser.OffsetDateTimeSerializer
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.databind.module.SimpleModule
+import tools.jackson.databind.ser.jdk.JavaUtilDateSerializer
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
@@ -55,14 +56,20 @@ import java.time.format.DateTimeFormatter
 @EnableFeignClients
 class FeignClientConfiguration {
 
+  object CustomOffsetDateTimeSerializer : OffsetDateTimeSerializer(
+    OffsetDateTimeSerializer.INSTANCE,
+    false,
+    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
+    JsonFormat.Shape.STRING
+  )
+
   @Bean
   @ConditionalOnMissingBean
   fun camundaFeignEncoder(
     feignEncoderProperties: FeignEncoderProperties,
-    customizers: ObjectProvider<HttpMessageConverterCustomizer>
+    converters: ObjectProvider<FeignHttpMessageConverters>
   ): Encoder {
-    val myConverters = camunda7feignHttpMessageConverters()
-    return SpringEncoder(camundaMultipartFormEncoder(), myConverters, feignEncoderProperties, customizers)
+    return SpringEncoder(camundaMultipartFormEncoder(), feignEncoderProperties, converters)
   }
 
   @Bean
@@ -76,36 +83,22 @@ class FeignClientConfiguration {
   fun feignLoggerLevel(@Value("\${feign.client.config.default.loggerLevel}") defaultLogLevel: String) =
     Logger.Level.valueOf(defaultLogLevel)
 
-
-  /**
-   * Create an object factory for the message converter with the customized object mapper.
-   */
-  fun camunda7feignHttpMessageConverters(): ObjectFactory<HttpMessageConverters> {
-    val builder = Jackson2ObjectMapperBuilder
-      .json()
-      .featuresToDisable(
-        DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE,
-        SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
+  @Bean
+  fun jsonHttpMessageConverter(): HttpMessageConverter<*> {
+    val module = SimpleModule()
+    module.addSerializer(CustomOffsetDateTimeSerializer)
+    module.addSerializer(
+      JavaUtilDateSerializer(
+        false,
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
       )
-      .serializers(
-        OffsetDateTimeSerializer(
-          OffsetDateTimeSerializer.INSTANCE,
-          false,
-          DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
-          JsonFormat.Shape.STRING
-        ),
-        DateSerializer(
-          false,
-          SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        )
-      )
-    return ObjectFactory<HttpMessageConverters> {
-      HttpMessageConverters(
-        listOf(
-          MappingJackson2HttpMessageConverter(builder.build())
-        )
-      )
-    }
+    )
+    val builder = JsonMapper.builder()
+      .disable(DateTimeFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+      .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+      .addModule(module)
+    return JacksonJsonHttpMessageConverter(builder)
   }
+
 }
 
