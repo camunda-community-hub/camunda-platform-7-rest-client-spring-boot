@@ -1,0 +1,43 @@
+/*
+ * General customizations
+ */
+ /* Customize logo size */
+.md-header__button.md-logo img, .md-header__button.md-logo {
+  height: 15%;
+  width: 15%;
+}
+
+[data-md-color-scheme="default"] {
+  /*
+   Camunda colors
+   */
+   --camunda-orange-1: #f38a07;
+   --camunda-orange-2: #f27d06;
+   --camunda-orange-3: #f04609;
+   --monochrome-50: #7f7f7f;
+
+
+  /*
+   Default colors adjustments
+   */
+   --md-primary-fg-color: var(--monochrome-50);
+   --md-accent-fg-color: var(--camunda-orange-3);
+   --md-footer-bg-color: var(--camunda-orange-1);
+}
+
+[data-md-color-scheme="slate"] {
+  /*
+   Camunda colors
+   */
+  --camunda-orange-1: #f38a07;
+  --camunda-orange-2: #f27d06;
+  --camunda-orange-3: #f04609;
+
+
+  /*
+   Default colors adjustments
+   */
+  --md-primary-fg-color: var(--monochrome-50);
+  --md-accent-fg-color: var(--camunda-orange-3);
+  --md-footer-bg-color: var(--camunda-orange-1);
+}
