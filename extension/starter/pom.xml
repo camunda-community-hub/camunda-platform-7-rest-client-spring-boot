@@ -13,6 +13,20 @@
   <name>camunda-platform-7-rest-client-spring-boot/starter</name>
   <packaging>jar</packaging>
 
+  <!-- Inform users that this artifact has been relocated to new Maven coordinates. -->
+  <distributionManagement>
+    <relocation>
+      <groupId>io.holunda.c7</groupId>
+      <artifactId>c7-rest-client-spring-boot-starter</artifactId>
+      <version>2025.12.2</version>
+      <message>
+        This artifact has moved: please use io.holunda.c7:c7-rest-client-spring-boot-starter
+        The org.camunda.community.rest:camunda-platform-7-rest-client-spring-boot-starter 7.24.x line is final; update your dependency coordinates.
+        See https://github.com/holunda-io/c7 for the new location.
+      </message>
+    </relocation>
+  </distributionManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.camunda.community.rest</groupId>

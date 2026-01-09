@@ -1,25 +1,29 @@
-image::https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700[caption="Comuinity Extension", link=https://github.com/camunda-community-hub/community]
-image::https://img.shields.io/badge/Lifecycle-Stable-brightgreen[caption="Stable", link=https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#stable-]
-image::https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c[caption="compatible with Camunda Platform 7"]
 
 
-[cols="a,a,a,a,a,a"]
+[cols="a,a,a,a,a"]
 |===
-| // maven central
-image::https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot/badge.svg[caption="Maven Central", link=https://maven-badges.herokuapp.com/maven-central/org.camunda.community.rest/camunda-platform-7-rest-client-spring-boot]
-| // Camunda version
-image::https://img.shields.io/badge/Camunda%20Version-7.20-orange.svg[link="https://docs.camunda.org/manual/7.20/"]
-| // codecov
-image::https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/branch/master/graph/badge.svg[caption="codecov", link=https://codecov.io/gh/camunda-community-hub/camunda-platform-7-rest-client-spring-boot]
+|
+image::https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700[caption="Comuinity Extension", link=https://github.com/camunda-community-hub/community]
+|
+image::https://img.shields.io/badge/Lifecycle-Deprecated-red[caption="Deprecated", link=https://img.shields.io/badge/Lifecycle-Deprecated-yellowgreen)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#deprecated-[https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#relocated-]]
+|
+image::https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%207-26d07c[caption="compatible with Camunda Platform 7"]
 | // license
 image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[caption="License", link="https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/blob/master/LICENSE"]
-| // changelog
-image::https://img.shields.io/badge/CHANGES-blue.svg[caption="Change log", link="https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/releases/latest"]
-| // openhub
-image::https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot/widgets/project_thin_badge.gif[caption="OpenHub", link="https://www.openhub.net/p/camunda-platform-7-rest-client-spring-boot"]
 | // sponsored
 image::https://img.shields.io/badge/sponsoredBy-Holisticon-RED.svg[caption="sponsored", link="https://holisticon.de/"]
 |===
+
+[CAUTION]
+.Discontinued/Moved
+====
+Due to the end of live of Camunda 7 CE with 7.24, we decided to discontinue this extension and archive the repository.
+The Release 7.24.1 will be the last one.
+
+However, we included the *current state* of the extension into the link:https://github.com/holunda-io/c7/[holunda-io/c7] repository, where we will maintain it together with other extensions and keep it working for future C7-EE releases.
+====
+
+
 
 == Introduction
 
