@@ -16,6 +16,20 @@
   <description>Camunda Platform 7 REST Client Spring-Boot</description>
   <url>https://github.com/camunda-community-hub/camunda-platform-7-rest-client-spring-boot/</url>
 
+  <!-- Inform users that this artifact has been relocated to new Maven coordinates. -->
+  <distributionManagement>
+    <relocation>
+      <groupId>io.holunda.c7._</groupId>
+      <artifactId>c7-rest-client-spring-boot-parent</artifactId>
+      <version>2025.12.2</version>
+      <message>
+        This artifact has moved: please use io.holunda.c7._:c7-rest-client-spring-boot-parent.
+        The org.camunda.community.rest:camunda-platform-7-rest-client-spring-boot-parent 7.24.x line is final; update your dependency coordinates.
+        See https://github.com/holunda-io/c7 for the new location.
+      </message>
+    </relocation>
+  </distributionManagement>
+
   <!-- License Stuff -->
   <inceptionYear>2019</inceptionYear>
   <organization>
